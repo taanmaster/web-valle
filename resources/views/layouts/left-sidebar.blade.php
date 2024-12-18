@@ -3,11 +3,11 @@
     <div class="brand">
         <a href="index" class="logo">
             <span>
-                <img src="{{URL::asset('assets/images/logo-sm.png')}}" alt="logo-small" class="logo-sm">
+                <img src="{{ asset('assets/images/logo-sm.png') }}" alt="logo-small" class="logo-sm">
             </span>
             <span>
-                <img src="{{URL::asset('assets/images/logo.png')}}" alt="logo-large" class="logo-lg logo-light">
-                <img src="{{URL::asset('assets/images/logo-dark.png')}}" alt="logo-large" class="logo-lg logo-dark">
+                <img src="{{ asset('assets/images/logo.png') }}" alt="logo-large" class="logo-lg logo-light">
+                <img src="{{ asset('assets/images/logo-dark.png') }}" alt="logo-large" class="logo-lg logo-dark">
             </span>
         </a>
     </div>
@@ -27,25 +27,13 @@
                         <div class="collapse " id="sidebarDashboards">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="index">Analytics</a>
+                                    <a class="nav-link" href="projects-index">Licitaciones</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="crypto-index">Crypto</a>
+                                    <a class="nav-link" href="ecommerce-index">Pagos</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="crm-index">CRM</a>
-                                </li><!--end nav-item-->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="projects-index">Project</a>
-                                </li><!--end nav-item-->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="ecommerce-index">Ecommerce</a>
-                                </li><!--end nav-item-->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="helpdesk-index">Helpdesk</a>
-                                </li><!--end nav-item-->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="hospital-index">Hospital</a>
+                                    <a class="nav-link" href="helpdesk-index">Denuncia Ciudadana</a>
                                 </li><!--end nav-item-->
                             </ul><!--end nav-->
                         </div><!--end sidebarDashboards-->

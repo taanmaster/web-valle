@@ -74,7 +74,7 @@
 
 
 @extends('layouts.master-without-nav')
-@section('title')Metrica @endsection
+@section('title')Valle de Santiago @endsection
 @section('content')
 @section('body')
 <body id="body" class="auth-page" style="background-image: url({{URL::asset('assets/images/p-1.png')}}); background-size: cover; background-position: center center;">
@@ -93,15 +93,15 @@
                                         <a href="index" class="logo logo-admin">
                                             <img src="{{URL::asset('assets/images/logo-sm.png')}}" height="50" alt="logo" class="auth-logo">
                                         </a>
-                                        <h4 class="mt-3 mb-1 fw-semibold text-white font-18">Let's Get Started Metrica</h4>
-                                        <p class="text-muted  mb-0">Sign in to continue to Metrica.</p>
+                                        <h4 class="mt-3 mb-1 fw-semibold text-white font-18">Comencemos</h4>
+                                        <p class="text-muted  mb-0">Inicia sesión para acceder al portal de Valle de Santiago.</p>
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">
                                     <form class="my-4" method="POST" action="{{ route('login') }}">
                                         @csrf
                                         <div class="form-group mb-2">
-                                            <label class="form-label" for="username">Username</label>
+                                            <label class="form-label" for="username">Correo Electrónico</label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                             @error('email')
@@ -110,10 +110,9 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <!--end form-group-->
 
                                         <div class="form-group">
-                                            <label class="form-label" for="userpassword">Password</label>
+                                            <label class="form-label" for="userpassword">Contraseña</label>
                                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                             @error('password')
@@ -122,72 +121,43 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <!--end form-group-->
 
                                         <div class="form-group row mt-3">
                                             <div class="col-sm-6">
                                                 <div class="form-check form-switch form-switch-success">
                                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="customSwitchSuccess">Remember me</label>
+                                                    <label class="form-check-label" for="customSwitchSuccess">Recordar cuenta</label>
                                                 </div>
                                             </div>
-                                            <!--end col-->
+                                            {{--  
                                             <div class="col-sm-6 text-end">
                                                 @if (Route::has('password.request'))
                                                 <a class="text-muted font-13" href="{{ route('password.request') }}">
                                                     <i class="dripicons-lock"></i> Forgot password?
                                                 </a>
                                                 @endif
-
                                             </div>
-                                            <!--end col-->
+                                            --}}
                                         </div>
-                                        <!--end form-group-->
 
                                         <div class="form-group mb-0 row">
                                             <div class="col-12">
                                                 <div class="d-grid mt-3">
-                                                    <button class="btn btn-primary" type="submit">Log In <i class="fas fa-sign-in-alt ms-1"></i></button>
+                                                    <button class="btn btn-primary" type="submit">Acceder <i class="fas fa-sign-in-alt ms-1"></i></button>
                                                 </div>
                                             </div>
-                                            <!--end col-->
                                         </div>
-                                        <!--end form-group-->
                                     </form>
-                                    <!--end form-->
+
                                     <div class="m-3 text-center text-muted">
-                                        <p class="mb-0">Don't have an account ? <a href="{{ route('register') }}" class="text-primary ms-2">Free Resister</a></p>
-                                    </div>
-                                    <hr class="hr-dashed mt-4">
-                                    <div class="text-center mt-n5">
-                                        <h6 class="card-bg px-3 my-4 d-inline-block">Or Login With</h6>
-                                    </div>
-                                    <div class="d-flex justify-content-center mb-1">
-                                        <a href="" class="d-flex justify-content-center align-items-center thumb-sm bg-soft-primary rounded-circle me-2">
-                                            <i class="fab fa-facebook align-self-center"></i>
-                                        </a>
-                                        <a href="" class="d-flex justify-content-center align-items-center thumb-sm bg-soft-info rounded-circle me-2">
-                                            <i class="fab fa-twitter align-self-center"></i>
-                                        </a>
-                                        <a href="" class="d-flex justify-content-center align-items-center thumb-sm bg-soft-danger rounded-circle">
-                                            <i class="fab fa-google align-self-center"></i>
-                                        </a>
+                                        <p class="mb-0">¿Olvidaste tu contraseña? Solicita una actualización con administración de sistemas.</p>
                                     </div>
                                 </div>
-                                <!--end card-body-->
                             </div>
-                            <!--end card-->
                         </div>
-                        <!--end col-->
                     </div>
-                    <!--end row-->
                 </div>
-                <!--end card-body-->
             </div>
-            <!--end col-->
         </div>
-        <!--end row-->
     </div>
-    <!--end container-->
-
     @endsection

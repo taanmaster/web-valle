@@ -111,7 +111,7 @@
                         </div>
                         <!-- All-->
                         <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
-                            View all <i class="fi-arrow-right"></i>
+                            Ver todos <i class="fi-arrow-right"></i>
                         </a>
                     </div>
                 </li>
@@ -210,7 +210,7 @@
                         </div>
                         <!-- All-->
                         <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
-                            View all <i class="fi-arrow-right"></i>
+                            Ver todos <i class="fi-arrow-right"></i>
                         </a>
                     </div>
                 </li>
@@ -220,18 +220,18 @@
                         <div class="d-flex align-items-center">
                             <img src="{{URL::asset('assets/images/users/user-4.jpg')}}" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
                             <div>
-                                <small class="d-none d-md-block font-11">Admin</small>
+                                <small class="d-none d-md-block font-11">Bienvenido</small>
                                 <span class="d-none d-md-block fw-semibold font-12">{{ Auth::user()->name }} <i class="mdi mdi-chevron-down"></i></span>
                             </div>
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="#"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
-                        <a class="dropdown-item" href="#"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Settings</a>
+                        <a class="dropdown-item" href="#"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Perfil</a>
+                        <a class="dropdown-item" href="#"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Configuraciones</a>
                         <div class="dropdown-divider mb-0"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="ti ti-power font-16 me-1 align-text-bottom"></i>
-                            Logout</a>
+                            Cerrar Sesión</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
@@ -257,7 +257,7 @@
                 </li>
                 <li class="hide-phone app-search">
                     <form role="search" action="#" method="get">
-                        <input type="search" name="search" class="form-control top-search mb-0" placeholder="Type text...">
+                        <input type="search" name="search" class="form-control top-search mb-0" placeholder="Búsqueda general...">
                         <button type="submit"><i class="ti ti-search"></i></button>
                     </form>
                 </li>

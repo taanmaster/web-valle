@@ -4,9 +4,13 @@
 <head>
     <meta charset="utf-8">
 
-    <title> @yield('title')| - Admin & Dashboard Template</title>
+    {{--  
+    <title> @yield('title')| - Intranet</title>
+    --}}
+    <title>Valle de Santiago | - Intranet</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Premium Multipurpose Intranet" name="description" />
     <meta content="" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
@@ -14,6 +18,14 @@
     <link rel="shortcut icon" href="assets/images/favicon.ico">
 
     @include('layouts.head-css')
+
+    <style>
+        .leftbar-tab-menu .main-menu-inner .topbar-left .logo .logo-lg {
+            height: 70px;
+            margin-left: 17px;
+            margin-top: 16px;
+        }
+    </style>
 </head>
 
 <body id="body" class="">
@@ -41,8 +53,6 @@
     </div>
     <!-- END wrapper -->
 
-    <!-- right sidebar file here  -->
-    @include('layouts.right-sidebar')
     <!-- ============================================================== -->
     <!-- End Right content here -->
     <!-- ============================================================== -->

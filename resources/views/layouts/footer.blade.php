@@ -1,8 +1,5 @@
 <!-- Footer Start -->
 <footer class="footer text-center text-sm-start">
-    &copy; <script>
-        document.write(new Date().getFullYear())
-    </script> Metrica <span class="text-muted d-none d-sm-inline-block float-end">Crafted with <i
-            class="mdi mdi-heart text-danger"></i> by Mannatthemes</span>
+    <span class="text-muted d-none d-sm-inline-block float-end">&copy; Valle de Santiago {{ Carbon\Carbon::now()->format('Y') }}. Todos los Derechos Reservados</span>
 </footer>
 <!-- end Footer -->
