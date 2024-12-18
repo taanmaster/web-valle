@@ -25,6 +25,30 @@
             margin-left: 17px;
             margin-top: 16px;
         }
+
+        .leftbar-tab-menu .main-icon-menu{
+            background-color: #551312;
+        }
+
+        .leftbar-tab-menu .main-icon-menu .main-icon-menu-body .nav.nav-tabs .nav-link.active, .leftbar-tab-menu .main-icon-menu .main-icon-menu-body .nav.nav-tabs .nav-link:active{
+            color: #7C3235 !important;
+        }
+
+        .leftbar-tab-menu .main-menu-inner .menu-body .nav-item .nav-link.active, .leftbar-tab-menu .main-menu-inner .menu-body .nav-item .nav-link.active i{
+            color: #7C3235;
+        }
+
+        .leftbar-tab-menu .main-icon-menu .main-icon-menu-body .nav.nav-tabs .nav-link.active, .leftbar-tab-menu .main-icon-menu .main-icon-menu-body .nav.nav-tabs .nav-link:focus{
+            background-color: #7C3235 !important;
+        }
+
+        .leftbar-tab-menu .main-icon-menu .main-icon-menu-body .nav.nav-tabs .nav-link{
+            background-color: rgba(124, 50, 53, .3); 
+        }
+
+        .leftbar-tab-menu .main-icon-menu .pro-metrica-end{
+            background-color: transparent;
+        }
     </style>
 </head>
 
