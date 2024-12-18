@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Valle de Santiago'),
 
     /*
     |--------------------------------------------------------------------------
@@ -159,7 +159,8 @@ return [
         /*
          * Package Service Providers...
          */
-
+        App\Providers\FortifyServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */
