@@ -158,6 +158,26 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-12 align-self-center">
+                <div class="row">
+                    <div class="col-lg-4 mx-auto">    
+                        <div class="card card-body">
+                            <h3>Accesos de Prueba:</h3>
+            
+                            <p class="mb-0">Correo: webmaster@valle.com</p>
+                            <p>Contraseña: valle12345</p>
+            
+                            <p class="mb-0">Correo: admin@valle.com</p>
+                            <p>Contraseña: valle12345</p>
+            
+                            <p class="mb-0">Correo: ciudadano@valle.com</p>
+                            <p>Contraseña: valle12345</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     </div>
     @endsection
