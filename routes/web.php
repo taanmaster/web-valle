@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::namespace('App\Http\Controllers')->group(function () {
+    /* Portal Ciudadanos */
+    Route::get('/', 'FrontController@index')->name('index');
+
+    // Back-End Views
+    Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin_access']], function(){    
+        Route::get('/', 'DashboardController@index')->name('dashboard');
+    });
 });
