@@ -9,46 +9,46 @@
             <div class="position-reletive h-100" data-simplebar style="overflow-x: hidden;">
                 <ul class="nav nav-tabs" role="tablist" id="tab-menu">
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Vistas Generales" data-bs-trigger="hover">
-                        <a href="#MetricaDashboard" id="dashboard-tab" class="nav-link">
+                        <a href="#valleDashboard" id="dashboard-tab" class="nav-link">
                             <i class="ti ti-smart-home menu-icon"></i>
-                        </a><!--end nav-link-->
+                        </a>
                     </li>
+
+                    {{--  
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Apps" data-bs-trigger="hover">
                         <a href="#MetricaApps" id="apps-tab" class="nav-link">
                             <i class="ti ti-apps menu-icon"></i>
-                        </a><!--end nav-link-->
+                        </a>
                     </li>
 
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="UI Kit" data-bs-trigger="hover">
                         <a href="#MetricaUikit" id="uikit-tab" class="nav-link">
                             <i class="ti ti-planet menu-icon"></i>
-                        </a><!--end nav-link-->
-                    </li>
-
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Documentos" data-bs-trigger="hover">
-                        <a href="#MetricaPages" id="pages-tab" class="nav-link">
-                            <i class="ti ti-files menu-icon"></i>
-                        </a><!--end nav-link-->
-                    </li>
-
-                    {{--  
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Authentication" data-bs-trigger="hover">
-                        <a href="#MetricaAuthentication" id="authentication-tab" class="nav-link">
-                            <i class="ti ti-shield-lock menu-icon"></i>
-                        </a><!--end nav-link-->
+                        </a>
                     </li>
                     --}}
+
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Documentos" data-bs-trigger="hover">
+                        <a href="#valleDocuments" id="pages-tab" class="nav-link">
+                            <i class="ti ti-files menu-icon"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Configuraciones" data-bs-trigger="hover">
+                        <a href="#valleConfiguration" id="authentication-tab" class="nav-link">
+                            <i class="ti ti-shield-lock menu-icon"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
 
         <div class="pro-metrica-end">
-            <a href="" class="profile">
-                <img src="{{ asset('assets/images/users/user-4.jpg') }}" alt="profile-user" class="rounded-circle thumb-sm">
+            <a href="{{ route('admin.profile') }}" class="profile">
+                <img src="{{ 'https://www.gravatar.com/avatar/' . md5(strtolower(trim( Auth::user()->email ?? 'N/A'))) . '?d=retro&s=150' }}" alt="profile-user" class="rounded-circle thumb-sm">
             </a>
         </div>
     </div>
-
 
     <div class="main-menu-inner">
         <!-- LOGO -->
@@ -58,11 +58,11 @@
                     <img src="{{ asset('assets/images/logo-dark.png') }}" alt="logo-large" class="logo-lg logo-dark">
                     <img src="{{ asset('assets/images/logo.png') }}" alt="logo-large" class="logo-lg logo-light">
                 </span>
-            </a><!--end logo-->
-        </div><!--end topbar-left-->
-        <!--end logo-->
+            </a>
+        </div>
+
         <div class="menu-body navbar-vertical tab-content" data-simplebar>
-            <div id="MetricaDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
+            <div id="valleDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
                 aria-labelledby="dasboard-tab">
                 <div class="title-box">
                     <h6 class="menu-title">Vistas Generales</h6>
@@ -70,17 +70,20 @@
 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="projects-index">Licitaciones</a>
+                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
+                    {{--  
                     <li class="nav-item">
                         <a class="nav-link" href="ecommerce-index">Pagos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="helpdesk-index">Denuncia Ciudadana</a>
                     </li>
-                </ul><!--end nav-->
-            </div><!-- end Dashboards -->
+                    --}}
+                </ul>
+            </div>
 
+            {{-- 
             <div id="MetricaApps" class="main-icon-menu-pane tab-pane" role="tabpanel"
                 aria-labelledby="apps-tab">
                 <div class="title-box">
@@ -424,7 +427,7 @@
                         </li>
                     </ul><!--end navbar-nav--->
                 </div><!--end sidebarCollapse-->
-            </div><!-- end Crypto -->
+            </div>
 
             <div id="MetricaUikit" class="main-icon-menu-pane  tab-pane" role="tabpanel"
                 aria-labelledby="uikit-tab">
@@ -685,16 +688,18 @@
                         </li>
                     </ul><!--end navbar-nav--->
                 </div><!--end sidebarCollapse_2-->
-            </div><!-- end Others -->
+            </div>
+             --}}
 
-            <div id="MetricaPages" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="pages-tab">
+            <div id="valleDocuments" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="pages-tab">
                 <div class="title-box">
-                    <h6 class="menu-title">Pages</h6>
+                    <h6 class="menu-title">Documentos</h6>
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="pages-blogs">Gaceta Municipal</a>
+                        <a class="nav-link" href="{{ route('gazettes.index') }}">Gaceta Municipal</a>
                     </li>
+                    {{--  
                     <li class="nav-item">
                         <a class="nav-link" href="pages-tour">Licitaciones</a>
                     </li>
@@ -707,55 +712,24 @@
                     <li class="nav-item">
                         <a class="nav-link" href="pages-starter">Página de Ejemplo</a>
                     </li>
+                    --}}
                 </ul>
             </div>
 
-            {{--  
-            <div id="MetricaAuthentication" class="main-icon-menu-pane tab-pane" role="tabpanel"
+            <div id="valleConfiguration" class="main-icon-menu-pane tab-pane" role="tabpanel"
                 aria-labelledby="authentication-tab">
                 <div class="title-box">
-                    <h6 class="menu-title">Authentication</h6>
+                    <h6 class="menu-title">Configuraciones</h6>
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="auth-login">Log in</a>
+                        <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="auth-login-alt">Log in alt</a>
+                        <a class="nav-link" href="{{ route('legals.index') }}">Textos Legales</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-register-alt">Register-alt</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-recover-pw">Re-Password</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-recover-pw-alt">Re-Password-alt</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-lock-screen">Lock Screen</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-lock-screen-alt">Lock Screen-alt</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-404">Error 404</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-404-alt">Error 404-alt</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-500">Error 500</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth-500-alt">Error 500-alt</a>
-                    </li>
-                </ul><!--end nav-->
+                </ul>
             </div>
-            --}}
         </div>
     </div>
 </div>

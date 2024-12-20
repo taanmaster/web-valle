@@ -218,7 +218,7 @@
                 <li class="dropdown">
                     <a class="nav-link dropdown-toggle nav-user" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <div class="d-flex align-items-center">
-                            <img src="{{URL::asset('assets/images/users/user-4.jpg')}}" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
+                            <img src="{{ 'https://www.gravatar.com/avatar/' . md5(strtolower(trim( Auth::user()->email ?? 'N/A'))) . '?d=retro&s=150' }}" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
                             <div>
                                 <small class="d-none d-md-block font-11">Bienvenido</small>
                                 <span class="d-none d-md-block fw-semibold font-12">{{ Auth::user()->name }} <i class="mdi mdi-chevron-down"></i></span>
@@ -226,10 +226,10 @@
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="#"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Perfil</a>
-                        <a class="dropdown-item" href="#"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Configuraciones</a>
+                        <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Perfil</a>
+                        <a class="dropdown-item" href="{{ route('admin.config') }}"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Configuraciones</a>
                         <div class="dropdown-divider mb-0"></div>
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="ti ti-power font-16 me-1 align-text-bottom"></i>
                             Cerrar Sesión</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

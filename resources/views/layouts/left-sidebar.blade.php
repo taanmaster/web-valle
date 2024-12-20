@@ -27,17 +27,20 @@
                         <div class="collapse " id="sidebarDashboards">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="projects-index">Licitaciones</a>
-                                </li><!--end nav-item-->
+                                    <a class="nav-link" href="{{ route('dashboard') }}">Vista General</a>
+                                </li>
+                                {{--  
                                 <li class="nav-item">
                                     <a class="nav-link" href="ecommerce-index">Pagos</a>
-                                </li><!--end nav-item-->
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="helpdesk-index">Denuncia Ciudadana</a>
-                                </li><!--end nav-item-->
-                            </ul><!--end nav-->
+                                </li>
+                                --}}
+                            </ul>
                         </div><!--end sidebarDashboards-->
                     </li><!--end nav-item-->
+                    
                     <li class="menu-label mt-0">A<span>pps</span></li>
                     <li class="nav-item">
                         <a class="nav-link" href="#sidebarAnalytics" data-bs-toggle="collapse" role="button"

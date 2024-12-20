@@ -1,431 +1,754 @@
-@extends('layout.master')
-
-@push('plugin-styles')
-  <link href="{{ asset('assets/plugins/flatpickr/flatpickr.min.css') }}" rel="stylesheet" />
-@endpush
-
+@extends('layouts.master')
+@section('title')Intranet @endsection
 @section('content')
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-  <div>
-    <h4 class="mb-3 mb-md-0">Bienvenido al Dashboard</h4>
-  </div>
-  <div class="d-flex align-items-center flex-wrap text-nowrap">
-    <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-      <span class="input-group-text input-group-addon bg-transparent border-primary" data-toggle><i data-feather="calendar" class="text-primary"></i></span>
-      <input type="text" class="form-control bg-transparent border-primary" placeholder="Select date" data-input>
+<!-- this is breadcrumbs -->
+@component('components.breadcrumb')
+@slot('li_1') Intranet @endslot
+@slot('li_2') General @endslot
+@slot('title') Vista General @endslot
+@endcomponent
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="d-flex justify-content-between mb-3">
+            <div class="align-self-center">
+                <button type="button" class="btn btn-de-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModalSend"><i data-feather="navigation" class="align-self-center icon-xs me-2"></i>Send</button>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalSend" tabindex="-1" aria-labelledby="exampleModalSendLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="modal-title m-0" id="exampleModalDefaultSend">Send Coin</h6>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-2">
+                                    <label for="cryptocurrency">Crypto Currency</label>
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>-- Currency --</option>
+                                        <option value="BTC">BTC</option>
+                                        <option value="ETH">ETH</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="cryptocurrency">Currency From</label>
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>-- My wallet --</option>
+                                        <option value="BTC">BTC</option>
+                                        <option value="ETH">ETH</option>
+                                    </select>
+                                </div>
+                                <div class=" mb-2">
+                                    <label for="toaddress">To</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="QUcode"><i class="fas fa-qrcode"></i></span>
+                                        <input type="text" class="form-control" placeholder="Can you scan" aria-label="Scancode">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-2">
+                                            <label for="toaddress">USD</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="US-dollor"><i class="fas fa-dollar-sign"></i></span>
+                                                <input type="text" class="form-control" placeholder="USD" aria-label="US-dollor">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-md-6">
+                                        <div class="mb-2">
+                                            <label for="BTC">BTC</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="BTC-coin"><i class="fab fa-btc"></i></span>
+                                                <input type="text" class="form-control" placeholder="BTC" aria-label="BTC-coin">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+                                <div class="mb-2">
+                                    <label for="Description">Description</label>
+                                    <textarea class="form-control" rows="3" aria-label="With textarea"></textarea>
+                                </div>
+                                <div class="mt-2 mb-1">
+                                    <label for="NetworkFree">Network Free</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="Regular" value="option1">
+                                    <label class="form-check-label" for="Regular">Regular</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="Priority" value="option2">
+                                    <label class="form-check-label" for="Priority">Priority</label>
+                                </div>
+                            </div>
+                            <!--end modal-body-->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-de-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-de-primary btn-sm" type="button">Continue</button>
+                            </div>
+                            <!--end modal-footer-->
+                        </div>
+                        <!--end modal-content-->
+                    </div>
+                    <!--end modal-dialog-->
+                </div>
+                <!--end modal-->
+
+                <button type="button" class="btn btn-de-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModalRequest"><i data-feather="download" class="align-self-center icon-xs me-2"></i>Request</button>
+                <div class="modal fade" id="exampleModalRequest" tabindex="-1" aria-labelledby="exampleModalRequestLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="modal-title m-0" id="exampleModalRequestLabel">Request Coin</h6>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-2">
+                                    <label for="cryptocurrency">Crypto Currency</label>
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>-- Currency --</option>
+                                        <option value="BTC">BTC</option>
+                                        <option value="ETH">ETH</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="cryptocurrency">Receive To</label>
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>-- My wallet --</option>
+                                        <option value="BTC">BTC</option>
+                                        <option value="ETH">ETH</option>
+                                    </select>
+                                </div>
+                                <div class=" mb-2">
+                                    <label for="toaddress">Address</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="W-Address" value="c12b001a15f9bd46ef1c6551386c">
+                                        <button class="btn btn-outline-light" type="button" id="Copy_link"><i class="fas fa-copy"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end modal-body-->
+                            <div class="modal-footer">
+                                <button class="btn btn-de-success btn-sm" type="button">Done</button>
+                            </div>
+                            <!--end modal-footer-->
+                        </div>
+                        <!--end modal-content-->
+                    </div>
+                    <!--end modal-dialog-->
+                </div>
+                <!--end modal-->
+            </div>
+            <!--end /div-->
+            <div class="media">
+                <img src="{{URL::asset('assets/images/logos/btc.png')}}" class="me-2 thumb-sm align-self-center rounded-circle" alt="...">
+                <div class="media-body align-self-center">
+                    <p class="mb-1 text-muted">Total Balance</p>
+                    <h5 class="mt-0 text-dark mb-1">122.00125503 BTC</h5>
+                </div>
+                <!--end media-body-->
+            </div>
+            <!--end media-->
+        </div>
+        <!--end /div-->
     </div>
-    <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
-      <i class="btn-icon-prepend" data-feather="printer"></i>
-      Print
-    </button>
-    <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-      <i class="btn-icon-prepend" data-feather="download-cloud"></i>
-      Download Report
-    </button>
-  </div>
+    <!--end col-->
 </div>
-
+<!--end row-->
 <div class="row">
-  <div class="col-12 col-xl-12 stretch-card">
-    <div class="row flex-grow-1">
-      <div class="col-md-4 grid-margin stretch-card">
+    <div class="col-lg-8">
         <div class="card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0">New Customers</h6>
-              <div class="dropdown mb-2">
-                <button class="btn btn-link p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="edit-2" class="icon-sm me-2"></i> <span class="">Edit</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="trash" class="icon-sm me-2"></i> <span class="">Delete</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="printer" class="icon-sm me-2"></i> <span class="">Print</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="download" class="icon-sm me-2"></i> <span class="">Download</span></a>
+            <div class="card-body">
+                <div class="crypto-report-history d-flex justify-content-end">
+                    <ul class="nav nav-tabs mb-3">
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Hour" href="#">Hour</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Day" href="#">Day</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Week" href="#">Week</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Month" href="#">Month</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" data-bs-target="#Order_Book" href="#">Order Book</a>
+                        </li>
+                    </ul>
                 </div>
-              </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="media">
+                            <img src="{{URL::asset('assets/images/logos/btc.png')}}" class="me-2 thumb-sm align-self-center rounded-circle" alt="...">
+                            <div class="media-body align-self-center">
+                                <div class="coin-bal">
+                                    <h4 class="m-0">$50,289.45</h4>
+                                    <p class="text-muted mb-0">Bitcoin
+                                        <span class="text-muted font-12">(BTC)</span>
+                                        <span class="text-success">2.5% <i class="mdi mdi-arrow-up"></i></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end col-->
+                    <div class="col-md-3">
+                        <p class="mb-0 p-2 bg-soft-dark rounded"><b>Last: </b>0.25436584</p>
+                    </div>
+                    <!--end col-->
+                    <div class="col-md-3">
+                        <p class="mb-0 p-2 bg-soft-success rounded"><b>24High: </b>0.25436584</p>
+                    </div>
+                    <!--end col-->
+                    <div class="col-md-3">
+                        <p class="mb-0 p-2 bg-soft-danger rounded"><b>24Low: </b>0.25436584</p>
+                    </div>
+                    <!--end col-->
+                </div><!-- end row -->
+                <div id="crypto_dash_main" class="apex-charts"></div>
             </div>
-            <div class="row">
-              <div class="col-6 col-md-12 col-xl-5">
-                <h3 class="mb-2">3,897</h3>
-                <div class="d-flex align-items-baseline">
-                  <p class="text-success">
-                    <span>+3.3%</span>
-                    <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                  </p>
-                </div>
-              </div>
-              <div class="col-6 col-md-12 col-xl-7">
-                <div id="customersChart" class="mt-md-3 mt-xl-0"></div>
-              </div>
-            </div>
-          </div>
+            <!--end card-body-->
         </div>
-      </div>
-      <div class="col-md-4 grid-margin stretch-card">
+        <!--end card-->
+    </div>
+    <!--end col-->
+
+    <div class="col-lg-4">
         <div class="card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0">New Orders</h6>
-              <div class="dropdown mb-2">
-                <button class="btn btn-link p-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="edit-2" class="icon-sm me-2"></i> <span class="">Edit</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="trash" class="icon-sm me-2"></i> <span class="">Delete</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="printer" class="icon-sm me-2"></i> <span class="">Print</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="download" class="icon-sm me-2"></i> <span class="">Download</span></a>
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h4 class="card-title">Total Balance</h4>
+                        <span class="text-muted font-12">30 june 2021</span>
+                    </div>
+                    <!--end col-->
                 </div>
-              </div>
+                <!--end row-->
             </div>
-            <div class="row">
-              <div class="col-6 col-md-12 col-xl-5">
-                <h3 class="mb-2">35,084</h3>
-                <div class="d-flex align-items-baseline">
-                  <p class="text-danger">
-                    <span>-2.8%</span>
-                    <i data-feather="arrow-down" class="icon-sm mb-1"></i>
-                  </p>
+            <!--end card-header-->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md mb-2 mb-lg-0">
+                        <h4 class="m-0">$85692.00</h4>
+                        <p class="text-success mb-0"> + $455.00 <span class="font-12 text-muted">(6.2% <i class="mdi mdi-trending-up text-success"></i>)</span></p>
+                    </div>
+                    <!--end col-->
+                    <div class="col-12 col-md align-self-center">
+                        <div class="text-end  mb-2 mb-lg-0">
+                            <button class="btn btn-de-success btn-sm px-3">Receive</button>
+                            <button class="btn btn-de-danger btn-sm px-3">Send</button>
+                            <button class="btn btn-de-primary btn-sm px-3">+ Invest</button>
+                        </div>
+                    </div>
+                    <!--end col-->
                 </div>
-              </div>
-              <div class="col-6 col-md-12 col-xl-7">
-                <div id="ordersChart" class="mt-md-3 mt-xl-0"></div>
-              </div>
+                <!--end row-->
             </div>
-          </div>
+            <!--end card-body-->
+            <div class="card-body pt-0">
+                <ul class="list-group">
+                    <li class="list-group-item align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <img src="{{URL::asset('assets/images/logos/btc.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                            <div class="media-body align-self-center">
+                                <div class="coin-bal">
+                                    <h5 class="m-0 font-14">6.18424000</h5>
+                                    <p class="text-muted mb-0">$ 33277.3660</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="badge bg-soft-secondary">Bitcoin</span>
+                    </li>
+                    <li class="list-group-item align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <img src="{{URL::asset('assets/images/logos/mon.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                            <div class="media-body align-self-center">
+                                <div class="coin-bal">
+                                    <h5 class="m-0 font-14">60.1842</h5>
+                                    <p class="text-muted mb-0">$ 18564.3660</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="badge bg-soft-secondary">Monero</span>
+                    </li>
+                    <li class="list-group-item align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <img src="{{URL::asset('assets/images/logos/eth.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                            <div class="media-body align-self-center">
+                                <div class="coin-bal">
+                                    <h5 class="m-0 font-14">32.65849212</h5>
+                                    <p class="text-muted mb-0">$5562.3660</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="badge bg-soft-secondary">Ethereum</span>
+                    </li>
+                    <li class="list-group-item align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <img src="{{URL::asset('assets/images/logos/lite.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                            <div class="media-body align-self-center">
+                                <div class="coin-bal">
+                                    <h5 class="m-0 font-14">10.65849212</h5>
+                                    <p class="text-muted mb-0">$7854.3660</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="badge bg-soft-secondary">Light</span>
+                    </li>
+                    <li class="list-group-item align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <img src="{{URL::asset('assets/images/logos/dash.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                            <div class="media-body align-self-center">
+                                <div class="coin-bal">
+                                    <h5 class="m-0 font-14">62.65849212</h5>
+                                    <p class="text-muted mb-0">$7289.3660</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="badge bg-soft-secondary">Dashcoin</span>
+                    </li>
+                    <li class="list-group-item align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <img src="{{URL::asset('assets/images/logos/mon.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                            <div class="media-body align-self-center">
+                                <div class="coin-bal">
+                                    <h5 class="m-0 font-14">60.1842</h5>
+                                    <p class="text-muted mb-0">$ 18564.3660</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="badge bg-soft-secondary">Monero</span>
+                    </li>
+                </ul>
+            </div>
+            <!--end card-body-->
         </div>
-      </div>
-      <div class="col-md-4 grid-margin stretch-card">
+        <!--end card-->
+    </div>
+    <!--end col-->
+</div> <!-- end row -->
+
+<div class="row">
+    <div class="col-lg-4">
         <div class="card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0">Growth</h6>
-              <div class="dropdown mb-2">
-                <button class="btn btn-link p-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="edit-2" class="icon-sm me-2"></i> <span class="">Edit</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="trash" class="icon-sm me-2"></i> <span class="">Delete</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="printer" class="icon-sm me-2"></i> <span class="">Print</span></a>
-                  <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="download" class="icon-sm me-2"></i> <span class="">Download</span></a>
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h4 class="card-title">Currency Calculator</h4>
+                    </div>
+                    <!--end col-->
                 </div>
-              </div>
+                <!--end row-->
             </div>
-            <div class="row">
-              <div class="col-6 col-md-12 col-xl-5">
-                <h3 class="mb-2">89.87%</h3>
-                <div class="d-flex align-items-baseline">
-                  <p class="text-success">
-                    <span>+2.8%</span>
-                    <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                  </p>
+            <!--end card-header-->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 align-self-center">
+                        <div class="card-body">
+                            <img src="{{URL::asset('assets/images/small/btc.png')}}" alt="" class="img-fluid d-block mx-auto">
+                        </div>
+                    </div>
+                    <div class="col-md-8 align-self-center">
+                        <div class="card-body">
+                            <button type="button" class="btn btn-soft-secondary btn-icon-circle float-end">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                            <span class="badge font-12 fw-bold bg-soft-secondary p-2 ">Balance</span>
+                            <h4 class="mb-0 font-20">122.5692.00 <small class="font-14">BTC</small></h4>
+                            <p class="mb-1 text-muted">
+                                <span class="text-success"><i class="mdi mdi-arrow-up"></i>11.1%</span> Up from yesterday
+                            </p>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                    <!--end col-->
                 </div>
-              </div>
-              <div class="col-6 col-md-12 col-xl-7">
-                <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
-              </div>
+                <!--end row-->
+
+                <div class="calculator-block mt-4">
+                    <div class="calculator-body">
+                        <script src="https://www.cryptonator.com/ui/js/widget/calc_widget.js"></script>
+                    </div>
+                </div>
             </div>
-          </div>
+            <!--end card-body-->
         </div>
-      </div>
+        <!--end card-->
     </div>
-  </div>
-</div> <!-- row -->
+    <!--end col-->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h4 class="card-title">Transaction History</h4>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto">
+                        <a href="" class="text-primary">View All</a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end card-header-->
+            <div class="card-body">
+                <ul class="list-unsyled m-0 ps-0 transaction-history">
+                    <li class="align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <div class="thumb-xs bg-soft-primary rounded-circle d-flex justify-content-center align-items-center">
+                                <i class="mdi mdi-arrow-top-right-thick font-20"></i>
+                            </div>
+                            <div class="media-body align-self-center ms-3">
+                                <div class="transaction-data">
+                                    <h5 class="m-0 font-14">Send BTC</h5>
+                                    <p class="text-muted mb-0">6 June 2019 10:25 AM</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="text-danger">0.000245684 BTC</span>
+                    </li>
+                    <li class="align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <div class="thumb-xs bg-soft-primary rounded-circle d-flex justify-content-center align-items-center">
+                                <i class="mdi mdi-arrow-down-thick font-20"></i>
+                            </div>
+                            <div class="media-body align-self-center ms-3">
+                                <div class="transaction-data">
+                                    <h5 class="m-0 font-14">Receive BTC</h5>
+                                    <p class="text-muted mb-0">4 June 2019 7:05 PM</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="text-success">0.012458632 BTC</span>
+                    </li>
+                    <li class="align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <div class="thumb-xs bg-soft-primary rounded-circle d-flex justify-content-center align-items-center">
+                                <i class="mdi mdi-arrow-top-right-thick font-20"></i>
+                            </div>
+                            <div class="media-body align-self-center ms-3">
+                                <div class="transaction-data">
+                                    <h5 class="m-0 font-14">Send BTC</h5>
+                                    <p class="text-muted mb-0">1 June 2019 11:30 PM</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="text-danger">0.000245684 BTC</span>
+                    </li>
+                    <li class="align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <div class="thumb-xs bg-soft-primary rounded-circle d-flex justify-content-center align-items-center">
+                                <i class="mdi mdi-arrow-top-right-thick font-20"></i>
+                            </div>
+                            <div class="media-body align-self-center ms-3">
+                                <div class="transaction-data">
+                                    <h5 class="m-0 font-14">Send BTC</h5>
+                                    <p class="text-muted mb-0">28 May 2019 08:45 AM</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="text-danger">0.000245684 BTC</span>
+                    </li>
+                    <li class="align-items-center d-flex justify-content-between">
+                        <div class="media">
+                            <div class="thumb-xs bg-soft-primary rounded-circle d-flex justify-content-center align-items-center">
+                                <i class="mdi mdi-arrow-down-thick font-20"></i>
+                            </div>
+                            <div class="media-body align-self-center ms-3">
+                                <div class="transaction-data">
+                                    <h5 class="m-0 font-14">Receive BTC</h5>
+                                    <p class="text-muted mb-0">25 May 2019 01:25 PM</p>
+                                </div>
+                            </div>
+                            <!--end media body-->
+                        </div>
+                        <span class="text-success">0.012458632 BTC</span>
+                    </li>
+                </ul>
+            </div>
+            <!--end card-body-->
+        </div>
+        <!--end card-->
+    </div>
+    <!--end col-->
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h4 class="card-title">Market cap</h4>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end card-header-->
+            <div class="card-body">
+                <p class="mt-n1 mb-2 fw-semibold">The global crypto market cap is $1.44T, a <span class="text-danger">3.99%</span> decrease over the last day.</p>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Name</th>
+                                <th class="text-end">Market cap</th>
+                                <th class="text-end">Volume(24h)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <img src="{{URL::asset('assets/images/logos/btc.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                                        <div class="media-body align-self-center">
+                                            <div class="coin-bal">
+                                                <h5 class="m-0 font-14">$7289.45</h5>
+                                                <p class="text-muted mb-0">Bitcoin
+                                                    <span class="text-muted font-12">(BTC)</span>
+                                                    <span class="text-success">2.5% <i class="mdi mdi-arrow-up"></i></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!--end media body-->
+                                    </div>
+                                    <!--end media-->
+                                </td>
+                                <td class="text-end">$129,820,932</td>
+                                <td class="text-end">$25,111,773</td>
+                            </tr>
+                            <!--end tr-->
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <img src="{{URL::asset('assets/images/logos/eth.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                                        <div class="media-body align-self-center">
+                                            <div class="coin-bal">
+                                                <h5 class="m-0 font-14">$234.45</h5>
+                                                <p class="text-muted mb-0">Ethereum
+                                                    <span class="text-muted font-12">(ETH)</span>
+                                                    <span class="text-success">0.45% <i class="mdi mdi-arrow-up"></i></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!--end media body-->
+                                    </div>
+                                    <!--end media-->
+                                </td>
+                                <td class="text-end">$24,909,743</td>
+                                <td class="text-end">$12,856,403</td>
+                            </tr>
+                            <!--end tr-->
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <img src="{{URL::asset('assets/images/logos/lite.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                                        <div class="media-body align-self-center">
+                                            <div class="coin-bal">
+                                                <h5 class="m-0 font-14">$7289.45</h5>
+                                                <p class="text-muted mb-0">Litecoin
+                                                    <span class="text-muted font-12">(LTC)</span>
+                                                    <span class="text-success">3.51% <i class="mdi mdi-arrow-up"></i></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!--end media body-->
+                                    </div>
+                                    <!--end media-->
+                                </td>
+                                <td class="text-end">$5,399,795,666</td>
+                                <td class="text-end">$4,394,304,674</td>
+                            </tr>
+                            <!--end tr-->
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <img src="{{URL::asset('assets/images/logos/mon.png')}}" class="me-3 thumb-xs align-self-center rounded-circle" alt="...">
+                                        <div class="media-body align-self-center">
+                                            <div class="coin-bal">
+                                                <h5 class="m-0 font-14">$7289.45</h5>
+                                                <p class="text-muted mb-0">Monero
+                                                    <span class="text-muted font-12">(XMR)</span>
+                                                    <span class="text-success">0.95% <i class="mdi mdi-arrow-up"></i></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!--end media body-->
+                                    </div>
+                                    <!--end media-->
+                                </td>
+                                <td class="text-end">$1,375,808,437</td>
+                                <td class="text-end">$58,791,421 </td>
+                            </tr>
+                            <!--end tr-->
+                        </tbody>
+                    </table>
+                    <!--end /table-->
+                </div>
+                <!--end /tableresponsive-->
+            </div>
+            <!--end card-body-->
+        </div>
+        <!--end card-->
+    </div>
+    <!--end col-->
+</div>
+<!--end row-->
+
 
 <div class="row">
-  <div class="col-12 col-xl-12 grid-margin stretch-card">
-    <div class="card overflow-hidden">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-baseline mb-4 mb-md-3">
-          <h6 class="card-title mb-0">Revenue</h6>
-          <div class="dropdown">
-            <button class="btn btn-link p-0" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="edit-2" class="icon-sm me-2"></i> <span class="">Edit</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="trash" class="icon-sm me-2"></i> <span class="">Delete</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="printer" class="icon-sm me-2"></i> <span class="">Print</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="download" class="icon-sm me-2"></i> <span class="">Download</span></a>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h4 class="card-title">Activity</h4>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto">
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-sm btn-outline-light dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                All<i class="las la-angle-down ms-1"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="#">Last Week</a>
+                                <a class="dropdown-item" href="#">Last Month</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
             </div>
-          </div>
-        </div>
-        <div class="row align-items-start mb-2">
-          <div class="col-md-7">
-            <p class="text-muted tx-13 mb-3 mb-md-0">Revenue is the income that a business has from its normal business activities, usually from the sale of goods and services to customers.</p>
-          </div>
-          <div class="col-md-5 d-flex justify-content-md-end">
-            <div class="btn-group mb-3 mb-md-0" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-outline-primary">Today</button>
-              <button type="button" class="btn btn-outline-primary d-none d-md-block">Week</button>
-              <button type="button" class="btn btn-primary">Month</button>
-              <button type="button" class="btn btn-outline-primary">Year</button>
-            </div>
-          </div>
-        </div>
-        <div id="revenueChart"></div>
-      </div>
-    </div>
-  </div>
-</div> <!-- row -->
+            <!--end card-header-->
+            <div class="card-body p-0">
+                <div class="p-3" style="height: 365px;" data-simplebar>
+                    <div class="activity">
+                        <div class="activity-info">
+                            <div class="icon-info-activity">
+                                <i class="las la-user-clock bg-soft-primary"></i>
+                            </div>
+                            <div class="activity-info-text">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="text-muted mb-0 font-13 w-75"><span>Donald</span>
+                                        updated the status of <a href="">Refund #1234</a> to awaiting customer response
+                                    </p>
+                                    <small class="text-muted">10 Min ago</small>
+                                </div>
+                            </div>
+                        </div>
 
-<div class="row">
-  <div class="col-lg-7 col-xl-8 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-baseline mb-2">
-          <h6 class="card-title mb-0">Monthly sales</h6>
-          <div class="dropdown mb-2">
-            <button class="btn btn-link p-0" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="edit-2" class="icon-sm me-2"></i> <span class="">Edit</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="trash" class="icon-sm me-2"></i> <span class="">Delete</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="printer" class="icon-sm me-2"></i> <span class="">Print</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="download" class="icon-sm me-2"></i> <span class="">Download</span></a>
-            </div>
-          </div>
-        </div>
-        <p class="text-muted">Sales are activities related to selling or the number of goods or services sold in a given time period.</p>
-        <div id="monthlySalesChart"></div>
-      </div> 
-    </div>
-  </div>
-  <div class="col-lg-5 col-xl-4 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-baseline mb-2">
-          <h6 class="card-title mb-0">Cloud storage</h6>
-          <div class="dropdown mb-2">
-            <button class="btn btn-link p-0" type="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="edit-2" class="icon-sm me-2"></i> <span class="">Edit</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="trash" class="icon-sm me-2"></i> <span class="">Delete</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="printer" class="icon-sm me-2"></i> <span class="">Print</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="download" class="icon-sm me-2"></i> <span class="">Download</span></a>
-            </div>
-          </div>
-        </div>
-        <div id="storageChart"></div>
-        <div class="row mb-3">
-          <div class="col-6 d-flex justify-content-end">
-            <div>
-              <label class="d-flex align-items-center justify-content-end tx-10 text-uppercase fw-bolder">Total storage <span class="p-1 ms-1 rounded-circle bg-secondary"></span></label>
-              <h5 class="fw-bolder mb-0 text-end">8TB</h5>
-            </div>
-          </div>
-          <div class="col-6">
-            <div>
-              <label class="d-flex align-items-center tx-10 text-uppercase fw-bolder"><span class="p-1 me-1 rounded-circle bg-primary"></span> Used storage</label>
-              <h5 class="fw-bolder mb-0">~5TB</h5>
-            </div>
-          </div>
-        </div>
-        <div class="d-grid">
-          <button class="btn btn-primary">Upgrade storage</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> <!-- row -->
+                        <div class="activity-info">
+                            <div class="icon-info-activity">
+                                <i class="mdi mdi-timer-off bg-soft-primary"></i>
+                            </div>
+                            <div class="activity-info-text">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="text-muted mb-0 font-13 w-75"><span>Lucy Peterson</span>
+                                        was added to the group, group name is <a href="">Overtake</a>
+                                    </p>
+                                    <small class="text-muted">50 Min ago</small>
+                                </div>
+                            </div>
+                        </div>
 
-<div class="row">
-  <div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-baseline mb-2">
-          <h6 class="card-title mb-0">Inbox</h6>
-          <div class="dropdown mb-2">
-            <button class="btn btn-link p-0" type="button" id="dropdownMenuButton6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton6">
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="edit-2" class="icon-sm me-2"></i> <span class="">Edit</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="trash" class="icon-sm me-2"></i> <span class="">Delete</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="printer" class="icon-sm me-2"></i> <span class="">Print</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="download" class="icon-sm me-2"></i> <span class="">Download</span></a>
+                        <div class="activity-info">
+                            <div class="icon-info-activity">
+                                <img src="{{URL::asset('assets/images/users/user-5.jpg')}}" alt="" class="rounded-circle thumb-sm">
+                            </div>
+                            <div class="activity-info-text">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="text-muted mb-0 font-13 w-75"><span>Joseph Rust</span>
+                                        opened new showcase <a href="">Mannat #112233</a> with theme market
+                                    </p>
+                                    <small class="text-muted">10 hours ago</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="activity-info">
+                            <div class="icon-info-activity">
+                                <i class="mdi mdi-clock-outline bg-soft-primary"></i>
+                            </div>
+                            <div class="activity-info-text">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="text-muted mb-0 font-13 w-75"><span>Donald</span>
+                                        updated the status of <a href="">Refund #1234</a> to awaiting customer response
+                                    </p>
+                                    <small class="text-muted">Yesterday</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-info">
+                            <div class="icon-info-activity">
+                                <i class="mdi mdi-alert-outline bg-soft-primary"></i>
+                            </div>
+                            <div class="activity-info-text">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="text-muted mb-0 font-13 w-75"><span>Lucy Peterson</span>
+                                        was added to the group, group name is <a href="">Overtake</a>
+                                    </p>
+                                    <small class="text-muted">14 Nov 2019</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-info">
+                            <div class="icon-info-activity">
+                                <img src="{{URL::asset('assets/images/users/user-4.jpg')}}" alt="" class="rounded-circle thumb-sm">
+                            </div>
+                            <div class="activity-info-text">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="text-muted mb-0 font-13 w-75"><span>Joseph Rust</span>
+                                        opened new showcase <a href="">Mannat #112233</a> with theme market
+                                    </p>
+                                    <small class="text-muted">15 Nov 2019</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end activity-->
+                </div>
+                <!--end analytics-dash-activity-->
             </div>
-          </div>
+            <!--end card-body-->
         </div>
-        <div class="d-flex flex-column">
-          <a href="javascript:;" class="d-flex align-items-center border-bottom pb-3">
-            <div class="me-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="fw-normal text-body mb-1">Leonardo Payne</h6>
-                <p class="text-muted tx-12">12.30 PM</p>
-              </div>
-              <p class="text-muted tx-13">Hey! there I'm available...</p>
-            </div>
-          </a>
-          <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-            <div class="me-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="fw-normal text-body mb-1">Carl Henson</h6>
-                <p class="text-muted tx-12">02.14 AM</p>
-              </div>
-              <p class="text-muted tx-13">I've finished it! See you so..</p>
-            </div>
-          </a>
-          <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-            <div class="me-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="fw-normal text-body mb-1">Jensen Combs</h6>
-                <p class="text-muted tx-12">08.22 PM</p>
-              </div>
-              <p class="text-muted tx-13">This template is awesome!</p>
-            </div>
-          </a>
-          <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-            <div class="me-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="fw-normal text-body mb-1">Amiah Burton</h6>
-                <p class="text-muted tx-12">05.49 AM</p>
-              </div>
-              <p class="text-muted tx-13">Nice to meet you</p>
-            </div>
-          </a>
-          <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-            <div class="me-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="fw-normal text-body mb-1">Yaretzi Mayo</h6>
-                <p class="text-muted tx-12">01.19 AM</p>
-              </div>
-              <p class="text-muted tx-13">Hey! there I'm available...</p>
-            </div>
-          </a>
-        </div>
-      </div>
+        <!--end card-->
     </div>
-  </div>
-  <div class="col-lg-7 col-xl-8 stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-baseline mb-2">
-          <h6 class="card-title mb-0">Projects</h6>
-          <div class="dropdown mb-2">
-            <button class="btn btn-link p-0" type="button" id="dropdownMenuButton7" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="edit-2" class="icon-sm me-2"></i> <span class="">Edit</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="trash" class="icon-sm me-2"></i> <span class="">Delete</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="printer" class="icon-sm me-2"></i> <span class="">Print</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i data-feather="download" class="icon-sm me-2"></i> <span class="">Download</span></a>
+    <!--end col-->
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 mb-3 header-title">Historical Bitcoin Price and Volume</h4>
+                <script type="text/javascript" src="https://widgets.cryptocompare.com/serve/v1/coin/histo_week?fsym=BTC&amp;tsym=USD&amp;app=www.cryptocompare.com"></script>
             </div>
-          </div>
+            <!--end card-body-->
         </div>
-        <div class="table-responsive">
-          <table class="table table-hover mb-0">
-            <thead>
-              <tr>
-                <th class="pt-0">#</th>
-                <th class="pt-0">Project Name</th>
-                <th class="pt-0">Start Date</th>
-                <th class="pt-0">Due Date</th>
-                <th class="pt-0">Status</th>
-                <th class="pt-0">Assign</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>NobleUI jQuery</td>
-                <td>01/01/2023</td>
-                <td>26/04/2023</td>
-                <td><span class="badge bg-danger">Released</span></td>
-                <td>Leonardo Payne</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>NobleUI Angular</td>
-                <td>01/01/2023</td>
-                <td>26/04/2023</td>
-                <td><span class="badge bg-success">Review</span></td>
-                <td>Carl Henson</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>NobleUI ReactJs</td>
-                <td>01/05/2023</td>
-                <td>10/09/2023</td>
-                <td><span class="badge bg-info">Pending</span></td>
-                <td>Jensen Combs</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>NobleUI VueJs</td>
-                <td>01/01/2023</td>
-                <td>31/11/2023</td>
-                <td><span class="badge bg-warning">Work in Progress</span>
-                </td>
-                <td>Amiah Burton</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>NobleUI Laravel</td>
-                <td>01/01/2023</td>
-                <td>31/12/2023</td>
-                <td><span class="badge bg-danger">Coming soon</span></td>
-                <td>Yaretzi Mayo</td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>NobleUI NodeJs</td>
-                <td>01/01/2023</td>
-                <td>31/12/2023</td>
-                <td><span class="badge bg-primary">Coming soon</span></td>
-                <td>Carl Henson</td>
-              </tr>
-              <tr>
-                <td class="border-bottom">3</td>
-                <td class="border-bottom">NobleUI EmberJs</td>
-                <td class="border-bottom">01/05/2023</td>
-                <td class="border-bottom">10/11/2023</td>
-                <td class="border-bottom"><span class="badge bg-info">Pending</span></td>
-                <td class="border-bottom">Jensen Combs</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> 
+        <!--end card-->
     </div>
-  </div>
-</div> <!-- row -->
+    <!--end col-->
+</div>
+<!--end row-->
+
 @endsection
-
-@push('plugin-scripts')
-  <script src="{{ asset('assets/plugins/flatpickr/flatpickr.min.js') }}"></script>
-  <script src="{{ asset('assets/plugins/apexcharts/apexcharts.min.js') }}"></script>
-@endpush
-
-@push('custom-scripts')
-  <script src="{{ asset('assets/js/dashboard.js') }}"></script>
-@endpush
+@section('script')
+<script src="{{URL::asset('assets/plugins/apexcharts/apexcharts.min.js')}}"></script>
+<script src="{{URL::asset('assets/pages/crypto-index.init.js')}}"></script>
+@endsection

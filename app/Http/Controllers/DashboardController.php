@@ -6,10 +6,18 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request){
-        if(view()->exists($request->path())){
-            return view($request->path());
-        }
-        return view('errors.404');
+    public function index()
+    {
+        return view('dashboard');
+    }
+
+    public function adminProfile()
+    {
+        return view('profile');
+    }
+
+    public function adminConfig()
+    {
+        return view('configurations');
     }
 }
