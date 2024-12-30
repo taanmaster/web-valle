@@ -3,32 +3,38 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
+                @switch($gazette->type)
+                    @case('solemn')
+                        <p class="badge bg-primary mb-0">Sesiones Solemnes</p>
+                        @break
+                    @case('ordinary')
+                        <p class="badge bg-secondary mb-0">Sesiones Ordinarias</p>
+                        @break
+                    @case('extraordinary')
+                        <p class="badge bg-warning mb-0">Sesiones Extraordinarias</p>
+                        @break
+                    @default
+                        
+                @endswitch
+
+                <div class="d-flex justify-content-between align-items-start mt-3">
                     <div>
-                        <h5 class="mb-0">Título:</h5>
-                        <h2>{{ $gazette->name }}</h2>
+                        <small class="mb-0">Título:</small>
+                        <h2 class="mt-0">{{ $gazette->name }}</h2>
                     </div>
 
-                    @switch($gazette->type)
-                        @case('solemn')
-                            <p class="badge bg-primary mb-0">Sesiones Solemnes</p>
-                            @break
-                        @case('ordinary')
-                            <p class="badge bg-secondary mb-0">Sesiones Ordinarias</p>
-                            @break
-                        @case('extraordinary')
-                            <p class="badge bg-warning mb-0">Sesiones Extraordinarias</p>
-                            @break
-                        @default
-                            
-                    @endswitch
+                    <div>
+                        <small>Folio</small>
+                        <h2 class="mt-0">{{ $gazette->document_number }}</h2>
+                    </div>
                 </div>
                 
-                <h5>Folio</h5>
-                <h2>{{ $gazette->document_number }}</h2>
-                <h5>Descripción</h5>
+                <small>Descripción</small>
                 <p>{{ $gazette->description }}</p>
 
+                <hr>
+                <small>Fecha de Reunión</small>
+                <p>{{ $gazette->meeting_date }}</p>
                 <hr>
                 @foreach($gazette->files as $file)
                 <p class="mb-0">Archivo #{{ $file->name }}</p>

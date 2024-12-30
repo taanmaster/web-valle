@@ -10,7 +10,6 @@
 
 <div class="row layout-spacing">
     <div class="main-content">
-
         <div class="row align-items-center mb-4">
             <div class="col text-start">
                 @include('gazettes.utilities._search_options')
