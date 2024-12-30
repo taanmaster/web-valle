@@ -32,6 +32,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'front.gazette.query',
     ]);
 
+    Route::get('/gaceta-municipal/filtrar/{date}', [
+        'uses' => 'FrontController@filterByDate',
+        'as' => 'gazette.filter',
+    ])->where('date', '[0-9]{4}-[0-9]{2}');
+
     //Route::get('{any}', 'DashboardController@index')->name('index');
 
     // Back-End Views
