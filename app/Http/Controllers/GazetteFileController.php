@@ -19,7 +19,6 @@ class GazetteFileController extends Controller
         //
     }
 
-
     public function create()
     {
         //

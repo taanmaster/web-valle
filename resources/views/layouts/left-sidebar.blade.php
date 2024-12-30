@@ -1,7 +1,7 @@
 <div class="left-sidebar">
     <!-- LOGO -->
     <div class="brand">
-        <a href="index" class="logo">
+        <a href="{{ route('dashboard') }}" class="logo">
             <span>
                 <img src="{{ asset('assets/images/logo-sm.png') }}" alt="logo-small" class="logo-sm">
             </span>

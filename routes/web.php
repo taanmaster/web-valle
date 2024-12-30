@@ -27,6 +27,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'gazette.detail',
     ])->where('slug', '[\w\d\-\_]+');
 
+    Route::get('/busqueda-general/gaceta-municipal', [
+        'uses' => 'FrontController@gazetteQuery',
+        'as' => 'front.gazette.query',
+    ]);
+
     //Route::get('{any}', 'DashboardController@index')->name('index');
 
     // Back-End Views
@@ -52,6 +57,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         /* Gaceta Municipal */
         Route::resource('gazettes', GazetteController::class);
         Route::resource('gazette_files', GazetteFileController::class);
+
+        Route::get('/gaceta-municipal/funciones/busqueda', [
+            'uses' => 'SearchController@gazetteQuery',
+            'as' => 'back.gazette.query',
+        ]);
     });
 });
 
