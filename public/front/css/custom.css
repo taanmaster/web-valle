@@ -1,0 +1,642 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+--page-header-bgColor: #F5F5F5;
+--page-header-bgColor-hover: #1d2636;
+--page-header-txtColor: #171616;
+--page-header-headingColor: #7889a4;
+--page-header-width: 250px;
+--page-content-bgColor: #F5F5F5;
+--page-content-txtColor: #171616;
+--page-content-blockColor: #fff;
+--white: #fff;
+--black: #333;
+--blue: #00b9eb;
+--red: #ec1848;
+--border-radius: 4px;
+--box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.075);
+--switch-bgLightModeColor: #87cefa;
+--switch-sunColor: gold;
+--switch-moonColor: #f4f4f4;
+--switch-bgDarkModeColor: #1f1f27;
+}
+
+*{
+    font-family: Inter, sans-serif;
+}
+        
+body{
+    background-color: #F5F5F5;
+}
+
+h1{
+    font-size: 54px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -2.7px;
+}
+
+h2{
+    font-size: 43px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -2.58px;
+}
+
+h3{
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -2.04px;
+}
+
+h4{
+    font-size: 27px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.81px;
+}
+
+h5{
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+h6{
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: -2px;
+}
+
+p{
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 180%; /* 27px */
+    letter-spacing: -0.3px;
+}
+
+small{
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.small-uppercase{
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.help{
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.logo{
+    background: url("../img/logo-valle.png");
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 190px;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+.hide-text {
+    text-indent: 110%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* HEADER STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    padding-top: 20px;
+    width: var(--page-header-width);
+    color: var(--page-header-txtColor);
+    background: var(--page-header-bgColor);
+}
+
+/*In case you prefer an absolutely positioned header that covers the full page height, add these styles*/
+/*
+body {
+    position: relative;
+}
+
+.page-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+*/
+
+/*remove these styles*/
+/*
+.page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+}
+*/
+
+.page-header nav {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.page-header .logo {
+display: block;
+margin: 0 15px;
+}
+
+.page-header .logo svg {
+max-width: 120px;
+fill: var(--white);
+}
+
+.page-header .toggle-mob-menu {
+display: none;
+margin-left: 5px;
+padding: 4px;
+background: var(--page-content-blockColor);
+border-radius: var(--border-radius);
+}
+
+.page-header .toggle-mob-menu svg {
+fill: var(--black);
+transition: transform 0.2s;
+}
+
+.page-header .admin-menu {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-top: 35px;
+    padding: 0px 16px;
+}
+
+.page-header .admin-menu li:nth-last-child(2) {
+margin-bottom: 35px;
+}
+
+.page-header .admin-menu li:last-child {
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+.page-header .admin-menu li > * {
+    width: 100%;
+    padding: 12px 15px;
+}
+
+.page-header .admin-menu .switcher {
+    display: inline-block;
+    width: auto;
+}
+
+.page-header .admin-menu .menu-heading h3 {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 12px;
+    margin-top: 12px;
+    color: var(--page-header-headingColor);
+}
+
+.page-header .admin-menu ion-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.page-header .admin-menu a,
+.page-header .admin-menu button {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    border-radius: 21px;
+    color: #525252;
+    text-decoration: none;
+}
+
+.page-header .admin-menu a:hover,
+.page-header .admin-menu a:focus,
+.page-header .admin-menu button:hover,
+.page-header .admin-menu button:focus {
+    background: var(--page-header-bgColor-hover);
+    color: var(--blue);
+    outline: none;
+}
+
+/* PAGE CONTENT STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.page-content {
+    position: relative;
+    left: var(--page-header-width);
+    width: calc(100% - var(--page-header-width));
+    min-height: 100vh;
+    padding: 30px;
+    color: var(--page-content-txtColor);
+    background: var(--page-content-bgColor);
+}
+
+/* MQ RULES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+@media screen and (max-width: 767px) {
+.page-header,
+.page-content {
+    position: static;
+    width: 100%;
+}
+
+.page-header {
+    padding: 10px;
+}
+
+.page-header nav {
+    flex-direction: row;
+}
+
+.page-header .logo {
+    margin: 0;
+}
+
+.page-header .logo svg {
+    width: 83px;
+    height: 35px;
+}
+
+.page-header .toggle-mob-menu {
+    display: block;
+}
+
+.page-header .admin-menu {
+    position: absolute;
+    left: 98px;
+    top: 57px;
+    margin-top: 0;
+    z-index: 2;
+    border-radius: var(--border-radius);
+    background: var(--page-header-bgColor);
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.2s;
+}
+
+.page-header .admin-menu li:nth-last-child(2) {
+    margin-bottom: 12px;
+}
+
+.page-header .admin-menu li:last-child button,
+.search-and-user .admin-profile .greeting {
+    display: none;
+}
+
+.page-content {
+    min-height: 0;
+    padding: 10px;
+}
+
+.page-content .grid {
+    grid-gap: 10px;
+}
+
+.search-and-user {
+    position: absolute;
+    left: 131px;
+    top: 10px;
+    padding: 0;
+    grid-column-gap: 5px;
+    width: calc(100% - 141px);
+    border-radius: var(--border-radius);
+    background: transparent;
+}
+
+.search-and-user [type="search"] {
+    font-size: 1rem;
+    height: 35px;
+}
+
+.search-and-user form svg {
+    width: 18px;
+    height: 18px;
+}
+
+.search-and-user .admin-profile svg {
+    fill: var(--white);
+}
+}
+
+@media screen and (max-width: 400px) {
+.page-content .grid > article {
+    grid-column: 1 / -1;
+}
+}
+
+/* BODY CLASSES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.mob-menu-opened .toggle-mob-menu svg {
+transform: rotate(180deg);
+}
+
+.mob-menu-opened .page-header .admin-menu {
+transform: scale(1);
+visibility: visible;
+opacity: 1;
+}
+
+@media screen and (min-width: 768px) {
+.collapsed .page-header {
+    width: 40px;
+}
+
+.collapsed .page-header .admin-menu li > * {
+    padding: 10px;
+}
+
+.collapsed .page-header .logo,
+.collapsed .page-header .admin-menu span,
+.collapsed .page-header .admin-menu .menu-heading {
+    display: none;
+}
+
+.collapsed .page-header .admin-menu ion-icon {
+    margin-right: 0;
+}
+
+.collapsed .page-header .collapse-btn ion-icon {
+    transform: rotate(180deg);
+}
+
+.collapsed .page-content {
+    left: 40px;
+    width: calc(100% - 40px);
+}
+}
+
+/* SWITCH STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.switch label {
+display: grid;
+grid-template-columns: auto auto;
+grid-column-gap: 10px;
+align-items: center;
+justify-content: flex-start;
+}
+
+.switch span:first-child {
+position: relative;
+width: 50px;
+height: 26px;
+border-radius: 15px;
+box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+background: var(--switch-bgLightModeColor);
+transition: all 0.3s;
+}
+
+.switch span:first-child::before,
+.switch span:first-child::after {
+content: "";
+position: absolute;
+border-radius: 50%;
+}
+
+.switch span:first-child::before {
+top: 1px;
+left: 1px;
+width: 24px;
+height: 24px;
+background: var(--white);
+z-index: 1;
+transition: transform 0.3s;
+}
+
+.switch span:first-child::after {
+top: 50%;
+right: 8px;
+width: 10px;
+height: 10px;
+transform: translateY(-50%);
+background: var(--switch-sunColor);
+box-shadow: 0 0 4px 2px #ffdb1a;
+}
+
+.switch [type="checkbox"] {
+    position: absolute;
+    left: -9999px;
+  }
+
+.switch [type="checkbox"]:checked + label span:first-child {
+background: var(--switch-bgDarkModeColor);
+}
+
+.switch [type="checkbox"]:focus + label span:first-child {
+box-shadow: 0 3px 5px rgba(255, 255, 255, 0.25);
+}
+
+.switch [type="checkbox"]:checked + label span:first-child::before {
+transform: translateX(24px);
+}
+
+.switch [type="checkbox"]:checked + label span:first-child::after {
+left: 12px;
+width: 15px;
+height: 15px;
+background: transparent;
+box-shadow: -2px -5px 0 var(--switch-moonColor);
+transform: translateY(-50%) rotate(-72deg);
+}
+
+/* LIGHT MODE STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.light-mode {
+--page-header-bgColor: #f1efec;
+--page-header-bgColor-hover: #b9e4e0;
+--page-header-txtColor: #2c303a;
+--page-header-headingColor: #979595;
+--page-content-bgColor: #fff;
+--box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.25);
+}
+
+.light-mode .page-header .admin-menu a:hover,
+.light-mode .page-header .admin-menu a:focus,
+.light-mode .page-header .admin-menu button:hover,
+.light-mode .page-header .admin-menu button:focus {
+color: var(--black);
+}
+
+.light-mode .page-header .logo svg,
+.light-mode .page-header .admin-menu a:hover svg,
+.light-mode .page-header .admin-menu a:focus svg,
+.light-mode .page-header .admin-menu button:hover svg,
+.light-mode .page-header .admin-menu button:focus svg {
+fill: var(--black);
+}
+
+.light-mode .switch [type="checkbox"]:focus + label span:first-child {
+box-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
+}
+
+@media screen and (max-width: 767px) {
+.light-mode .search-and-user .admin-profile svg {
+    fill: var(--black);
+}
+}
+
+.header-bar{
+    margin-bottom: 30px;
+}
+
+/* BUTTON STYLES */
+
+.btn{
+    border-radius: 10px;
+    padding: 6px 12px;
+}
+
+/* CARD STYLES */
+
+.card{
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #FFF;
+    box-shadow: -2px -2px 59.3px -21px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.card-normal{
+    padding: 40px 45px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 35px;
+}
+
+.card-image{
+
+}
+
+.card-icon{
+    border-radius: 7px;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    transition: .2s ease-in-out all;
+}
+
+.card-icon ion-icon{
+    transition: .2s ease-in-out all;
+    font-size: 1.5em;
+}
+
+/* FOLDER STYLES */
+.folder-green .folder-body,
+.folder-green .folder-head{
+    background-color: #35A898;
+}
+
+.folder-green .folder-text{
+    background-color: #147C6D;
+}
+
+.folder-yellow .folder-body,
+.folder-yellow .folder-head{
+    background-color: #E5A756;
+}
+
+.folder-yellow .folder-text{
+    background-color: #B78D51;
+}
+
+.folder-blue .folder-body,
+.folder-blue .folder-head{
+    background-color: #507CCC;
+}
+
+.folder-blue .folder-text{
+    background-color: #2E4981;
+}
+
+.folder-card{
+    position: relative;
+    display: block;
+    margin-top: 20px;
+    color: white;
+    transition: .2s ease-in-out all;
+}
+
+.folder-body{
+    background-color: black;
+    border-radius: 15px;
+    height: 240px;
+}
+
+.folder-text{
+    padding: 30px;
+    border-radius: 15px;
+    background: #147C6D;
+    box-shadow: -2px -2px 59.3px -21px rgba(0, 0, 0, 0.05);
+    position: absolute;
+    bottom: 0px;
+    z-index: 10;
+    width: 100%;
+}
+
+.folder-text h3{
+    color: white;
+}
+
+.folder-head{
+    position: absolute;
+    top: -30px;
+    height: 60px;
+    border-radius: 15px;
+    background-color: black;
+    width: 180px;
+}
+
+.folder-card:hover .card-icon ion-icon{
+    transform: rotate(-45deg);
+}
+
+.folder-document{
+    background: url("../img/folder.svg");
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 190px;
+    width: 150px;
+    position: relative;
+    display: inline-block;
+}
+
+/* FOOTER
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.page-footer {
+    align-items: center;
+    margin-top: 30px;
+    padding: 40px 0px;
+}
+

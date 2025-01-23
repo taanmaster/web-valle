@@ -9,7 +9,7 @@
                 <hr>
 
                 @foreach($gazette->files as $file)
-                <p>Archivo #{{ $file->id }}</p>
+                <a href="{{ asset('files/gazettes/' . $file->filename) }}">Descargar Archivo: {{ $file->name }}</a>
                 @endforeach
             </div>
         </div>

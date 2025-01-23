@@ -37,6 +37,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'gazette.filter',
     ])->where('date', '[0-9]{4}-[0-9]{2}');
 
+    Route::get('/informacion-legal/{slug}', 'FrontController@legalText')->name('legal.text');
+
     //Route::get('{any}', 'DashboardController@index')->name('index');
 
     // Back-End Views

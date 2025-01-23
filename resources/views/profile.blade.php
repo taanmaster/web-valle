@@ -1,6 +1,8 @@
 @extends('layouts.master')
 
-@section('title')Intranet @endsection
+@section('title')
+    Intranet 
+@endsection
 
 @section('content')
     <!-- this is breadcrumbs -->

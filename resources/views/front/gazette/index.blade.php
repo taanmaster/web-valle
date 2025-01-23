@@ -2,16 +2,35 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card card-body">
-                <h2>Gaceta Municipal</h2>
-
+    <div class="row mt-4">
+        <div class="col-8">
+            <h3>Documentos de la Gaceta</h3>
+            <ul class="list-group">
                 @foreach($gazettes as $gazette)
-                <a href="{{ route('gazette.detail', $gazette->slug) }}">{{ $gazette->name }}</a>
+                    
+
+                    @foreach($gazette->files as $file)
+                        <li class="list-group-item">
+                            <a href="{{ route('gazette.detail', $gazette->slug) }}">{{ $gazette->name }}</a>
+                            
+                        </li>
+                    @endforeach
+
+                    <hr>
                 @endforeach
-            </div>
+            </ul>
+        </div>
+        <div class="col-4">
+            <h3>Filtrar por Fecha</h3>
+            <ul class="list-group">
+                @foreach($dates as $date)
+                    <li class="list-group-item">
+                        <a href="{{ route('gazette.filter', ['date' => $date->format('Y-m')]) }}">{{ $date->translatedFormat('F Y') }}</a>
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </div>
+    
 </div>
 @endsection
