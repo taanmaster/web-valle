@@ -18,37 +18,37 @@
           </a>
         </li>
         <li>
-          <a href="#0">
+          <a href="{{ route('building') }}">
             <ion-icon name="people-outline"></ion-icon>
             <span>Gobierno Municipal</span>
           </a>
         </li>
         <li>
-            <a href="{{ route('gazette.list') }}">
+            <a href="{{ route('gazette.list', 'all') }}">
                 <ion-icon name="documents-outline"></ion-icon>
                 <span>Gaceta Municipal</span>
             </a>
         </li>
         <li>
-          <a href="#0">
+          <a href="{{ route('building') }}">
             <ion-icon name="git-compare-outline"></ion-icon>
             <span>S.A.R.E</span>
           </a>
         </li>
         <li>
-          <a href="#0">
+          <a href="{{ route('building') }}">
             <ion-icon name="book-outline"></ion-icon>
             <span>Boletín</span>
           </a>
         </li>
         <li>
-          <a href="#0">
+          <a href="{{ route('building') }}">
             <ion-icon name="wallet-outline"></ion-icon>
             <span>Desarrollo Económico</span>
           </a>
         </li>
         <li>
-          <a href="#0">
+          <a href="{{ route('building') }}">
             <ion-icon name="layers-outline"></ion-icon>
             <span>Tesorería</span>
           </a>

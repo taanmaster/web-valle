@@ -17,12 +17,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /* Portal Ciudadanos */
     Route::get('/', 'FrontController@index')->name('index');
 
-    Route::get('/gaceta-municipal', [
+    Route::get('/en-construccion', 'FrontController@building')->name('building');
+
+    Route::get('/gaceta-municipal/{type}', [
         'uses' => 'FrontController@gazetteList',
         'as' => 'gazette.list',
     ]);
 
-    Route::get('/gaceta-municipal/{slug}', [
+    Route::get('/gaceta-municipal/{type}/{slug}', [
         'uses' => 'FrontController@gazetteDetail',
         'as' => 'gazette.detail',
     ])->where('slug', '[\w\d\-\_]+');
@@ -32,7 +34,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'front.gazette.query',
     ]);
 
-    Route::get('/gaceta-municipal/filtrar/{date}', [
+    Route::get('/filtrar/gaceta-municipal/{type}/{date}', [
         'uses' => 'FrontController@filterByDate',
         'as' => 'gazette.filter',
     ])->where('date', '[0-9]{4}-[0-9]{2}');
