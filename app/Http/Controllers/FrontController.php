@@ -63,6 +63,8 @@ class FrontController extends Controller
                 break;
         }
         
+        Carbon::setLocale('es');
+        
         $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
         ->groupBy('date')
         ->orderBy('date', 'desc')

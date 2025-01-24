@@ -71,6 +71,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'uses' => 'SearchController@gazetteQuery',
             'as' => 'back.gazette.query',
         ]);
+
+        /* Ciudadanos */
+        Route::resource('citizens', CitizenController::class);
+        Route::resource('citizen_files', CitizenFileController::class);
+
+        /* Apoyos Económicos */
+        Route::resource('financial_supports', FinancialSupportController::class);
+        Route::resource('financial_support_types', FinancialSupportTypeController::class);
     });
 });
 

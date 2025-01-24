@@ -20,13 +20,13 @@
                             <i class="ti ti-apps menu-icon"></i>
                         </a>
                     </li>
+                    --}}
 
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="UI Kit" data-bs-trigger="hover">
-                        <a href="#MetricaUikit" id="uikit-tab" class="nav-link">
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Apoyos Económicos" data-bs-trigger="hover">
+                        <a href="#valleFinancialSupport" id="uikit-tab" class="nav-link">
                             <i class="ti ti-planet menu-icon"></i>
                         </a>
                     </li>
-                    --}}
 
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Documentos" data-bs-trigger="hover">
                         <a href="#valleDocuments" id="pages-tab" class="nav-link">
@@ -713,6 +713,23 @@
                         <a class="nav-link" href="pages-starter">Página de Ejemplo</a>
                     </li>
                     --}}
+                </ul>
+            </div>
+
+            <div id="valleFinancialSupport" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="pages-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Apoyos Económicos</h6>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('citizens.index') }}">Particulares</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('financial_supports.index') }}">Apoyos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('financial_support_types.index') }}">Tipos de Apoyo</a>
+                    </li>
                 </ul>
             </div>
 

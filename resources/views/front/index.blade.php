@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card card-image">
+            <div class="card card-image wow fadeInUp">
                 <img src="{{ asset('front/img/placeholder.jpg') }}" alt="">
                 <div class="overlay"></div>
                 <div class="card-content">
@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div class="card card-normal">
+            <div class="card card-normal wow fadeInUp">
                 <div class="card-title">
                     <div class="d-flex gap-3">
                         <div class="card-icon bg-primary text-white d-flex align-items-center justify-content-center">
