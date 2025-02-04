@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CitizenFile extends Model
 {
     use HasFactory;
+
+    public function citizen()
+    {
+    	return $this->belongsTo(Citizen::class, 'citizen_id');
+    }
 }

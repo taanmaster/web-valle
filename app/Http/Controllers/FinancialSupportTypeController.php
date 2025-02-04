@@ -37,9 +37,8 @@ class FinancialSupportTypeController extends Controller
         $financial_support_type = FinancialSupportType::create([
             'name' => $request->name,
             'description' => $request->description,
-            'document_number' => $request->document_number,
-            'type' => $request->type,
-            'meeting_date' => $request->meeting_date,
+            'monthly_cap' => $request->monthly_cap,
+            'limit_per_citizen' => $request->limit_per_citizen,
         ]);
 
         // Mensaje de session
@@ -75,9 +74,8 @@ class FinancialSupportTypeController extends Controller
         $financial_support_type->update([
             'name' => $request->name,
             'description' => $request->description,
-            'document_number' => $request->document_number,
-            'type' => $request->type,
-            'meeting_date' => $request->meeting_date,
+            'monthly_cap' => $request->monthly_cap,
+            'limit_per_citizen' => $request->limit_per_citizen,
         ]);
 
         // Mensaje de session

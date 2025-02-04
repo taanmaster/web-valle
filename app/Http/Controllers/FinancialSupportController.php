@@ -38,11 +38,16 @@ class FinancialSupportController extends Controller
 
         // Guardar datos en la base de datos
         $financial_support = FinancialSupport::create([
+            'citizen_id' => $request->citizen_id,
+            'int_num' => $request->int_num,
             'name' => $request->name,
-            'description' => $request->description,
-            'document_number' => $request->document_number,
-            'type' => $request->type,
-            'meeting_date' => $request->meeting_date,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'qty' => $request->qty,
+            'receipt_num' => $request->receipt_num,
+            'type_id' => $request->type_id,
+            'phone' => $request->phone,
+            'limit_qty' => $request->limit_qty,
         ]);
 
         // Mensaje de session
@@ -77,10 +82,13 @@ class FinancialSupportController extends Controller
 
         $financial_support->update([
             'name' => $request->name,
-            'description' => $request->description,
-            'document_number' => $request->document_number,
-            'type' => $request->type,
-            'meeting_date' => $request->meeting_date,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'qty' => $request->qty,
+            'receipt_num' => $request->receipt_num,
+            'type_id' => $request->type_id,
+            'phone' => $request->phone,
+            'limit_qty' => $request->limit_qty,
         ]);
 
         // Mensaje de session

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Citizen extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function files()
+    {
+        return $this->hasMany(CitizenFile::class);
+    }
 }

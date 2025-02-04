@@ -36,10 +36,11 @@ class CitizenController extends Controller
         // Guardar datos en la base de datos
         $citizen = Citizen::create([
             'name' => $request->name,
-            'description' => $request->description,
-            'document_number' => $request->document_number,
-            'type' => $request->type,
-            'meeting_date' => $request->meeting_date,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'curp' => $request->curp,
         ]);
 
         // Guardar archivo
@@ -95,10 +96,11 @@ class CitizenController extends Controller
 
         $citizen->update([
             'name' => $request->name,
-            'description' => $request->description,
-            'document_number' => $request->document_number,
-            'type' => $request->type,
-            'meeting_date' => $request->meeting_date,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'curp' => $request->curp,
         ]);
 
         // Mensaje de session
