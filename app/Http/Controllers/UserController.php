@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
 use Auth;
 use Session;
-
 use Carbon\Carbon;
+
+// Modelos
 use App\Models\User;
 
+// Permisos y Roles
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 

@@ -76,9 +76,32 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::resource('citizens', CitizenController::class);
         Route::resource('citizen_files', CitizenFileController::class);
 
+        Route::get('/citizens/funciones/busqueda', [
+            'uses' => 'SearchController@citizenQuery',
+            'as' => 'back.citizens.query',
+        ]);
+
         /* Apoyos Económicos */
         Route::resource('financial_supports', FinancialSupportController::class);
+        
+        Route::get('/financial_supports/funciones/busqueda', [
+            'uses' => 'SearchController@financial_supportsQuery',
+            'as' => 'back.financial_supports.query',
+        ]);
+
+        /* Tipos de Apoyo Económico */
         Route::resource('financial_support_types', FinancialSupportTypeController::class);
+
+        Route::get('/financial_support_types/funciones/busqueda', [
+            'uses' => 'SearchController@financial_support_typesQuery',
+            'as' => 'back.financial_support_types.query',
+        ]);
+
+        /* Generador de Documentación */
+        Route::get('/financial_supports/{id}/descargar-pdf',[
+            'uses' => 'FinancialSupportController@downloadPDF',
+            'as' => 'financial_supports.download',
+        ]);
     });
 });
 

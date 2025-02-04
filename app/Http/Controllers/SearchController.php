@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-
+// Ayudantes
 use DB;
 use Auth;
 use Session;
 use Carbon\Carbon;
 
+// Modelos
 use App\Models\Gazette;
 use App\Models\GazetteFile;
 

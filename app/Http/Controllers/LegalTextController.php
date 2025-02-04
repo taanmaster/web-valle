@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
 use Auth;
 use Str;
 use Session;
 use Purifier;
 
+// Modelos
 use App\Models\LegalText;
 
 use Illuminate\Http\Request;

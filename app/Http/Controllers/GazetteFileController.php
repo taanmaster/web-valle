@@ -7,8 +7,10 @@ use Str;
 use Auth;
 use Session;
 
+// Modelos
 use App\Models\Gazette;
 use App\Models\GazetteFile;
+
 use Illuminate\Http\Request;
 
 class GazetteFileController extends Controller
@@ -18,7 +20,6 @@ class GazetteFileController extends Controller
     * Generalmente las gacetas son de 1 solo documento
     * pero existen casos donde se adjuntas múltiples.
     */
-
 
     public function index()
     {

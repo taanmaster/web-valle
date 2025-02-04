@@ -2,7 +2,15 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+
+// Modelos
+use App\Models\Citizen;
 use App\Models\CitizenFile;
+
 use Illuminate\Http\Request;
 
 class CitizenFileController extends Controller
