@@ -74,7 +74,7 @@
                     <div class="box-body"> 
                         <div class="text-center" style="padding:80px 0px 100px 0px;">
                             <img src="{{ asset('assets/images/empty.svg') }}" class="ml-auto mr-auto" style="width:30%; margin-bottom: 40px;">
-                            <h4>No hay apoyos registrados en este día</h4>
+                            <h4>¡No hay elementos guardados en la base de datos!</h4>
                             <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
                             <a href="{{ route('financial_supports.create') }}" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo Apoyo</a>
                         </div>       
@@ -86,7 +86,7 @@
         <div class="row mt-5"> 
             @include('financial_supports.utilities._table')
         </div>
-        
+    
         {{--  
         <div class="d-flex align-items-center justify-content-center">
             {{ $financial_supports->links() }}

@@ -21,7 +21,10 @@ class FinancialSupportController extends Controller
 {
     public function index()
     {
-        $financial_supports = FinancialSupport::paginate(10);
+        $start_of_day = Carbon::now()->startOfDay();
+        $end_of_day = Carbon::now()->endOfDay();
+
+        $financial_supports = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->orderBy('receipt_num', 'asc')->get();
 
         $citizens = Citizen::all();
         $support_types = FinancialSupportType::all();
@@ -30,6 +33,30 @@ class FinancialSupportController extends Controller
         $nextFolio = $lastSupport ? $lastSupport->int_num + 1 : 1;
 
         return view('financial_supports.index')
+        ->with('nextFolio', $nextFolio)
+        ->with('financial_supports', $financial_supports)
+        ->with('citizens', $citizens)
+        ->with('support_types', $support_types);
+    }
+    
+    public function todayQuery(Request $request)
+    {
+        /* Defining Dates */
+        $date_start = $request->date_start;
+        $date_end = $request->date_end;
+
+        $start_of_day = Carbon::parse($date_start)->startOfDay();
+        $end_of_day = Carbon::parse($date_start)->endOfDay();
+
+        $financial_supports = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->orderBy('receipt_num', 'asc')->get();
+        
+        $citizens = Citizen::all();
+        $support_types = FinancialSupportType::all();
+
+        $lastSupport = FinancialSupport::orderBy('int_num', 'desc')->first();
+        $nextFolio = $lastSupport ? $lastSupport->int_num + 1 : 1;
+
+        return view('financial_supports.day_query')
         ->with('nextFolio', $nextFolio)
         ->with('financial_supports', $financial_supports)
         ->with('citizens', $citizens)

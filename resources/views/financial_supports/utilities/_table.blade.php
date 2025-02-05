@@ -13,7 +13,13 @@
         </thead>
 
         <tbody>
+            @php
+                $totalQty = 0;
+            @endphp
             @foreach($financial_supports as $financial_support)
+            @php
+                $totalQty += $financial_support->qty;
+            @endphp
             <tr>
                 <th scope="row">#{{ $financial_support->int_num }}</th>
                 <td>
@@ -68,5 +74,12 @@
             </tr>
             @endforeach                           
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"><strong>TOTAL</strong></td>
+                <td><strong>${{ number_format($totalQty, 2) }}</strong></td>
+                <td colspan="4"></td>
+            </tr>
+        </tfoot>
     </table>                    
 </div>

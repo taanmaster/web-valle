@@ -89,6 +89,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'back.financial_supports.query',
         ]);
 
+        Route::get('/financial_supports/funciones/apoyos-del-dia', [
+            'uses' => 'FinancialSupportController@todayQuery',
+            'as' => 'report.query',
+        ]);
+
         /* Tipos de Apoyo Económico */
         Route::resource('financial_support_types', FinancialSupportTypeController::class);
 
