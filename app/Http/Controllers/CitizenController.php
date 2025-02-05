@@ -124,6 +124,6 @@ class CitizenController extends Controller
         $citizen->delete();
 
         Session::flash('success', 'Se eliminó la información de manera exitosa.');
-        return redirect()->back();
+        return redirect()->route('citizens.index');
     }
 }

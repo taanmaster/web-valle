@@ -96,6 +96,11 @@
                             <label for="document" class="form-label">Archivo <span class="text-danger tx-12">*</span></label>
                             <input type="file" class="form-control" id="document" name="document" required>
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="expiration_date" class="form-label">Vigencia <span class="text-danger tx-12">*</span></label>
+                            <input type="date" class="form-control" id="expiration_date" name="expiration_date" required>
+                        </div>
                         <input type="hidden" name="citizen_id" value="{{ $citizen->id }}">
                     </div>
                 </div>
