@@ -5,7 +5,7 @@
 @component('components.breadcrumb')
 @slot('li_1') Intranet @endslot
 @slot('li_2') Documentos @endslot
-@slot('title') Ciudadanos @endslot
+@slot('title') Particulares @endslot
 @endcomponent
 
 <div class="row layout-spacing">
@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-4">
-                                <h4 class="mt-0 header-title mb-4">Listado de Ciudadanos</h4>
+                                <h4 class="mt-0 header-title mb-4">Listado de Particulares</h4>
                             </div>
         
                             <div class="col-8 text-end">

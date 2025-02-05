@@ -11,7 +11,9 @@ use Image;
 use Carbon\Carbon;
 
 // Modelos
+use App\Models\Citizen;
 use App\Models\FinancialSupport;
+use App\Models\FinancialSupportType;
 
 use Illuminate\Http\Request;
 
@@ -21,7 +23,17 @@ class FinancialSupportController extends Controller
     {
         $financial_supports = FinancialSupport::paginate(10);
 
-        return view('financial_supports.index')->with('financial_supports', $financial_supports);
+        $citizens = Citizen::all();
+        $support_types = FinancialSupportType::all();
+
+        $lastSupport = FinancialSupport::orderBy('int_num', 'desc')->first();
+        $nextFolio = $lastSupport ? $lastSupport->int_num + 1 : 1;
+
+        return view('financial_supports.index')
+        ->with('nextFolio', $nextFolio)
+        ->with('financial_supports', $financial_supports)
+        ->with('citizens', $citizens)
+        ->with('support_types', $support_types);
     }
 
     public function create()
@@ -33,21 +45,22 @@ class FinancialSupportController extends Controller
     {
         //Validar
         $this -> validate($request, array(
-            'name' => 'required|max:255',
+            'citizen_id' => 'required|max:255',
         ));
+
+        $citizen = Citizen::find($request->citizen_id);
 
         // Guardar datos en la base de datos
         $financial_support = FinancialSupport::create([
             'citizen_id' => $request->citizen_id,
             'int_num' => $request->int_num,
-            'name' => $request->name,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'name' => $citizen->name,
+            'first_name' => $citizen->first_name,
+            'last_name' => $citizen->last_name,
             'qty' => $request->qty,
             'receipt_num' => $request->receipt_num,
             'type_id' => $request->type_id,
-            'phone' => $request->phone,
-            'limit_qty' => $request->limit_qty,
+            'phone' => $citizen->phone
         ]);
 
         // Mensaje de session
@@ -158,7 +171,7 @@ class FinancialSupportController extends Controller
        
         $filename = "recibo_de_apoyo_" . Str::slug($financial_support->id) . ".pdf";
         
-        $pdf = PDF::loadView('_files._support_receipt', [
+        $pdf = PDF::loadView('_files._support_receipt_format', [
             'financial_support' => $financial_support
         ]);
         

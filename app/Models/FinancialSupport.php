@@ -15,4 +15,9 @@ class FinancialSupport extends Model
     {
         return $this->belongsTo(FinancialSupportType::class, 'type_id', 'id');
     }
+
+    public function citizen()
+    {
+        return $this->belongsTo(Citizen::class);
+    }
 }

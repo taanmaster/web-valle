@@ -4,6 +4,7 @@
             <tr>
                 <th>id</th>
                 <th>Nombre</th>
+                <th>Documentos Necesarios</th>
                 <th>Creado</th>
                 <th>Actualizado</th>
                 <th scope="col">Acciones</th>
@@ -16,8 +17,24 @@
                 <th scope="row">#{{ $financial_support_type->id }}</th>
                 <td>
                     <a href="{{ route('financial_support_types.show', $financial_support_type->id) }}">
-                        {{ $financial_support->name }}
+                        {{ $financial_support_type->name }}
                     </a>
+                </td>
+
+                <td>
+                    <ul class="list-unstyled">
+                        <li>{!! $financial_support_type->doc_birth_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Acta de nacimiento</li>
+                        <li>{!! $financial_support_type->doc_ine ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} INE</li>
+                        <li>{!! $financial_support_type->doc_address_proof ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Comprobante de domicilio</li>
+                        <li>{!! $financial_support_type->doc_rfc ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} RFC</li>
+                        <li>{!! $financial_support_type->doc_death_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Acta de defunción</li>
+                        <li>{!! $financial_support_type->doc_funeral_payment ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Hoja de paga funeraria</li>
+                        <li>{!! $financial_support_type->doc_cemetery_docs ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Documentos del panteón</li>
+                        <li>{!! $financial_support_type->doc_study_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Constancia de estudios</li>
+                        <li>{!! $financial_support_type->doc_medical_prescriptions ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Recetas médicas</li>
+                        <li>{!! $financial_support_type->doc_medical_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Constancia médica</li>
+                        <li>{!! $financial_support_type->doc_hospital_visit_card ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Tarjetón de visita al hospital</li>
+                    </ul>
                 </td>
 
                 <td>{{ $financial_support_type->created_at }}</td>

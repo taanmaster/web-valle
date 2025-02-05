@@ -15,4 +15,9 @@ class Citizen extends Model
     {
         return $this->hasMany(CitizenFile::class);
     }
+
+    public function supports()
+    {
+        return $this->hasMany(FinancialSupport::class);
+    }
 }

@@ -36,7 +36,7 @@
         }
 
         .logo{
-            width: 200px;
+            width: 100px;
         }
 
         .col-6{
@@ -138,14 +138,14 @@
     <main>
         <h2 class="text-info" style="text-align: right;">BAJO PROTESTA</h2>
 
-        <h2>LIC. ISRAEL MOSQUEDA GASCA</h2>
-        <h2>PRESIDENTE MUNICIPAL</h2>
-        <h2>PRESENTE:</h2>
+        <h3 style="margin-bottom: 0px;">LIC. ISRAEL MOSQUEDA GASCA</h3>
+        <h3 style="margin-bottom: 0px; margin-top: 0;">PRESIDENTE MUNICIPAL</h3>
+        <h3 style="margin-top: 0;">PRESENTE:</h3>
 
         <p>POR MEDIO DEL PRESENTE ESCRITO, RECIBA UN CORDIAL SALUDO ASÍ MISMO; <strong>DECLARO BAJO PROTESTA DE DECIR VERDAD</strong> QUE NO CUENTO CON RECURSOS ECONÓMICOS PARA SOLVENTAR GASTOS DE MANUTENCIÓN BASICOS DEL HOGAR AGUA, GAS, ALIMENTOS).</p>
         <p>SIN MAS POR EL MOMENTO ME DESPIDO DANDOLE LAS GRACIAS Y QUEDANDO A SUS DISTINGUIDAS ORDENES.</p>
 
-        <h2 style="margin-top: 50px;">ATENTAMENTE:</h2>
+        <h3 style="margin-top: 50px;">ATENTAMENTE:</h3>
 
         <div style="margin-top: 50px;">
             <p style="margin-bottom: 0;">FIRMA:</p>
@@ -153,7 +153,7 @@
         </div>
         <div style="margin-top: 50px;">
             <p style="margin-bottom: 0;">NOMBRE:</p>
-            <p style="margin-top: 0;">__________________________</p>
+            <p style="margin-top: 0;">{{ $financial_support->citizen->name }} {{ $financial_support->citizen->first_name }} {{ $financial_support->citizen->last_name }}</p>
         </div>
     </main>
 </body>

@@ -36,7 +36,7 @@
         }
 
         .logo{
-            width: 200px;
+            width: 100px;
         }
 
         .col-6{

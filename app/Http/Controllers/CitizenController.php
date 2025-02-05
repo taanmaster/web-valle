@@ -10,6 +10,8 @@ use Session;
 // Modelos
 use App\Models\Citizen;
 use App\Models\CitizenFile;
+use App\Models\FinancialSupport;
+
 use Illuminate\Http\Request;
 
 class CitizenController extends Controller
@@ -74,8 +76,14 @@ class CitizenController extends Controller
     public function show($id)
     {
         $citizen = Citizen::find($id);
+        $files = CitizenFile::where('citizen_id', $id)->get();
 
-        return view('citizens.show')->with('citizen', $citizen);
+        $financial_supports = FinancialSupport::where('citizen_id', $id)->get();
+
+        return view('citizens.show')
+        ->with('citizen', $citizen)
+        ->with('files', $files)
+        ->with('financial_supports', $financial_supports);
     }
 
     public function edit($id)

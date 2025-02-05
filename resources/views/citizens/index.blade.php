@@ -5,7 +5,7 @@
 @component('components.breadcrumb')
 @slot('li_1') Intranet @endslot
 @slot('li_2') Documentos @endslot
-@slot('title') Ciudadanos @endslot
+@slot('title') Particulares @endslot
 @endcomponent
 
 <div class="row layout-spacing">
@@ -13,7 +13,7 @@
         <div class="row align-items-center mb-4">
             <div class="col text-start">
                 @include('citizens.utilities._search_options')
-                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-primary">Nuevo Ciudadano</a>
+                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-primary">Nuevo Particular</a>
             </div>
         </div>
 
@@ -28,7 +28,7 @@
                             <img src="{{ asset('assets/images/empty.svg') }}" class="ml-auto mr-auto" style="width:30%; margin-bottom: 40px;">
                             <h4>¡No hay elementos guardados en la base de datos!</h4>
                             <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
-                            <a href="{{ route('citizens.create') }}" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo Ciudadano</a>
+                            <a href="{{ route('citizens.create') }}" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo Particular</a>
                         </div>       
                     </div>
                 </div>

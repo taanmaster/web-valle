@@ -39,6 +39,17 @@ class FinancialSupportTypeController extends Controller
             'description' => $request->description,
             'monthly_cap' => $request->monthly_cap,
             'limit_per_citizen' => $request->limit_per_citizen,
+            'doc_birth_certificate' => in_array('Acta de nacimiento', $request->documents),
+            'doc_ine' => in_array('INE', $request->documents),
+            'doc_address_proof' => in_array('Comprobante de domicilio', $request->documents),
+            'doc_rfc' => in_array('RFC', $request->documents),
+            'doc_death_certificate' => in_array('Acta de defunción', $request->documents),
+            'doc_funeral_payment' => in_array('Hoja de paga funeraria', $request->documents),
+            'doc_cemetery_docs' => in_array('Documentos del panteón', $request->documents),
+            'doc_study_certificate' => in_array('Constancia de estudios', $request->documents),
+            'doc_medical_prescriptions' => in_array('Recetas médicas', $request->documents),
+            'doc_medical_certificate' => in_array('Constancia médica', $request->documents),
+            'doc_hospital_visit_card' => in_array('Tarjetón de visita al hospital', $request->documents),
         ]);
 
         // Mensaje de session

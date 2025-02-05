@@ -5,7 +5,7 @@
 @component('components.breadcrumb')
 @slot('li_1') Intranet @endslot
 @slot('li_2') Documentos @endslot
-@slot('title') Ciudadanos @endslot
+@slot('title') Particulares @endslot
 @endcomponent
 
 <div class="row layout-spacing">

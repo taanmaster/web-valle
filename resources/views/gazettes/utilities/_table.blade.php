@@ -14,7 +14,6 @@
                         <p class="badge bg-warning mb-0">Sesiones Extraordinarias</p>
                         @break
                     @default
-                        
                 @endswitch
 
                 <div class="d-flex justify-content-between align-items-start mt-3">
@@ -33,15 +32,20 @@
                 <p>{{ $gazette->description }}</p>
 
                 <hr>
+
                 <small>Fecha de Reunión</small>
                 <p>{{ $gazette->meeting_date }}</p>
+                
                 <hr>
+                
                 @foreach($gazette->files as $file)
                 <p class="mb-0">Archivo #{{ $file->name }}</p>
                 <a class="btn btn-sm btn-primary" href="{{ asset('files/gazettes/'. $file->filename) }}">Descargar Archivo</a>
                 <p class="text-muted">Subido por: {{ $file->uploader->name }}</p>
                 @endforeach
+                
                 <hr>
+
                 <div class="d-flex">
                     <a href="{{ route('gazettes.edit', $gazette->id) }}" class="btn btn-sm btn-outline-info">Editar</a>
         

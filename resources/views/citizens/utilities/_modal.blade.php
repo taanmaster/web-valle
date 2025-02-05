@@ -10,7 +10,34 @@
                 {{ csrf_field() }}
                 <div class="modal-body pd-25">
                     <div class="row">
-                        
+                        <div class="col-md-12 mb-3">
+                            <label for="name" class="form-label">Nombre del Beneficiario <span class="text-danger tx-12">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="first_name" class="form-label">Primer Apellido <span class="text-danger tx-12">*</span></label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last_name" class="form-label">Segundo Apellido <span class="text-danger tx-12">*</span></label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">Teléfono <span class="text-danger tx-12">*</span></label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Correo Electrónico <span class="text-danger tx-12">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="curp" class="form-label">CURP <span class="text-danger tx-12">*</span></label>
+                            <input type="text" class="form-control" id="curp" name="curp" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="description" class="form-label">Descripción <span class="text-info tx-12">(Opcional)</span></label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

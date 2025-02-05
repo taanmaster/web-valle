@@ -98,9 +98,29 @@ Route::namespace('App\Http\Controllers')->group(function () {
         ]);
 
         /* Generador de Documentación */
-        Route::get('/financial_supports/{id}/descargar-pdf',[
-            'uses' => 'FinancialSupportController@downloadPDF',
-            'as' => 'financial_supports.download',
+        Route::post('/financial_supports/{id}/download-gratefulness',[
+            'uses' => 'FinancialSupportController@downloadGratefulness',
+            'as' => 'financial_supports.downloadGratefulness',
+        ]);
+
+        Route::post('/financial_supports/{id}/download-request',[
+            'uses' => 'FinancialSupportController@downloadRequest',
+            'as' => 'financial_supports.downloadRequest',
+        ]);
+
+        Route::post('/financial_supports/{id}/download-support-receipt',[
+            'uses' => 'FinancialSupportController@downloadSupportReceipt',
+            'as' => 'financial_supports.downloadSupportReceipt',
+        ]);
+
+        Route::post('/financial_supports/{id}/download-under-oath',[
+            'uses' => 'FinancialSupportController@downloadUnderOath',
+            'as' => 'financial_supports.downloadUnderOath',
+        ]);
+
+        Route::post('/financial_supports/{id}/download-received',[
+            'uses' => 'FinancialSupportController@downloadReceived',
+            'as' => 'financial_supports.downloadReceived',
         ]);
     });
 });
