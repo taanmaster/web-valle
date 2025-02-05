@@ -92,7 +92,13 @@
             {{ $financial_supports->links() }}
         </div>
         --}}
-        @endif    
+        @endif
+
+        <form method="POST" action="{{ route('financial_supports.downloadCashCut') }}" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            <input type="hidden" name="date_start" value="{{ Carbon\Carbon::parse(Request::input('date_start'))->subDay()->format('Y-m-d') }}">
+            <button type="submit" class="btn btn-primary">Descargar Corte de este día</button>
+        </form>
     </div>
 </div>
 @endsection

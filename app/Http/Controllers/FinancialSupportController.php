@@ -251,4 +251,30 @@ class FinancialSupportController extends Controller
         return response()->download(public_path('financial_support/files/' . $filename));
         return redirect()->back();
     }
+
+    public function downloadCashCut(Request $request)
+    {
+        /* Defining Dates */
+        $date_start = $request->date_start;
+
+        $start_of_day = Carbon::parse($date_start)->startOfDay();
+        $end_of_day = Carbon::parse($date_start)->endOfDay();
+
+        $financial_supports = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->orderBy('receipt_num', 'asc')->get();
+
+        $filename = "corte_" . $start_of_day . ".pdf";
+        
+        $pdf = PDF::loadView('_files._cash_cut', [
+            'financial_supports' => $financial_supports
+        ]);
+        
+        $pdf->save(public_path('financial_support/files/' . $filename));
+        /* Finalización de proceso */
+
+        // Mensaje de session
+        Session::flash('success', 'Documento creado exitosamente... Descargando automáticamente en breve.');
+
+        return response()->download(public_path('financial_support/files/' . $filename));
+        return redirect()->back();
+    }
 }

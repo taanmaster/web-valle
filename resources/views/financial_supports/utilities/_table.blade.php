@@ -23,9 +23,12 @@
             <tr>
                 <th scope="row">#{{ $financial_support->int_num }}</th>
                 <td>
+                    {{--  
                     <a href="{{ route('financial_supports.show', $financial_support->id) }}">
                         {{ $financial_support->citizen->name }} {{ $financial_support->citizen->first_name }} {{ $financial_support->citizen->last_name }}
                     </a>
+                    --}}
+                    {{ $financial_support->citizen->name }} {{ $financial_support->citizen->first_name }} {{ $financial_support->citizen->last_name }}
                 </td>
                 <td>${{ number_format($financial_support->qty,2) }}</td>
                 <td>{{ $financial_support->receipt_num }}</td>

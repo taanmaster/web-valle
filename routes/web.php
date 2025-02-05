@@ -127,6 +127,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'uses' => 'FinancialSupportController@downloadReceived',
             'as' => 'financial_supports.downloadReceived',
         ]);
+
+        Route::post('/financial_supports/download-cash-cut',[
+            'uses' => 'FinancialSupportController@downloadCashCut',
+            'as' => 'financial_supports.downloadCashCut',
+        ]);
     });
 });
 
