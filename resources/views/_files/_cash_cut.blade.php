@@ -140,7 +140,7 @@
 
         <h3 style="margin-bottom: 0px;">LIC. NOMBRE DEL SECRETARIO PARTICULAR</h3>
         <h3 style="margin-bottom: 0px; margin-top: 0;">SECRETARIO PARTICULAR</h3>
-        <h3 style="margin-top: 0;">PRESENTE:</h3>
+        <h3 style="margin-top: 0; margin-bottom:60px;">PRESENTE:</h3>
 
         @php
             $totalQty = 0;
@@ -156,6 +156,56 @@
 
         <p>"{{ Carbon\Carbon::now()->format('Y') }}, 200 Años de Grandeza: Guanajuato como Entidad Federativa, Libre y Soberana" "Bicentenario de la Instalación de la Excelentísima Diputación Provincial de Guanajuato, 1822-1824"</p>
         
+        <h3 style="margin-top: 50px;">ATENTAMENTE:</h3>
+
+        <div style="margin-top: 50px;margin-bottom:60px;">
+            <p style="margin-bottom: 0;">LIC. ISRAEL MOSQUEDA GASCA:</p>
+            <p style="margin-top: 0;">PRESIDENTE MUNICIPAL DE VALLE DE SANTIAGO, GUANAJUATO</p>
+        </div>
+
+        <hr>
+
+        <h3 style="margin-top: 30px; margin-bottom:40px">APOYOS ECONÓMICOS:</h3>
+
+        <table class="table" style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+            <thead class="thead-light" style="background-color: #f8f9fa;">
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Folio</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">Nombre del Beneficiario</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">Cantidad del Apoyo</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">Número de Recibo</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">Tipo de Apoyo</th>
+            </tr>
+            </thead>
+        
+            <tbody>
+            @php
+                $totalQty = 0;
+            @endphp
+            @foreach($financial_supports as $financial_support)
+            @php
+                $totalQty += $financial_support->qty;
+            @endphp
+            <tr>
+                <th scope="row" style="border: 1px solid #ddd; padding: 8px;">#{{ $financial_support->int_num }}</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">
+                {{ $financial_support->citizen->name }} {{ $financial_support->citizen->first_name }} {{ $financial_support->citizen->last_name }}
+                </td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${{ number_format($financial_support->qty,2) }}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ $financial_support->receipt_num }}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ $financial_support->type->name }}</td>
+            </tr>
+            @endforeach                           
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="2" style="border: 1px solid #ddd; padding: 8px;"><strong>TOTAL</strong></td>
+                <td style="border: 1px solid #ddd; padding: 8px;"><strong>${{ number_format($totalQty, 2) }}</strong></td>
+                <td colspan="2" style="border: 1px solid #ddd; padding: 8px;"></td>
+            </tr>
+            </tfoot>
+        </table>
+
         <h3 style="margin-top: 50px;">ATENTAMENTE:</h3>
 
         <div style="margin-top: 50px;">
