@@ -126,8 +126,7 @@
                     <td class="col-6" style="text-align:right">
                         <div class="date-wrap">
                             <div class="line-contain">
-                                <p>Documento generado el:</p>
-                                <p>{{ Carbon\Carbon::now()->format('d/m/Y') }}</p>
+                                <p>VALLE DE SANTIAGO, GTO. A {{ Carbon\Carbon::now()->format('d/m/Y') }}</p>
                             </div>
                         </div>
                     </td>
@@ -137,8 +136,25 @@
     </header>
     
     <main>
-        <h2 class="text-info">BAJO PROTESTA</h2>
+        <h2 class="text-info" style="text-align: right;">BAJO PROTESTA</h2>
 
+        <h2>LIC. ISRAEL MOSQUEDA GASCA</h2>
+        <h2>PRESIDENTE MUNICIPAL</h2>
+        <h2>PRESENTE:</h2>
+
+        <p>POR MEDIO DEL PRESENTE ESCRITO, RECIBA UN CORDIAL SALUDO ASÍ MISMO; <strong>DECLARO BAJO PROTESTA DE DECIR VERDAD</strong> QUE NO CUENTO CON RECURSOS ECONÓMICOS PARA SOLVENTAR GASTOS DE MANUTENCIÓN BASICOS DEL HOGAR AGUA, GAS, ALIMENTOS).</p>
+        <p>SIN MAS POR EL MOMENTO ME DESPIDO DANDOLE LAS GRACIAS Y QUEDANDO A SUS DISTINGUIDAS ORDENES.</p>
+
+        <h2 style="margin-top: 50px;">ATENTAMENTE:</h2>
+
+        <div style="margin-top: 50px;">
+            <p style="margin-bottom: 0;">FIRMA:</p>
+            <p style="margin-top: 0;">__________________________</p>
+        </div>
+        <div style="margin-top: 50px;">
+            <p style="margin-bottom: 0;">NOMBRE:</p>
+            <p style="margin-top: 0;">__________________________</p>
+        </div>
     </main>
 </body>
 </html>
