@@ -63,6 +63,28 @@ class FinancialSupportController extends Controller
         ->with('support_types', $support_types);
     }
 
+    public function reportQuery(Request $request)
+    {
+        /* Defining Dates */
+        $date_start = $request->date_start ?? Carbon::now()->format('Y-m-d');
+        $date_end = $request->date_end ?? Carbon::now()->format('Y-m-d');
+
+        $start_of_day = Carbon::parse($date_start)->startOfMonth();
+        $end_of_day = Carbon::parse($date_start)->endOfMonth();
+
+        // Indicadores
+        $num_apoyos_mes = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->count();
+        $cantidad_invertida_apoyos = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->sum('qty');
+        $cantidad_particulares_nuevos = Citizen::whereBetween('created_at', [$start_of_day, $end_of_day])->count();
+        $cantidad_particulares_apoyados = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->distinct('citizen_id')->count('citizen_id');
+
+        return view('financial_supports.report')
+        ->with('num_apoyos_mes', $num_apoyos_mes)
+        ->with('cantidad_invertida_apoyos', $cantidad_invertida_apoyos)
+        ->with('cantidad_particulares_nuevos', $cantidad_particulares_nuevos)
+        ->with('cantidad_particulares_apoyados', $cantidad_particulares_apoyados);
+    }
+
     public function create()
     {
         return view('financial_supports.create');

@@ -94,6 +94,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'report.query',
         ]);
 
+        Route::get('/financial_supports/funciones/reporte-grafico', [
+            'uses' => 'FinancialSupportController@reportQuery',
+            'as' => 'kpi.query',
+        ]);
+
         /* Tipos de Apoyo Económico */
         Route::resource('financial_support_types', FinancialSupportTypeController::class);
 

@@ -727,6 +727,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('financial_supports.index') }}">Apoyos</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('kpi.query') }}">Reporte de Apoyos</a>
+                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('financial_support_types.index') }}">Tipos de Apoyo</a>
                     </li>
