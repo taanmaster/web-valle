@@ -137,6 +137,49 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'uses' => 'FinancialSupportController@downloadCashCut',
             'as' => 'financial_supports.downloadCashCut',
         ]);
+
+        /* Transaparencia */
+        Route::group(['prefix' => 'transparency'], function(){
+            Route::resource('dependencies', TransparencyDependencyController::class)->names([
+                'index' => 'transparency_dependencies.index',
+                'create' => 'transparency_dependencies.create',
+                'store' => 'transparency_dependencies.store',
+                'show' => 'transparency_dependencies.show',
+                'edit' => 'transparency_dependencies.edit',
+                'update' => 'transparency_dependencies.update',
+                'destroy' => 'transparency_dependencies.destroy',
+            ]);
+
+            Route::resource('obligations', TransparencyObligationController::class)->names([
+                'index' => 'transparency_obligations.index',
+                'create' => 'transparency_obligations.create',
+                'store' => 'transparency_obligations.store',
+                'show' => 'transparency_obligations.show',
+                'edit' => 'transparency_obligations.edit',
+                'update' => 'transparency_obligations.update',
+                'destroy' => 'transparency_obligations.destroy',
+            ]);
+
+            Route::resource('documents', TransparencyDocumentController::class)->names([
+                'index' => 'transparency_documents.index',
+                'create' => 'transparency_documents.create',
+                'store' => 'transparency_documents.store',
+                'show' => 'transparency_documents.show',
+                'edit' => 'transparency_documents.edit',
+                'update' => 'transparency_documents.update',
+                'destroy' => 'transparency_documents.destroy',
+            ]);
+
+            Route::resource('files', TransparencyFileController::class)->names([
+                'index' => 'transparency_files.index',
+                'create' => 'transparency_files.create',
+                'store' => 'transparency_files.store',
+                'show' => 'transparency_files.show',
+                'edit' => 'transparency_files.edit',
+                'update' => 'transparency_files.update',
+                'destroy' => 'transparency_files.destroy',
+            ]);
+        });
     });
 });
 

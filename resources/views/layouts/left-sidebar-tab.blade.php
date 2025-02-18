@@ -14,13 +14,11 @@
                         </a>
                     </li>
 
-                    {{--  
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Apps" data-bs-trigger="hover">
-                        <a href="#MetricaApps" id="apps-tab" class="nav-link">
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Transparencia" data-bs-trigger="hover">
+                        <a href="#valleTransparency" id="apps-tab" class="nav-link">
                             <i class="ti ti-apps menu-icon"></i>
                         </a>
                     </li>
-                    --}}
 
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Apoyos Económicos" data-bs-trigger="hover">
                         <a href="#valleFinancialSupport" id="uikit-tab" class="nav-link">
@@ -28,7 +26,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Documentos" data-bs-trigger="hover">
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Gaceta Municipal" data-bs-trigger="hover">
                         <a href="#valleDocuments" id="pages-tab" class="nav-link">
                             <i class="ti ti-files menu-icon"></i>
                         </a>
@@ -693,7 +691,7 @@
 
             <div id="valleDocuments" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="pages-tab">
                 <div class="title-box">
-                    <h6 class="menu-title">Documentos</h6>
+                    <h6 class="menu-title">Gaceta</h6>
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -713,6 +711,25 @@
                         <a class="nav-link" href="pages-starter">Página de Ejemplo</a>
                     </li>
                     --}}
+                </ul>
+            </div>
+
+            <div id="valleTransparency" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="pages-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Transparencia</h6>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('transparency_dependencies.index') }}">Dependencias</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('transparency_obligations.index') }}">Obligaciones</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('transparency_files.index') }}">Repositorio de Archivos (Links)</a>
+                    </li>
                 </ul>
             </div>
 
