@@ -179,6 +179,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'transparency_files.update',
                 'destroy' => 'transparency_files.destroy',
             ]);
+
+            /* Repositorio */
+            Route::post('dropzone/upload/{id}', 'TransparencyFileController@uploadFile')->name('dropzone.upload');
+            Route::get('dropzone/fetch/{id}', 'TransparencyFileController@fetchFile')->name('dropzone.fetch');
+            Route::get('dropzone/delete/{id}', 'TransparencyFileController@deleteFile')->name('dropzone.delete');
+
         });
     });
 });

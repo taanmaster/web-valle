@@ -84,7 +84,7 @@ Es importante abrir el archivo .env para configurar la conexión a la base de da
 
 ### Configurar Directorio de Proyecto
 
-/etc/apache2/sites-available/default.com.conf 
+/etc/apache2/sites-available/000-default.conf 
 
 ```
 <VirtualHost *:80>
@@ -98,6 +98,64 @@ Es importante abrir el archivo .env para configurar la conexión a la base de da
 </VirtualHost>
 ```
 Si es necesario utilizar un certificado de seguridad utilizar el puerto 443 y activar las capacidades SSL del servidor por medio de la linea de comandos. Es importante que el certificado se encuentre en la ruta correcta que se determina en ese documento.
+
+### Reiniciar Servidor
+
+```
+service apache2 reload
+
+```
+
+## Activación de SSL desde Linea de Comandos
+
+Subir los archivos .crt y .key a la carpeta `ssl` utilizando un programa FTP como FileZilla, Cyberduck u otros.
+
+### Configurar Directorio de Proyecto
+
+Modificar el archivo de directorio de proyecto en `/etc/apache2/sites-available/000-default.conf` a lo siguiente:
+
+```
+<VirtualHost *:80>
+   ServerName [[ DOMINIO_DEL_PROYECTO ]]
+   Redirect permanent / https://[[ DOMINIO_DEL_PROYECTO ]]
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+    <VirtualHost _default_:443>
+            ServerAdmin [[ CORREO_USUARIO_ADMIN ]]
+            ServerName [[ DOMINIO_DEL_PROYECTO ]]
+            DocumentRoot /var/www/html/[[ NOMBRE_DE_LA_CARPETA ]]/public
+
+            SSLEngine on
+            SSLCertificateFile /etc/ssl/[[ ARCHIVO_SSL ]].crt
+            SSLCertificateKeyFile /etc/ssl/[[ ARCHIVO_SSL ]].key
+            SSLCACertificateFile /etc/ssl/intermediate.crt
+
+            <Directory /var/www/html/[[ NOMBRE_DE_LA_CARPETA ]]/public>
+                Options Indexes FollowSymLinks
+                AllowOverride All
+                Require all granted
+            </Directory>
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            <IfModule mod_dir.c>
+                DirectoryIndex index.php index.pl index.cgi index.html index.xhtml index.htm
+            </IfModule>
+
+    </VirtualHost>
+</IfModule>
+
+```
+
+### Activar Módulo SSL del Servidor
+
+Para activar el módulo SSL del servidor corre el siguiente comando en la linea de comandos:
+
+```
+sudo a2enmod ssl
+```
 
 ### Reiniciar Servidor
 

@@ -12,7 +12,7 @@
     <div class="main-content">
         <div class="row">
             <div class="col-md-12">
-                <h3>Resultados de Búsqueda <div class="badge badge-info">{{ $financial_support_types->count() }}</div></h3>
+                <h3>Resultados de Búsqueda <div class="badge badge-info">{{ $transparency_documents->count() }}</div></h3>
                 @if(Request::input('query') == NULL)
                 @else
                 <p>Elementos que contienen: "{{ Request::input('query') }}"</p>
@@ -27,16 +27,16 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-4">
-                                <h4 class="mt-0 header-title mb-4">Listado de Apoyos Económicos</h4>
+                                <h4 class="mt-0 header-title mb-4">Listado de Documentos</h4>
                             </div>
         
                             <div class="col-8 text-end">
-                                @include('financial_support_types.utilities._search_options')
+                                @include('transparency_documents.utilities._search_options')
                             </div>
                         </div>
                         
-                        @if($financial_support_types->count())
-                            @include('financial_support_types.utilities._table')
+                        @if($transparency_documents->count())
+                            @include('transparency_documents.utilities._table')
                         @else
                         <div class="text-center my-5">
                             <h4 class="mb-0">¡No hay resultados con esa búsqueda!</h4>

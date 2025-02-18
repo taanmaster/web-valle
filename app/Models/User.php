@@ -43,4 +43,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function dependency()
+    {
+    	return $this->belongsToMany(TransparencyDependency::class, 'transparency_dependency_users', 'user_id', 'dependency_id')->withPivot('id');
+    }
 }

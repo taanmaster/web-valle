@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('image_cover')->nullable();
 
+            $table->boolean('in_index')->default(false);
+
             $table->timestamps();
         });
     }

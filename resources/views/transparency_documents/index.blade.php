@@ -12,14 +12,14 @@
     <div class="main-content">
         <div class="row align-items-center mb-4">
             <div class="col text-start">
-                @include('financial_support_types.utilities._search_options')
-                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-primary">Nuevo Apoyo</a>
+                @include('transparency_documents.utilities._search_options')
+                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-primary">Nuevo Documento</a>
             </div>
         </div>
 
-        @include('financial_support_types.utilities._modal')
+        @include('transparency_documents.utilities._modal')
 
-        @if($financial_support_types->count() == 0)
+        @if($transparency_documents->count() == 0)
         <div class="row"> 
             <div class="col-lg-12">
                 <div class="box">
@@ -28,7 +28,7 @@
                             <img src="{{ asset('assets/images/empty.svg') }}" class="ml-auto mr-auto" style="width:30%; margin-bottom: 40px;">
                             <h4>¡No hay elementos guardados en la base de datos!</h4>
                             <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
-                            <a href="{{ route('financial_support_types.create') }}" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo Apoyo</a>
+                            <a href="{{ route('transparency_documents.create') }}" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo Documento</a>
                         </div>       
                     </div>
                 </div>
@@ -36,11 +36,11 @@
         </div>
         @else
         <div class="row"> 
-            @include('financial_support_types.utilities._table')
+            @include('transparency_documents.utilities._table')
         </div>
     
         <div class="d-flex align-items-center justify-content-center">
-            {{ $financial_support_types->links() }}
+            {{ $transparency_documents->links() }}
         </div>
         @endif    
     </div>

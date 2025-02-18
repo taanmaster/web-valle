@@ -1,61 +1,73 @@
-<div class="table-responsive">
-    <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th>id</th>
-                <th>Nombre</th>
-                <th>Documentos Necesarios</th>
-                <th>Creado</th>
-                <th>Actualizado</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
+<div class="row">
+    @foreach($transparency_files as $transparency_file)
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                Dependencia: {{ $transparency_file->dependency->name }}
+            </div>
+            <div class="card-body text-center">
+                @php
+                    $icon = 'fa-file';
+                    $badge = '';
+                    $publicPath = url('files/transparency/' . $transparency_file->filename);
 
-        <tbody>
-            @foreach($financial_support_types as $financial_support_type)
-            <tr>
-                <th scope="row">#{{ $financial_support_type->id }}</th>
-                <td>
-                    <a href="{{ route('financial_support_types.show', $financial_support_type->id) }}">
-                        {{ $financial_support_type->name }}
-                    </a>
-                </td>
-
-                <td>
-                    <ul class="list-unstyled">
-                        <li>{!! $financial_support_type->doc_birth_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Acta de nacimiento</li>
-                        <li>{!! $financial_support_type->doc_ine ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} INE</li>
-                        <li>{!! $financial_support_type->doc_address_proof ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Comprobante de domicilio</li>
-                        <li>{!! $financial_support_type->doc_rfc ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} RFC</li>
-                        <li>{!! $financial_support_type->doc_death_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Acta de defunción</li>
-                        <li>{!! $financial_support_type->doc_funeral_payment ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Hoja de paga funeraria</li>
-                        <li>{!! $financial_support_type->doc_cemetery_docs ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Documentos del panteón</li>
-                        <li>{!! $financial_support_type->doc_study_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Constancia de estudios</li>
-                        <li>{!! $financial_support_type->doc_medical_prescriptions ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Recetas médicas</li>
-                        <li>{!! $financial_support_type->doc_medical_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Constancia médica</li>
-                        <li>{!! $financial_support_type->doc_hospital_visit_card ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Tarjetón de visita al hospital</li>
-                    </ul>
-                </td>
-
-                <td>{{ $financial_support_type->created_at }}</td>
-                <td>{{ $financial_support_type->updated_at }}</td>
-
-                <td>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        {{--  <a href="{{ route('financial_support_types.edit', $financial_support_type->id) }}" class="btn btn-sm btn-icon"><i class='bx bx-show-alt'></i></a> --}}
-
-                        <form method="POST" action="{{ route('financial_support_types.destroy', $financial_support_type->id) }}" style="display: inline-block;">
-                            <button type="submit" class="btn btn-sm btn-icon">
-                                <i class='bx bx-trash-alt text-danger'></i> Eliminar
-                            </button>
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                        </form>
-                    </div>
-                </td> 
-            </tr>
-            @endforeach                           
-        </tbody>
-    </table>                    
+                    switch ($transparency_file->file_extension) {
+                        case 'pdf':
+                            $icon = 'fa-file-pdf';
+                            $badge = 'PDF';
+                            break;
+                        case 'doc':
+                        case 'docx':
+                            $icon = 'fa-file-word';
+                            $badge = 'Word';
+                            break;
+                        case 'xls':
+                        case 'xlsx':
+                            $icon = 'fa-file-excel';
+                            $badge = 'Excel';
+                            break;
+                        case 'ppt':
+                        case 'pptx':
+                            $icon = 'fa-file-powerpoint';
+                            $badge = 'PowerPoint';
+                            break;
+                        case 'txt':
+                            $icon = 'fa-file-alt';
+                            $badge = 'Texto';
+                            break;
+                        case 'zip':
+                        case 'rar':
+                            $icon = 'fa-file-archive';
+                            $badge = 'Archivo';
+                            break;
+                        default:
+                            $icon = 'fa-file';
+                            $badge = 'Archivo';
+                            break;
+                    }
+                @endphp
+                <i class="fas {{ $icon }} fa-3x"></i>
+                <h5 class="card-title mt-2">{{ $transparency_file->name }}</h5>
+                <span class="badge bg-primary">{{ $badge }}</span>
+                <input type="text" class="form-control mt-2" id="filePath{{ $transparency_file->id }}" value="{{ $publicPath }}" readonly>
+                <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard('filePath{{ $transparency_file->id }}')">Copiar Ruta</button>
+                <button type="button" class="btn btn-link remove_file mt-2" id="{{ $transparency_file->filename }}">Eliminar</button>
+            </div>
+            <div class="card-footer text-muted">
+                <small>Creado: {{ $transparency_file->created_at }}</small><br>
+                <small>Actualizado: {{ $transparency_file->updated_at }}</small>
+            </div>
+        </div>
+    </div>
+    @endforeach
 </div>
- 
+
+<script>
+    function copyToClipboard(elementId) {
+        var copyText = document.getElementById(elementId);
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+        document.execCommand("copy");
+        alert("Ruta copiada: " + copyText.value);
+    }
+</script>

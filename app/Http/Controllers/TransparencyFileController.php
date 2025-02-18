@@ -9,6 +9,7 @@ use Session;
 
 // Modelos
 use App\Models\TransparencyFile;
+use App\Models\TransparencyDependency;
 
 use Illuminate\Http\Request;
 
@@ -88,5 +89,115 @@ class TransparencyFileController extends Controller
 
         Session::flash('success', 'Se eliminó la información de manera exitosa.');
         return redirect()->back();
+    }
+
+    function uploadFile(Request $request, $id)
+    {   
+        $dependency = TransparencyDependency::find($id);
+
+        // Guardar datos en la base de datos
+        $var_file = new TransparencyFile;
+        $var_file->dependency_id = $dependency->id;
+
+        $file = $request->file('file');
+        $filename = $dependency->name . '_' . Str::random(8) . '_file' . '.' . $file->getClientOriginalExtension();
+        $location = public_path('files/transparency/');
+        $file->move($location, $filename);
+
+        $var_file->permalink = $location . $filename;
+        $var_file->name = $filename;
+        $var_file->filename = $filename;
+        $var_file->file_extension = $file->getClientOriginalExtension();
+        $var_file->uploaded_by = Auth::user()->id;
+
+        $var_file->save();
+        
+        return response()->json(['success' => $filename]);
+    }
+
+    function fetchFile($id)
+    {
+        $dependency = TransparencyDependency::find($id);
+        
+        $output = '<div class="row">';
+        foreach($dependency->files as $file)
+        {
+            $icon = 'fa-file';
+            $badge = '';
+            $publicPath = url('files/transparency/' . $file->filename);
+
+            switch ($file->file_extension) {
+                case 'pdf':
+                    $icon = 'fa-file-pdf';
+                    $badge = 'PDF';
+                    break;
+                case 'doc':
+                case 'docx':
+                    $icon = 'fa-file-word';
+                    $badge = 'Word';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    $icon = 'fa-file-excel';
+                    $badge = 'Excel';
+                    break;
+                case 'ppt':
+                case 'pptx':
+                    $icon = 'fa-file-powerpoint';
+                    $badge = 'PowerPoint';
+                    break;
+                case 'txt':
+                    $icon = 'fa-file-alt';
+                    $badge = 'Texto';
+                    break;
+                case 'zip':
+                case 'rar':
+                    $icon = 'fa-file-archive';
+                    $badge = 'Archivo';
+                    break;
+                default:
+                    $icon = 'fa-file';
+                    $badge = 'Archivo';
+                    break;
+            }
+
+            $output .= '
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas '.$icon.' fa-3x"></i>
+                        <h5 class="card-title mt-2">'.$file->name.'</h5>
+                        <span class="badge bg-primary">'.$badge.'</span>
+                        <input type="text" class="form-control mt-2" id="filePath'.$file->id.'" value="'.$publicPath.'" readonly>
+                        <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard(\'filePath'.$file->id.'\')">Copiar Ruta</button>
+                        <button type="button" class="btn btn-link remove_file mt-2" id="'.$file->filename.'">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            ';
+        }
+        $output .= '</div>';
+
+        echo $output;
+    }
+
+    function deleteFile(Request $request)
+    {
+        $file = TransparencyFile::where('filename', $request->name)->first();
+        
+        if ($file) {
+            // Eliminar el archivo de la base de datos
+            $file->delete();
+
+            // Eliminar el archivo del sistema de archivos
+            $filePath = public_path('files/transparency/' . $request->name);
+            if (\File::exists($filePath)) {
+                \File::delete($filePath);
+            }
+
+            return response()->json(['success' => 'Archivo eliminado correctamente.']);
+        }
+
+        return response()->json(['error' => 'Archivo no encontrado.'], 404);
     }
 }

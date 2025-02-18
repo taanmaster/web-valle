@@ -13,15 +13,13 @@
         <div class="row">
             <div class="col-8">
                 <div class="card card-body">
-                    <form method="POST" action="{{ route('financial_support_types.update', $financial_support_type->id) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('transparency_documents.update', $transparency_document->id) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         {{ method_field('PUT') }}
     
                     </form>
                 </div>
-                
             </div>
-
         </div>
     </div>
 </div>

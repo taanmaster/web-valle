@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="contain">Que contenga los términos...</label>
-                    <input class="form-control" type="search" name="query" placeholder="Nombre del Tipo de Apoyo">
+                    <input class="form-control" type="search" name="query" placeholder="Nombre de la Obligación">
                 </div>
             </div>
 

@@ -9,6 +9,8 @@ use Session;
 
 // Modelos
 use App\Models\TransparencyDependency;
+use App\Models\TransparencyFile;
+
 use Illuminate\Http\Request;
 
 class TransparencyDependencyController extends Controller
@@ -27,15 +29,25 @@ class TransparencyDependencyController extends Controller
 
     public function store(Request $request)
     {
-        //Validar
-        $this -> validate($request, array(
+        // Validar
+        $this->validate($request, [
             'name' => 'required|max:255',
-        ));
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'in_index' => 'boolean',
+        ]);
+
+        // Subir archivos
+        $logoPath = $request->file('logo') ? $request->file('logo')->store('logos', 'public') : null;
+        $imageCoverPath = $request->file('image_cover') ? $request->file('image_cover')->store('covers', 'public') : null;
 
         // Guardar datos en la base de datos
         $transparency_dependency = TransparencyDependency::create([
             'name' => $request->name,
             'description' => $request->description,
+            'logo' => $logoPath,
+            'image_cover' => $imageCoverPath,
+            'in_index' => $request->has('in_index') ? $request->in_index : false,
         ]);
 
         // Mensaje de session
@@ -61,16 +73,27 @@ class TransparencyDependencyController extends Controller
 
     public function update(Request $request, $id)
     {
-        //Validar
-        $this -> validate($request, array(
+        // Validar
+        $this->validate($request, [
             'name' => 'required|max:255',
-        ));
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'in_index' => 'boolean',
+        ]);
 
         $transparency_dependency = TransparencyDependency::find($id);
 
+        // Subir archivos
+        $logoPath = $request->file('logo') ? $request->file('logo')->store('logos', 'public') : $transparency_dependency->logo;
+        $imageCoverPath = $request->file('image_cover') ? $request->file('image_cover')->store('covers', 'public') : $transparency_dependency->image_cover;
+
+        // Actualizar datos en la base de datos
         $transparency_dependency->update([
             'name' => $request->name,
             'description' => $request->description,
+            'logo' => $logoPath,
+            'image_cover' => $imageCoverPath,
+            'in_index' => $request->has('in_index') ? $request->in_index : false,
         ]);
 
         // Mensaje de session

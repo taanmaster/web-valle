@@ -13,11 +13,16 @@ class TransparencyDependency extends Model
 
     public function files()
     {
-        return $this->hasMany(TransparencyFile::class);
+        return $this->hasMany(TransparencyFile::class, 'dependency_id');
     }
 
     public function obligations()
     {
-        return $this->hasMany(TransparencyObligation::class);
+        return $this->hasMany(TransparencyObligation::class, 'dependency_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(TransparencyDependencyUser::class, 'dependency_id');
     }
 }

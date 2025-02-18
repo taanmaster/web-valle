@@ -9,6 +9,7 @@ use Session;
 
 // Modelos
 use App\Models\TransparencyObligation;
+use App\Models\TransparencyDependency;
 
 use Illuminate\Http\Request;
 
@@ -17,8 +18,11 @@ class TransparencyObligationController extends Controller
     public function index()
     {
         $transparency_obligations = TransparencyObligation::paginate(10);
+        $transparency_dependencies = TransparencyDependency::all();
 
-        return view('transparency_obligations.index')->with('transparency_obligations', $transparency_obligations);
+        return view('transparency_obligations.index')
+        ->with('transparency_obligations', $transparency_obligations)
+        ->with('transparency_dependencies', $transparency_dependencies);
     }
 
     public function create()
@@ -28,15 +32,21 @@ class TransparencyObligationController extends Controller
 
     public function store(Request $request)
     {
-        //Validar
-        $this -> validate($request, array(
+        // Validar
+        $this->validate($request, [
             'name' => 'required|max:255',
-        ));
+            'dependency_id' => 'required|integer',
+            'type' => 'required|string',
+            'update_period' => 'required|string',
+        ]);
 
         // Guardar datos en la base de datos
         $transparency_obligation = TransparencyObligation::create([
             'name' => $request->name,
             'description' => $request->description,
+            'dependency_id' => $request->dependency_id,
+            'type' => $request->type,
+            'update_period' => $request->update_period,
         ]);
 
         // Mensaje de session
@@ -59,19 +69,26 @@ class TransparencyObligationController extends Controller
 
         return view('transparency_obligations.edit')->with('transparency_obligation', $transparency_obligation);
     }
-
+    
     public function update(Request $request, $id)
     {
-        //Validar
-        $this -> validate($request, array(
+        // Validar
+        $this->validate($request, [
             'name' => 'required|max:255',
-        ));
+            'dependency_id' => 'required|integer',
+            'type' => 'required|string',
+            'update_period' => 'required|string',
+        ]);
 
         $transparency_obligation = TransparencyObligation::find($id);
 
+        // Actualizar datos en la base de datos
         $transparency_obligation->update([
             'name' => $request->name,
             'description' => $request->description,
+            'dependency_id' => $request->dependency_id,
+            'type' => $request->type,
+            'update_period' => $request->update_period,
         ]);
 
         // Mensaje de session
