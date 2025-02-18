@@ -34,6 +34,7 @@
                     <div class="card-body">
                         <p>{{ $transparency_dependency->description }}</p>
                     </div>
+                    
                     <div class="card-footer text-muted">
                         <div class="row">
                             <div class="col-md-12">
@@ -41,7 +42,7 @@
                                 <small>Actualizado: {{ $transparency_dependency->updated_at }}</small>
                             </div>
                             <div class="col-md-12">
-                                <div class="btn-group" role="group" aria-label="Basic example">
+                                <div class="btn-group mt-4" role="group" aria-label="Basic example">
                                     <form method="POST" action="{{ route('transparency_dependencies.destroy', $transparency_dependency->id) }}" style="display: inline-block;">
                                         <button type="submit" class="btn btn-sm btn-danger">
                                             <i class='bx bx-trash-alt'></i> Eliminar
@@ -60,16 +61,19 @@
                     <hr>
 
                     @foreach($transparency_dependency->users as $user)
-                    <div class="d-flex align-items-center justify-content-between">
+
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ 'https://www.gravatar.com/avatar/' . md5(strtolower(trim( $user->user->email ?? 'N/A'))) . '?d=retro&s=150' }}" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
                         <div>
-                            <h6>{{ $user->name }}</h6>
-                            <p>{{ $user->email }}</p>
+                            <h6 class="mb-0">{{ $user->user->name }}</h6>
+                            <p class="mb-0">{{ $user->user->email }}</p>
                         </div>
+                    </div>
                     @endforeach
 
                     <hr>
 
-                    <a href="" class="btn btn-sm btn-primary">Asociar un usuario</a>
+                    <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#associateUserModal">Asociar un usuario</a>
                 </div>
             </div>
 
@@ -125,6 +129,42 @@
 </div>
 
 @include('transparency_obligations.utilities._modal')
+
+<!-- Modal para asociar un usuario -->
+<div class="modal fade" id="associateUserModal" tabindex="-1" role="dialog" aria-labelledby="associateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h6 class="modal-title m-0 text-white" id="associateUserModalLabel">Asociar Usuario a Dependencia</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div><!--end modal-header-->
+
+            <form method="POST" action="{{ route('transparency_dependency_users.store') }}">
+                {{ csrf_field() }}
+
+                <div class="modal-body pd-25">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="user_id" class="form-label">Usuario <span class="text-danger tx-12">*</span></label>
+                            <select name="user_id" id="user_id" class="form-control" required>
+                                <option value="">Seleccione un usuario</option>
+                                @foreach($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="hidden" name="dependency_id" value="{{ $transparency_dependency->id }}">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-dark btn-sm">Asociar Usuario</button>
+                </div>
+            </form>
+        </div><!--end modal-content-->
+    </div><!--end modal-dialog-->
+</div><!--end modal-->
 
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

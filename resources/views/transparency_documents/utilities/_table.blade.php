@@ -2,10 +2,11 @@
     <table class="table">
         <thead class="thead-light">
             <tr>
-                <th>id</th>
+                <th>ID</th>
                 <th>Nombre</th>
-                <th>Creado</th>
-                <th>Actualizado</th>
+                <th>Periodo de Actualización</th>
+                <th>Año</th>
+                <th>Archivo</th>
                 <th scope="col">Acciones</th>
             </tr>
         </thead>
@@ -19,16 +20,22 @@
                         {{ $transparency_document->name }}
                     </a>
                 </td>
-
-                <td>{{ $transparency_document->created_at }}</td>
-                <td>{{ $transparency_document->updated_at }}</td>
-
+                <td>{{ $transparency_document->period }}º {{ $transparency_document->obligation->update_period }}</td>
+                <td>{{ $transparency_document->year }}</td>
+                <td>
+                    <a href="{{ asset('files/documents/' . $transparency_document->filename) }}" target="_blank">
+                        {{ $transparency_document->filename }}
+                    </a>
+                </td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
+                        {{--  
                         <a href="{{ route('transparency_documents.show', $transparency_document->id) }}" class="btn btn-sm btn-icon"><i class='bx bx-show-alt'></i> Ver Detalle</a>
+                        <a href="{{ route('transparency_documents.edit', $transparency_document->id) }}" class="btn btn-sm btn-icon"><i class='bx bx-edit'></i> Editar</a>
+                        --}}
 
                         <form method="POST" action="{{ route('transparency_documents.destroy', $transparency_document->id) }}" style="display: inline-block;">
-                            <button type="submit" class="btn btn-sm btn-icon">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
                                 <i class='bx bx-trash-alt text-danger'></i> Eliminar
                             </button>
                             {{ csrf_field() }}
@@ -41,4 +48,3 @@
         </tbody>
     </table>                    
 </div>
- 

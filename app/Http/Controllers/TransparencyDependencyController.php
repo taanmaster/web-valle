@@ -10,6 +10,7 @@ use Session;
 // Modelos
 use App\Models\TransparencyDependency;
 use App\Models\TransparencyFile;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
@@ -60,8 +61,11 @@ class TransparencyDependencyController extends Controller
     public function show($id)
     {
         $transparency_dependency = TransparencyDependency::find($id);
+        $users = User::all();
 
-        return view('transparency_dependencies.show')->with('transparency_dependency', $transparency_dependency);
+        return view('transparency_dependencies.show')
+        ->with('transparency_dependency', $transparency_dependency)
+        ->with('users', $users);
     }
 
     public function edit($id)
@@ -106,6 +110,32 @@ class TransparencyDependencyController extends Controller
     public function destroy($id)
     {
         $transparency_dependency = TransparencyDependency::find($id);
+
+        // Eliminar asociaciones de usuario
+        $transparency_dependency->users()->delete();
+
+        // Eliminar documentos
+        $transparency_dependency->documents()->each(function ($document) {
+            // Eliminar el archivo del sistema de archivos
+            if (\File::exists(public_path('files/transparency/' . $document->filename))) {
+                \File::delete(public_path('files/transparency/' . $document->filename));
+            }
+            $document->delete();
+        });
+
+        // Eliminar archivos de repositorio
+        $transparency_dependency->files()->each(function ($file) {
+            // Eliminar el archivo del sistema de archivos
+            if (\File::exists(public_path('files/transparency/' . $file->filename))) {
+                \File::delete(public_path('files/transparency/' . $file->filename));
+            }
+            $file->delete();
+        });
+
+        // Eliminar obligaciones
+        $transparency_dependency->obligations()->delete();
+
+        // Eliminar la dependencia
         $transparency_dependency->delete();
 
         Session::flash('success', 'Se eliminó la información de manera exitosa.');

@@ -18,6 +18,6 @@ class TransparencyObligation extends Model
 
     public function documents()
     {
-        return $this->hasMany(TransparencyDocument::class);
+        return $this->hasMany(TransparencyDocument::class, 'obligation_id');
     }
 }

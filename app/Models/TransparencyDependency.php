@@ -9,7 +9,23 @@ class TransparencyDependency extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'description',
+        'logo',
+        'image_cover',
+        'in_index',
+    ];
+
+    public function users()
+    {
+        return $this->hasMany(TransparencyDependencyUser::class, 'dependency_id');
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(TransparencyDocument::class, 'dependency_id');
+    }
 
     public function files()
     {
@@ -19,10 +35,5 @@ class TransparencyDependency extends Model
     public function obligations()
     {
         return $this->hasMany(TransparencyObligation::class, 'dependency_id');
-    }
-
-    public function users()
-    {
-        return $this->hasMany(TransparencyDependencyUser::class, 'dependency_id');
     }
 }

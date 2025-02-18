@@ -15,4 +15,9 @@ class TransparencyDocument extends Model
     {
     	return $this->belongsTo(TransparencyObligation::class, 'obligation_id');
     }
+
+    public function uploaded_by()
+    {
+    	return $this->belongsTo(User::class, 'id','uploaded_by');
+    }
 }

@@ -9,64 +9,27 @@ use Session;
 
 // Modelos
 use App\Models\TransparencyDependencyUser;
+use App\Models\User;
+use App\Models\TransparencyDependency;
 
 use Illuminate\Http\Request;
 
 class TransparencyDependencyUserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        $this->validate($request, [
+            'user_id' => 'required|exists:users,id',
+            'dependency_id' => 'required|exists:transparency_dependencies,id',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TransparencyDependencyUser $transparencyDependencyUser)
-    {
-        //
-    }
+        TransparencyDependencyUser::create([
+            'user_id' => $request->user_id,
+            'dependency_id' => $request->dependency_id,
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TransparencyDependencyUser $transparencyDependencyUser)
-    {
-        //
-    }
+        Session::flash('success', 'Usuario asociado correctamente a la dependencia.');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, TransparencyDependencyUser $transparencyDependencyUser)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TransparencyDependencyUser $transparencyDependencyUser)
-    {
-        //
+        return redirect()->back();
     }
 }

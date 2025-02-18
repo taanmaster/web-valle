@@ -75,7 +75,6 @@ class TransparencyObligationController extends Controller
         // Validar
         $this->validate($request, [
             'name' => 'required|max:255',
-            'dependency_id' => 'required|integer',
             'type' => 'required|string',
             'update_period' => 'required|string',
         ]);
@@ -86,7 +85,6 @@ class TransparencyObligationController extends Controller
         $transparency_obligation->update([
             'name' => $request->name,
             'description' => $request->description,
-            'dependency_id' => $request->dependency_id,
             'type' => $request->type,
             'update_period' => $request->update_period,
         ]);

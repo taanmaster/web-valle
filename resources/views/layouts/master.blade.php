@@ -4,11 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    {{--  
-    <title> @yield('title')| - Intranet</title>
-    --}}
     <title>Valle de Santiago | - Intranet</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="Valle de Santiago Intranet" name="description" />
     <meta content="Valle" name="author" />

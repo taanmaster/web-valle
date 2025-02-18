@@ -180,6 +180,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'transparency_files.destroy',
             ]);
 
+            Route::resource('dependency_users', TransparencyDependencyUserController::class)->names([
+                'index' => 'transparency_dependency_users.index',
+                'create' => 'transparency_dependency_users.create',
+                'store' => 'transparency_dependency_users.store',
+                'show' => 'transparency_dependency_users.show',
+                'edit' => 'transparency_dependency_users.edit',
+                'update' => 'transparency_dependency_users.update',
+                'destroy' => 'transparency_dependency_users.destroy',
+            ]);
+
             /* Repositorio */
             Route::post('dropzone/upload/{id}', 'TransparencyFileController@uploadFile')->name('dropzone.upload');
             Route::get('dropzone/fetch/{id}', 'TransparencyFileController@fetchFile')->name('dropzone.fetch');
