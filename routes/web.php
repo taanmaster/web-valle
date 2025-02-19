@@ -2,17 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::namespace('App\Http\Controllers')->group(function () {
     /* Portal Ciudadanos */
     Route::get('/', 'FrontController@index')->name('index');
@@ -56,10 +45,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'obligation.detail',
     ])->where('slug', '[\w\d\-\_]+');
 
-    Route::get('/transparencia/filtrar/documentos/{date}', [
+    Route::get('/filtrar-documentos/{slug}/{date}', [
         'uses' => 'FrontController@filterTransparencyDocumentByDate',
         'as' => 'document.filter',
-    ])->where('date', '[0-9]{4}-[0-9]{2}');
+    ])->where('date', '[0-9]{4}');
 
     /*
     Route::get('/transparencia/documentos/{slug}', [
@@ -220,11 +209,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'transparency_dependency_users.destroy',
             ]);
 
-            /* Repositorio */
+            /* Repositorio funciones Asincronas */
             Route::post('dropzone/upload/{id}', 'TransparencyFileController@uploadFile')->name('dropzone.upload');
             Route::get('dropzone/fetch/{id}', 'TransparencyFileController@fetchFile')->name('dropzone.fetch');
             Route::get('dropzone/delete/{id}', 'TransparencyFileController@deleteFile')->name('dropzone.delete');
-
         });
     });
 });

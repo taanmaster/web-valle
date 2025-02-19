@@ -164,6 +164,8 @@ class FrontController extends Controller
 
         Carbon::setLocale('es');
         
+        $documents = TransparencyDocument::where('obligation_id', $obligation->id)->orderBy('year', 'desc')->get();
+
         $dates = TransparencyDocument::selectRaw('YEAR(year) as year')
         ->groupBy('year')
         ->orderBy('year', 'desc')
@@ -175,15 +177,18 @@ class FrontController extends Controller
 
         return view('front.dependencies.obligation_detail')
         ->with('obligation', $obligation)
+        ->with('documents', $documents)
         ->with('dates', $dates);
     }
 
     // Módulo Documentos
-    public function filterTransparencyDocumentByDate($date)
+    public function filterTransparencyDocumentByDate($slug, $date)
     {
         $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
 
         Carbon::setLocale('es');
+        
+        $documents = TransparencyDocument::where('obligation_id', $obligation->id)->where('year', '=', $date)->orderBy('year', 'desc')->get();
         
         $dates = TransparencyDocument::selectRaw('YEAR(year) as year')
         ->groupBy('year')
@@ -196,6 +201,7 @@ class FrontController extends Controller
 
         return view('front.dependencies.obligation_detail')->with([
             'obligation' => $obligation,
+            'documents' => $documents,
             'dates' => $dates
         ]);
     }

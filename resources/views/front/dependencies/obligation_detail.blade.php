@@ -22,7 +22,7 @@
                         <ul class="nav nav-pills">
                             @foreach($dates as $date)
                                 <li class="nav-item">
-                                    <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="{{ route('document.filter', ['date' => $date->format('Y')]) }}">{{ $date->translatedFormat('Y') }}</a>
+                                    <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="{{ route('document.filter', [$obligation->slug, $date->format('Y')]) }}">{{ $date->translatedFormat('Y') }}</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -30,17 +30,16 @@
 
                     <div class="col-md-12">
                         <div class="row">
-                            @foreach($obligation->documents as $document)
+                            @foreach($documents as $document)
                             <div class="col-md-3">
-                                <a  href="{{ asset('files/documents/' . $document->filename) }}" target="_blank" class="card gazette-card d-block">
+                                <a href="{{ asset('files/documents/' . $document->filename) }}" target="_blank" class="card gazette-card d-block">
                                     <h4>{{ $document->name }}</h4>
                                     <div>
-                                        <p class="mb-0">Acta {{ $document->document_number }}</p>
-                                        <p>{{ Carbon\Carbon::parse($document->meeting_date)->translatedFormat('d F Y') }}</p>
+                                        <p class="mb-0">{{ $document->name }}</p>
+                                        <p>{{ Carbon\Carbon::parse($document->year)->translatedFormat('Y') }}</p>
                                     </div>
                                     <div class="btn btn-primary w-100 d-flex align-items-center justify-content-between gap-2">Descargar el Archivo <ion-icon name="download-outline"></ion-icon></div>
                                 </a>
-                            </div>
                             @endforeach                           
                         </div>
                     </div>
