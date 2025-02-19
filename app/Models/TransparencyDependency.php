@@ -11,6 +11,7 @@ class TransparencyDependency extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
         'logo',
         'image_cover',

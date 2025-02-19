@@ -17,8 +17,9 @@
 </head>
 
 <body id="body" class="">
-        @include('layouts.left-sidebar-tab')
-        @include('layouts.topbar')
+    @include('layouts.left-sidebar-tab')
+    @include('layouts.topbar')
+    
     <!-- Begin page -->
     <div class="page-wrapper">
 

@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 <head>
     <meta charset="utf-8">
 
@@ -15,6 +14,7 @@
 
     @include('layouts.head-css')
 </head>
+
 @yield('body')
 
 <!-- Start content -->
@@ -22,7 +22,5 @@
 <!-- content -->
 
 @include('layouts.vendor-scripts')
-
 </body>
-
 </html>
