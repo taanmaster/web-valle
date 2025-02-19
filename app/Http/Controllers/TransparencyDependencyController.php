@@ -117,8 +117,6 @@ class TransparencyDependencyController extends Controller
         $transparency_dependency->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
-            'logo' => $logoName,
-            'image_cover' => $imageCoverName,
             'description' => $request->description,
             'in_index' => $request->in_index ?? false,
         ]);
@@ -127,7 +125,7 @@ class TransparencyDependencyController extends Controller
         Session::flash('success', 'Información editada exitosamente.');
 
         // Enviar a vista
-        return redirect()->back();
+        return redirect()->route('transparency_dependencies.index');
     }
 
     public function destroy($id)
