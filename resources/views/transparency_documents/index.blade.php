@@ -12,7 +12,9 @@
     <div class="main-content">
         <div class="row align-items-center mb-4">
             <div class="col text-start">
+                {{--  
                 @include('transparency_documents.utilities._search_options')
+                --}}
                 <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-primary">Nuevo Documento</a>
             </div>
         </div>

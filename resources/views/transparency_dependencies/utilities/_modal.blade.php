@@ -29,7 +29,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="in_index" name="in_index">
+                                <input class="form-check-input" type="checkbox" id="in_index" name="in_index" value="1">
                                 <label class="form-check-label" for="in_index">Mostrar en la página web</label>
                             </div>
                         </div>

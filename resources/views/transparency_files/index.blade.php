@@ -12,7 +12,9 @@
     <div class="main-content">
         <div class="row align-items-center mb-4">
             <div class="col text-start">
+                {{--  
                 @include('transparency_files.utilities._search_options')
+                --}}
             </div>
         </div>
 

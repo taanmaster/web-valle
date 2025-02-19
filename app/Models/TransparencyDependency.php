@@ -24,7 +24,7 @@ class TransparencyDependency extends Model
 
     public function documents()
     {
-        return $this->hasMany(TransparencyDocument::class, 'dependency_id');
+        return $this->hasManyThrough(TransparencyDocument::class, TransparencyObligation::class, 'dependency_id', 'obligation_id');
     }
 
     public function files()

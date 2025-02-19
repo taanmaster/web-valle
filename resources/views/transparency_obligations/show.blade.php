@@ -10,6 +10,13 @@
 
 <div class="row layout-spacing">
     <div class="main-content">
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <a href="{{ route('transparency_dependencies.show', $transparency_obligation->dependency->id) }}" class="btn btn-secondary">
+                    <i class='bx bx-arrow-back'></i> Regresar al Detalle de la Dependencia
+                </a>
+            </div>
+        </div>
         <div class="row"> 
             <div class="col-md-4">
                 <div class="card">

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Str;
 use Auth;
 use Session;
+use Intervention\Image\Facades\Image as Image;
 
 // Modelos
 use App\Models\TransparencyDependency;
@@ -39,16 +40,23 @@ class TransparencyDependencyController extends Controller
         ]);
 
         // Subir archivos
-        $logoPath = $request->file('logo') ? $request->file('logo')->store('logos', 'public') : null;
-        $imageCoverPath = $request->file('image_cover') ? $request->file('image_cover')->store('covers', 'public') : null;
+        $logoPath = $request->file('logo');
+        $logoName = Str::random(8) . '_logo' . '.' . $logoPath->getClientOriginalExtension();
+        $logoLocation = public_path('images/dependencies/' . $logoName);
+        Image::make($logoPath)->resize(960, null, function($constraint) { $constraint->aspectRatio(); })->save($logoLocation);
+
+        $imageCoverPath = $request->file('image_cover');
+        $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
+        $imageCoverLocation = public_path('images/dependencies/' . $imageCoverName);
+        Image::make($imageCoverPath)->resize(960, null, function($constraint) { $constraint->aspectRatio(); })->save($imageCoverLocation);
 
         // Guardar datos en la base de datos
         $transparency_dependency = TransparencyDependency::create([
             'name' => $request->name,
             'description' => $request->description,
-            'logo' => $logoPath,
-            'image_cover' => $imageCoverPath,
-            'in_index' => $request->has('in_index') ? $request->in_index : false,
+            'logo' => $logoName,
+            'image_cover' => $imageCoverName,
+            'in_index' => $request->in_index ?? false,
         ]);
 
         // Mensaje de session
@@ -88,16 +96,27 @@ class TransparencyDependencyController extends Controller
         $transparency_dependency = TransparencyDependency::find($id);
 
         // Subir archivos
-        $logoPath = $request->file('logo') ? $request->file('logo')->store('logos', 'public') : $transparency_dependency->logo;
-        $imageCoverPath = $request->file('image_cover') ? $request->file('image_cover')->store('covers', 'public') : $transparency_dependency->image_cover;
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo');
+            $logoName = Str::random(8) . '_logo' . '.' . $logoPath->getClientOriginalExtension();
+            $logoLocation = public_path('images/dependencies/' . $logoName);
+            Image::make($logoPath)->resize(960, null, function($constraint) { $constraint->aspectRatio(); })->save($logoLocation);
+            $transparency_dependency->logo = $logoName;
+        }
+
+        if ($request->hasFile('image_cover')) {
+            $imageCoverPath = $request->file('image_cover');
+            $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
+            $imageCoverLocation = public_path('images/dependencies/' . $imageCoverName);
+            Image::make($imageCoverPath)->resize(960, null, function($constraint) { $constraint->aspectRatio(); })->save($imageCoverLocation);
+            $transparency_dependency->image_cover = $imageCoverName;
+        }
 
         // Actualizar datos en la base de datos
         $transparency_dependency->update([
             'name' => $request->name,
             'description' => $request->description,
-            'logo' => $logoPath,
-            'image_cover' => $imageCoverPath,
-            'in_index' => $request->has('in_index') ? $request->in_index : false,
+            'in_index' => $request->in_index ?? false,
         ]);
 
         // Mensaje de session
@@ -111,20 +130,19 @@ class TransparencyDependencyController extends Controller
     {
         $transparency_dependency = TransparencyDependency::find($id);
 
-        // Eliminar asociaciones de usuario
-        $transparency_dependency->users()->delete();
-
-        // Eliminar documentos
-        $transparency_dependency->documents()->each(function ($document) {
-            // Eliminar el archivo del sistema de archivos
-            if (\File::exists(public_path('files/transparency/' . $document->filename))) {
-                \File::delete(public_path('files/transparency/' . $document->filename));
-            }
-            $document->delete();
+        // Eliminar documentos de las obligaciones
+        $transparency_dependency->obligations->each(function ($obligation) {
+            $obligation->documents->each(function ($document) {
+                // Eliminar el archivo del sistema de archivos
+                if (\File::exists(public_path('files/transparency/' . $document->filename))) {
+                    \File::delete(public_path('files/transparency/' . $document->filename));
+                }
+                $document->delete();
+            });
         });
 
         // Eliminar archivos de repositorio
-        $transparency_dependency->files()->each(function ($file) {
+        $transparency_dependency->files->each(function ($file) {
             // Eliminar el archivo del sistema de archivos
             if (\File::exists(public_path('files/transparency/' . $file->filename))) {
                 \File::delete(public_path('files/transparency/' . $file->filename));
@@ -133,7 +151,12 @@ class TransparencyDependencyController extends Controller
         });
 
         // Eliminar obligaciones
-        $transparency_dependency->obligations()->delete();
+        $transparency_dependency->obligations->each(function ($obligation) {
+            $obligation->delete();
+        });
+
+        // Eliminar asociaciones de usuario
+        $transparency_dependency->users()->delete();
 
         // Eliminar la dependencia
         $transparency_dependency->delete();
