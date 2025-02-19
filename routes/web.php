@@ -19,6 +19,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     Route::get('/en-construccion', 'FrontController@building')->name('building');
 
+    // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
         'uses' => 'FrontController@gazetteList',
         'as' => 'gazette.list',
@@ -35,10 +36,39 @@ Route::namespace('App\Http\Controllers')->group(function () {
     ]);
 
     Route::get('/filtrar/gaceta-municipal/{type}/{date}', [
-        'uses' => 'FrontController@filterByDate',
+        'uses' => 'FrontController@filterGazetteByDate',
         'as' => 'gazette.filter',
     ])->where('date', '[0-9]{4}-[0-9]{2}');
 
+    // Módulo Transparencia
+    Route::get('/transparencia/dependencias', [
+        'uses' => 'FrontController@dependencyList',
+        'as' => 'dependency.list',
+    ]);
+
+    Route::get('/transparencia/dependencias/{slug}', [
+        'uses' => 'FrontController@dependencyDetail',
+        'as' => 'dependency.detail',
+    ])->where('slug', '[\w\d\-\_]+');
+
+    Route::get('/transparencia/obligaciones/{slug}', [
+        'uses' => 'FrontController@obligationDetail',
+        'as' => 'obligation.detail',
+    ])->where('slug', '[\w\d\-\_]+');
+
+    Route::get('/transparencia/filtrar/documentos/{date}', [
+        'uses' => 'FrontController@filterTransparencyDocumentByDate',
+        'as' => 'document.filter',
+    ])->where('date', '[0-9]{4}-[0-9]{2}');
+
+    /*
+    Route::get('/transparencia/documentos/{slug}', [
+        'uses' => 'FrontController@documentDetail',
+        'as' => 'document.detail',
+    ])->where('slug', '[\w\d\-\_]+');
+    */
+
+    // Módulo Textos Legales
     Route::get('/informacion-legal/{slug}', 'FrontController@legalText')->name('legal.text');
 
     //Route::get('{any}', 'DashboardController@index')->name('index');

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('dependency_id')->unsigned();
 
             $table->string('name');
+            $table->string('slug')->nullable();
             $table->text('description')->nullable();
 
             $table->string('type');

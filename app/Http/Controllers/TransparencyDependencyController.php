@@ -53,6 +53,7 @@ class TransparencyDependencyController extends Controller
         // Guardar datos en la base de datos
         $transparency_dependency = TransparencyDependency::create([
             'name' => $request->name,
+            'slug' => Str::slug($request->name),
             'description' => $request->description,
             'logo' => $logoName,
             'image_cover' => $imageCoverName,
@@ -115,6 +116,9 @@ class TransparencyDependencyController extends Controller
         // Actualizar datos en la base de datos
         $transparency_dependency->update([
             'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'logo' => $logoName,
+            'image_cover' => $imageCoverName,
             'description' => $request->description,
             'in_index' => $request->in_index ?? false,
         ]);

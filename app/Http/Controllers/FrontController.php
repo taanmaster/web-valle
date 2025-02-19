@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
 use Str;
 use Auth;
 use Session;
 use Carbon\Carbon;
 
+// Modelos Gaceta Municipal
 use App\Models\Gazette;
-use App\Models\legalText;
+
+// Modelos Transparencia
+use App\Models\TransparencyDependency;
+use App\Models\TransparencyObligation;
+use App\Models\TransparencyDocument;
+
+// Modelos Textos Legales
+use App\Models\LegalText;
 
 use Illuminate\Http\Request;
 
@@ -16,6 +25,7 @@ class FrontController extends Controller
 {
     public function index()
     {
+        // Modulo Gacetas Municipales
         Carbon::setLocale('es');
         $gazettes = Gazette::with('files')->orderBy('id', 'desc')->limit(5)->get();
         $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
@@ -31,15 +41,21 @@ class FrontController extends Controller
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
 
+        // Modulo Transparencia
+        // Cargar las dependencias que quieren mostrar en la página de inicio.
+        $dependencies = TransparencyDependency::where('in_index', true)->get();
+
         return view('front.index')->with([
             'gazettes' => $gazettes,
             'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
             'solemn_gazette_sessions' => $solemn_gazette_sessions,
             'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
-            'dates' => $dates
+            'dates' => $dates,
+            'dependencies' => $dependencies
         ]);
     }
 
+    // Modulo Gacetas Municipales
     public function gazetteList($type)
     {
         switch ($type) {
@@ -88,7 +104,7 @@ class FrontController extends Controller
         ->with('gazette', $gazette);
     }
 
-    public function filterByDate($type, $date)
+    public function filterGazetteByDate($type, $date)
     {
         Carbon::setLocale('es');
 
@@ -123,6 +139,68 @@ class FrontController extends Controller
         ]);
     }
 
+    // Módulo Transparencia
+    // Módulo Dependencias
+    public function dependencyList()
+    {
+        $dependencies = TransparencyDependency::orderBy('name', 'asc')->get();
+
+        return view('front.dependencies.index')
+        ->with('dependencies', $dependencies);
+    }
+    
+    public function dependencyDetail($slug)
+    {   
+        $dependency = TransparencyDependency::where('slug', '=', $slug)->first();
+
+        return view('front.dependencies.detail')
+        ->with('dependency', $dependency);
+    }
+
+    // Módulo Obligaciones
+    public function obligationDetail($slug)
+    {
+        $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
+
+        Carbon::setLocale('es');
+        
+        $dates = TransparencyDocument::selectRaw('YEAR(year) as year')
+        ->groupBy('year')
+        ->orderBy('year', 'desc')
+        ->get()
+        ->pluck('year')
+        ->map(function ($year) {
+            return Carbon::createFromDate($year, 1, 15);
+        });
+
+        return view('front.dependencies.obligation_detail')
+        ->with('obligation', $obligation)
+        ->with('dates', $dates);
+    }
+
+    // Módulo Documentos
+    public function filterTransparencyDocumentByDate($date)
+    {
+        $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
+
+        Carbon::setLocale('es');
+        
+        $dates = TransparencyDocument::selectRaw('YEAR(year) as year')
+        ->groupBy('year')
+        ->orderBy('year', 'desc')
+        ->get()
+        ->pluck('year')
+        ->map(function ($year) {
+            return Carbon::createFromDate($year, 1, 15);
+        });
+
+        return view('front.dependencies.obligation_detail')->with([
+            'obligation' => $obligation,
+            'dates' => $dates
+        ]);
+    }
+
+    // Módulo Textos Legales
     public function legalText($slug)
     {
         $text = LegalText::where('slug', $slug)->orderBy('priority', 'asc')->orderBy('created_at', 'desc')->first();
@@ -130,9 +208,7 @@ class FrontController extends Controller
         return view('front.legal')->with('text', $text);
     }
 
-
     /* PARA PROPÓSITOS DE DESARROLLO */
-
     public function building()
     {
         return view('front.building');

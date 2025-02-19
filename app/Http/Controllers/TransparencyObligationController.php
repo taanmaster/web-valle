@@ -43,6 +43,7 @@ class TransparencyObligationController extends Controller
         // Guardar datos en la base de datos
         $transparency_obligation = TransparencyObligation::create([
             'name' => $request->name,
+            'slug' => Str::slug($request->name),
             'description' => $request->description,
             'dependency_id' => $request->dependency_id,
             'type' => $request->type,
@@ -84,6 +85,7 @@ class TransparencyObligationController extends Controller
         // Actualizar datos en la base de datos
         $transparency_obligation->update([
             'name' => $request->name,
+            'slug' => Str::slug($request->name),
             'description' => $request->description,
             'type' => $request->type,
             'update_period' => $request->update_period,

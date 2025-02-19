@@ -4,8 +4,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card card-image wow fadeInUp">
-                <img src="{{ asset('front/img/placeholder.jpg') }}" alt="">
+            <div class="card card-image card-image-banner wow fadeInUp">
+                <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
                 <div class="overlay"></div>
                 <div class="card-content">
                     <h2>Un gobierno de ciudadanos <br> para ciudadanos</h2>
@@ -81,6 +81,43 @@
                 <a href="{{ route('gazette.list', 'all') }}" class="btn btn-secondary d-flex align-items-center gap-2">Acceder a todo el archivo <ion-icon name="caret-forward-outline"></ion-icon></a>
             </div>
         </div>
+    </div>
+
+    <!-- Dependencias -->
+    <div class="row">
+        @foreach($dependencies as $dependency)
+        <div class="col-md-6">
+            @if($dependency->image_cover != NULL)
+            <a href="{{ route('dependency.detail', $dependency->slug) }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                <img src="{{ asset('images/dependencies/' . $dependency->image_cover) }}" class="card-img-top" alt="Portada de {{ $dependency->name }}">
+                <div class="overlay"></div>
+                
+                <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                    <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                </div>
+
+                <div class="card-content">
+                    <img src="{{ asset('images/dependencies/' . $dependency->logo) }}" class="card-logo mb-3" alt="Logotipo de {{ $dependency->name }}" style="height: 80px;">
+                    <h4>{{ $dependency->name }}</h4>
+                    <p class="mb-0">{{ $dependency->description }}</p>
+                </div>
+            </a>
+            @else
+            <a href="{{ route('dependency.detail', $dependency->slug) }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp h-100">
+                <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                    <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                </div>
+
+                <div class="card-content">
+                    <img src="{{ asset('images/dependencies/' . $dependency->logo) }}" class="card-logo mb-3" alt="Logotipo de {{ $dependency->name }}" style="height: 80px;">
+                    
+                    <h4>{{ $dependency->name }}</h4>
+                    <p class="mb-0">{{ $dependency->description }}</p>
+                </div>
+            </a>
+            @endif
+        </div>
+        @endforeach
     </div>
 </div>
 @endsection

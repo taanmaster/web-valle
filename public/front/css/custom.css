@@ -538,18 +538,21 @@ box-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
     gap: 35px;
 }
 
+.card-image-banner{
+    min-height: 450px;
+    align-items: flex-start;
+    justify-content: end;
+}
+
 .card-image{
     padding: 40px 45px;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: end;
     gap: 35px;
-    min-height: 450px;
     position: relative;
     overflow: hidden;
 }
 
-.card-image img{
+.card-image .card-img-top{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -582,6 +585,7 @@ box-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
     height: 42px;
     flex-shrink: 0;
     transition: .2s ease-in-out all;
+    z-index: 10;
 }
 
 .card-icon ion-icon{
@@ -596,6 +600,37 @@ box-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
     flex-direction: column;
     align-items: flex-start;
     gap: 35px; 
+}
+
+.card-logo{
+    position: relative !important;
+}
+
+.link-card{
+    transition: .2s ease-in-out all;
+    text-decoration: none;
+}
+
+.link-card .card-icon{
+    position: absolute;
+    right: 30px;
+    top: 30px;
+}
+
+.link-card:hover{
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+.link-card:hover .card-icon ion-icon{
+    transform: rotate(-45deg);
+}
+
+.card-alignment-bottom{
+    align-items: flex-start;
+    justify-content: end;
+    flex-direction: column;
+    gap: 35px;
 }
 
 /* FOLDER STYLES */

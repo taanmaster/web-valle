@@ -18,9 +18,9 @@
           </a>
         </li>
         <li>
-          <a href="{{ route('building') }}">
+          <a href="{{ route('dependency.list') }}">
             <ion-icon name="people-outline"></ion-icon>
-            <span>Gobierno Municipal</span>
+            <span>Transparencia</span>
           </a>
         </li>
         <li>
