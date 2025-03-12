@@ -79,6 +79,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'admin.config',
         ]);
 
+        /* Comunicación Social */
+        Route::resource('banners', BannerController::class);
+        Route::resource('headerbands', HeaderBandController::class);
+        Route::resource('popups', PopupController::class);    
+
         /* Textos Legales */
         Route::resource('legals', LegalTextController::class);
 

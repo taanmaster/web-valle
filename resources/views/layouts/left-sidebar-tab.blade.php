@@ -16,6 +16,14 @@
                     </li>
                     @endif
 
+                    @if(auth()->user()->can('dashboard_view') || auth()->user()->can('all_access'))
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Comunicación Social" data-bs-trigger="hover">
+                        <a href="#valleComunicacion" id="comunicacion-tab" class="nav-link">
+                            <i class="ti ti-smart-home menu-icon"></i>
+                        </a>
+                    </li>
+                    @endif
+
                     @if(auth()->user()->can('transparency_view') || auth()->user()->can('all_access'))
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Transparencia" data-bs-trigger="hover">
                         <a href="#valleTransparency" id="apps-tab" class="nav-link">
@@ -78,6 +86,25 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+            @endif
+
+            @if(auth()->user()->can('dashboard_view') || auth()->user()->can('all_access'))
+            <div id="valleComunicacion" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="comunicacion-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Comunicación Social</h6>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('banners.index') }}">Banners</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('headerbands.index') }}">Cintillos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('popups.index') }}">Popups</a>
                     </li>
                 </ul>
             </div>

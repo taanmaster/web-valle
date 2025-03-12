@@ -3,6 +3,7 @@
     <!-- Navbar -->
     <nav class="navbar-custom" id="navbar-custom">
         <ul class="list-unstyled topbar-nav float-end mb-0">
+            {{--  
             <li class="dropdown notification-list">
                 <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <i class="ti ti-mail"></i>
@@ -100,7 +101,9 @@
                     </a>
                 </div>
             </li>
+            --}}
 
+            {{--  
             <li class="dropdown notification-list">
                 <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <i class="ti ti-bell"></i>
@@ -199,6 +202,7 @@
                     </a>
                 </div>
             </li>
+            --}}
 
             <li class="dropdown">
                 <a class="nav-link dropdown-toggle nav-user" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -234,19 +238,23 @@
         </ul>
         <!--end topbar-nav-->
 
+        
         <ul class="list-unstyled topbar-nav mb-0">
             <li>
                 <button class="nav-link button-menu-mobile nav-icon" id="togglemenu">
                     <i class="ti ti-menu-2"></i>
                 </button>
             </li>
+            {{--  
             <li class="hide-phone app-search">
                 <form role="search" action="#" method="get">
                     <input type="search" name="search" class="form-control top-search mb-0" placeholder="Búsqueda general...">
                     <button type="submit"><i class="ti ti-search"></i></button>
                 </form>
             </li>
+            --}}
         </ul>
+        
     </nav>
     <!-- end navbar-->
 </div>
