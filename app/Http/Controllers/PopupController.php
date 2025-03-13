@@ -60,7 +60,7 @@ class PopupController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = $img2 . time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('img/popups/' . $filename);
+            $location = public_path('front/img/popups/' . $filename);
 
             Image::make($image)->resize(1280,null, function($constraint){ $constraint->aspectRatio(); })->save($location);
 
@@ -124,7 +124,7 @@ class PopupController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = $img2 . time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('img/popups/' . $filename);
+            $location = public_path('front/img/popups/' . $filename);
 
             Image::make($image)->resize(1280,null, function($constraint){ $constraint->aspectRatio(); })->save($location);
 

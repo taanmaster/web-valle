@@ -81,7 +81,19 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Comunicación Social */
         Route::resource('banners', BannerController::class);
-        Route::resource('headerbands', HeaderBandController::class);
+
+        Route::post('/banners/status/{id}', [
+            'uses' => 'BannerController@status',
+            'as' => 'banners.status',
+        ]);
+
+        Route::resource('headerbands', HeaderbandController::class);
+
+        Route::post('/headerbands/status/{id}', [
+            'uses' => 'HeaderbandController@status',
+            'as' => 'headerbands.status',
+        ]);
+
         Route::resource('popups', PopupController::class);    
 
         /* Textos Legales */

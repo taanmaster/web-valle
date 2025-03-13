@@ -1,34 +1,15 @@
-@php
-    $html_tag_data = [];
-    $title = 'Popups';
-    $description= 'Creación de Empresas'
-@endphp
-@extends('layout',['html_tag_data'=>$html_tag_data, 'title'=>$title, 'description'=>$description])
-
-@section('css')
-@endsection
-
-@section('js_vendor')
-@endsection
-
-@section('js_page')
-@endsection
-
+@extends('layouts.master')
+@section('title')Intranet @endsection
 @section('content')
-    <div class="col">
-        <!-- Title and Top Buttons Start -->
-        <div class="page-title-container mb-3">
-            <div class="row">
-                <!-- Title Start -->
-                <div class="col mb-2">
-                    <h1 class="mb-2 pb-0 display-4" id="title">{{ $title }}</h1>
-                    <div class="text-muted font-heading text-small">Let us manage the database engines for your applications so you can focus on building.</div>
-                </div>
-                <!-- Title End -->
-            </div>
-        </div>
-        <!-- Title and Top Buttons End -->
+<!-- this is breadcrumbs -->
+@component('components.breadcrumb')
+@slot('li_1') Intranet @endslot
+@slot('li_2') Popups @endslot
+@slot('title') Editar Popup @endslot
+@endcomponent
 
+<div class="row layout-spacing">
+    <div class="main-content">
         <form method="POST" action="{{ route('popups.update', $popup->id) }}" enctype="multipart/form-data">
             {{ csrf_field() }}
             {{ method_field('PUT') }}
@@ -48,13 +29,13 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="title">Titulo</label>
+                                    <label for="title">Título <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="title" name="title" value="{{ $popup->title }}" required="" />
                                 </div>
         
                                 <div class="form-group col-md-6">
-                                    <label for="subtitle">Subtítulo</label>
-                                    <input type="text" class="form-control" id="subtitle" name="subtitle" value="{{ $popup->subtitle }}" required="" />
+                                    <label for="subtitle">Subtítulo <span class="text-info">(Opcional)</span></label>
+                                    <input type="text" class="form-control" id="subtitle" name="subtitle" value="{{ $popup->subtitle }}" />
                                 </div>
         
                                  <div class="form-group col-md-12">
@@ -80,24 +61,18 @@
                             </div>
                             <hr>
                                 <div class="row">
-                                <!--
-                                <div class="form-group col-md-6">
-                                    <label for="hex">Color</label>
-                                    <input type="color" class="form-control" id="hex" name="hex" value="{{ old('hex') ?? 'red' }}" required="" />
-                                </div>
-                                -->
-        
-                            <div class="form-group col-md-12">
-                                    <label for="image">Imagen de popup</label>
-                                    <input type="text" class="form-control" placeholder="{{ $popup->image }}" readonly="" />
-                                    <input type="file" id="image" name="image" onchange="loadFile(event)" />
+                                <div class="form-group col-md-12">
+                                    <label for="image">Imagen del popup <span class="text-success">Recomendado</span></label>
+                                    <input type="file" id="image" class="form-control" name="image" />
+                                    @if($popup->image)
+                                    <img class="img-fluid mt-2" src="{{ asset('img/popups/' . $popup->image ) }}" alt="{{ $popup->title }}">
+                                    @endif
                                 </div>
                             </div>
         
                             <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="custom-control custom-checkbox mb-3">
-                                        
                                         <input {{ ($popup->has_button == '1') ? 'checked' : 'true' }} type="checkbox" class="custom-control-input" id="has_button" name="has_button" value="1">
                                         <label class="custom-control-label" for="has_button">Mostrar Botón</label>
                                     </div>
@@ -182,6 +157,6 @@
                 </div>
             </div>
         </form>
-        
     </div>
+</div>
 @endsection

@@ -2,7 +2,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Pertenece a</th>
                 <th>Imagen</th>
                 <th>Información</th>
                 <th>Prioridad</th>
@@ -14,7 +13,6 @@
         </thead>
         <tfoot>
             <tr>
-                <th>Pertenece a</th>
                 <th>Imagen</th>
                 <th>Información</th>
                 <th>Prioridad</th>
@@ -28,10 +26,8 @@
         <tbody>
             @foreach($banners as $banner)
             <tr>
-                <td>{{ $banner->company->name }}</td>
-                
                 <td style="width: 150px;">
-                    <img style="width: 100%;" src="{{ asset('img/banners/' . $banner->image ) }}" alt="{{ $banner->title }}">
+                    <img style="width: 100%;" src="{{ asset('front/img/banners/' . $banner->image ) }}" alt="{{ $banner->title }}">
                 </td>
 
                 <td style="width: 250px;">
@@ -51,18 +47,18 @@
                     @endif
                 </td>
                 
-                <td class="d-flex">
-                    <a href="{{ route('banners.show', $banner->id) }}" class="btn btn-link text-dark px-1 py-0" data-toggle="tooltip" data-original-title="Ver Detalle">
+                <td class="d-flex gap-3">
+                    <a href="{{ route('banners.show', $banner->id) }}" class="btn btn-primary" data-toggle="tooltip" data-original-title="Ver Detalle">
                         Ver Detalle
                     </a>
 
-                    <a href="{{ route('banners.edit', $banner->id) }}" class="btn btn-link text-dark px-1 py-0" data-toggle="tooltip" data-original-title="Editar">
+                    <a href="{{ route('banners.edit', $banner->id) }}" class="btn btn-primary" data-toggle="tooltip" data-original-title="Editar">
                         Editar
                     </a>
 
                     <form method="POST" action="{{ route('banners.status', $banner->id) }}">
                         {{ csrf_field() }}
-                        <button type="submit" class="btn btn-link text-dark px-1 py-0" data-toggle="tooltip" data-original-title="Cambiar estado">
+                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Cambiar estado">
                             Cambiar Estado
                         </button>
                     </form>
@@ -71,7 +67,7 @@
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
 
-                        <button type="submit" class="btn btn-link text-danger px-1 py-0" data-toggle="tooltip" data-original-title="Eliminar Banner">
+                        <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-original-title="Eliminar Banner">
                             Eliminar
                         </button>
                     </form>

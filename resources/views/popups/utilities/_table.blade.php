@@ -2,7 +2,6 @@
     <table class="table table-dashboard">
         <thead>
             <tr>
-                <th>Pertenece a</th>
                 <th>Imagen</th>
                 <th>Información</th>
                 <th>Botón</th>
@@ -15,7 +14,6 @@
         <tbody>
             @foreach($popups as $popup)
             <tr>
-                <td>{{ $popup->company->name }}</td>
                 <td style="width: 150px;">
                     <img style="width: 100%;" src="{{ asset('img/popups/' . $popup->image ) }}" alt="{{ $popup->title }}">
                     
@@ -35,18 +33,18 @@
                     @endif
                 </td>
                 
-                <td class="d-flex">
-                    <a href="{{ route('popups.show', $popup->id) }}" class="btn btn-link text-dark px-1 py-0">
+                <td class="d-flex gap-3">
+                    <a href="{{ route('popups.show', $popup->id) }}" class="btn btn-primary">
                         Ver Detalle
                     </a>
 
-                    <a href="{{ route('popups.edit', $popup->id) }}" class="btn btn-link text-dark px-1 py-0">
+                    <a href="{{ route('popups.edit', $popup->id) }}" class="btn btn-primary">
                         Editar
                     </a>
 
                     <form method="POST" action="{{ route('popups.status', $popup->id) }}">
                         {{ csrf_field() }}
-                        <button type="submit" class="btn btn-link text-dark px-1 py-0">
+                        <button type="submit" class="btn btn-primary">
                             Cambiar Estatus
                         </button>
                     </form>
@@ -56,7 +54,7 @@
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
 
-                        <button type="submit" class="btn btn-link text-danger px-1 py-0">
+                        <button type="submit" class="btn btn-danger">
                             Eliminar
                         </button>
                     </form>

@@ -2,7 +2,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Pertenece a</th>
                 <th>Título</th>
                 <th>Texto</th>
                 <th>Link</th>
@@ -14,7 +13,6 @@
         <tbody>
             @foreach($headerbands as $headerband)
             <tr>
-                <td>{{ $headerband->company->name }}</td>
                 <td style="width:250px;">
                     <strong>{{ $headerband->title }}</strong><br>
                 </td>
@@ -30,14 +28,14 @@
                     @endif
                 </td>
                 
-                <td class="d-flex">
-                    <a href="{{ route('headerbands.edit', $headerband->id) }}" class="btn btn-link text-dark px-1 py-0" data-bs-toggle="tooltip" data-bs-original-title="Editar">
+                <td class="d-flex gap-3">
+                    <a href="{{ route('headerbands.edit', $headerband->id) }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-original-title="Editar">
                         <i class='bx bx-edit-alt'></i>
                     </a>
 
                     <form method="POST" action="{{ route('headerbands.status', $headerband->id) }}">
                         {{ csrf_field() }}
-                        <button type="submit" class="btn btn-link text-dark px-1 py-0" data-bs-toggle="tooltip" data-bs-original-title="Cambiar estado">
+                        <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-original-title="Cambiar estado">
                             Cambiar Estado
                         </button>
                     </form>
@@ -46,7 +44,7 @@
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
 
-                        <button type="submit" class="btn btn-link text-danger px-1 py-0" data-bs-toggle="tooltip" data-bs-original-title="Eliminar Cintillo">
+                        <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-original-title="Eliminar Cintillo">
                             <i class='bx bx-trash-alt text-danger'></i>
                         </button>
                     </form>

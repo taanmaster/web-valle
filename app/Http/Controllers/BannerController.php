@@ -22,9 +22,7 @@ class BannerController extends Controller
 
     public function create()
     {
-        $companies = Company::all();
-
-        return view('banners.create')->with('companies', $companies);
+        return view('banners.create');
     }
 
     public function store(Request $request)
@@ -68,7 +66,7 @@ class BannerController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = 'bannerdesktop' . time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('img/banners/' . $filename);
+            $location = public_path('front/img/banners/' . $filename);
 
             Image::make($image)->resize(1280,null, function($constraint){ $constraint->aspectRatio(); })->save($location);
 
@@ -79,7 +77,7 @@ class BannerController extends Controller
         if ($request->hasFile('image_responsive')) {
             $image = $request->file('image_responsive');
             $filename = 'bannerresponsive' . time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('img/banners/' . $filename);
+            $location = public_path('front/img/banners/' . $filename);
 
             Image::make($image)->resize(1280,null, function($constraint){ $constraint->aspectRatio(); })->save($location);
             $banner->image_responsive = $filename;
@@ -104,9 +102,8 @@ class BannerController extends Controller
     public function edit($id)
     {
         $banner = Banner::find($id);
-        $companies = Company::all();
 
-        return view('banners.edit')->with('banner', $banner)->with('companies', $companies);
+        return view('banners.edit')->with('banner', $banner);
     }
 
     public function update(Request $request, $id)

@@ -2,17 +2,64 @@
 
 @section('content')
 <div class="container">
+    @if(!empty($headerbands))
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-12">
+            <div class="d-flex gap-4">
+                @foreach($headerbands as $hb)
+                    <style type="text/css">
+                        .headerband-{{ Str::slug($hb->title) }}{
+                            background-color: {{ $hb->hex_background  }} !important;
+                            color: {{ $hb->hex_text  }} !important;
+                        }
+
+                        .headerband{
+                            padding: 10px 0;
+                            width: 100%;
+                        }
+                        
+                    </style>
+
+                    <div class="col card headerband headerband-{{ Str::slug($hb->title) }}">
+                        <div class=" d-flex align-items-center justify-content-center">
+                            <h6 class="mb-0 me-3">{{ $hb->title }}</h6>
+                            {!! $hb->text !!}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    @endif    
+
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card card-image card-image-banner wow fadeInUp">
-                <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
-                <div class="overlay"></div>
-                <div class="card-content">
-                    <h2>Un gobierno de ciudadanos <br> para ciudadanos</h2>
-                    <p>¡Un valle para todos! se construye mejorando la transparencia y facilitando el acceso de los ciudadanos a su gestión con el gobierno y la información pública</p>
+            @if(!empty($banners))
+                <div class="owl-carousel owl-theme main-carousel">
+                    @foreach($banners as $banner)
+                    <div class="item main-banner banner-{{ $banner->id }}">
+                        <div class="card card-image card-image-banner wow fadeInUp">
+                            <img class="card-img-top" src="{{ asset('front/img/banners/' . $banner->image) }}" alt="">
+                            <div class="overlay"></div>
+                            <div class="card-content">
+                                <h2>{{ $banner->title }}</h2>
+                                <p>{{ $banner->subtitle }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
-            </div>
-
+            @else
+                <div class="card card-image card-image-banner wow fadeInUp">
+                    <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
+                    <div class="overlay"></div>
+                    <div class="card-content">
+                        <h2>Un gobierno de ciudadanos <br> para ciudadanos</h2>
+                        <p>¡Un valle para todos! se construye mejorando la transparencia y facilitando el acceso de los ciudadanos a su gestión con el gobierno y la información pública</p>
+                    </div>
+                </div>
+            @endif
+            
             <div class="card card-normal wow fadeInUp">
                 <div class="card-title">
                     <div class="d-flex gap-3">
@@ -120,4 +167,93 @@
         @endforeach
     </div>
 </div>
+
+@if(!empty($popup))
+    <div class="modal fade valle-popup-modal" id="vallePopupModal" tabindex="-1" aria-labelledby="vallePopupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                
+                <div class="modal-body">
+                    @if($popup->image == NULL)
+                        
+                    @else
+                    <div class="valle-modal-image">
+                        <img class="img-fluid" src="{{ asset('front/img/popups/' . $popup->image) }}" alt="">
+                    </div>
+                    @endif
+                
+                    <div class="valle-info-wrap">
+                        <h3>{{ $popup->title }}</h3>
+                        @if($popup->subtitle != NULL)
+                        <h5>{{ $popup->subtitle }}</h5>
+                        @endif
+
+                        <p>{{ $popup->text }}</p>
+
+                        @if($popup->has_button == true)
+                        <a href="{{ $popup->link }}" class="btn btn-primary mt-4">{{ $popup->text_button }}</a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        @if($popup->show_on_enter == true)
+            <script type="text/javascript">
+                if (document.cookie.indexOf('modal=modal_shown') >= 0) {
+
+                }else {
+                    var vallePopupModal = new bootstrap.Modal(document.getElementById('vallePopupModal'), {
+                    keyboard: false
+                    });
+
+                    vallePopupModal.show();
+                    document.cookie = ('modal=modal_shown');
+                }
+            </script>
+        @endif
+
+        @if($popup->show_on_exit == true)
+            <script type="text/javascript">
+                if (document.cookie.indexOf('modal=modal_shown') >= 0) {
+
+                }else{
+                    $("html").bind("mouseleave", function () {
+                    var vallePopupModal = new bootstrap.Modal(document.getElementById('vallePopupModal'), {
+                        keyboard: false
+                    });
+
+                    vallePopupModal.show();
+                    $("html").unbind("mouseleave");
+                    });
+
+                    document.cookie = ('modal=modal_shown');
+                }
+            </script>
+        @endif
+    @endpush
+@endif
+
 @endsection
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('libs/owl-carousel/dist/assets/owl.carousel.min.css') }}">
+<link rel="stylesheet" href="{{ asset('libs/owl-carousel/dist/assets/owl.theme.default.min.css') }}">
+@endpush
+
+@push('scripts')
+<script src="{{ asset('libs/owl-carousel/dist/owl.carousel.min.js') }}"></script>
+
+<script>
+  $('.main-carousel').owlCarousel({
+    loop:false,
+    margin:0,
+    nav:true,
+    dots:false,
+    items:1,
+  });
+</script>
+@endpush

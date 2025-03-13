@@ -8,6 +8,11 @@ use Auth;
 use Session;
 use Carbon\Carbon;
 
+// Modelos Comunicación Social
+use App\Models\Popup;
+use App\Models\Banner;
+use App\Models\Headerband;
+
 // Modelos Gaceta Municipal
 use App\Models\Gazette;
 
@@ -45,13 +50,20 @@ class FrontController extends Controller
         // Cargar las dependencias que quieren mostrar en la página de inicio.
         $dependencies = TransparencyDependency::where('in_index', true)->get();
 
+        $banners = Banner::where('is_active', true)->orderBy('priority', 'asc')->get();
+        $popup = Popup::where('is_active', true)->orderBy('updated_at', 'desc')->first();
+        $headerbands = Headerband::where('is_active', true)->orderBy('priority', 'asc')->get();
+
         return view('front.index')->with([
             'gazettes' => $gazettes,
             'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
             'solemn_gazette_sessions' => $solemn_gazette_sessions,
             'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
             'dates' => $dates,
-            'dependencies' => $dependencies
+            'dependencies' => $dependencies,
+            'banners' => $banners,
+            'popup' => $popup,
+            'headerbands' => $headerbands
         ]);
     }
 
