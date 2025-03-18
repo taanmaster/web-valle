@@ -2,64 +2,128 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TreasuryAccountPayableContractor;
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+use Intervention\Image\Facades\Image as Image;
+
 use Illuminate\Http\Request;
+
+// Modelos
+use App\Models\TreasuryAccountPayableContractor;
 
 class TreasuryAccountPayableContractorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $contractors = TreasuryAccountPayableContractor::paginate(10);
+
+        return view('treasury_account_payable_contractors.index')->with('contractors', $contractors);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('treasury_account_payable_contractors.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        // Validar
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'rfc' => 'nullable|max:13',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|max:15',
+            'account_name' => 'nullable|max:255',
+            'account_number' => 'nullable|max:20',
+            'bank_name' => 'nullable|max:255',
+            'dependency_id' => 'nullable|integer',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        // Guardar datos en la base de datos
+        TreasuryAccountPayableContractor::create([
+            'folio' => Str::random(10),
+            'name' => $request->name,
+            'rfc' => $request->rfc,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'account_name' => $request->account_name,
+            'account_number' => $request->account_number,
+            'bank_name' => $request->bank_name,
+            'dependency_id' => $request->dependency_id,
+            'status' => $request->status,
+        ]);
+
+        // Mensaje de sesión
+        Session::flash('success', 'Contratista creado correctamente.');
+
+        // Redirigir
+        return redirect()->route('treasury_account_payable_contractors.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TreasuryAccountPayableContractor $treasuryAccountPayableContractor)
+    public function show($id)
     {
-        //
+        $contractor = TreasuryAccountPayableContractor::find($id);
+
+        return view('treasury_account_payable_contractors.show')->with('contractor', $contractor);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TreasuryAccountPayableContractor $treasuryAccountPayableContractor)
+    public function edit($id)
     {
-        //
+        $contractor = TreasuryAccountPayableContractor::find($id);
+
+        return view('treasury_account_payable_contractors.edit')->with('contractor', $contractor);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, TreasuryAccountPayableContractor $treasuryAccountPayableContractor)
+    public function update(Request $request, $id)
     {
-        //
+        // Validar
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'rfc' => 'nullable|max:13',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|max:15',
+            'account_name' => 'nullable|max:255',
+            'account_number' => 'nullable|max:20',
+            'bank_name' => 'nullable|max:255',
+            'dependency_id' => 'nullable|integer',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $contractor = TreasuryAccountPayableContractor::find($id);
+
+        // Actualizar datos
+        $contractor->update([
+            'name' => $request->name,
+            'rfc' => $request->rfc,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'account_name' => $request->account_name,
+            'account_number' => $request->account_number,
+            'bank_name' => $request->bank_name,
+            'dependency_id' => $request->dependency_id,
+            'status' => $request->status,
+        ]);
+
+        // Mensaje de sesión
+        Session::flash('success', 'Contratista actualizado correctamente.');
+
+        // Redirigir
+        return redirect()->route('treasury_account_payable_contractors.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TreasuryAccountPayableContractor $treasuryAccountPayableContractor)
+    public function destroy($id)
     {
-        //
+        $contractor = TreasuryAccountPayableContractor::find($id);
+
+        // Eliminar contratista
+        $contractor->delete();
+
+        // Mensaje de sesión
+        Session::flash('success', 'Contratista eliminado correctamente.');
+
+        return redirect()->route('treasury_account_payable_contractors.index');
     }
 }

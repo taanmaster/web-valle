@@ -33,8 +33,8 @@
                     @endif
 
                     @if(auth()->user()->can('financial_support_view') || auth()->user()->can('all_access'))
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Apoyos Económicos" data-bs-trigger="hover">
-                        <a href="#valleFinancialSupport" id="uikit-tab" class="nav-link">
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería" data-bs-trigger="hover">
+                        <a href="#valleTreasury" id="uikit-tab" class="nav-link">
                             <i class="ti ti-planet menu-icon"></i>
                         </a>
                     </li>
@@ -138,7 +138,7 @@
             @endif
 
             @if(auth()->user()->can('financial_support_view') || auth()->user()->can('all_access'))
-            <div id="valleFinancialSupport" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="uikit-tab">
+            <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="uikit-tab">
                 <div class="title-box">
                     <h6 class="menu-title">Apoyos Económicos</h6>
                 </div>
@@ -166,6 +166,22 @@
                         <a class="nav-link" href="{{ route('financial_support_types.index') }}">Tipos de Apoyo</a>
                     </li>
                     @endif
+                </ul>
+
+                <div class="title-box mt-5">
+                    <h6 class="menu-title">Cuentas por Pagar</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('treasury_account_payable_suppliers.index') }}">Proveedores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('treasury_account_payable_contractors.index') }}">Contratistas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('treasury_account_payable_checklists.index') }}">Checklists</a>
+                    </li>
                 </ul>
             </div>
             @endif

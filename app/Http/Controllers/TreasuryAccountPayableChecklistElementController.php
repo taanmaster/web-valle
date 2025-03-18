@@ -2,64 +2,76 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+
+// Modelos
 use App\Models\TreasuryAccountPayableChecklistElement;
+
 use Illuminate\Http\Request;
 
 class TreasuryAccountPayableChecklistElementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        // Validar los datos
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'nullable|max:500',
+            'order' => 'nullable|integer',
+            'checklist_id' => 'required|exists:treasury_account_payable_checklists,id',
+        ]);
+
+        // Crear el elemento del checklist
+        TreasuryAccountPayableChecklistElement::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'order' => $request->order,
+            'checklist_id' => $request->checklist_id,
+        ]);
+
+        // Redirigir con mensaje de éxito
+        return redirect()->back()->with('success', 'Elemento agregado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TreasuryAccountPayableChecklistElement $treasuryAccountPayableChecklistElement)
+    public function edit($id)
     {
-        //
+        $element = TreasuryAccountPayableChecklistElement::findOrFail($id);
+
+        return view('treasury_account_payable_checklists.elements.edit', compact('element'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TreasuryAccountPayableChecklistElement $treasuryAccountPayableChecklistElement)
+    public function update(Request $request, $id)
     {
-        //
+        // Validar los datos
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'nullable|max:500',
+            'order' => 'nullable|integer',
+        ]);
+
+        // Buscar el elemento y actualizarlo
+        $element = TreasuryAccountPayableChecklistElement::findOrFail($id);
+        
+        $element->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'order' => $request->order,
+        ]);
+
+        // Redirigir con mensaje de éxito
+        return redirect()->back()->with('success', 'Elemento actualizado correctamente.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, TreasuryAccountPayableChecklistElement $treasuryAccountPayableChecklistElement)
+    public function destroy($id)
     {
-        //
-    }
+        // Buscar el elemento y eliminarlo
+        $element = TreasuryAccountPayableChecklistElement::findOrFail($id);
+        $element->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TreasuryAccountPayableChecklistElement $treasuryAccountPayableChecklistElement)
-    {
-        //
+        // Redirigir con mensaje de éxito
+        return redirect()->back()->with('success', 'Elemento eliminado correctamente.');
     }
 }

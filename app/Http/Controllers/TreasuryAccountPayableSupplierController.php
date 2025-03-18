@@ -2,64 +2,107 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+use Intervention\Image\Facades\Image as Image;
+
+// Modelos
 use App\Models\TreasuryAccountPayableSupplier;
+
 use Illuminate\Http\Request;
 
 class TreasuryAccountPayableSupplierController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $suppliers = TreasuryAccountPayableSupplier::paginate(10);
+
+        return view('treasury_account_payable_suppliers.index')->with('suppliers', $suppliers);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('treasury_account_payable_suppliers.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        // Validar
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'rfc' => 'nullable|max:13',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|max:15',
+            'account_name' => 'nullable|max:255',
+            'account_number' => 'nullable|max:20',
+            'bank_name' => 'nullable|max:255',
+            'dependency_id' => 'nullable|integer',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        // Guardar datos en la base de datos
+        TreasuryAccountPayableSupplier::create($request->all());
+
+        // Mensaje de sesión
+        Session::flash('success', 'Proveedor creado correctamente.');
+
+        // Redirigir
+        return redirect()->route('treasury_account_payable_suppliers.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TreasuryAccountPayableSupplier $treasuryAccountPayableSupplier)
+    public function show($id)
     {
-        //
+        $supplier = TreasuryAccountPayableSupplier::find($id);
+
+        return view('treasury_account_payable_suppliers.show')->with('supplier', $supplier);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TreasuryAccountPayableSupplier $treasuryAccountPayableSupplier)
+    public function edit($id)
     {
-        //
+        $supplier = TreasuryAccountPayableSupplier::find($id);
+
+        return view('treasury_account_payable_suppliers.edit')->with('supplier', $supplier);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, TreasuryAccountPayableSupplier $treasuryAccountPayableSupplier)
+    public function update(Request $request, $id)
     {
-        //
+        // Validar
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'rfc' => 'nullable|max:13',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|max:15',
+            'account_name' => 'nullable|max:255',
+            'account_number' => 'nullable|max:20',
+            'bank_name' => 'nullable|max:255',
+            'dependency_id' => 'nullable|integer',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $supplier = TreasuryAccountPayableSupplier::find($id);
+
+        // Actualizar datos
+        $supplier->update($request->all());
+
+        // Mensaje de sesión
+        Session::flash('success', 'Proveedor actualizado correctamente.');
+
+        // Redirigir
+        return redirect()->route('treasury_account_payable_suppliers.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TreasuryAccountPayableSupplier $treasuryAccountPayableSupplier)
+    public function destroy($id)
     {
-        //
+        $supplier = TreasuryAccountPayableSupplier::find($id);
+
+        // Eliminar proveedor
+        $supplier->delete();
+
+        // Mensaje de sesión
+        Session::flash('success', 'Proveedor eliminado correctamente.');
+
+        return redirect()->route('treasury_account_payable_suppliers.index');
     }
 }

@@ -62,6 +62,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     //Route::get('{any}', 'DashboardController@index')->name('index');
 
+    /* ------------------- */
+    /* ------------------- */
+
     // Back-End Views
     Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin_access']], function(){
         Route::get('/', 'DashboardController@index')->name('dashboard');
@@ -100,9 +103,15 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'uses' => 'PopupController@status',
             'as' => 'popups.status',
         ]);
-        
+
+        /* ------------------- */
+        /* ------------------- */
+
         /* Textos Legales */
         Route::resource('legals', LegalTextController::class);
+
+        /* ------------------- */
+        /* ------------------- */
 
         /* Gaceta Municipal */
         Route::resource('gazettes', GazetteController::class);
@@ -113,6 +122,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'back.gazette.query',
         ]);
 
+        /* ------------------- */
+        /* ------------------- */
+
         /* Ciudadanos */
         Route::resource('citizens', CitizenController::class);
         Route::resource('citizen_files', CitizenFileController::class);
@@ -122,64 +134,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'back.citizens.query',
         ]);
 
-        /* Apoyos Económicos */
-        Route::resource('financial_supports', FinancialSupportController::class);
-        
-        Route::get('/financial_supports/funciones/busqueda', [
-            'uses' => 'SearchController@financial_supportsQuery',
-            'as' => 'back.financial_supports.query',
-        ]);
+        /* ------------------- */
+        /* ------------------- */
 
-        Route::get('/financial_supports/funciones/apoyos-del-dia', [
-            'uses' => 'FinancialSupportController@todayQuery',
-            'as' => 'report.query',
-        ]);
-
-        Route::get('/financial_supports/funciones/reporte-grafico', [
-            'uses' => 'FinancialSupportController@reportQuery',
-            'as' => 'kpi.query',
-        ]);
-
-        /* Tipos de Apoyo Económico */
-        Route::resource('financial_support_types', FinancialSupportTypeController::class);
-
-        Route::get('/financial_support_types/funciones/busqueda', [
-            'uses' => 'SearchController@financial_support_typesQuery',
-            'as' => 'back.financial_support_types.query',
-        ]);
-
-        /* Generador de Documentación */
-        Route::post('/financial_supports/{id}/download-gratefulness',[
-            'uses' => 'FinancialSupportController@downloadGratefulness',
-            'as' => 'financial_supports.downloadGratefulness',
-        ]);
-
-        Route::post('/financial_supports/{id}/download-request',[
-            'uses' => 'FinancialSupportController@downloadRequest',
-            'as' => 'financial_supports.downloadRequest',
-        ]);
-
-        Route::post('/financial_supports/{id}/download-support-receipt',[
-            'uses' => 'FinancialSupportController@downloadSupportReceipt',
-            'as' => 'financial_supports.downloadSupportReceipt',
-        ]);
-
-        Route::post('/financial_supports/{id}/download-under-oath',[
-            'uses' => 'FinancialSupportController@downloadUnderOath',
-            'as' => 'financial_supports.downloadUnderOath',
-        ]);
-
-        Route::post('/financial_supports/{id}/download-received',[
-            'uses' => 'FinancialSupportController@downloadReceived',
-            'as' => 'financial_supports.downloadReceived',
-        ]);
-
-        Route::post('/financial_supports/download-cash-cut',[
-            'uses' => 'FinancialSupportController@downloadCashCut',
-            'as' => 'financial_supports.downloadCashCut',
-        ]);
-
-        /* Transaparencia */
+        /* Transparencia */
         Route::group(['prefix' => 'transparency'], function(){
             Route::resource('dependencies', TransparencyDependencyController::class)->names([
                 'index' => 'transparency_dependencies.index',
@@ -235,6 +193,113 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('dropzone/upload/{id}', 'TransparencyFileController@uploadFile')->name('dropzone.upload');
             Route::get('dropzone/fetch/{id}', 'TransparencyFileController@fetchFile')->name('dropzone.fetch');
             Route::get('dropzone/delete/{id}', 'TransparencyFileController@deleteFile')->name('dropzone.delete');
+        });
+
+        /* ------------------- */
+        /* ------------------- */
+
+        /* Tesorería */
+        Route::group(['prefix' => 'treasury'], function(){
+            /* Apoyos Económicos */
+            Route::resource('financial_supports', FinancialSupportController::class);
+            
+            Route::get('/financial_supports/funciones/busqueda', [
+                'uses' => 'SearchController@financial_supportsQuery',
+                'as' => 'back.financial_supports.query',
+            ]);
+
+            Route::get('/financial_supports/funciones/apoyos-del-dia', [
+                'uses' => 'FinancialSupportController@todayQuery',
+                'as' => 'report.query',
+            ]);
+
+            Route::get('/financial_supports/funciones/reporte-grafico', [
+                'uses' => 'FinancialSupportController@reportQuery',
+                'as' => 'kpi.query',
+            ]);
+
+            /* Tipos de Apoyo Económico */
+            Route::resource('financial_support_types', FinancialSupportTypeController::class);
+
+            Route::get('/financial_support_types/funciones/busqueda', [
+                'uses' => 'SearchController@financial_support_typesQuery',
+                'as' => 'back.financial_support_types.query',
+            ]);
+
+            /* Generador de Documentación */
+            Route::post('/financial_supports/{id}/download-gratefulness',[
+                'uses' => 'FinancialSupportController@downloadGratefulness',
+                'as' => 'financial_supports.downloadGratefulness',
+            ]);
+
+            Route::post('/financial_supports/{id}/download-request',[
+                'uses' => 'FinancialSupportController@downloadRequest',
+                'as' => 'financial_supports.downloadRequest',
+            ]);
+
+            Route::post('/financial_supports/{id}/download-support-receipt',[
+                'uses' => 'FinancialSupportController@downloadSupportReceipt',
+                'as' => 'financial_supports.downloadSupportReceipt',
+            ]);
+
+            Route::post('/financial_supports/{id}/download-under-oath',[
+                'uses' => 'FinancialSupportController@downloadUnderOath',
+                'as' => 'financial_supports.downloadUnderOath',
+            ]);
+
+            Route::post('/financial_supports/{id}/download-received',[
+                'uses' => 'FinancialSupportController@downloadReceived',
+                'as' => 'financial_supports.downloadReceived',
+            ]);
+
+            Route::post('/financial_supports/download-cash-cut',[
+                'uses' => 'FinancialSupportController@downloadCashCut',
+                'as' => 'financial_supports.downloadCashCut',
+            ]);
+            
+            /* ------------------- */
+            /* ------------------- */
+
+            /* Cuentas por Pagar */
+            Route::resource('account_payable_suppliers', TreasuryAccountPayableSupplierController::class)->names([
+                'index' => 'treasury_account_payable_suppliers.index',
+                'create' => 'treasury_account_payable_suppliers.create',
+                'store' => 'treasury_account_payable_suppliers.store',
+                'show' => 'treasury_account_payable_suppliers.show',
+                'edit' => 'treasury_account_payable_suppliers.edit',
+                'update' => 'treasury_account_payable_suppliers.update',
+                'destroy' => 'treasury_account_payable_suppliers.destroy',
+            ]);
+
+            Route::resource('account_payable_contractors', TreasuryAccountPayableContractorController::class)->names([
+                'index' => 'treasury_account_payable_contractors.index',
+                'create' => 'treasury_account_payable_contractors.create',
+                'store' => 'treasury_account_payable_contractors.store',
+                'show' => 'treasury_account_payable_contractors.show',
+                'edit' => 'treasury_account_payable_contractors.edit',
+                'update' => 'treasury_account_payable_contractors.update',
+                'destroy' => 'treasury_account_payable_contractors.destroy',
+            ]);
+
+            Route::resource('account_payable_checklists', TreasuryAccountPayableChecklistController::class)->names([
+                'index' => 'treasury_account_payable_checklists.index',
+                'create' => 'treasury_account_payable_checklists.create',
+                'store' => 'treasury_account_payable_checklists.store',
+                'show' => 'treasury_account_payable_checklists.show',
+                'edit' => 'treasury_account_payable_checklists.edit',
+                'update' => 'treasury_account_payable_checklists.update',
+                'destroy' => 'treasury_account_payable_checklists.destroy',
+            ]);
+
+            Route::resource('account_payable_supplier_checklists', TreasuryAccountPayableSupplierChecklistController::class)->names([
+                'index' => 'treasury_account_payable_supplier_checklists.index',
+                'create' => 'treasury_account_payable_supplier_checklists.create',
+                'store' => 'treasury_account_payable_supplier_checklists.store',
+                'show' => 'treasury_account_payable_supplier_checklists.show',
+                'edit' => 'treasury_account_payable_supplier_checklists.edit',
+                'update' => 'treasury_account_payable_supplier_checklists.update',
+                'destroy' => 'treasury_account_payable_supplier_checklists.destroy',
+            ]);
         });
     });
 });

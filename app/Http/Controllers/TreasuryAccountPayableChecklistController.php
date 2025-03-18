@@ -2,64 +2,105 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+use Intervention\Image\Facades\Image as Image;
+
+// Modelos
 use App\Models\TreasuryAccountPayableChecklist;
+
 use Illuminate\Http\Request;
 
 class TreasuryAccountPayableChecklistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $checklists = TreasuryAccountPayableChecklist::paginate(10);
+
+        return view('treasury_account_payable_checklists.index')->with('checklists', $checklists);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('treasury_account_payable_checklists.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        // Validar
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'nullable|max:500',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        // Guardar datos en la base de datos
+        TreasuryAccountPayableChecklist::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'status' => $request->status,
+            'slug' => Str::slug($request->name),
+        ]);
+
+        // Mensaje de sesión
+        Session::flash('success', 'Checklist creado correctamente.');
+
+        // Redirigir
+        return redirect()->route('treasury_account_payable_checklists.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TreasuryAccountPayableChecklist $treasuryAccountPayableChecklist)
+    public function show($id)
     {
-        //
+        $checklist = TreasuryAccountPayableChecklist::find($id);
+
+        return view('treasury_account_payable_checklists.show')->with('checklist', $checklist);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TreasuryAccountPayableChecklist $treasuryAccountPayableChecklist)
+    public function edit($id)
     {
-        //
+        $checklist = TreasuryAccountPayableChecklist::find($id);
+
+        return view('treasury_account_payable_checklists.edit')->with('checklist', $checklist);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, TreasuryAccountPayableChecklist $treasuryAccountPayableChecklist)
+    public function update(Request $request, $id)
     {
-        //
+        // Validar
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'nullable|max:500',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $checklist = TreasuryAccountPayableChecklist::find($id);
+
+        // Actualizar datos
+        $checklist->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'status' => $request->status,
+            'slug' => Str::slug($request->name),
+        ]);
+
+        // Mensaje de sesión
+        Session::flash('success', 'Checklist actualizado correctamente.');
+
+        // Redirigir
+        return redirect()->route('treasury_account_payable_checklists.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TreasuryAccountPayableChecklist $treasuryAccountPayableChecklist)
+    public function destroy($id)
     {
-        //
+        $checklist = TreasuryAccountPayableChecklist::find($id);
+
+        // Eliminar checklist
+        $checklist->delete();
+
+        // Mensaje de sesión
+        Session::flash('success', 'Checklist eliminado correctamente.');
+
+        return redirect()->route('treasury_account_payable_checklists.index');
     }
 }
