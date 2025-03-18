@@ -30,7 +30,7 @@
                 
                 <td class="d-flex gap-3">
                     <a href="{{ route('headerbands.edit', $headerband->id) }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-original-title="Editar">
-                        <i class='bx bx-edit-alt'></i>
+                        Editar
                     </a>
 
                     <form method="POST" action="{{ route('headerbands.status', $headerband->id) }}">
@@ -45,7 +45,7 @@
                         {{ method_field('DELETE') }}
 
                         <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-original-title="Eliminar Cintillo">
-                            <i class='bx bx-trash-alt text-danger'></i>
+                            Eliminar
                         </button>
                     </form>
                 </td>

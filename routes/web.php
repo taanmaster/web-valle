@@ -96,6 +96,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         Route::resource('popups', PopupController::class);    
 
+        Route::post('/popups/status/{id}', [
+            'uses' => 'PopupController@status',
+            'as' => 'popups.status',
+        ]);
+        
         /* Textos Legales */
         Route::resource('legals', LegalTextController::class);
 
