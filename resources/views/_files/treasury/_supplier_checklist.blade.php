@@ -7,15 +7,10 @@
     <title>Valle de Santiago - Checklist de Proveedor</title>
 
     <style>
-        /** 
-            Set the margins of the page to 0, so the footer and the header
-            can be of the full height and width !
-            **/
         @page {
             margin: 1cm 1cm;
         }
 
-        /** Define now the real margins of every page in the PDF **/        
         body {
             font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
             font-size: 12px;
@@ -114,7 +109,28 @@
         .date-wrap{
             float:right;
         }
-</style>
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
 
 </head>
 <body>
@@ -136,8 +152,64 @@
     </header>
     
     <main>
-        
+        <h2 class="section-title">Checklist de Proveedor</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Folio</th>
+                    <td>{{ $checklist->folio ?? 'N/A' }}</td>
+                    <th>Dependencia</th>
+                    <td>{{ $checklist->dependency_name ?? 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha Recibido</th>
+                    <td>{{ $checklist->received_at ?? 'N/A' }}</td>
+                    <th>Departamento Solicitante</th>
+                    <td>{{ $checklist->requesting_department ?? 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha Devolución</th>
+                    <td>{{ $checklist->return_date ?? 'N/A' }}</td>
+                    <th>Proveedor</th>
+                    <td>{{ $checklist->supplier->name ?? 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th>No. Factura</th>
+                    <td>{{ $checklist->invoice_number ?? 'N/A' }}</td>
+                    <th>No. Proveedor</th>
+                    <td>{{ $checklist->supplier_number ?? 'N/A' }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="section-title">Elementos del Checklist</h2>
+        <ul>
+            @foreach($checklist->elements as $element)
+                <li>{{ $element->name }}</li>
+            @endforeach
+        </ul>
+
+        <h2 class="section-title">Autorizaciones</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Título</th>
+                    <th>Tipo</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($checklist->authorizations as $authorization)
+                <tr>
+                    <td>{{ $authorization->folio ?? 'N/A' }}</td>
+                    <td>{{ $authorization->title }}</td>
+                    <td>{{ $authorization->type }}</td>
+                    <td>{{ $authorization->amount ?? 'N/A' }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </main>
 </body>
 </html>
-

@@ -9,6 +9,8 @@ use Auth;
 use Session;
 
 // Modelos
+use App\Models\TreasuryAccountPayableContractor;
+use App\Models\TreasuryAccountPayableChecklist;
 use App\Models\TreasuryAccountPayableContractorChecklist;
 
 use Illuminate\Http\Request;
@@ -28,9 +30,14 @@ class TreasuryAccountPayableContractorChecklistController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        return view('treasury_account_payable_contractor_checklists.create');
+        $contractor = TreasuryAccountPayableContractor::find($id);
+        $checklists = TreasuryAccountPayableChecklist::all();
+
+        return view('treasury_account_payable_contractor_checklists.create')
+            ->with('contractor', $contractor)
+            ->with('checklists', $checklists);
     }
 
     /**
@@ -40,25 +47,56 @@ class TreasuryAccountPayableContractorChecklistController extends Controller
     {
         // Validar los datos
         $this->validate($request, [
-            'contractor_id' => 'required|exists:treasury_account_payable_contractors,id',
-            'name' => 'required|max:255',
-            'description' => 'nullable|max:500',
-            'status' => 'required|in:active,inactive',
+            'folio' => 'nullable|max:255',
+            'received_at' => 'nullable|date',
+            'program_code' => 'nullable|max:255',
+            'program_name' => 'required|max:255',
+            'funding_source' => 'nullable|max:255',
+            'budget_item' => 'nullable|max:255',
+            'work_number' => 'nullable|max:255',
+            'reserve_doc_pres' => 'nullable|max:255',
+            'fixed_asset_number' => 'nullable|max:255',
+            'contract_number' => 'nullable|max:255',
+            'contractor' => 'nullable|max:255',
+            'taxpayer_registration' => 'nullable|max:255',
+            'award_method' => 'nullable|max:255',
+            'with_resources' => 'nullable|boolean',
+            'agreement' => 'nullable|max:255',
+            'execution_annex' => 'nullable|max:255',
+            'work' => 'nullable|max:255',
+            'contract_amount' => 'nullable|numeric',
+            'advance_amount' => 'nullable|numeric',
+            'contract_signing_date' => 'nullable|date',
+            'contract_validity_start' => 'nullable|date',
+            'contract_validity_end' => 'nullable|date',
+            'validity_modification_start' => 'nullable|date',
+            'validity_modification_end' => 'nullable|date',
+            'modification_agreement_amount' => 'nullable|numeric',
+            'amount' => 'nullable|numeric',
+            'modification_agreement_time_start' => 'nullable|date',
+            'modification_agreement_time_end' => 'nullable|date',
+            'estimated' => 'nullable|numeric',
+            'iva' => 'nullable|numeric',
+            'sum' => 'nullable|numeric',
+            'advance_amortization' => 'nullable|numeric',
+            'subtotal' => 'nullable|numeric',
+            'penalty' => 'nullable|numeric',
+            'net_scope' => 'nullable|numeric',
+            'subtotal_2' => 'nullable|numeric',
+            'iva_2' => 'nullable|numeric',
+            'total' => 'nullable|numeric',
+            'faism_2024_pays' => 'nullable|numeric',
+            'state_pays' => 'nullable|numeric',
+            'prepared_by' => 'nullable|max:255',
         ]);
 
         // Crear el checklist
-        TreasuryAccountPayableContractorChecklist::create([
-            'contractor_id' => $request->contractor_id,
-            'name' => $request->name,
-            'description' => $request->description,
-            'status' => $request->status,
-            'slug' => Str::slug($request->name),
-        ]);
+        TreasuryAccountPayableContractorChecklist::create($request->all());
 
         // Mensaje de éxito
         Session::flash('success', 'Checklist creado correctamente.');
 
-        return redirect()->route('treasury_account_payable_contractor_checklists.index');
+        return redirect()->route('treasury_account_payable_contractors.show', $request->contractor_id);
     }
 
     /**
@@ -88,24 +126,57 @@ class TreasuryAccountPayableContractorChecklistController extends Controller
     {
         // Validar los datos
         $this->validate($request, [
-            'name' => 'required|max:255',
-            'description' => 'nullable|max:500',
-            'status' => 'required|in:active,inactive',
+            'folio' => 'nullable|max:255',
+            'received_at' => 'nullable|date',
+            'program_code' => 'nullable|max:255',
+            'program_name' => 'nullable|max:255',
+            'funding_source' => 'nullable|max:255',
+            'budget_item' => 'nullable|max:255',
+            'work_number' => 'nullable|max:255',
+            'reserve_doc_pres' => 'nullable|max:255',
+            'fixed_asset_number' => 'nullable|max:255',
+            'contract_number' => 'nullable|max:255',
+            'contractor' => 'nullable|max:255',
+            'taxpayer_registration' => 'nullable|max:255',
+            'award_method' => 'nullable|max:255',
+            'with_resources' => 'nullable|boolean',
+            'agreement' => 'nullable|max:255',
+            'execution_annex' => 'nullable|max:255',
+            'work' => 'nullable|max:255',
+            'contract_amount' => 'nullable|numeric',
+            'advance_amount' => 'nullable|numeric',
+            'contract_signing_date' => 'nullable|date',
+            'contract_validity_start' => 'nullable|date',
+            'contract_validity_end' => 'nullable|date',
+            'validity_modification_start' => 'nullable|date',
+            'validity_modification_end' => 'nullable|date',
+            'modification_agreement_amount' => 'nullable|numeric',
+            'amount' => 'nullable|numeric',
+            'modification_agreement_time_start' => 'nullable|date',
+            'modification_agreement_time_end' => 'nullable|date',
+            'estimated' => 'nullable|numeric',
+            'iva' => 'nullable|numeric',
+            'sum' => 'nullable|numeric',
+            'advance_amortization' => 'nullable|numeric',
+            'subtotal' => 'nullable|numeric',
+            'penalty' => 'nullable|numeric',
+            'net_scope' => 'nullable|numeric',
+            'subtotal_2' => 'nullable|numeric',
+            'iva_2' => 'nullable|numeric',
+            'total' => 'nullable|numeric',
+            'faism_2024_pays' => 'nullable|numeric',
+            'state_pays' => 'nullable|numeric',
+            'prepared_by' => 'nullable|max:255',
         ]);
 
         // Buscar el checklist y actualizarlo
         $checklist = TreasuryAccountPayableContractorChecklist::findOrFail($id);
-        $checklist->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'status' => $request->status,
-            'slug' => Str::slug($request->name),
-        ]);
+        $checklist->update($request->all());
 
         // Mensaje de éxito
         Session::flash('success', 'Checklist actualizado correctamente.');
 
-        return redirect()->route('treasury_account_payable_contractor_checklists.index');
+        return redirect()->route('treasury_account_payable_contractors.show', $request->contractor_id);
     }
 
     /**
@@ -121,7 +192,7 @@ class TreasuryAccountPayableContractorChecklistController extends Controller
         // Mensaje de éxito
         Session::flash('success', 'Checklist eliminado correctamente.');
 
-        return redirect()->route('treasury_account_payable_contractor_checklists.index');
+        return redirect()->route('treasury_account_payable_contractors.show', $request->contractor_id);
     }
 
     /**
@@ -131,8 +202,9 @@ class TreasuryAccountPayableContractorChecklistController extends Controller
      */
     public function downloadChecklist($id, Request $request)
     {
-        $checklist = TreasuryAccountPayableContractorChecklist::find($id);
-        $filename = "checklist_contratista_" . Str::slug($checklist->contractor->name) . ".pdf";
+        $checklist = TreasuryAccountPayableContractorChecklist::with('contractor')->findOrFail($id);
+
+        $filename = "checklist_contratista_" . Str::slug($checklist->contractor) . ".pdf";
         
         $pdf = PDF::loadView('_files.treasury._contractor_checklist', [
             'checklist' => $checklist
@@ -145,6 +217,5 @@ class TreasuryAccountPayableContractorChecklistController extends Controller
         Session::flash('success', 'Documento creado exitosamente... Descargando automáticamente en breve.');
 
         return response()->download(public_path('treasury/files/' . $filename));
-        return redirect()->back();
     }
 }

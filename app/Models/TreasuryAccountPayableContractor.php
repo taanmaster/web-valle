@@ -16,5 +16,4 @@ class TreasuryAccountPayableContractor extends Model
     {
         return $this->hasMany(TreasuryAccountPayableContractorChecklist::class, 'contractor_id');
     }
-    
 }

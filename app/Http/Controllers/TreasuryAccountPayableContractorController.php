@@ -61,7 +61,7 @@ class TreasuryAccountPayableContractorController extends Controller
         // Redirigir
         return redirect()->route('treasury_account_payable_contractors.index');
     }
-
+    
     public function show($id)
     {
         $contractor = TreasuryAccountPayableContractor::find($id);

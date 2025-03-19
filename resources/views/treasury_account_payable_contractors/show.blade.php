@@ -63,9 +63,12 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>#</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Fecha de Creación</th>
+                                        <th>Folio</th>
+                                        <th>Fecha Recibido</th>
+                                        <th>Fecha Devolución</th>
+                                        <th>Dependencia</th>
+                                        <th>No. Factura</th>
+                                        <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -73,15 +76,21 @@
                                     @foreach($contractor->checklists as $checklist)
                                     <tr>
                                         <td>{{ $checklist->id }}</td>
-                                        <td>{{ $checklist->name }}</td>
-                                        <td>{{ $checklist->description ?? 'N/A' }}</td>
-                                        <td>{{ $checklist->created_at }}</td>
+                                        <td>{{ $checklist->folio ?? 'N/A' }}</td>
+                                        <td>{{ $checklist->received_at ?? 'N/A' }}</td>
+                                        <td>{{ $checklist->return_date ?? 'N/A' }}</td>
+                                        <td>{{ $checklist->dependency_name ?? 'N/A' }}</td>
+                                        <td>{{ $checklist->invoice_number ?? 'N/A' }}</td>
+                                        <td>{{ $checklist->status }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('contractor_checklists.show', $checklist->id) }}" class="btn btn-sm btn-outline-primary">
+                                                <a href="{{ route('contractor_checklists.show', [$contractor->id, $checklist->id]) }}" class="btn btn-sm btn-outline-primary">
                                                     <i class="bx bx-show-alt"></i> Ver
                                                 </a>
-                                                <form method="POST" action="{{ route('contractor_checklists.destroy', $checklist->id) }}" style="display: inline-block;">
+                                                <a href="{{ route('contractor_checklists.edit', [$contractor->id, $checklist->id]) }}" class="btn btn-sm btn-outline-secondary">
+                                                    <i class="bx bx-edit"></i> Editar
+                                                </a>
+                                                <form method="POST" action="{{ route('contractor_checklists.destroy', [$contractor->id, $checklist->id]) }}" style="display: inline-block;">
                                                     {{ csrf_field() }}
                                                     {{ method_field('DELETE') }}
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
