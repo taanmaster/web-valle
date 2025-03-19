@@ -10,10 +10,10 @@ class RolesSeeder extends Seeder
 {
     public function run()
     {
-        // Crear roles
-        $webmaster = Role::create(['name' => 'webmaster']);
-        $admin = Role::create(['name' => 'admin']);
-        $citizen = Role::create(['name' => 'citizen']);
+        // Crear roles si no existen
+        $webmaster = Role::firstOrCreate(['name' => 'webmaster']);
+        $admin = Role::firstOrCreate(['name' => 'admin']);
+        $citizen = Role::firstOrCreate(['name' => 'citizen']);
 
         // Asignar permisos al rol webmaster
         $webmaster->givePermissionTo('all_access');
@@ -58,9 +58,9 @@ class RolesSeeder extends Seeder
         // Crear permisos y asignar a roles
         foreach ($modules as $module => $permissions) {
             foreach ($permissions as $permission) {
-                Permission::create(['name' => $permission]);
-                $admin->givePermissionTo($permission);
-                $webmaster->givePermissionTo($permission);
+                $perm = Permission::firstOrCreate(['name' => $permission]);
+                $admin->givePermissionTo($perm);
+                $webmaster->givePermissionTo($perm);
             }
         }
     }

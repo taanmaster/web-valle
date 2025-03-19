@@ -12,9 +12,9 @@ class TreasuryAccountPayableContractor extends Model
     protected $table = 'treasury_account_payable_contractors';
     protected $guarded = [];
 
-    public function checklist()
+    public function checklists()
     {
-        return $this->belongsTo(TreasuryAccountPayableChecklist::class, 'checklist_id');
+        return $this->hasMany(TreasuryAccountPayableContractorChecklist::class, 'contractor_id');
     }
     
 }
