@@ -22,4 +22,8 @@ class TreasuryAccountPayableSupplierChecklist extends Model
         return $this->hasMany(TreasuryAccountPayableSupplierChecklistAutorization::class, 'supplier_checklist_id');
     }
     
+    public function checklist()
+    {
+        return $this->belongsTo(TreasuryAccountPayableChecklist::class, 'checklist_id');
+    }
 }

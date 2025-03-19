@@ -53,7 +53,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5>Checklists del Proveedor</h5>
                         <a href="{{ route('supplier_checklists.create', $supplier->id) }}" class="btn btn-sm btn-primary flex-grow-0">
-                            <i class="bx bx-plus"></i> Crear Nuevo Checklist
+                            <i class="bx bx-plus"></i> Crear Nueva Cuenta por Pagar
                         </a>
                     </div>
                     <div class="card-body">
@@ -106,7 +106,7 @@
                         </div>
                         @else
                         <div class="text-center my-4">
-                            <h5>No hay checklists asociados a este proveedor.</h5>
+                            <h5>No hay checklists de cuentas por pagar asociados a este proveedor.</h5>
                         </div>
                         @endif
                     </div>

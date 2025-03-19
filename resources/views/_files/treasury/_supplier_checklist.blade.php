@@ -184,7 +184,7 @@
 
         <h2 class="section-title">Elementos del Checklist</h2>
         <ul>
-            @foreach($checklist->elements as $element)
+            @foreach($checklist->checklist->elements as $element)
                 <li>{{ $element->name }}</li>
             @endforeach
         </ul>
