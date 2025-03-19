@@ -94,11 +94,14 @@ class TreasuryAccountPayableSupplierChecklistController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($supplier_id, $checklist_id)
     {
-        $checklist = TreasuryAccountPayableSupplierChecklist::find($id);
+        $supplier = TreasuryAccountPayableSupplier::find($supplier_id);
+        $checklist = TreasuryAccountPayableSupplierChecklist::find($checklist_id);
 
-        return view('treasury_account_payable_supplier_checklists.edit')->with('checklist', $checklist);
+        return view('treasury_account_payable_supplier_checklists.edit')
+        ->with('supplier', $supplier)
+        ->with('checklist', $checklist);
     }
 
     /**
@@ -108,8 +111,6 @@ class TreasuryAccountPayableSupplierChecklistController extends Controller
     {
         // Validar
         $this->validate($request, [
-            'supplier_id' => 'required|exists:treasury_account_payable_suppliers,id',
-            'checklist_id' => 'required|exists:treasury_account_payable_checklists,id',
             'folio' => 'nullable|max:255',
             'received_at' => 'nullable|date',
             'return_date' => 'nullable|date',
@@ -123,8 +124,6 @@ class TreasuryAccountPayableSupplierChecklistController extends Controller
 
         // Actualizar datos
         $checklist->update([
-            'supplier_id' => $request->supplier_id,
-            'checklist_id' => $request->checklist_id,
             'folio' => $request->folio,
             'received_at' => $request->received_at,
             'return_date' => $request->return_date,
@@ -144,9 +143,11 @@ class TreasuryAccountPayableSupplierChecklistController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($supplier_id, $checklist_id)
     {
-        $checklist = TreasuryAccountPayableSupplierChecklist::find($id);
+        $checklist = TreasuryAccountPayableSupplierChecklist::find($checklist_id);
+        
+        $supplier_id = $checklist->supplier_id;
 
         // Eliminar checklist
         $checklist->delete();
@@ -154,7 +155,7 @@ class TreasuryAccountPayableSupplierChecklistController extends Controller
         // Mensaje de sesión
         Session::flash('success', 'Checklist de proveedor eliminado correctamente.');
 
-        return redirect()->route('treasury_account_payable_supplier_checklists.index');
+        return redirect()->route('treasury_account_payable_suppliers.show', $supplier_id);
     }
 
     /**

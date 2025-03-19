@@ -5,61 +5,62 @@
 @component('components.breadcrumb')
 @slot('li_1') Intranet @endslot
 @slot('li_2') Tesorería @endslot
-@slot('title') Editar Proveedor @endslot
+@slot('title') Editar Checklist @endslot
 @endcomponent
 
 <div class="row layout-spacing">
     <div class="main-content">
         <div class="row">
-            <div class="col-8">
+            <div class="col-12">
                 <div class="card card-body">
-                    <form method="POST" action="{{ route('treasury_account_payable_suppliers.update', $supplier->id) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('supplier_checklists.update', [$supplier->id, $checklist->id]) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         {{ method_field('PUT') }}
+
                         <div class="row">
+                            <!-- Información del checklist -->
                             <div class="col-md-12 mb-3">
-                                <label for="name" class="form-label">Nombre <span class="text-danger tx-12">*</span></label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ $supplier->name }}" required>
+                                <label for="folio" class="form-label">Folio</label>
+                                <input type="text" class="form-control" id="folio" name="folio" value="{{ $checklist->folio }}">
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="rfc" class="form-label">RFC <span class="text-info tx-12">(Opcional)</span></label>
-                                <input type="text" class="form-control" id="rfc" name="rfc" value="{{ $supplier->rfc }}">
+                            <div class="col-md-6 mb-3">
+                                <label for="received_at" class="form-label">Fecha recibido</label>
+                                <input type="date" class="form-control" id="received_at" name="received_at" value="{{ $checklist->received_at }}">
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="email" class="form-label">Correo Electrónico <span class="text-info tx-12">(Opcional)</span></label>
-                                <input type="email" class="form-control" id="email" name="email" value="{{ $supplier->email }}">
+                            <div class="col-md-6 mb-3">
+                                <label for="return_date" class="form-label">Fecha devolución</label>
+                                <input type="date" class="form-control" id="return_date" name="return_date" value="{{ $checklist->return_date }}">
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="phone" class="form-label">Teléfono <span class="text-info tx-12">(Opcional)</span></label>
-                                <input type="text" class="form-control" id="phone" name="phone" value="{{ $supplier->phone }}">
+                            <div class="col-md-6 mb-3">
+                                <label for="dependency_name" class="form-label">Departamento solicitante</label>
+                                <input type="text" class="form-control" id="dependency_name" name="dependency_name" value="{{ $checklist->dependency_name }}">
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="account_name" class="form-label">Nombre de la Cuenta <span class="text-info tx-12">(Opcional)</span></label>
-                                <input type="text" class="form-control" id="account_name" name="account_name" value="{{ $supplier->account_name }}">
+                            <div class="col-md-6 mb-3">
+                                <label for="supplier_name" class="form-label">Proveedor</label>
+                                <input type="text" class="form-control" id="supplier_name" name="supplier_name" value="{{ $supplier->name }}" readonly>
+                                <input type="hidden" class="form-control" id="supplier_id" name="supplier_id" value="{{ $supplier->id }}" readonly>
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="account_number" class="form-label">Número de Cuenta <span class="text-info tx-12">(Opcional)</span></label>
-                                <input type="text" class="form-control" id="account_number" name="account_number" value="{{ $supplier->account_number }}">
+                            <div class="col-md-6 mb-3">
+                                <label for="supplier_number" class="form-label">No. Proveedor</label>
+                                <input type="text" class="form-control" id="supplier_number" name="supplier_number" value="{{ $supplier->id }}" readonly>
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="bank_name" class="form-label">Banco <span class="text-info tx-12">(Opcional)</span></label>
-                                <input type="text" class="form-control" id="bank_name" name="bank_name" value="{{ $supplier->bank_name }}">
+                            <div class="col-md-6 mb-3">
+                                <label for="invoice_number" class="form-label">No. Factura</label>
+                                <input type="text" class="form-control" id="invoice_number" name="invoice_number" value="{{ $checklist->invoice_number }}">
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="dependency_id" class="form-label">Dependencia <span class="text-info tx-12">(Opcional)</span></label>
-                                <input type="number" class="form-control" id="dependency_id" name="dependency_id" value="{{ $supplier->dependency_id }}">
-                            </div>
+
+                            <!-- Estado -->
                             <div class="col-md-12 mb-3">
                                 <label for="status" class="form-label">Estado <span class="text-danger tx-12">*</span></label>
                                 <select class="form-control" id="status" name="status" required>
-                                    <option value="active" {{ $supplier->status === 'active' ? 'selected' : '' }}>Activo</option>
-                                    <option value="inactive" {{ $supplier->status === 'inactive' ? 'selected' : '' }}>Inactivo</option>
+                                    <option value="active" {{ $checklist->status === 'active' ? 'selected' : '' }}>Activo</option>
+                                    <option value="inactive" {{ $checklist->status === 'inactive' ? 'selected' : '' }}>Inactivo</option>
                                 </select>
                             </div>
                         </div>
 
                         <button type="submit" class="btn btn-dark btn-sm">Guardar cambios</button>
-                        <a href="{{ route('treasury_account_payable_suppliers.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
+                        <a href="{{ URL::previous() }}" class="btn btn-secondary btn-sm">Cancelar</a>
                     </form>
                 </div>
             </div>
