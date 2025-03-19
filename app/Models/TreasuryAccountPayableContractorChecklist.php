@@ -14,6 +14,6 @@ class TreasuryAccountPayableContractorChecklist extends Model
 
     public function contractor()
     {
-        return $this->belongsTo(TreasuryAccountPayableContractor::class);
+        return $this->belongsTo(TreasuryAccountPayableContractor::class, 'contractor_id');
     }
 }

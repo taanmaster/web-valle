@@ -44,7 +44,6 @@ class TreasuryAccountPayableContractorController extends Controller
 
         // Guardar datos en la base de datos
         TreasuryAccountPayableContractor::create([
-            'folio' => Str::random(10),
             'name' => $request->name,
             'rfc' => $request->rfc,
             'email' => $request->email,

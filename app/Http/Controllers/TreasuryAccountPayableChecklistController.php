@@ -41,7 +41,6 @@ class TreasuryAccountPayableChecklistController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'status' => $request->status,
-            'slug' => Str::slug($request->name),
         ]);
 
         // Mensaje de sesión
@@ -81,7 +80,6 @@ class TreasuryAccountPayableChecklistController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'status' => $request->status,
-            'slug' => Str::slug($request->name),
         ]);
 
         // Mensaje de sesión

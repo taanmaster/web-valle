@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+
+// Modelos
 use App\Models\TreasuryAccountPayableSupplierChecklistAutorizationList;
+
 use Illuminate\Http\Request;
 
 class TreasuryAccountPayableSupplierChecklistAutorizationListController extends Controller

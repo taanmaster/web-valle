@@ -14,12 +14,12 @@ class TreasuryAccountPayableSupplierChecklist extends Model
 
     public function supplier()
     {
-        return $this->belongsTo(TreasuryAccountPayableSupplier::class);
+        return $this->belongsTo(TreasuryAccountPayableSupplier::class, 'supplier_id');
     }
 
-    public function autorizations()
+    public function authorizations()
     {
-        return $this->hasMany(TreasuryAccountPayableSupplierChecklistAutorization::class);
+        return $this->hasMany(TreasuryAccountPayableSupplierChecklistAutorization::class, 'supplier_checklist_id');
     }
     
 }

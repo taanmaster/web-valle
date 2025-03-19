@@ -18,11 +18,15 @@ return new class extends Migration
             $table->bigInteger('checklist_id')->unsigned();
 
             $table->string('folio')->nullable();
-            $table->date('recieved_at')->nullable();
+            $table->date('received_at')->nullable();
             $table->date('return_date')->nullable();
 
             $table->bigInteger('dependency_id')->unsigned()->nullable();
             $table->string('dependency_name')->nullable();
+
+            $table->string('invoice_number')->nullable();
+            $table->date('invoice_date')->nullable();
+            $table->decimal('invoice_amount', 10, 2)->nullable();
 
             $table->string('status')->default('active');
 

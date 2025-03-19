@@ -14,6 +14,6 @@ class TreasuryAccountPayableChecklist extends Model
 
     public function elements()
     {
-        return $this->hasMany(TreasuryAccountPayableChecklistElement::class);
+        return $this->hasMany(TreasuryAccountPayableChecklistElement::class, 'checklist_id');
     }
 }

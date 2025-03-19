@@ -27,10 +27,12 @@
                             @endif
                         </p>
                     </div>
+
                     <div class="card-footer text-muted">
-                        <small>Creado: {{ $checklist->created_at }}</small><br>
-                        <small>Actualizado: {{ $checklist->updated_at }}</small>
-                        <div class="btn-group mt-4" role="group">
+                        <p class="mb-0"><small>Creado: {{ $checklist->created_at }}</small></p>
+                        <p><small>Actualizado: {{ $checklist->updated_at }}</small></p>
+
+                        <div class="btn-group mt-3" role="group">
                             <a href="{{ route('treasury_account_payable_checklists.edit', $checklist->id) }}" class="btn btn-sm btn-primary">
                                 <i class="bx bx-edit"></i> Editar
                             </a>
@@ -50,8 +52,9 @@
             <div class="col-8">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5>Elementos del Checklist</h5>
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreateElement" class="btn btn-sm btn-primary">
+                        <h5 class="flex-grow-1">Elementos del Checklist</h5>
+
+                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreateElement" class="btn btn-sm btn-primary d-block flex-grow-0">
                             <i class="bx bx-plus"></i> Agregar Elemento
                         </a>
                     </div>
@@ -63,18 +66,18 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Nombre</th>
-                                        <th>Descripción</th>
+                                        {{-- <th>Descripción</th>  --}}
                                         <th>Orden</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($checklist->elements as $element)
+                                    @foreach($checklist->elements->sortBy('order') as $element)
                                     <tr>
                                         <td>{{ $element->id }}</td>
                                         <td>{{ $element->name }}</td>
-                                        <td>{{ $element->description ?? 'N/A' }}</td>
+                                        {{--  <td>{{ $element->description ?? 'N/A' }}</td> --}}
                                         <td>{{ $element->order ?? 'N/A' }}</td>
                                         <td>
                                             @if($element->status === 'active')
@@ -131,10 +134,14 @@
                             <label for="name" class="form-label">Nombre <span class="text-danger tx-12">*</span></label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
+
+                        {{--  
                         <div class="col-md-12 mb-3">
                             <label for="description" class="form-label">Descripción <span class="text-info tx-12">(Opcional)</span></label>
                             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                         </div>
+                        --}}
+
                         <div class="col-md-12 mb-3">
                             <label for="order" class="form-label">Orden <span class="text-info tx-12">(Opcional)</span></label>
                             <input type="number" class="form-control" id="order" name="order">
@@ -168,10 +175,14 @@
                             <label for="edit_name" class="form-label">Nombre <span class="text-danger tx-12">*</span></label>
                             <input type="text" class="form-control" id="edit_name" name="name" required>
                         </div>
+
+                        {{--  
                         <div class="col-md-12 mb-3">
                             <label for="edit_description" class="form-label">Descripción <span class="text-info tx-12">(Opcional)</span></label>
                             <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
                         </div>
+                        --}}
+
                         <div class="col-md-12 mb-3">
                             <label for="edit_order" class="form-label">Orden <span class="text-info tx-12">(Opcional)</span></label>
                             <input type="number" class="form-control" id="edit_order" name="order">
@@ -198,7 +209,7 @@
                 const form = document.getElementById('editElementForm');
                 form.action = `/checklist_elements/${element.id}`; // Ruta dinámica para el controlador
                 document.getElementById('edit_name').value = element.name;
-                document.getElementById('edit_description').value = element.description || '';
+                /*document.getElementById('edit_description').value = element.description || '';*/
                 document.getElementById('edit_order').value = element.order || '';
                 new bootstrap.Modal(document.getElementById('modalEditElement')).show();
             });

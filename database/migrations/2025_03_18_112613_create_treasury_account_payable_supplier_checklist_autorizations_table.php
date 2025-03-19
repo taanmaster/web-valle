@@ -36,11 +36,10 @@ return new class extends Migration
             $table->string('recipient_name')->nullable();
 
             // Usuarios Involucrados
-            $table->bigInteger('transaction_by')->unsigned()->nullable();
-            $table->bigInteger('authorized_by')->unsigned()->nullable();
-            $table->bigInteger('reviewed_by')->unsigned()->nullable();
-            $table->bigInteger('redacted_by')->unsigned()->nullable();
-            
+            $table->string('transaction_by')->nullable();
+            $table->string('authorized_by')->nullable();
+            $table->string('reviewed_by')->nullable();
+            $table->string('redacted_by')->nullable();
 
             $table->string('status')->default('active');
 

@@ -18,11 +18,9 @@ return new class extends Migration
             
             $table->string('name');
             $table->string('description')->nullable();
-
             $table->string('order')->nullable();
-
             $table->string('status')->default('active');
-            
+
             $table->timestamps();
         });
     }

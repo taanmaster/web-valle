@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 use Str;
 use Auth;
 use Session;
-use Intervention\Image\Facades\Image as Image;
 
 // Modelos
 use App\Models\TreasuryAccountPayableSupplier;

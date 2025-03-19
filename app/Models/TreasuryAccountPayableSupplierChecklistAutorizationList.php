@@ -14,6 +14,6 @@ class TreasuryAccountPayableSupplierChecklistAutorizationList extends Model
 
     public function autorization()
     {
-        return $this->belongsTo(TreasuryAccountPayableSupplierChecklistAutorization::class);
+        return $this->belongsTo(TreasuryAccountPayableSupplierChecklistAutorization::class, 'autorization_id');
     }
 }

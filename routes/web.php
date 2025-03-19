@@ -291,15 +291,50 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'treasury_account_payable_checklists.destroy',
             ]);
 
-            Route::resource('account_payable_supplier_checklists', TreasuryAccountPayableSupplierChecklistController::class)->names([
-                'index' => 'treasury_account_payable_supplier_checklists.index',
-                'create' => 'treasury_account_payable_supplier_checklists.create',
-                'store' => 'treasury_account_payable_supplier_checklists.store',
-                'show' => 'treasury_account_payable_supplier_checklists.show',
-                'edit' => 'treasury_account_payable_supplier_checklists.edit',
-                'update' => 'treasury_account_payable_supplier_checklists.update',
-                'destroy' => 'treasury_account_payable_supplier_checklists.destroy',
+            Route::resource('checklist_elements', TreasuryAccountPayableChecklistElementController::class)->names([
+                'store' => 'checklist_elements.store',
+                'update' => 'checklist_elements.update',
+                'destroy' => 'checklist_elements.destroy',
             ]);
+
+            Route::resource('{supplier_id}/supplier_checklists', TreasuryAccountPayableSupplierChecklistController::class)->names([
+                'index' => 'supplier_checklists.index',
+                'create' => 'supplier_checklists.create',
+                'store' => 'supplier_checklists.store',
+                'show' => 'supplier_checklists.show',
+                'edit' => 'supplier_checklists.edit',
+                'update' => 'supplier_checklists.update',
+                'destroy' => 'supplier_checklists.destroy',
+            ]);
+
+            /* Generador de Documentación */
+            Route::post('/supplier_checklists/{id}/download-Checklist',[
+                'uses' => 'TreasuryAccountPayableSupplierChecklistController@downloadChecklist',
+                'as' => 'supplier_checklists.download',
+            ]);
+
+            Route::resource('{contractor_id}/contractor_checklists', TreasuryAccountPayableContractorChecklistController::class)->names([
+                'index' => 'contractor_checklists.index',
+                'create' => 'contractor_checklists.create',
+                'store' => 'contractor_checklists.store',
+                'show' => 'contractor_checklists.show',
+                'edit' => 'contractor_checklists.edit',
+                'update' => 'contractor_checklists.update',
+                'destroy' => 'contractor_checklists.destroy',
+            ]);
+
+            /* Generador de Documentación */
+            Route::post('/contractor_checklists/{id}/download-Checklist',[
+                'uses' => 'TreasuryAccountPayableContractorChecklistController@downloadChecklist',
+                'as' => 'contractor_checklists.download',
+            ]);
+
+            Route::resource('supplier_checklist_authorizations', TreasuryAccountPayableSupplierChecklistAutorizationController::class)->names([
+                'store' => 'supplier_checklist_authorizations.store',
+                'update' => 'supplier_checklist_authorizations.update',
+                'destroy' => 'supplier_checklist_authorizations.destroy',
+            ]);
+
         });
     });
 });

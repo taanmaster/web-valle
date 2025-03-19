@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Valle de Santiago - Recibo de Apoyo</title>
+    <title>Valle de Santiago - Checklist de Proveedor</title>
 
     <style>
         /** 
@@ -126,8 +126,7 @@
                     <td class="col-6" style="text-align:right">
                         <div class="date-wrap">
                             <div class="line-contain">
-                                <p>Documento generado el:</p>
-                                <p>{{ Carbon\Carbon::now()->format('d/m/Y') }}</p>
+                                <p>VALLE DE SANTIAGO, GTO. A {{ Carbon\Carbon::now()->format('d/m/Y') }}</p>
                             </div>
                         </div>
                     </td>
@@ -137,10 +136,8 @@
     </header>
     
     <main>
-        <h2 class="text-info">RECIBO DE APOYO</h2>
-
+        
     </main>
 </body>
 </html>
-
 
