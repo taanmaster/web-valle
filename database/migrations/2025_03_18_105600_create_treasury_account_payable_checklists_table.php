@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('status')->default('active');
 
             $table->bigInteger('dependency_id')->unsigned()->nullable();
+            $table->string('dependency_name')->nullable();
 
             $table->timestamps();
         });

@@ -43,8 +43,8 @@
                             <input type="text" class="form-control" id="bank_name" name="bank_name">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="dependency_id" class="form-label">Dependencia <span class="text-info tx-12">(Opcional)</span></label>
-                            <input type="number" class="form-control" id="dependency_id" name="dependency_id">
+                            <label for="dependency_name" class="form-label">Dependencia <span class="text-info tx-12">(Opcional)</span></label>
+                            <input type="text" class="form-control" id="dependency_name" name="dependency_name">
                         </div>
 
                         <!-- Estado -->

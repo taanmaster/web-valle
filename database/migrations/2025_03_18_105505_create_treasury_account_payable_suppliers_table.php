@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('account_number')->nullable();
             $table->string('bank_name')->nullable();
             $table->bigInteger('dependency_id')->unsigned()->nullable();
+            $table->string('dependency_name')->nullable();
+            
             $table->string('status')->default('active');
 
             $table->timestamps();

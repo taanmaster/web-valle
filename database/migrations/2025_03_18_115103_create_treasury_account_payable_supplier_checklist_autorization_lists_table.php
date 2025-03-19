@@ -32,6 +32,7 @@ return new class extends Migration
 
             $table->bigInteger('dependency_id')->unsigned()->nullable();
             $table->string('dependency_name')->nullable();
+            
             $table->date('general_date')->nullable();
 
             $table->string('reference')->nullable();
