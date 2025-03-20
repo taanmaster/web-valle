@@ -40,6 +40,7 @@
                                     </div>
                                     <div class="btn btn-primary w-100 d-flex align-items-center justify-content-between gap-2">Descargar el Archivo <ion-icon name="download-outline"></ion-icon></div>
                                 </a>
+                            </div>
                             @endforeach                           
                         </div>
                     </div>
