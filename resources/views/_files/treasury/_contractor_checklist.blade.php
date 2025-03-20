@@ -283,6 +283,13 @@
                 </tr>
             </tbody>
         </table>
+
+        <h2 class="section-title">Elementos del Checklist</h2>
+        <ul>
+            @foreach($checklist->checklist->elements as $element)
+                <li>{{ $element->name }}</li>
+            @endforeach
+        </ul>
     </main>
 </body>
 </html>

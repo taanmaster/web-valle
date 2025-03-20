@@ -65,9 +65,8 @@
                                         <th>#</th>
                                         <th>Folio</th>
                                         <th>Fecha Recibido</th>
-                                        <th>Fecha Devolución</th>
-                                        <th>Dependencia</th>
-                                        <th>No. Factura</th>
+                                        <th>Programa</th>
+                                        <th>Importe del Contrato</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -78,9 +77,8 @@
                                         <td>{{ $checklist->id }}</td>
                                         <td>{{ $checklist->folio ?? 'N/A' }}</td>
                                         <td>{{ $checklist->received_at ?? 'N/A' }}</td>
-                                        <td>{{ $checklist->return_date ?? 'N/A' }}</td>
-                                        <td>{{ $checklist->dependency_name ?? 'N/A' }}</td>
-                                        <td>{{ $checklist->invoice_number ?? 'N/A' }}</td>
+                                        <td>{{ $checklist->program_name ?? 'N/A' }}</td>
+                                        <td>{{ $checklist->contract_amount ?? 'N/A' }}</td>
                                         <td>{{ $checklist->status }}</td>
                                         <td>
                                             <div class="btn-group" role="group">

@@ -108,15 +108,20 @@ class TreasuryAccountPayableContractorChecklistController extends Controller
 
         return view('treasury_account_payable_contractor_checklists.show')->with('checklist', $checklist);
     }
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($contractor_id, $checklist_id)
     {
-        $checklist = TreasuryAccountPayableContractorChecklist::findOrFail($id);
+        $contractor = TreasuryAccountPayableContractor::find($contractor_id);
+        $checklist = TreasuryAccountPayableContractorChecklist::find($checklist_id);
 
-        return view('treasury_account_payable_contractor_checklists.edit')->with('checklist', $checklist);
+        $checklists_base = TreasuryAccountPayableChecklist::all();
+
+        return view('treasury_account_payable_contractor_checklists.edit')
+        ->with('contractor', $contractor)
+        ->with('checklist', $checklist)
+        ->with('checklists_base', $checklists_base);
     }
 
     /**
