@@ -17,6 +17,10 @@
                             padding: 10px 0;
                             width: 100%;
                         }
+
+                        .headerband h6{
+                            letter-spacing: -1px;
+                        }
                         
                     </style>
 
@@ -46,7 +50,7 @@
                                 <p>{{ $banner->subtitle }}</p>
 
                                 @if($banner->has_button == true)
-                                <a href="{{ $banner->link }}" class="btn btn-primary" style="background-color: {{ $banner->hex_button ?? 'black' }} !important; color:{{ $banner->hex_text_button ?? 'white' }} !important;" >{{ $banner->text_button }}</a>
+                                <a href="{{ $banner->link }}" class="btn btn-primary" style="background-color: {{ $banner->hex_button ?? 'black' }} !important; color:{{ $banner->hex_text_button ?? 'white' }} !important; border: {{ $banner->hex_button }} !important;" >{{ $banner->text_button }}</a>
                                 @endif
                             </div>
                         </div>
