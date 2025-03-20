@@ -44,6 +44,10 @@
                             <div class="card-content">
                                 <h2>{{ $banner->title }}</h2>
                                 <p>{{ $banner->subtitle }}</p>
+
+                                @if($banner->has_button == true)
+                                <a href="{{ $banner->link }}" class="btn btn-primary" style="background-color: {{ $banner->hex_button ?? 'black' }} !important; color:{{ $banner->hex_text_button ?? 'white' }} !important;" >{{ $banner->text_button }}</a>
+                                @endif
                             </div>
                         </div>
                     </div>
