@@ -34,7 +34,7 @@
                                         <h1 class="mt-5 mb-4">¡404!</h1>
                                         <h5 class="font-16 text-muted mb-5">El contenido que buscas no existe.</h5>
                                     </div>
-                                    <a class="btn btn-primary w-100" href="index">Regresar al panel <i class="fas fa-redo ml-1"></i></a>
+                                    <a class="btn btn-primary w-100" href="{{ route('dashboard') }}">Regresar al panel <i class="fas fa-redo ml-1"></i></a>
                                 </div>
                                 <!--end card-body-->
                                 <div class="card-body bg-light-alt text-center">

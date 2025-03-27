@@ -23,7 +23,7 @@
                 <a href="{{ route('login') }}" class="btn btn-primary">Iniciar Sesión</a>
                 @else
                 <div class="alert alert-success">Inicio de sesión correcto. Da click en el botón inferior para acceder al portal.</div>
-                <a href="{{ URL('/helpdesk-index') }}" class="btn btn-primary">Acceder al panel</a>
+                <a href="{{ route('dashboard') }}" class="btn btn-primary">Acceder al panel</a>
                 @endguest
             </div>
         </div>
