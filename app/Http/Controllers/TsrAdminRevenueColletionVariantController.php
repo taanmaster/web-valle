@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TsrAdminRevenueColletion;
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+
+// Modelos
+use App\Models\TsrAdminRevenueColletionVariant;
+
 use Illuminate\Http\Request;
 
-class TsrAdminRevenueColletionController extends Controller
+class TsrAdminRevenueColletionVariantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +41,7 @@ class TsrAdminRevenueColletionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TsrAdminRevenueColletion $tsrAdminRevenueColletion)
+    public function show(TsrAdminRevenueColletionVariant $tsrAdminRevenueColletionVariant)
     {
         //
     }
@@ -42,7 +49,7 @@ class TsrAdminRevenueColletionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TsrAdminRevenueColletion $tsrAdminRevenueColletion)
+    public function edit(TsrAdminRevenueColletionVariant $tsrAdminRevenueColletionVariant)
     {
         //
     }
@@ -50,7 +57,7 @@ class TsrAdminRevenueColletionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TsrAdminRevenueColletion $tsrAdminRevenueColletion)
+    public function update(Request $request, TsrAdminRevenueColletionVariant $tsrAdminRevenueColletionVariant)
     {
         //
     }
@@ -58,8 +65,14 @@ class TsrAdminRevenueColletionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TsrAdminRevenueColletion $tsrAdminRevenueColletion)
+    public function destroy($id)
     {
-        //
+        $variant = TsrAdminRevenueColletionVariant::findOrFail($id);
+
+        // Finalmente, eliminar la sección
+        $variant->delete();
+
+        // Mensaje de sesión
+        return redirect()->back()->with('success', 'Variante eliminada correctamente.');
     }
 }

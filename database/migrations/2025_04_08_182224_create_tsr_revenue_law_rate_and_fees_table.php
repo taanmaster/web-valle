@@ -11,8 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tsr_admin_revenue_colletions', function (Blueprint $table) {
+        Schema::create('tsr_revenue_law_rate_and_fees', function (Blueprint $table) {
             $table->id();
+
+            $table->string('section');
+            $table->string('order_number');
+            $table->string('type');
+            $table->text('description')->nullable();
+            $table->text('concept')->nullable();
+            $table->string('cost')->nullable();
+
             $table->timestamps();
         });
     }
@@ -22,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tsr_admin_revenue_colletions');
+        Schema::dropIfExists('tsr_revenue_law_rate_and_fees');
     }
 };

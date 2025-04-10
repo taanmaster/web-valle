@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
+use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
+use App\Models\TsrAdminRevenueColletionArticle;
+use App\Models\TsrAdminRevenueColletionFraction;
 use Illuminate\Support\Facades\Route;
 
 Route::namespace('App\Http\Controllers')->group(function () {
@@ -66,12 +70,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /* ------------------- */
 
     // Back-End Views
-    Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin_access']], function(){
+    Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin_access']], function () {
         Route::get('/', 'DashboardController@index')->name('dashboard');
 
         /* Usuarios */
         Route::resource('users', UserController::class);
-        
+
         Route::get('profile', [
             'uses' => 'DashboardController@adminProfile',
             'as' => 'admin.profile',
@@ -97,7 +101,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'headerbands.status',
         ]);
 
-        Route::resource('popups', PopupController::class);    
+        Route::resource('popups', PopupController::class);
 
         Route::post('/popups/status/{id}', [
             'uses' => 'PopupController@status',
@@ -138,7 +142,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         /* ------------------- */
 
         /* Transparencia */
-        Route::group(['prefix' => 'transparency'], function(){
+        Route::group(['prefix' => 'transparency'], function () {
             Route::resource('dependencies', TransparencyDependencyController::class)->names([
                 'index' => 'transparency_dependencies.index',
                 'create' => 'transparency_dependencies.create',
@@ -199,10 +203,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         /* ------------------- */
 
         /* Tesorería */
-        Route::group(['prefix' => 'treasury'], function(){
+        Route::group(['prefix' => 'treasury'], function () {
             /* Apoyos Económicos */
             Route::resource('financial_supports', FinancialSupportController::class);
-            
+
             Route::get('/financial_supports/funciones/busqueda', [
                 'uses' => 'SearchController@financial_supportsQuery',
                 'as' => 'back.financial_supports.query',
@@ -227,36 +231,36 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ]);
 
             /* Generador de Documentación */
-            Route::post('/financial_supports/{id}/download-gratefulness',[
+            Route::post('/financial_supports/{id}/download-gratefulness', [
                 'uses' => 'FinancialSupportController@downloadGratefulness',
                 'as' => 'financial_supports.downloadGratefulness',
             ]);
 
-            Route::post('/financial_supports/{id}/download-request',[
+            Route::post('/financial_supports/{id}/download-request', [
                 'uses' => 'FinancialSupportController@downloadRequest',
                 'as' => 'financial_supports.downloadRequest',
             ]);
 
-            Route::post('/financial_supports/{id}/download-support-receipt',[
+            Route::post('/financial_supports/{id}/download-support-receipt', [
                 'uses' => 'FinancialSupportController@downloadSupportReceipt',
                 'as' => 'financial_supports.downloadSupportReceipt',
             ]);
 
-            Route::post('/financial_supports/{id}/download-under-oath',[
+            Route::post('/financial_supports/{id}/download-under-oath', [
                 'uses' => 'FinancialSupportController@downloadUnderOath',
                 'as' => 'financial_supports.downloadUnderOath',
             ]);
 
-            Route::post('/financial_supports/{id}/download-received',[
+            Route::post('/financial_supports/{id}/download-received', [
                 'uses' => 'FinancialSupportController@downloadReceived',
                 'as' => 'financial_supports.downloadReceived',
             ]);
 
-            Route::post('/financial_supports/download-cash-cut',[
+            Route::post('/financial_supports/download-cash-cut', [
                 'uses' => 'FinancialSupportController@downloadCashCut',
                 'as' => 'financial_supports.downloadCashCut',
             ]);
-            
+
             /* ------------------- */
             /* ------------------- */
 
@@ -308,7 +312,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ]);
 
             /* Generador de Documentación */
-            Route::post('/supplier_checklists/{id}/download-Checklist',[
+            Route::post('/supplier_checklists/{id}/download-Checklist', [
                 'uses' => 'TreasuryAccountPayableSupplierChecklistController@downloadChecklist',
                 'as' => 'supplier_checklists.download',
             ]);
@@ -324,7 +328,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ]);
 
             /* Generador de Documentación */
-            Route::post('/contractor_checklists/{id}/download-Checklist',[
+            Route::post('/contractor_checklists/{id}/download-Checklist', [
                 'uses' => 'TreasuryAccountPayableContractorChecklistController@downloadChecklist',
                 'as' => 'contractor_checklists.download',
             ]);
@@ -335,7 +339,61 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'supplier_checklist_authorizations.destroy',
             ]);
 
+            /* ------------------- */
+            /* ------------------- */
+
+            /* Disposiciones Administrativas de Recaudación */
+            Route::resource('revenue_collection', TsrAdminRevenueCollectionController::class)->names([
+                'index' => 'trs_admin_revenue_collection.index',
+                'show' => 'trs_admin_revenue_collection.show',
+            ]);
+
+            /* Disposiciones Administrativas de Recaudación -- Secciones*/
+            Route::resource('revenue_collection_sections', TsrAdminRevenueColletionSectionController::class)->names([
+                'destroy' => 'revenue_collection_sections.destroy',
+            ]);
+
+            /* Disposiciones Administrativas de Recaudación -- Articulos*/
+            Route::resource('revenue_collection_articles', TsrAdminRevenueColletionArticleController::class)->names([
+                'destroy' => 'revenue_collection_articles.destroy'
+            ]);
+
+            /* Disposiciones Administrativas de Recaudación -- Fracciones*/
+            Route::resource('revenue_collection_fractions', TsrAdminRevenueColletionFractionController::class)->names([
+                'destroy' => 'revenue_collection_fractions.destroy'
+            ]);
+
+            /* Disposiciones Administrativas de Recaudación -- Incisos*/
+            Route::resource('revenue_collection_clause', TsrAdminRevenueColletionClauseController::class)->names([
+                'destroy' => 'revenue_collection_clauses.destroy'
+            ]);
+
+            /* Disposiciones Administrativas de Recaudación -- Variantes*/
+            Route::resource('revenue_collection_variant', TsrAdminRevenueColletionVariantController::class)->names([
+                'destroy' => 'revenue_collection_variants.destroy'
+            ]);
+
+            /* Ley de Ingresos */
+            Route::resource('revenue_law', TsrRevenueLawController::class)->names([
+                'index' => 'revenue_law.index',
+                'show' => 'revenue_law.show',
+            ]);
+
+            /* Ley de Ingresos -- Ingresos */
+            Route::resource('revenue_law_income', TsrRevenueLawIncomeController::class)->names([
+                'destroy' => 'revenue_law_income.destroy'
+            ]);
+
+            /* Ley de Ingresos -- Conceptos */
+            Route::resource('revenue_law_concept', TsrRevenueLawConceptController::class)->names([
+                'destroy' => 'revenue_law_concept.destroy'
+            ]);
+
+            /* Tarifas y Costos */
+            Route::resource('revenue_law_rates_and_fees', TsrRevenueLawRateAndFeeController::class)->names([
+                'index' => 'rates_and_costs.index',
+                'destroy' => 'rates_and_cost.destroy',
+            ]);
         });
     });
 });
-

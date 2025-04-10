@@ -203,17 +203,21 @@
                     </ul>
 
                     <div class="title-box mt-5">
-                        <h6 class="menu-title">Tesorería</h6>
+                        <h6 class="menu-title">Tarífas</h6>
                     </div>
 
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('treasury_account_payable_suppliers.index') }}">Proveedores</a>
+                    <ul class="nav flex-column mt-4">
+                        <li class="nav-item mb-3">
+                            <a class="nav-link" href="{{ route('trs_admin_revenue_collection.index') }}">Listado de
+                                disposiciones administrativas de recaudación</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('treasury_account_payable_contractors.index') }}">Contratistas</a>
+                            <a class="nav-link" href="{{ route('revenue_law.index') }}">Ley
+                                de Ingresos</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('rates_and_costs.index') }}">Tarifas y Costos</a>
                         </li>
                     </ul>
                 </div>
