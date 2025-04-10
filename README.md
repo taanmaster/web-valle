@@ -163,3 +163,11 @@ sudo a2enmod ssl
 service apache2 reload
 
 ```
+
+### Instalar paqueterias de CSS y JS
+
+```
+npm install
+
+npm run build
+```
