@@ -53,9 +53,8 @@
                 </div>
                 <div class="col-md-2">
                     <div style="gap: 12px">
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalIncome"
-                            class="btn btn-sm btn-outline-secondary"
-                            onclick="Livewire.dispatch('selectIncome', {{ $income }})">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary edit-income"
+                            data-id="{{ $income->id }}">
                             <i class="bx bx-edit"></i> Editar
                         </a>
                         <form method="POST" action="{{ route('revenue_law_income.destroy', $income->id) }}"
@@ -70,9 +69,8 @@
                 </div>
                 <div class="col-md-1">
                     <div class="btn-group" role="group">
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#conceptModal"
-                            class="btn btn-sm btn-outline-primary"
-                            onclick="Livewire.dispatch('newConceptModal', {{ $income }})">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-outline-primary new-concept"
+                            data-id="{{ $income->id }}">
                             +
                         </a>
                     </div>
@@ -113,10 +111,9 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                    data-bs-target="#conceptModal"
-                                                    class="btn btn-sm btn-outline-primary"
-                                                    onclick="Livewire.dispatch('selectConcept', {{ $concept }})">
+                                                <a href="javascript:void(0)"
+                                                    class="btn btn-sm btn-outline-primary edit-concept"
+                                                    data-id="{{ $concept->id }}">
                                                     <i class="bx bx-edit"></i> Editar Variante
                                                 </a>
 

@@ -23,6 +23,17 @@ class IncomeModal extends Component
     public $law = '';
     public $total = '';
 
+    #[On('newIncome')]
+    public function new()
+    {
+        $this->income = '';
+
+        $this->type = '';
+        $this->entity = '';
+        $this->law = '';
+        $this->total = '';
+    }
+
     #[On('selectIncome')]
     public function showModal($id)
     {

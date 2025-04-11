@@ -33,10 +33,14 @@ class ConceptModal extends Component
         $this->estimated_income = $this->selectedConcept->estimated_income;
     }
 
-    #[On('newConceptModal')]
+    #[On('newConcept')]
     public function newModal($id)
     {
         $this->income_id = $id;
+
+        $this->CRI = '';
+        $this->concept = '';
+        $this->estimated_income = '';
     }
 
     public function save()

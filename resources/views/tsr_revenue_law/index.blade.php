@@ -20,13 +20,9 @@
         <div class="main-content">
             <div class="row align-items-center mb-4">
                 <div class="col text-start">
-                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalIncome"
-                        class="btn btn-primary">Nuevo Ingreso</a>
+                    <a href="javascript:void(0)" class="btn btn-primary new-income">Nuevo Ingreso</a>
                 </div>
             </div>
-
-            <livewire:tsr-revenue-law.income-modal />
-            <livewire:tsr-revenue-law.concept-modal />
 
             @if ($incomes->count() == 0)
                 <div class="row">
@@ -38,8 +34,8 @@
                                         style="width:30%; margin-bottom: 40px;">
                                     <h4>¡No hay ingresos guardados en la base de datos!</h4>
                                     <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
-                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalIncome"
-                                        class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo
+                                    <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-uppercase new-income"><i
+                                            class="fas fa-plus"></i> Nuevo
                                         Ingreso</a>
                                 </div>
                             </div>
@@ -48,9 +44,7 @@
                 </div>
             @else
                 <div class="row">
-
                     @include('tsr_revenue_law.utilities._table')
-
                 </div>
 
                 <div class="d-flex align-items-center justify-content-center">
@@ -60,4 +54,73 @@
 
         </div>
     </div>
+
+
+    <div class="modal fade" id="incomeModal" tabindex="-1" role="dialog" aria-labelledby="incomeModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <livewire:tsr-revenue-law.income-modal />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="conceptModal" tabindex="-1" role="dialog" aria-labelledby="conceptModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <livewire:tsr-revenue-law.concept-modal />
+            </div>
+        </div>
+    </div>
+
+
+    @push('scripts')
+        <script>
+            var incomeModal = new bootstrap.Modal(document.getElementById('incomeModal'), {
+                keyboard: false
+            });
+
+            document.querySelectorAll('.new-income').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    incomeModal.show();
+                    Livewire.dispatch('newIncome');
+                });
+            });
+
+            document.querySelectorAll('.edit-income').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const incomeId = this.getAttribute('data-id');
+                    incomeModal.show();
+                    Livewire.dispatch('selectIncome', {
+                        id: incomeId
+                    });
+                });
+            });
+
+
+            var conceptModal = new bootstrap.Modal(document.getElementById('conceptModal'), {
+                keyboard: false
+            });
+
+            document.querySelectorAll('.new-concept').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const incomeId = this.getAttribute('data-id');
+                    conceptModal.show();
+                    Livewire.dispatch('newConcept', {
+                        id: incomeId
+                    });
+                });
+            });
+
+            document.querySelectorAll('.edit-concept').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const conceptId = this.getAttribute('data-id');
+                    conceptModal.show();
+                    Livewire.dispatch('selectConcept', {
+                        id: conceptId
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection
