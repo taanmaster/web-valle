@@ -27,6 +27,18 @@ class RatesAndFeesModal extends Component
     public $cost = '';
     public $description = '';
 
+    #[On('newQuote')]
+    public function new()
+    {
+        $this->selectedRate = '';
+
+        $this->section = '';
+        $this->order_number = '';
+        $this->type = '';
+        $this->concept = '';
+        $this->cost = '';
+        $this->description = '';
+    }
 
     #[On('selectRate')]
     public function selectRate($id)

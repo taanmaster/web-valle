@@ -20,8 +20,7 @@
         <div class="main-content">
             <div class="row align-items-center mb-4">
                 <div class="col text-start">
-                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#rateModal"
-                        class="btn btn-primary">Agregar Tarifa</a>
+                    <a href="javascript:void(0)" class="btn btn-primary new-quote">Agregar Tarifa</a>
                 </div>
             </div>
             @if ($rates->count() == 0)
@@ -34,8 +33,8 @@
                                         style="width:30%; margin-bottom: 40px;">
                                     <h4>¡No hay tarifas guardadas en la base de datos!</h4>
                                     <p class="mb-4">Empieza a cargarlas en la sección correspondiente.</p>
-                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#rateModal"
-                                        class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nueva
+                                    <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-uppercase new-quote"><i
+                                            class="fas fa-plus"></i> Nueva
                                         Tarifa</a>
                                 </div>
                             </div>
@@ -63,8 +62,22 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div><!--end modal-header-->
                 @livewire('tsr-revenue-law.rates-and-fees-modal')
-
             </div><!--end modal-content-->
         </div><!--end modal-dialog-->
     </div><!--end modal-->
+
+    @push('scripts')
+        <script>
+            var rateModal = new bootstrap.Modal(document.getElementById('rateModal'), {
+                keyboard: false
+            });
+
+            document.querySelectorAll('.new-quote').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    rateModal.show();
+                    Livewire.dispatch('newQuote');
+                });
+            });
+        </script>
+    @endpush
 @endsection
