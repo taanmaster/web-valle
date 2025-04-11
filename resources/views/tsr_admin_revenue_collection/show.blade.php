@@ -19,13 +19,8 @@
     @endcomponent
 
     <div class="row layout-spacing">
-
-
         <div class="main-content">
-
-
             <h4>Información General</h4>
-
 
             <div class="row mb-4">
                 <div class="col-md-6">
@@ -40,20 +35,10 @@
                 </div>
             </div>
 
-
             <div class="d-flex align-items-center justify-content-between mb-4">
-
                 <h3>Tarifas</h3>
-
-                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#fractionModal" class="btn btn-primary"
-                    style="max-width: 180px">Nueva fracción</a>
-
+                <a href="javascript:void(0)" class="btn btn-primary new-fraction" style="max-width: 180px">Nueva fracción</a>
             </div>
-
-            <livewire:tsr-admin-revenue-collection.fraction-modal :articleId="$article->id" />
-            <livewire:tsr-admin-revenue-collection.clause-modal :articleId="$article->id" />
-            <livewire:tsr-admin-revenue-collection.variant-modal :articleId="$article->id" />
-
 
             @if ($fractions->count() == 0)
                 <div class="row">
@@ -65,8 +50,9 @@
                                         style="width:30%; margin-bottom: 40px;">
                                     <h4>¡No hay Tarifas guardadas en la base de datos!</h4>
                                     <p class="mb-4">Empieza a cargarlas en la sección correspondiente.</p>
-                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#fractionModal"
-                                        class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nueva
+                                    <a href="javascript:void(0)"
+                                        class="btn btn-sm btn-primary btn-uppercase new-fraction"><i
+                                            class="fas fa-plus"></i> Nueva
                                         Fracción</a>
                                 </div>
                             </div>
@@ -83,6 +69,105 @@
                 </div>
             @endif
         </div>
-
     </div>
+
+    <div class="modal fade" id="fractionModal" tabindex="-1" role="dialog" aria-labelledby="fractionModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <livewire:tsr-admin-revenue-collection.fraction-modal :articleId="$article->id" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="clauseModal" tabindex="-1" role="dialog" aria-labelledby="clauseModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <livewire:tsr-admin-revenue-collection.clause-modal :articleId="$article->id" />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="variantModal" tabindex="-1" role="dialog" aria-labelledby="variantModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <livewire:tsr-admin-revenue-collection.variant-modal :articleId="$article->id" />
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            var fractionModal = new bootstrap.Modal(document.getElementById('fractionModal'), {
+                keyboard: false
+            });
+
+            document.querySelectorAll('.new-fraction').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    fractionModal.show();
+                    Livewire.dispatch('newFraction');
+                });
+            });
+
+            document.querySelectorAll('.edit-fraction').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const fractionId = this.getAttribute('data-id');
+                    fractionModal.show();
+                    Livewire.dispatch('selectFraction', {
+                        id: fractionId
+                    });
+                });
+            });
+
+            var clauseModal = new bootstrap.Modal(document.getElementById('clauseModal'), {
+                keyboard: false
+            });
+
+            document.querySelectorAll('.new-clause').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const fractionId = this.getAttribute('data-id');
+                    clauseModal.show();
+                    Livewire.dispatch('newClause', {
+                        id: fractionId
+                    });
+                });
+            });
+
+            document.querySelectorAll('.edit-clause').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const clauseId = this.getAttribute('data-id');
+                    clauseModal.show();
+                    Livewire.dispatch('selectClause', {
+                        id: clauseId
+                    });
+                });
+            });
+
+            var variantModal = new bootstrap.Modal(document.getElementById('variantModal'), {
+                keyboard: false
+            });
+
+            document.querySelectorAll('.new-variant').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const clauseId = this.getAttribute('data-id');
+                    variantModal.show();
+                    Livewire.dispatch('newVariant', {
+                        id: clauseId
+                    });
+                });
+            });
+
+            document.querySelectorAll('.edit-variant').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const variantID = this.getAttribute('data-id');
+                    variantModal.show();
+                    Livewire.dispatch('selectVariant', {
+                        id: variantID
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection

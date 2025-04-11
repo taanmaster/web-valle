@@ -30,9 +30,16 @@ class ClauseModal extends Component
 
 
     #[On('newClause')]
-    public function showModal($id)
+    public function new($id)
     {
         $this->fractionId = $id;
+        $this->selectedClause = '';
+
+        $this->clause = '';
+        $this->name = '';
+        $this->description = '';
+        $this->units = '';
+        $this->quote = '';
     }
 
     #[On('selectClause')]

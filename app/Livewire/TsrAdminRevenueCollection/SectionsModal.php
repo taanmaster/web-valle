@@ -34,6 +34,15 @@ class SectionsModal extends Component
         $this->description = $this->section->description;
     }
 
+    #[On('newSection')]
+    public function new()
+    {
+        $this->section = '';
+
+        $this->name = '';
+        $this->description = '';
+    }
+
     public function save()
     {
         $this->validate([

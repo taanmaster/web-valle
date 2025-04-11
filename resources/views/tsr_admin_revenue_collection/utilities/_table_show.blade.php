@@ -17,12 +17,6 @@
     <div class="col-md">
         Descripción
     </div>
-    <div class="col-md">
-        Unidades
-    </div>
-    <div class="col-md">
-        Tarifas
-    </div>
     <div class="col-md-2">
         Acciones
     </div>
@@ -50,20 +44,10 @@
                     {{ $fraction->description }}
                 </div>
 
-                <div class="col-md">
-                    {{ $fraction->units ?? 'N/A' }}
-                </div>
-
-
-                <div class="col-md">
-                    {{ $fraction->quote ?? 'N/A' }}
-                </div>
-
                 <div class="col-md-2">
                     <div style="gap: 12px">
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#fractionModal"
-                            class="btn btn-sm btn-outline-secondary"
-                            onclick="Livewire.dispatch('selectFraction', {{ $fraction }})">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary edit-fraction"
+                            data-id="{{ $fraction->id }}">
                             <i class="bx bx-edit"></i> Editar
                         </a>
                         <form method="POST" action="{{ route('revenue_collection_fractions.destroy', $fraction->id) }}"
@@ -79,9 +63,8 @@
 
                 <div class="col-md-1">
                     <div class="btn-group" role="group">
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#clauseModal"
-                            class="btn btn-sm btn-outline-primary"
-                            onclick="Livewire.dispatch('newClause', {{ $fraction }})">
+                        <a href="javascript:void(0)" data-id="{{ $fraction->id }}"
+                            class="btn btn-sm btn-outline-primary new-clause">
                             +
                         </a>
                     </div>
@@ -105,13 +88,11 @@
                                 <div class="box">
                                     <div class="box-body">
                                         <div class="text-center" style="padding:40px 0px 60px 0px;">
-                                            <h4>¡No hay articulos incisos en la base de datos!</h4>
+                                            <h4>¡No hay incisos incisos en la base de datos!</h4>
                                             <p class="mb-4">Empieza a cargarlos en la fracción correspondiente.</p>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#clauseModal"
-                                                class="btn btn-sm btn-primary btn-uppercase"
-                                                onclick="Livewire.dispatch('newClause', {{ $fraction }})"><i
-                                                    class="fas fa-plus"></i>
+                                            <a href="javascript:void(0)"
+                                                class="btn btn-sm btn-primary btn-uppercase new-clause"
+                                                data-id="{{ $fraction->id }}"><i class="fas fa-plus"></i>
                                                 Nuevo Inciso</a>
                                         </div>
                                     </div>
@@ -145,7 +126,9 @@
                             @foreach ($fraction->clauses as $clause)
                                 <div class="bg-body-secondary d-flex align-items-center w-100 py-3 px-2">
                                     <div class="col-md">
-                                        {{ $clause->clause }}
+                                        <strong>
+                                            {{ $clause->clause }}
+                                        </strong>
                                     </div>
 
                                     <div class="col-md">
@@ -166,15 +149,16 @@
 
                                     <div class="col-md-3">
                                         <div class="btn-group" role="group">
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#clauseModal" class="btn btn-sm btn-outline-primary"
-                                                onclick="Livewire.dispatch('selectClause', {{ $clause }})">
+                                            <a href="javascript:void(0)"
+                                                class="btn btn-sm btn-outline-primary edit-clause"
+                                                data-id="{{ $clause->id }}">
                                                 <i class="bx bx-edit"></i>
                                                 Editar Inciso
                                             </a>
                                             <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#variantModal" class="btn btn-sm btn-outline-primary"
-                                                onclick="Livewire.dispatch('newVariant', {{ $clause }})">
+                                                data-bs-target="#variantModal"
+                                                class="btn btn-sm btn-outline-primary new-variant"
+                                                data-id="{{ $clause->id }}">
                                                 <i class="fas fa-plus"></i> Agregar Variante
                                             </a>
 
@@ -206,7 +190,9 @@
                                             @foreach ($clause->variants as $variant)
                                                 <tr>
                                                     <td>
-                                                        {{ $variant->name }}
+                                                        <strong>
+                                                            {{ $variant->name }}
+                                                        </strong>
                                                     </td>
                                                     <td>
                                                         {{ $variant->description }}
@@ -219,10 +205,9 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group" role="group">
-                                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                data-bs-target="#variantModal"
-                                                                class="btn btn-sm btn-outline-primary"
-                                                                onclick="Livewire.dispatch('selectVariant', {{ $variant }})">
+                                                            <a href="javascript:void(0)"
+                                                                class="btn btn-sm btn-outline-primary edit-variant"
+                                                                data-id="{{ $variant->id }}">
                                                                 <i class="bx bx-edit"></i> Editar Variante
                                                             </a>
 

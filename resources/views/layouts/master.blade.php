@@ -14,7 +14,6 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
     @livewireStyles
-    @vite(['resources/js/app.js'])
 
     @include('layouts.head-css')
 </head>
@@ -50,7 +49,7 @@
     <!-- End Right content here -->
     <!-- ============================================================== -->
 
-
+    @livewireScripts
     @include('layouts.vendor-scripts')
 </body>
 

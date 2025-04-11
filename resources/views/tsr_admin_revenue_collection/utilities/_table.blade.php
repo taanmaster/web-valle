@@ -36,9 +36,8 @@
                 </div>
                 <div class="col-md-2">
                     <div style="gap: 12px">
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#sectionModal"
-                            class="btn btn-sm btn-outline-secondary"
-                            onclick="Livewire.dispatch('selectSection', {{ $section }})">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary edit-section-btn"
+                            data-id="{{ $section->id }}">
                             <i class="bx bx-edit"></i> Editar
                         </a>
                         <form method="POST" action="{{ route('revenue_collection_sections.destroy', $section->id) }}"
@@ -53,9 +52,8 @@
                 </div>
                 <div class="col-md-1">
                     <div class="btn-group" role="group">
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#articleModal"
-                            class="btn btn-sm btn-outline-primary"
-                            onclick="Livewire.dispatch('newArticleModal', {{ $section }})">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-outline-primary new-article"
+                            data-id="{{ $section->id }}">
                             +
                         </a>
                     </div>
@@ -81,11 +79,9 @@
                                         <div class="text-center" style="padding:40px 0px 60px 0px;">
                                             <h4>¡No hay articulos guardados en la base de datos!</h4>
                                             <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#articleModal"
-                                                class="btn btn-sm btn-primary btn-uppercase"
-                                                onclick="Livewire.dispatch('newArticleModal', {{ $section }})"><i
-                                                    class="fas fa-plus"></i>
+                                            <a href="javascript:void(0)"
+                                                class="btn btn-sm btn-primary btn-uppercase new-article"
+                                                data-id="{{ $section->id }}"><i class="fas fa-plus"></i>
                                                 Nuevo Artículo</a>
                                         </div>
                                     </div>
@@ -94,7 +90,7 @@
                         </div>
                     @else
                         @foreach ($section->articles as $article)
-                            <div class="row w-100">
+                            <div class="row w-100 mb-3">
                                 <div class="col-md">
                                     {{ $article->name }}
                                 </div>
@@ -103,9 +99,9 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="btn-group" role="group" style="gap: 12px">
-                                        <a href="javascript:void(0)" data-bs-toggle="modal"
-                                            data-bs-target="#articleModal" class="btn btn-sm btn-outline-secondary"
-                                            onclick="Livewire.dispatch('selectArticle', {{ $article }})">
+                                        <a href="javascript:void(0)"
+                                            class="btn btn-sm btn-outline-secondary edit-article"
+                                            data-id="{{ $article->id }}">
                                             <i class="bx bx-edit"></i> Editar
                                         </a>
 

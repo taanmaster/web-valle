@@ -34,10 +34,13 @@ class ArticleModal extends Component
         $this->description = $this->article->description;
     }
 
-    #[On('newArticleModal')]
-    public function newModal($id)
+    #[On('newArticle')]
+    public function new($id)
     {
         $this->section_id = $id;
+        $this->article = '';
+        $this->name = '';
+        $this->description = '';
     }
 
     public function save()

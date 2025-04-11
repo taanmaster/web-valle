@@ -30,20 +30,22 @@ class VariantModal extends Component
     public $clause = '';
 
     #[On('newVariant')]
-    public function showModal($id)
+    public function new($id)
     {
         $this->clauseId = $id;
-
         $clause = TsrAdminRevenueColletionClause::find($id);
 
         $this->clause = $clause->name;
+        $this->name = '';
+        $this->description = '';
+        $this->units = '';
+        $this->quote = '';
     }
 
     #[On('selectVariant')]
     public function selectVariant($id)
     {
         $this->selectedVariant = TsrAdminRevenueColletionVariant::find($id);
-
         $this->clause = $this->selectedVariant->clause->name;
 
         $this->name = $this->selectedVariant->name;

@@ -37,6 +37,16 @@ class FractionModal extends Component
         $this->description = $this->selectedFraction->description;
     }
 
+    #[On('newFraction')]
+    public function new()
+    {
+        $this->selectedFraction = '';
+
+        $this->name = '';
+        $this->fraction = '';
+        $this->description = '';
+    }
+
 
     public function save()
     {
