@@ -29,7 +29,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('dashboard') }}">Vista General</a>
                                 </li>
-                                {{--  
+                                {{--
                                 <li class="nav-item">
                                     <a class="nav-link" href="ecommerce-index">Pagos</a>
                                 </li>
@@ -40,7 +40,7 @@
                             </ul>
                         </div><!--end sidebarDashboards-->
                     </li><!--end nav-item-->
-                    
+
                     <li class="menu-label mt-0">A<span>pps</span></li>
                     <li class="nav-item">
                         <a class="nav-link" href="#sidebarAnalytics" data-bs-toggle="collapse" role="button"
@@ -106,7 +106,7 @@
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="crm-customers">Customers</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                             </ul><!--end nav-->
                         </div><!--end sidebarCRM-->
                     </li><!--end nav-item-->
@@ -142,7 +142,7 @@
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="projects-create">Project Create</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                             </ul><!--end nav-->
                         </div><!--end sidebarProjects-->
                     </li><!--end nav-item-->
@@ -204,17 +204,20 @@
                         <div class="collapse " id="sidebarHospital">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a href="#sidebarAppointments " class="nav-link" data-bs-toggle="collapse" id="appointments"
-                                        role="button" aria-expanded="false" aria-controls="sidebarAppointments" aria-labelledby="hospital">
-                                        Appointments 
+                                    <a href="#sidebarAppointments " class="nav-link" data-bs-toggle="collapse"
+                                        id="appointments" role="button" aria-expanded="false"
+                                        aria-controls="sidebarAppointments" aria-labelledby="hospital">
+                                        Appointments
                                     </a>
                                     <div class="collapse " id="sidebarAppointments">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
-                                                <a class="nav-link" aria-labelledby="appointments" href="hospital-doctor-shedule">Dr. Shedule</a>
+                                                <a class="nav-link" aria-labelledby="appointments"
+                                                    href="hospital-doctor-shedule">Dr. Shedule</a>
                                             </li><!--end nav-item-->
                                             <li class="nav-item">
-                                                <a class="nav-link" href="hospital-all-appointments">All Appointments</a>
+                                                <a class="nav-link" href="hospital-all-appointments">All
+                                                    Appointments</a>
                                             </li><!--end nav-item-->
                                         </ul><!--end nav-->
                                     </div><!--end sidebarAppointments-->
@@ -259,7 +262,8 @@
                                                 <a class="nav-link" href="hospital-patient-edit">Patient Edit</a>
                                             </li><!--end nav-item-->
                                             <li class="nav-item">
-                                                <a class="nav-link" href="hospital-patient-profile">Patient Profile</a>
+                                                <a class="nav-link" href="hospital-patient-profile">Patient
+                                                    Profile</a>
                                             </li><!--end nav-item-->
                                         </ul><!--end nav-->
                                     </div><!--end sidebarPatients-->
@@ -276,10 +280,12 @@
                                                 <a class="nav-link" href="hospital-all-payments">All Payments</a>
                                             </li><!--end nav-item-->
                                             <li class="nav-item">
-                                                <a class="nav-link" href="hospital-payment-invoice">Payment Invoice</a>
+                                                <a class="nav-link" href="hospital-payment-invoice">Payment
+                                                    Invoice</a>
                                             </li><!--end nav-item-->
                                             <li class="nav-item">
-                                                <a class="nav-link" href="hospital-cashless-payments">Cashless Payments</a>
+                                                <a class="nav-link" href="hospital-cashless-payments">Cashless
+                                                    Payments</a>
                                             </li><!--end nav-item-->
                                         </ul><!--end nav-->
                                     </div><!--end sidebarPayments-->
@@ -328,7 +334,8 @@
                                                 <a class="nav-link" href="hospital-departments">Departments</a>
                                             </li><!--end nav-item-->
                                             <li class="nav-item">
-                                                <a class="nav-link" href="hospital-insurance-company">Insurance Co.</a>
+                                                <a class="nav-link" href="hospital-insurance-company">Insurance
+                                                    Co.</a>
                                             </li><!--end nav-item-->
                                             <li class="nav-item">
                                                 <a class="nav-link" href="hospital-events">Events</a>
@@ -365,35 +372,39 @@
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="apps-email-read">Read Email</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                             </ul><!--end nav-->
                         </div><!--end sidebarEmail-->
                     </li><!--end nav-item-->
 
                     <li class="nav-item">
-                        <a class="nav-link" href="apps-chat"><i class="ti ti-brand-hipchat menu-icon"></i><span>Chat</span></a>
+                        <a class="nav-link" href="apps-chat"><i
+                                class="ti ti-brand-hipchat menu-icon"></i><span>Chat</span></a>
                     </li><!--end nav-item-->
                     <li class="nav-item">
-                        <a class="nav-link" href="apps-contact-list"><i class="ti ti-headphones menu-icon"></i><span>Contact List</span></a>
+                        <a class="nav-link" href="apps-contact-list"><i
+                                class="ti ti-headphones menu-icon"></i><span>Contact List</span></a>
                     </li><!--end nav-item-->
                     <li class="nav-item">
-                        <a class="nav-link" href="apps-calendar"><i class="ti ti-calendar menu-icon"></i><span>Calendar</span></a>
+                        <a class="nav-link" href="apps-calendar"><i
+                                class="ti ti-calendar menu-icon"></i><span>Calendar</span></a>
                     </li><!--end nav-item-->
                     <li class="nav-item">
-                        <a class="nav-link" href="apps-invoice"><i class="ti ti-file-invoice menu-icon"></i><span>Invoice</span></a>
+                        <a class="nav-link" href="apps-invoice"><i
+                                class="ti ti-file-invoice menu-icon"></i><span>Invoice</span></a>
                     </li><!--end nav-item-->
                     <li class="menu-label mt-0">C<span>omponents</span></li>
                     <li class="nav-item">
                         <a class="nav-link" href="#sidebarElements" data-bs-toggle="collapse" role="button"
                             aria-expanded="false" aria-controls="sidebarElements">
                             <i class="ti ti-planet menu-icon"></i>
-                        <span>UI Elements</span>
+                            <span>UI Elements</span>
                         </a>
                         <div class="collapse " id="sidebarElements">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-alerts">Alerts</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-avatar">Avatar</a>
                                 </li><!--end nav-item-->
@@ -408,19 +419,19 @@
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-carousels">Carousels</a>
-                                </li><!--end nav-item-->                                
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-dropdowns">Dropdowns</a>
-                                </li><!--end nav-item-->                                   
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-grids">Grids</a>
-                                </li><!--end nav-item-->                                
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-images">Images</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-list">List</a>
-                                </li><!--end nav-item-->                                   
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-modals">Modals</a>
                                 </li><!--end nav-item-->
@@ -429,28 +440,28 @@
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-navbar">Navbar</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-paginations">Paginations</a>
-                                </li><!--end nav-item-->   
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-popover-tooltips">Popover & Tooltips</a>
-                                </li><!--end nav-item-->                                
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-progress">Progress</a>
-                                </li><!--end nav-item-->                                
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-spinners">Spinners</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-tabs-accordions">Tabs & Accordions</a>
-                                </li><!--end nav-item-->                               
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-typography">Typography</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="ui-videos">Videos</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                             </ul><!--end nav-->
                         </div><!--end sidebarElements-->
                     </li><!--end nav-item-->
@@ -474,7 +485,7 @@
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="advanced-files">File Manager</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="advanced-highlight">Highlight</a>
                                 </li><!--end nav-item-->
@@ -486,7 +497,7 @@
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="advanced-ribbons">Ribbons</a>
-                                </li><!--end nav-item-->                                  
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="advanced-sweetalerts">Sweet Alerts</a>
                                 </li><!--end nav-item-->
@@ -534,7 +545,7 @@
                         <a class="nav-link" href="#sidebarCharts" data-bs-toggle="collapse" role="button"
                             aria-expanded="false" aria-controls="sidebarCharts">
                             <i class="ti ti-chart-donut menu-icon"></i>
-                        <span>Charts</span>
+                            <span>Charts</span>
                         </a>
                         <div class="collapse " id="sidebarCharts">
                             <ul class="nav flex-column">
@@ -546,10 +557,10 @@
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="charts-chartjs">Chartjs</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="charts-toast-ui">Toast</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                             </ul><!--end nav-->
                         </div><!--end sidebarCharts-->
                     </li><!--end nav-item-->
@@ -579,7 +590,7 @@
                         <a class="nav-link" href="#sidebarIcons" data-bs-toggle="collapse" role="button"
                             aria-expanded="false" aria-controls="sidebarIcons">
                             <i class="ti ti-parachute menu-icon"></i>
-                        <span>Icons</span>
+                            <span>Icons</span>
                         </a>
                         <div class="collapse " id="sidebarIcons">
                             <ul class="nav flex-column">
@@ -615,7 +626,7 @@
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="maps-vector">Vector Maps</a>
-                                </li><!--end nav-item--> 
+                                </li><!--end nav-item-->
                             </ul><!--end nav-->
                         </div><!--end sidebarMaps-->
                     </li><!--end nav-item-->
@@ -649,7 +660,7 @@
                         </a>
                         <div class="collapse " id="sidebarPages">
                             <ul class="nav flex-column">
-                               <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link" href="pages-profile">Profile</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
@@ -687,7 +698,7 @@
                         </a>
                         <div class="collapse " id="sidebarAuthentication">
                             <ul class="nav flex-column">
-                               <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link" href="auth-login">Log in</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
@@ -727,10 +738,10 @@
                         </div><!--end sidebarAuthentication-->
                     </li><!--end nav-item-->
 
-                    
+
                 </ul><!--end navbar-nav--->
             </div><!--end sidebarCollapse-->
         </div>
-    </div>    
+    </div>
 </div>
 <!-- end left-sidenav-->

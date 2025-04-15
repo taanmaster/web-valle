@@ -24,6 +24,9 @@ use App\Models\TransparencyDocument;
 // Modelos Textos Legales
 use App\Models\LegalText;
 
+// Modelos Agenda Regulatoria
+use App\Models\RegulatoryAgendaDependency;
+
 use Illuminate\Http\Request;
 
 class FrontController extends Controller
@@ -34,13 +37,13 @@ class FrontController extends Controller
         Carbon::setLocale('es');
         $gazettes = Gazette::with('files')->orderBy('id', 'desc')->limit(5)->get();
         $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
-        ->groupBy('date')
-        ->orderBy('date', 'desc')
-        ->get()
-        ->pluck('date')
-        ->map(function ($date) {
-            return Carbon::createFromFormat('Y-m', $date);
-        });
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->get()
+            ->pluck('date')
+            ->map(function ($date) {
+                return Carbon::createFromFormat('Y-m', $date);
+            });
 
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
@@ -54,6 +57,9 @@ class FrontController extends Controller
         $popup = Popup::where('is_active', true)->orderBy('updated_at', 'desc')->first();
         $headerbands = Headerband::where('is_active', true)->orderBy('priority', 'asc')->get();
 
+        //Cargar Dependencias regulatorias
+        $regulation_dependencies = RegulatoryAgendaDependency::all();
+
         return view('front.index')->with([
             'gazettes' => $gazettes,
             'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
@@ -63,7 +69,8 @@ class FrontController extends Controller
             'dependencies' => $dependencies,
             'banners' => $banners,
             'popup' => $popup,
-            'headerbands' => $headerbands
+            'headerbands' => $headerbands,
+            'regulation_dependencies' => $regulation_dependencies
         ]);
     }
 
@@ -90,59 +97,59 @@ class FrontController extends Controller
                 # code...
                 break;
         }
-        
+
         Carbon::setLocale('es');
-        
+
         $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
-        ->groupBy('date')
-        ->orderBy('date', 'desc')
-        ->get()
-        ->pluck('date')
-        ->map(function ($date) {
-            return Carbon::createFromFormat('Y-m', $date);
-        });
-        
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->get()
+            ->pluck('date')
+            ->map(function ($date) {
+                return Carbon::createFromFormat('Y-m', $date);
+            });
+
         return view('front.gazette.index')
-        ->with('gazettes', $gazettes)
-        ->with('type', $type)
-        ->with('dates', $dates);
+            ->with('gazettes', $gazettes)
+            ->with('type', $type)
+            ->with('dates', $dates);
     }
 
     public function gazetteDetail($type, $slug)
-    {   
+    {
         $gazette = Gazette::where('slug', '=', $slug)->first();
 
         return view('front.gazette.detail')
-        ->with('gazette', $gazette);
+            ->with('gazette', $gazette);
     }
 
     public function filterGazetteByDate($type, $date)
     {
         Carbon::setLocale('es');
 
-        if($type == 'all'){
+        if ($type == 'all') {
             $gazettes = Gazette::whereYear('meeting_date', '=', Carbon::createFromFormat('Y-m', $date)->year)
-            ->whereMonth('meeting_date', '=', Carbon::createFromFormat('Y-m', $date)->month)
-            ->with('files')
-            ->orderBy('meeting_date', 'desc')
-            ->get();
-        }else{
+                ->whereMonth('meeting_date', '=', Carbon::createFromFormat('Y-m', $date)->month)
+                ->with('files')
+                ->orderBy('meeting_date', 'desc')
+                ->get();
+        } else {
             $gazettes = Gazette::where('type', $type)->whereYear('meeting_date', '=', Carbon::createFromFormat('Y-m', $date)->year)
-            ->whereMonth('meeting_date', '=', Carbon::createFromFormat('Y-m', $date)->month)
-            ->with('files')
-            ->orderBy('meeting_date', 'desc')
-            ->get();
+                ->whereMonth('meeting_date', '=', Carbon::createFromFormat('Y-m', $date)->month)
+                ->with('files')
+                ->orderBy('meeting_date', 'desc')
+                ->get();
         }
-        
+
 
         $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
-        ->groupBy('date')
-        ->orderBy('date', 'desc')
-        ->get()
-        ->pluck('date')
-        ->map(function ($date) {
-            return Carbon::createFromFormat('Y-m', $date);
-        });
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->get()
+            ->pluck('date')
+            ->map(function ($date) {
+                return Carbon::createFromFormat('Y-m', $date);
+            });
 
         return view('front.gazette.index')->with([
             'gazettes' => $gazettes,
@@ -158,15 +165,15 @@ class FrontController extends Controller
         $dependencies = TransparencyDependency::orderBy('name', 'asc')->get();
 
         return view('front.dependencies.index')
-        ->with('dependencies', $dependencies);
+            ->with('dependencies', $dependencies);
     }
-    
+
     public function dependencyDetail($slug)
-    {   
+    {
         $dependency = TransparencyDependency::where('slug', '=', $slug)->first();
 
         return view('front.dependencies.detail')
-        ->with('dependency', $dependency);
+            ->with('dependency', $dependency);
     }
 
     // Módulo Obligaciones
@@ -175,22 +182,22 @@ class FrontController extends Controller
         $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
 
         Carbon::setLocale('es');
-        
+
         $documents = TransparencyDocument::where('obligation_id', $obligation->id)->orderBy('year', 'desc')->get();
 
         $dates = TransparencyDocument::selectRaw('YEAR(year) as year')
-        ->groupBy('year')
-        ->orderBy('year', 'desc')
-        ->get()
-        ->pluck('year')
-        ->map(function ($year) {
-            return Carbon::createFromDate($year, 1, 15);
-        });
+            ->groupBy('year')
+            ->orderBy('year', 'desc')
+            ->get()
+            ->pluck('year')
+            ->map(function ($year) {
+                return Carbon::createFromDate($year, 1, 15);
+            });
 
         return view('front.dependencies.obligation_detail')
-        ->with('obligation', $obligation)
-        ->with('documents', $documents)
-        ->with('dates', $dates);
+            ->with('obligation', $obligation)
+            ->with('documents', $documents)
+            ->with('dates', $dates);
     }
 
     // Módulo Documentos
@@ -199,17 +206,17 @@ class FrontController extends Controller
         $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
 
         Carbon::setLocale('es');
-        
+
         $documents = TransparencyDocument::where('obligation_id', $obligation->id)->where('year', '=', $date)->orderBy('year', 'desc')->get();
-        
+
         $dates = TransparencyDocument::selectRaw('YEAR(year) as year')
-        ->groupBy('year')
-        ->orderBy('year', 'desc')
-        ->get()
-        ->pluck('year')
-        ->map(function ($year) {
-            return Carbon::createFromDate($year, 1, 15);
-        });
+            ->groupBy('year')
+            ->orderBy('year', 'desc')
+            ->get()
+            ->pluck('year')
+            ->map(function ($year) {
+                return Carbon::createFromDate($year, 1, 15);
+            });
 
         return view('front.dependencies.obligation_detail')->with([
             'obligation' => $obligation,
@@ -217,6 +224,9 @@ class FrontController extends Controller
             'dates' => $dates
         ]);
     }
+
+    // Módulo Agenda Regulatoria
+    public function regulatoryAgenda() {}
 
     // Módulo Textos Legales
     public function legalText($slug)

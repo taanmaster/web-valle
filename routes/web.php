@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\RegulatoryAgendaController;
+use App\Http\Controllers\RegulatoryAgendaDependencyController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
 use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -393,6 +395,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::resource('revenue_law_rates_and_fees', TsrRevenueLawRateAndFeeController::class)->names([
                 'index' => 'rates_and_costs.index',
                 'destroy' => 'rates_and_cost.destroy',
+            ]);
+
+
+            /*Agenda regulatoria*/
+            Route::resource('regulatory_agenda', RegulatoryAgendaController::class)->names([
+                'index' => 'regulatory_agenda.index',
+                'show' => 'regulatory_agenda.show',
+            ]);
+
+            Route::resource('regulatory_agenda_dependency', RegulatoryAgendaDependencyController::class)->names([
+                'destroy' => 'regulatory_agenda_dependency.destroy'
             ]);
         });
     });

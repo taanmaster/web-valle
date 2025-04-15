@@ -1,7 +1,7 @@
 <div>
     <div class="modal-header bg-dark">
         @if ($income == null)
-            <h6 class="modal-title m-0 text-white" id="modalCreate">Nueva Ingreso</h6>
+            <h6 class="modal-title m-0 text-white" id="modalCreate">Nuevo Ingreso</h6>
         @else
             <h6 class="modal-title m-0 text-white" id="modalCreate">Editar Ingreso</h6>
         @endif

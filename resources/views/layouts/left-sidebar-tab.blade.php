@@ -53,6 +53,13 @@
                         </li>
                     @endif
 
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Gaceta Municipal"
+                        data-bs-trigger="hover">
+                        <a href="#valleDevelopment" id="pages-tab" class="nav-link">
+                            <i class="ti ti-trending-up menu-icon"></i>
+                        </a>
+                    </li>
+
                     @if (auth()->user()->can('configuration_view') || auth()->user()->can('all_access'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Configuraciones"
                             data-bs-trigger="hover">
@@ -238,6 +245,19 @@
                     </ul>
                 </div>
             @endif
+
+            <div id="valleDevelopment" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="pages-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Desarrollo institucional</h6>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('regulatory_agenda.index') }}">Agenda
+                            Regulatoria</a>
+                    </li>
+                </ul>
+            </div>
 
             @if (auth()->user()->can('configuration_view') || auth()->user()->can('all_access'))
                 <div id="valleConfiguration" class="main-icon-menu-pane tab-pane" role="tabpanel"
