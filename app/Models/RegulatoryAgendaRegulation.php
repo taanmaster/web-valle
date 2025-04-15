@@ -16,4 +16,9 @@ class RegulatoryAgendaRegulation extends Model
     {
         return $this->belongsTo(RegulatoryAgendaDependency::class, 'income_id');
     }
+
+    public function suggestions()
+    {
+        return $this->hasMany(RegulatoryAgendaSuggestion::class, 'regulation_id');
+    }
 }

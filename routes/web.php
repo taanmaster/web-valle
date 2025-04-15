@@ -407,6 +407,15 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::resource('regulatory_agenda_dependency', RegulatoryAgendaDependencyController::class)->names([
                 'destroy' => 'regulatory_agenda_dependency.destroy'
             ]);
+
+            Route::resource('regulatory_agenda_regulation', RegulatoryAgendaRegulationController::class)->names([
+                'show' => 'regulatory_agenda_regulation.show',
+            ]);
+
+            Route::get('/regulatory_agenda_new/{id}', [
+                'uses' => 'RegulatoryAgendaRegulationController@create',
+                'as' => 'regulatory_agenda_regulation.create'
+            ]);
         });
     });
 });

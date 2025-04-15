@@ -2,36 +2,54 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Sección</th>
-                <th>Número</th>
+                <th>Nombre</th>
+                <th>Materia</th>
+                <th>Problemática</th>
+                <th>Justificación</th>
+                <th>Fecha de presentación</th>
                 <th>Tipo</th>
-                <th>Concepto/Descripción</th>
-                <th>Total</th>
+                <th>Impacto</th>
+                <th>Beneficiarios</th>
+                <th>Semestre</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($dependency->regulations as $regulations)
+            @foreach ($regulations as $regulation)
                 <tr>
                     <td>
-                        {{ $regulations->section }}
+                        {{ $regulation->name }}
                     </td>
                     <td>
-                        {{ $regulations->order_number }}
+                        {{ $regulation->subject }}
                     </td>
                     <td>
-                        {{ $regulations->type }}
+                        {{ $regulation->problematic }}
                     </td>
                     <td>
-                        {{ $regulations->cost ?? 'N/A' }}
+                        {{ $regulation->justification }}
                     </td>
                     <td>
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#rateModal"
-                            class="btn btn-sm btn-outline-secondary"
-                            onclick="Livewire.dispatch('selectRate', {{ $regulations }})">
+                        {{ $regulation->presentation_date }}
+                    </td>
+                    <td>
+                        {{ $regulation->type }}
+                    </td>
+                    <td>
+                        {{ $regulation->impact }}
+                    </td>
+                    <td>
+                        {{ $regulation->beneficiaries }}
+                    </td>
+                    <td>
+                        {{ $regulation->semester }}
+                    </td>
+                    <td>
+                        <a href="{{ route('regulatory_agenda_regulation.show', $regulation->id) }}"
+                            class="btn btn-sm btn-outline-secondary">
                             <i class="bx bx-edit"></i> Editar
                         </a>
-                        <form method="POST" action="{{ route('rates_and_cost.destroy', $regulations->id) }}"
+                        <form method="POST" action="{{ route('rates_and_cost.destroy', $regulation->id) }}"
                             style="display: inline-block;">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}

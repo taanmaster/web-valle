@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+
+use App\Models\RegulatoryAgendaDependency;
 use App\Models\RegulatoryAgendaRegulation;
 use Illuminate\Http\Request;
 
@@ -18,25 +24,30 @@ class RegulatoryAgendaRegulationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $regulation = null;
+
+        $dependency = RegulatoryAgendaDependency::find($id);
+
+        return view('regulatory_agenda.create')->with('regulation', $regulation)->with('dependency', $dependency);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
      */
-    public function show(RegulatoryAgendaRegulation $regulatoryAgendaRegulation)
+    public function show($id)
     {
-        //
+        $regulation = RegulatoryAgendaRegulation::find($id);
+
+        $dependency = RegulatoryAgendaDependency::find($regulation->dependency_id);
+
+        return view('regulatory_agenda.create')->with('regulation', $regulation)->with('dependency', $dependency);
     }
 
     /**

@@ -20,7 +20,7 @@
         <div class="main-content">
             <div class="row align-items-center mb-4">
                 <div class="col text-start">
-                    <a href="javascript:void(0)" class="btn btn-primary new-dependency">Nueva Dependencia u Organismo</a>
+                    <a href="javascript:void(0)" class="btn btn-primary new-dependency">Nueva Dependencia</a>
                 </div>
             </div>
 

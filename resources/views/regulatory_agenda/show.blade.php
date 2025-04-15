@@ -35,12 +35,13 @@
 
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h3>Regulaciones</h3>
-                <a href="javascript:void(0)" class="btn btn-primary new-fraction" style="max-width: 180px">Nueva
+                <a href="{{ route('regulatory_agenda_regulation.create', $dependency->id) }}"
+                    class="btn btn-primary new-fraction" style="max-width: 180px">Nueva
                     regulación</a>
             </div>
 
 
-            @if ($dependency->regulations->count() == 0)
+            @if ($regulations->count() == 0)
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box">
@@ -65,7 +66,7 @@
                 </div>
 
                 <div class="d-flex align-items-center justify-content-center">
-                    {{ $dependency->regulations->links() }}
+                    {{ $regulations->links() }}
                 </div>
             @endif
         </div>

@@ -14,6 +14,11 @@ class RegulatoryAgendaSuggestion extends Model
 
     public function dependency()
     {
-        return $this->belongsTo(RegulatoryAgendaDependency::class, 'income_id');
+        return $this->belongsTo(RegulatoryAgendaDependency::class, 'dependency_id');
+    }
+
+    public function regulation()
+    {
+        return $this->belongsTo(RegulatoryAgendaRegulation::class, 'regulation_id');
     }
 }

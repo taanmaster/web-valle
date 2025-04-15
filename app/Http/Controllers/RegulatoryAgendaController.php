@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+
 //Modelos
 use App\Models\RegulatoryAgendaDependency;
+use App\Models\RegulatoryAgendaRegulation;
 use Illuminate\Http\Request;
 
 class RegulatoryAgendaController extends Controller
@@ -19,6 +25,8 @@ class RegulatoryAgendaController extends Controller
     {
         $dependency = RegulatoryAgendaDependency::find($id);
 
-        return view('regulatory_agenda.show')->with('dependency', $dependency);
+        $regulations = RegulatoryAgendaRegulation::where('dependency_id', $id)->paginate(10);
+
+        return view('regulatory_agenda.show')->with('dependency', $dependency)->with('regulations', $regulations);
     }
 }
