@@ -206,8 +206,9 @@
                             suscipit
                             hic qui, aperiam harum iusto!
                         </p>
-                        <a href="" class="btn btn-secondary d-flex align-items-center gap-2"
-                            style="width: fit-content">Acceder a directorio
+                        <a href="{{ route('regulatory-agenda.index') }}"
+                            class="btn btn-secondary d-flex align-items-center gap-2" style="width: fit-content">Acceder a
+                            directorio
                             de
                             Dependencias
                             <ion-icon name="caret-forward-outline"></ion-icon></a>

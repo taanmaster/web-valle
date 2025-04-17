@@ -87,6 +87,7 @@ class CrudRegulations extends Component
                 'impact' => $this->impact,
                 'beneficiaries' => $this->beneficiaries,
                 'semester' => $this->semester,
+                'is_active' => true,
 
             ]);
 
@@ -100,6 +101,10 @@ class CrudRegulations extends Component
 
     public function render()
     {
-        return view('regulatory_agenda.utilities.crud-regulations');
+        $suggestions = RegulatoryAgendaSuggestion::where('regulation_id', $this->regulation->id)->paginate(10);
+
+        return view('regulatory_agenda.utilities.crud-regulations', [
+            'suggestions' => $suggestions,
+        ]);
     }
 }

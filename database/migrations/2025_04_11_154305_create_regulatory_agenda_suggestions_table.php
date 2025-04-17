@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('regulatory_agenda_suggestions', function (Blueprint $table) {
             $table->id();
 
-            $table->bigInteger('dependency_id')->unsigned();
-
             $table->string('name')->nullable();
             $table->text('description')->nullable();
 

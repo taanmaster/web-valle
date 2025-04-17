@@ -12,11 +12,6 @@ class RegulatoryAgendaSuggestion extends Model
     protected $table = 'regulatory_agenda_suggestions';
     protected $guarded = [];
 
-    public function dependency()
-    {
-        return $this->belongsTo(RegulatoryAgendaDependency::class, 'dependency_id');
-    }
-
     public function regulation()
     {
         return $this->belongsTo(RegulatoryAgendaRegulation::class, 'regulation_id');

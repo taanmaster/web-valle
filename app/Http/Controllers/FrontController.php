@@ -26,7 +26,7 @@ use App\Models\LegalText;
 
 // Modelos Agenda Regulatoria
 use App\Models\RegulatoryAgendaDependency;
-
+use App\Models\RegulatoryAgendaRegulation;
 use Illuminate\Http\Request;
 
 class FrontController extends Controller
@@ -226,7 +226,19 @@ class FrontController extends Controller
     }
 
     // Módulo Agenda Regulatoria
-    public function regulatoryAgenda() {}
+    public function regulatoryAgenda()
+    {
+        $dependencies = RegulatoryAgendaDependency::all();
+
+        return view('front.regulatory_agenda.index')->with('dependencies', $dependencies);
+    }
+
+    public function regulatoryAgendaDependency($id)
+    {
+        $dependency = RegulatoryAgendaDependency::find($id);
+
+        return view('front.regulatory_agenda.show')->with('dependency', $dependency);
+    }
 
     // Módulo Textos Legales
     public function legalText($slug)

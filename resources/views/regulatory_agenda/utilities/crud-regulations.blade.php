@@ -111,13 +111,13 @@
                 <div style="margin-top: 40px">
                     <h3>Buzón de sugerencias</h3>
 
-                    @if ($regulation->suggestions->count() != 0)
+                    @if ($suggestions->count() != 0)
                         <div class="table-responsive mt-3">
                             <table class="table">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Regulación</th>
-                                        <th>Fecha</th>
+                                        <th>Creado</th>
                                         <th>Nombre</th>
                                         <th>Sugerencia</th>
                                     </tr>
@@ -136,6 +136,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center">
+                            {{ $suggestions->links() }}
                         </div>
                     @else
                         <div class="row">

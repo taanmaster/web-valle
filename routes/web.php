@@ -56,6 +56,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'document.filter',
     ])->where('date', '[0-9]{4}');
 
+    Route::get('/agenda-regulatoria', [
+        'uses' => 'FrontController@regulatoryAgenda',
+        'as' => 'regulatory-agenda.index'
+    ]);
+
+    Route::get('/agenda-regulatoria/dependencia/{id}', [
+        'uses' => 'FrontController@regulatoryAgendaDependency',
+        'as' => 'regulatory-agenda-dependency.show'
+    ]);
+
     /*
     Route::get('/transparencia/documentos/{slug}', [
         'uses' => 'FrontController@documentDetail',
