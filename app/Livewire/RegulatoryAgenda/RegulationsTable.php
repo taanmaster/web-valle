@@ -38,6 +38,16 @@ class RegulationsTable extends Component
         $this->type = '';
     }
 
+    public function toggleActive($id)
+    {
+        $regulation = RegulatoryAgendaRegulation::find($id);
+
+        if ($regulation) {
+            $regulation->is_active = !$regulation->is_active;
+            $regulation->save();
+        }
+    }
+
     public function render()
     {
         $query = RegulatoryAgendaRegulation::query()

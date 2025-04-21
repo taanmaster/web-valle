@@ -71,7 +71,8 @@
                                 style="width:30%; margin-bottom: 40px;">
                             <h4>¡No hay Regulaciones guardadas en la base de datos!</h4>
                             <p class="mb-4">Empieza a cargarlas en la sección correspondiente.</p>
-                            <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-uppercase new-fraction"><i
+                            <a
+                                href="{{ route('regulatory_agenda_regulation.create', $dependency->id) }}"class="btn btn-sm btn-primary btn-uppercase"><i
                                     class="fas fa-plus"></i> Nueva
                                 Regulación</a>
                         </div>
@@ -94,6 +95,7 @@
                             <th>Impacto</th>
                             <th>Beneficiarios</th>
                             <th>Semestre</th>
+                            <th>Status</th>
                             @if ($is_admin == 'true')
                                 <th>Acciones</th>
                             @endif
@@ -135,6 +137,13 @@
                                 </td>
                                 <td>
                                     {{ $regulation->semester }}
+                                </td>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            wire:change="toggleActive({{ $regulation->id }})"
+                                            @if ($regulation->is_active) checked @endif>
+                                    </div>
                                 </td>
                                 @if ($is_admin == 'true')
                                     <td>

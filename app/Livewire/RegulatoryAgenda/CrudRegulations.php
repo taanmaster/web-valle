@@ -101,10 +101,20 @@ class CrudRegulations extends Component
 
     public function render()
     {
-        $suggestions = RegulatoryAgendaSuggestion::where('regulation_id', $this->regulation->id)->paginate(10);
 
-        return view('regulatory_agenda.utilities.crud-regulations', [
-            'suggestions' => $suggestions,
-        ]);
+        if ($this->regulation == null) {
+
+            $suggestions = null;
+
+            return view('regulatory_agenda.utilities.crud-regulations', [
+                'suggestions' => $suggestions,
+            ]);
+        } else {
+            $suggestions = RegulatoryAgendaSuggestion::where('regulation_id', $this->regulation->id)->paginate(10);
+
+            return view('regulatory_agenda.utilities.crud-regulations', [
+                'suggestions' => $suggestions,
+            ]);
+        }
     }
 }
