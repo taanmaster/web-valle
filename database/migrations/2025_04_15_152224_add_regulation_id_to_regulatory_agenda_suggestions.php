@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('regulatory_agenda_suggestions', function (Blueprint $table) {
             //
-            $table->bigInteger('regulation_id')->unsigned()->after('dependency_id');
+            $table->bigInteger('regulation_id')->unsigned();
         });
     }
 
