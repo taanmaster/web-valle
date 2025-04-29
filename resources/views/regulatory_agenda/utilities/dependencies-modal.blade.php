@@ -24,6 +24,32 @@
                             class="text-info tx-12">(Opcional)</span></label>
                     <textarea class="form-control" wire:model="description" name="description" rows="3"></textarea>
                 </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Nombre de Enlace de Mejora Regulatoria</label>
+                        <input type="text" class="form-control" wire:model="fullname_connection"
+                            name="fullname_connection">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Cargo de Enlace de Mejora Regulatoria</label>
+                        <input type="text" class="form-control" wire:model="title_connection"
+                            name="title_connection">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Nombre de Títular de la dependencía</label>
+                        <input type="text" class="form-control" wire:model="fullname_lider" name="fullname_lider">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Cargo de Títular de la dependencía</label>
+                        <input type="text" class="form-control" wire:model="title_lider" name="title_lider">
+                    </div>
+                </div>
             </div>
         </div>
 

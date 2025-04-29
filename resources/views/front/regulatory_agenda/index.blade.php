@@ -34,6 +34,10 @@
                         <div class="card-content">
                             <h4>{{ $dependency->name }}</h4>
                             <p class="mb-0">{{ $dependency->description }}</p>
+                            <p>Enlace de Mejora: {{ $dependency->fullname_connection }} -
+                                {{ $dependency->title_connection }}</p>
+                            <p>Títular de la dependencia: {{ $dependency->fullname_lider }} - {{ $dependency->title_lider }}
+                            </p>
                         </div>
                     </a>
                 </div>

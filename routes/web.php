@@ -422,6 +422,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'show' => 'regulatory_agenda_regulation.show',
             ]);
 
+            Route::resource('regulatory_agenda_regulation', RegulatoryAgendaRegulationController::class)->names([
+                'edit' => 'regulatory_agenda_regulation.edit',
+            ]);
+
             Route::get('/regulatory_agenda_new/{id}', [
                 'uses' => 'RegulatoryAgendaRegulationController@create',
                 'as' => 'regulatory_agenda_regulation.create'

@@ -33,6 +33,8 @@
                 </div>
             </div>
 
+
+
             <livewire:regulatory-agenda.regulations-table :dependency="$dependency" is_admin="true" />
         </div>
     </div>

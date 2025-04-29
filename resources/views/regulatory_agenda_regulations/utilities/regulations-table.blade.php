@@ -48,6 +48,8 @@
                     <option value="">Todos</option>
                     <option value="Creación">Creación</option>
                     <option value="Actualización">Actualización</option>
+                    <option value="Modificación">Modificación</option>
+                    <option value="Reforma">Reforma</option>
                     <!-- Agrega más opciones según tu tabla -->
                 </select>
             </div>
@@ -94,9 +96,10 @@
                             <th>Tipo</th>
                             <th>Impacto</th>
                             <th>Beneficiarios</th>
-                            <th>Semestre</th>
-                            <th>Status</th>
                             @if ($is_admin == 'true')
+                                <th>Semestre</th>
+                                <th>Status</th>
+
                                 <th>Acciones</th>
                             @endif
 
@@ -135,19 +138,24 @@
                                 <td>
                                     {{ $regulation->beneficiaries }}
                                 </td>
-                                <td>
-                                    {{ $regulation->semester }}
-                                </td>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox"
-                                            wire:change="toggleActive({{ $regulation->id }})"
-                                            @if ($regulation->is_active) checked @endif>
-                                    </div>
-                                </td>
                                 @if ($is_admin == 'true')
                                     <td>
+                                        {{ $regulation->semester }}
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:change="toggleActive({{ $regulation->id }})"
+                                                @if ($regulation->is_active) checked @endif>
+                                        </div>
+                                    </td>
+
+                                    <td>
                                         <a href="{{ route('regulatory_agenda_regulation.show', $regulation->id) }}"
+                                            class="btn btn-sm btn-outline-secondary">
+                                            <i class="bx bx-eye"></i> Ver
+                                        </a>
+                                        <a href="{{ route('regulatory_agenda_regulation.edit', $regulation->id) }}"
                                             class="btn btn-sm btn-outline-secondary">
                                             <i class="bx bx-edit"></i> Editar
                                         </a>

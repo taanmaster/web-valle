@@ -57,7 +57,7 @@
 
     <div class="modal fade" id="dependencyModal" tabindex="-1" role="dialog" aria-labelledby="dependencyModal"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <livewire:regulatory-agenda.dependencies-modal />
             </div>

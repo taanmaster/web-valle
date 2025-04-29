@@ -6,6 +6,12 @@
                 <p class="card-text">
                     <small>Creado: {{ $dependency->created_at }}</small><br>
                     <small>Actualizado: {{ $dependency->updated_at }}</small>
+                    <br>
+                    <small>Enlace de Mejora: {{ $dependency->fullname_connection }} -
+                        {{ $dependency->title_connection }}</small>
+                    <br>
+                    <small>Títular de la dependencia: {{ $dependency->fullname_lider }} -
+                        {{ $dependency->title_lider }}</small>
                 </p>
                 @if ($dependency->in_index)
                     <span class="badge bg-success">Se muestra en inicio</span>

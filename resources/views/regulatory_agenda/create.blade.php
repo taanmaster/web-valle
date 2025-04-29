@@ -16,5 +16,5 @@
         @endslot
     @endcomponent
 
-    <livewire:regulatory-agenda.crud-regulations :regulation="$regulation" :dependency="$dependency" />
+    <livewire:regulatory-agenda.crud-regulations :regulation="$regulation" :dependency="$dependency" :mode="$mode" />
 @endsection

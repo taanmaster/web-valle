@@ -21,6 +21,9 @@ class CrudRegulations extends Component
 
     public $dependency;
 
+    //Modes: 0: create, 1 show, 2 edit
+    public $mode;
+
     //Campos
     public $name;
     public $subject = '';

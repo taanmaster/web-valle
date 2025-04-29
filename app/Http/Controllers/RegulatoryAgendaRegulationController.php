@@ -30,7 +30,9 @@ class RegulatoryAgendaRegulationController extends Controller
 
         $dependency = RegulatoryAgendaDependency::find($id);
 
-        return view('regulatory_agenda.create')->with('regulation', $regulation)->with('dependency', $dependency);
+        $mode = 0;
+
+        return view('regulatory_agenda.create')->with('regulation', $regulation)->with('dependency', $dependency)->with('mode', $mode);
     }
 
     /**
@@ -47,15 +49,23 @@ class RegulatoryAgendaRegulationController extends Controller
 
         $dependency = RegulatoryAgendaDependency::find($regulation->dependency_id);
 
-        return view('regulatory_agenda.create')->with('regulation', $regulation)->with('dependency', $dependency);
+        $mode = 1;
+
+        return view('regulatory_agenda.create')->with('regulation', $regulation)->with('dependency', $dependency)->with('mode', $mode);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RegulatoryAgendaRegulation $regulatoryAgendaRegulation)
+    public function edit($id)
     {
-        //
+        $regulation = RegulatoryAgendaRegulation::find($id);
+
+        $dependency = RegulatoryAgendaDependency::find($regulation->dependency_id);
+
+        $mode = 2;
+
+        return view('regulatory_agenda.create')->with('regulation', $regulation)->with('dependency', $dependency)->with('mode', $mode);
     }
 
     /**
