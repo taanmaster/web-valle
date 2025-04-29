@@ -21,7 +21,7 @@
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
                             title="Comunicación Social" data-bs-trigger="hover">
                             <a href="#valleComunicacion" id="comunicacion-tab" class="nav-link">
-                                <i class="ti ti-smart-home menu-icon"></i>
+                                <i class="ti ti-messages menu-icon"></i>
                             </a>
                         </li>
                     @endif
@@ -44,6 +44,15 @@
                         </li>
                     @endif
 
+                    @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Secretaría Particular"
+                            data-bs-trigger="hover">
+                            <a href="#vallePrivateSecretary" id="uikit-tab" class="nav-link">
+                                <i class="ti ti-bookmark menu-icon"></i>
+                            </a>
+                        </li>
+                    @endif
+
                     @if (auth()->user()->can('gazette_view') || auth()->user()->can('all_access'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Gaceta Municipal"
                             data-bs-trigger="hover">
@@ -53,10 +62,10 @@
                         </li>
                     @endif
 
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Gaceta Municipal"
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Agenda Regulatoria"
                         data-bs-trigger="hover">
                         <a href="#valleDevelopment" id="pages-tab" class="nav-link">
-                            <i class="ti ti-trending-up menu-icon"></i>
+                            <i class="ti ti-notebook menu-icon"></i>
                         </a>
                     </li>
 
@@ -161,36 +170,6 @@
                 <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
                     <div class="title-box">
-                        <h6 class="menu-title">Apoyos Económicos</h6>
-                    </div>
-                    <ul class="nav flex-column">
-                        @if (auth()->user()->can('financial_support_citizens') || auth()->user()->can('all_access'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('citizens.index') }}">Particulares</a>
-                            </li>
-                        @endif
-
-                        @if (auth()->user()->can('financial_support_supports') || auth()->user()->can('all_access'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('financial_supports.index') }}">Apoyos</a>
-                            </li>
-                        @endif
-
-                        @if (auth()->user()->can('financial_support_reports') || auth()->user()->can('all_access'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('kpi.query') }}">Reporte de Apoyos</a>
-                            </li>
-                        @endif
-
-                        @if (auth()->user()->can('financial_support_types') || auth()->user()->can('all_access'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('financial_support_types.index') }}">Tipos de
-                                    Apoyo</a>
-                            </li>
-                        @endif
-                    </ul>
-
-                    <div class="title-box mt-5">
                         <h6 class="menu-title">Cuentas por Pagar</h6>
                     </div>
 
@@ -226,6 +205,41 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('rates_and_costs.index') }}">Tarifas y Costos</a>
                         </li>
+                    </ul>
+                </div>
+            @endif
+
+            @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                <div id="vallePrivateSecretary" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="uikit-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Apoyos Económicos</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('citizens.index') }}">Particulares</a>
+                            </li>
+                        @endif
+
+                        @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('financial_supports.index') }}">Apoyos</a>
+                            </li>
+                        @endif
+
+                        @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('kpi.query') }}">Reporte de Apoyos</a>
+                            </li>
+                        @endif
+
+                        @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('financial_support_types.index') }}">Tipos de
+                                    Apoyo</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             @endif
