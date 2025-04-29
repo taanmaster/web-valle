@@ -30,7 +30,7 @@ class TransparencyDocumentController extends Controller
             'obligation_id' => 'required|integer|exists:transparency_obligations,id',
             'name' => 'required|max:255',
             'year' => 'required|digits:4',
-            'filename' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar|max:2048',
+            'filename' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar',
         ]);
 
         // Subir archivo
@@ -64,7 +64,7 @@ class TransparencyDocumentController extends Controller
             'obligation_id' => 'required|integer|exists:transparency_obligations,id',
             'name' => 'required|max:255',
             'year' => 'required|digits:4',
-            'filename' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar|max:2048',
+            'filename' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar',
         ]);
 
         $transparency_document = TransparencyDocument::find($id);
