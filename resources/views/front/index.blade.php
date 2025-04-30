@@ -200,12 +200,7 @@
                 <div class="col-md-6">
                     <div class="pe-4">
                         <h2>Agenda Regulatoria</h2>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore facilis a modi cupiditate
-                            repellat enim, blanditiis dignissimos exercitationem possimus magnam. Fugiat eum vero fuga
-                            suscipit
-                            hic qui, aperiam harum iusto!
-                        </p>
+                        <p>Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
                         <a href="{{ route('regulatory-agenda.index') }}"
                             class="btn btn-secondary d-flex align-items-center gap-2" style="width: fit-content">Acceder a
                             directorio

@@ -14,9 +14,7 @@
                             <h3>Listado de Dependencias</h3>
                         </div>
 
-                        <p class="card-title-description mb-2">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Repellat veritatis consequuntur recusandae alias ad delectus accusantium, eius, itaque aperiam
-                            doloremque aspernatur maxime facere unde eum nesciunt dolorum commodi numquam. Aperiam!</p>
+                        <p class="card-title-description mb-2">Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
                     </div>
                 </div>
             </div>
