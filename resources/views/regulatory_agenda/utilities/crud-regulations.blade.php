@@ -78,7 +78,7 @@
                     <div class="col-md-6">
                         <label for="name" class="form-label">Actualización, creación,
                             modificación o reforma</label>
-                        <select class="form-select" name="type" wire:model="type"
+                        <select class="form-select" name="type" wire:model.change="type"
                             @if ($mode == 1) disabled @endif>
                             <option selected>Seleccionar tipo</option>
                             <option value="Actualización">Actualización</option>
@@ -89,7 +89,23 @@
                     </div>
                 </div>
 
+                @if ($type == 'Actualización' || $type == 'Modificación' || $type == 'Reforma')
+                    <div class="row m-3">
+                        <div class="col-md-4">
+                            <label for="expeditions_date">Fecha de expedición de la regulación previa</label>
+                            <input type="date" class="form-control" wire:model="expeditions_date"
+                                name="expeditions_date" @if ($mode == 1) disabled @endif>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="update_date">Fecha de nueva regulación</label>
+                            <input type="date" class="form-control" wire:model="update_date" name="update_date"
+                                @if ($mode == 1) disabled @endif>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="row m-3">
+                    {{--
                     <div class="col-md-4">
                         <label for="impact" class="form-label">Impacto</label>
                         <select class="form-select" name="impact" wire:model="impact"
@@ -105,6 +121,7 @@
                         <input type="text" class="form-control" wire:model="beneficiaries" name="beneficiaries"
                             @if ($mode == 1) disabled @endif>
                     </div>
+                     --}}
                     <div class="col-md-4">
                         <label for="semester" class="form-label">Semestre al que corresponde la regulación</label>
                         <select class="form-select" name="semester" wire:model="semester"

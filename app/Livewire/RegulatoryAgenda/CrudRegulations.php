@@ -35,6 +35,8 @@ class CrudRegulations extends Component
     public $beneficiaries = '';
     public $semester = '';
     public $is_active;
+    public $expeditions_date = '';
+    public $update_date = '';
 
 
     public function mount()
@@ -55,6 +57,8 @@ class CrudRegulations extends Component
         $this->impact = $this->regulation->impact;
         $this->beneficiaries = $this->regulation->beneficiaries;
         $this->semester = $this->regulation->semester;
+        $this->expeditions_date = $this->regulation->expeditions_date;
+        $this->update_date = $this->regulation->update_date;
     }
 
     public function save()
@@ -71,6 +75,8 @@ class CrudRegulations extends Component
                 'impact' => $this->impact,
                 'beneficiaries' => $this->beneficiaries,
                 'semester' => $this->semester,
+                'expeditions_date' => $this->expeditions_date,
+                'update_date' => $this->update_date,
             ]);
 
             // Mensaje de sesión
@@ -91,6 +97,8 @@ class CrudRegulations extends Component
                 'beneficiaries' => $this->beneficiaries,
                 'semester' => $this->semester,
                 'is_active' => true,
+                'expeditions_date' => $this->expeditions_date,
+                'update_date' => $this->update_date,
 
             ]);
 
