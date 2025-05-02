@@ -64,6 +64,15 @@ class CrudRegulations extends Component
     public function save()
     {
 
+        $this->validate([
+            'name' => 'required|max:255',
+            'expeditions_date' => 'nullable|date',
+            'update_date' => 'nullable|date',
+        ]);
+
+        $expeditions_date = $this->expeditions_date ?: null; // Si está vacío, asigna null
+        $update_date = $this->update_date ?: null;
+
         if ($this->regulation != null) {
             $this->regulation->update([
                 'name' => $this->name,
@@ -75,15 +84,16 @@ class CrudRegulations extends Component
                 'impact' => $this->impact,
                 'beneficiaries' => $this->beneficiaries,
                 'semester' => $this->semester,
-                'expeditions_date' => $this->expeditions_date,
-                'update_date' => $this->update_date,
+                'expeditions_date' => $expeditions_date,
+                'update_date' => $update_date,
             ]);
 
             // Mensaje de sesión
             Session::flash('success', 'Dependencia actualizada correctamente.');
 
-            // Redirigir
-            return redirect()->route('regulatory_agenda_regulation.show', $this->regulation->id);
+
+            // Mensaje de sesión
+            return redirect()->route('regulatory_agenda.show', $this->dependency->id);
         } else {
             RegulatoryAgendaRegulation::create([
                 'dependency_id' => $this->dependency->id,
@@ -97,8 +107,8 @@ class CrudRegulations extends Component
                 'beneficiaries' => $this->beneficiaries,
                 'semester' => $this->semester,
                 'is_active' => true,
-                'expeditions_date' => $this->expeditions_date,
-                'update_date' => $this->update_date,
+                'expeditions_date' => $expeditions_date,
+                'update_date' => $update_date,
 
             ]);
 

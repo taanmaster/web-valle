@@ -406,30 +406,29 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'index' => 'rates_and_costs.index',
                 'destroy' => 'rates_and_cost.destroy',
             ]);
-
-
-            /*Agenda regulatoria*/
-            Route::resource('regulatory_agenda', RegulatoryAgendaController::class)->names([
-                'index' => 'regulatory_agenda.index',
-                'show' => 'regulatory_agenda.show',
-            ]);
-
-            Route::resource('regulatory_agenda_dependency', RegulatoryAgendaDependencyController::class)->names([
-                'destroy' => 'regulatory_agenda_dependency.destroy'
-            ]);
-
-            Route::resource('regulatory_agenda_regulation', RegulatoryAgendaRegulationController::class)->names([
-                'show' => 'regulatory_agenda_regulation.show',
-            ]);
-
-            Route::resource('regulatory_agenda_regulation', RegulatoryAgendaRegulationController::class)->names([
-                'edit' => 'regulatory_agenda_regulation.edit',
-            ]);
-
-            Route::get('/regulatory_agenda_new/{id}', [
-                'uses' => 'RegulatoryAgendaRegulationController@create',
-                'as' => 'regulatory_agenda_regulation.create'
-            ]);
         });
+
+        /*Agenda regulatoria*/
+        Route::resource('regulatory_agenda', RegulatoryAgendaController::class)->names([
+            'index' => 'regulatory_agenda.index',
+            'show' => 'regulatory_agenda.show',
+        ]);
+
+        Route::resource('regulatory_agenda_dependency', RegulatoryAgendaDependencyController::class)->names([
+            'destroy' => 'regulatory_agenda_dependency.destroy'
+        ]);
+
+        Route::resource('regulatory_agenda_regulation', RegulatoryAgendaRegulationController::class)->names([
+            'show' => 'regulatory_agenda_regulation.show',
+        ]);
+
+        Route::resource('regulatory_agenda_regulation', RegulatoryAgendaRegulationController::class)->names([
+            'edit' => 'regulatory_agenda_regulation.edit',
+        ]);
+
+        Route::get('/regulatory_agenda_new/{id}', [
+            'uses' => 'RegulatoryAgendaRegulationController@create',
+            'as' => 'regulatory_agenda_regulation.create'
+        ]);
     });
 });
