@@ -97,7 +97,7 @@
                                 name="expeditions_date" @if ($mode == 1) disabled @endif>
                         </div>
                         <div class="col-md-4">
-                            <label for="update_date">Fecha de nueva regulación</label>
+                            <label for="update_date">Fecha de última actualización</label>
                             <input type="date" class="form-control" wire:model="update_date" name="update_date"
                                 @if ($mode == 1) disabled @endif>
                         </div>
