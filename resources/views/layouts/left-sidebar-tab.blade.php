@@ -8,7 +8,7 @@
         <div class="main-icon-menu-body">
             <div class="position-reletive h-100" data-simplebar style="overflow-x: hidden;">
                 <ul class="nav nav-tabs" role="tablist" id="tab-menu">
-                    @if (auth()->user()->can('dashboard_view') || auth()->user()->can('all_access'))
+                    @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Vistas Generales"
                             data-bs-trigger="hover">
                             <a href="#valleDashboard" id="dashboard-tab" class="nav-link">
@@ -17,7 +17,7 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->can('dashboard_view') || auth()->user()->can('all_access'))
+                    @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
                             title="Comunicación Social" data-bs-trigger="hover">
                             <a href="#valleComunicacion" id="comunicacion-tab" class="nav-link">
@@ -26,7 +26,7 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->can('transparency_view') || auth()->user()->can('all_access'))
+                    @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Transparencia"
                             data-bs-trigger="hover">
                             <a href="#valleTransparency" id="apps-tab" class="nav-link">
@@ -35,7 +35,7 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->can('financial_support_view') || auth()->user()->can('all_access'))
+                    @if (auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería"
                             data-bs-trigger="hover">
                             <a href="#valleTreasury" id="uikit-tab" class="nav-link">
@@ -44,7 +44,7 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                    @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Secretaría Particular"
                             data-bs-trigger="hover">
                             <a href="#vallePrivateSecretary" id="uikit-tab" class="nav-link">
@@ -53,7 +53,7 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->can('gazette_view') || auth()->user()->can('all_access'))
+                    @if (auth()->user()->hasRole('gazette') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Gaceta Municipal"
                             data-bs-trigger="hover">
                             <a href="#valleDocuments" id="pages-tab" class="nav-link">
@@ -69,7 +69,7 @@
                         </a>
                     </li>
 
-                    @if (auth()->user()->can('configuration_view') || auth()->user()->can('all_access'))
+                    @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Configuraciones"
                             data-bs-trigger="hover">
                             <a href="#valleConfiguration" id="authentication-tab" class="nav-link">
@@ -101,7 +101,7 @@
         </div>
 
         <div class="menu-body navbar-vertical tab-content" data-simplebar>
-            @if (auth()->user()->can('dashboard_view') || auth()->user()->can('all_access'))
+            @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
                 <div id="valleDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="dasboard-tab">
                     <div class="title-box">
@@ -115,7 +115,7 @@
                 </div>
             @endif
 
-            @if (auth()->user()->can('dashboard_view') || auth()->user()->can('all_access'))
+            @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
                 <div id="valleComunicacion" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="comunicacion-tab">
                     <div class="title-box">
@@ -135,28 +135,28 @@
                 </div>
             @endif
 
-            @if (auth()->user()->can('transparency_view') || auth()->user()->can('all_access'))
+            @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                 <div id="valleTransparency" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="apps-tab">
                     <div class="title-box">
                         <h6 class="menu-title">Transparencia</h6>
                     </div>
                     <ul class="nav flex-column">
-                        @if (auth()->user()->can('transparency_dependencies') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link"
                                     href="{{ route('transparency_dependencies.index') }}">Dependencias</a>
                             </li>
                         @endif
 
-                        @if (auth()->user()->can('transparency_obligations') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link"
                                     href="{{ route('transparency_obligations.index') }}">Obligaciones</a>
                             </li>
                         @endif
 
-                        @if (auth()->user()->can('transparency_files') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('transparency_files.index') }}">Repositorio de
                                     Archivos (Links)</a>
@@ -166,7 +166,7 @@
                 </div>
             @endif
 
-            @if (auth()->user()->can('financial_support_view') || auth()->user()->can('all_access'))
+            @if (auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('all'))
                 <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
                     <div class="title-box">
@@ -209,32 +209,32 @@
                 </div>
             @endif
 
-            @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+            @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                 <div id="vallePrivateSecretary" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
                     <div class="title-box">
                         <h6 class="menu-title">Apoyos Económicos</h6>
                     </div>
                     <ul class="nav flex-column">
-                        @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('citizens.index') }}">Particulares</a>
                             </li>
                         @endif
 
-                        @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('financial_supports.index') }}">Apoyos</a>
                             </li>
                         @endif
 
-                        @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('kpi.query') }}">Reporte de Apoyos</a>
                             </li>
                         @endif
 
-                        @if (auth()->user()->can('private_secretary_view') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('financial_support_types.index') }}">Tipos de
                                     Apoyo</a>
@@ -244,14 +244,14 @@
                 </div>
             @endif
 
-            @if (auth()->user()->can('gazette_view') || auth()->user()->can('all_access'))
+            @if (auth()->user()->hasRole('gazette') || auth()->user()->hasRole('all'))
                 <div id="valleDocuments" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="pages-tab">
                     <div class="title-box">
                         <h6 class="menu-title">Gaceta</h6>
                     </div>
                     <ul class="nav flex-column">
-                        @if (auth()->user()->can('gazette_municipal') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('gazette') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('gazettes.index') }}">Gaceta Municipal</a>
                             </li>
@@ -260,6 +260,7 @@
                 </div>
             @endif
 
+            @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
             <div id="valleDevelopment" class="main-icon-menu-pane tab-pane" role="tabpanel"
                 aria-labelledby="pages-tab">
                 <div class="title-box">
@@ -272,21 +273,22 @@
                     </li>
                 </ul>
             </div>
+            @endif
 
-            @if (auth()->user()->can('configuration_view') || auth()->user()->can('all_access'))
+            @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                 <div id="valleConfiguration" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="authentication-tab">
                     <div class="title-box">
                         <h6 class="menu-title">Configuraciones</h6>
                     </div>
                     <ul class="nav flex-column">
-                        @if (auth()->user()->can('configuration_users') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
                             </li>
                         @endif
 
-                        @if (auth()->user()->can('configuration_legals') || auth()->user()->can('all_access'))
+                        @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('legals.index') }}">Textos Legales</a>
                             </li>

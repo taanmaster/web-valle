@@ -23,12 +23,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //$users = User::all();
-        $webmaster = User::role('webmaster')->get();
-        $admin  = User::role('admin')->get();
+        $users = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'citizen');
+        })->get();
 
-        $users = $webmaster->merge($admin);
-        
         $roles = Role::where('name', '!=', 'citizen')->get();
 
         return view('users.index')->with('users', $users)->with('roles', $roles);
@@ -93,25 +91,26 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'email|required',
-            'password' => 'required|min:4',
+            'password' => 'nullable|min:4',
         ]);
 
         $user = User::find($id);
 
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-        $user->password = bcrypt($request->input('password'));
- 
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+
         $rol = Role::findByName($request->rol);
 
-        // Guardar primero el admin
         $user->save();
 
-        // Asignar el Rol
-        $user->assignRole($rol->name);
-        Session::flash('success', 'Se actualizó exitosamente tu usuario.');
+        $user->syncRoles([$rol->name]);
 
-        return redirect()->back(); 
+        Session::flash('success', 'El usuario se actualizó exitosamente.');
+
+        return redirect()->back();
     }
 
     /**

@@ -37,7 +37,7 @@
                 @if($users->count() > 1)
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            {{--  <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-icon"><i class='bx bx-show-alt'></i></a> --}}
+                            <button type="button" class="btn btn-sm btn-icon" onclick="openEditModal({ id: {{ $user->id }}, name: '{{ $user->name }}', email: '{{ $user->email }}', role: '{{ $user->getRoleNames()->first() }}' })">Editar Usuario</button>
 
                             <form method="POST" action="{{ route('users.destroy', $user->id) }}" style="display: inline-block;">
                                 <button type="submit" class="btn btn-sm btn-icon">
@@ -54,4 +54,3 @@
         </tbody>
     </table>                    
 </div>
- 

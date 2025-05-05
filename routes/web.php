@@ -87,7 +87,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Usuarios */
         Route::resource('users', UserController::class);
-
+        
         Route::get('profile', [
             'uses' => 'DashboardController@adminProfile',
             'as' => 'admin.profile',

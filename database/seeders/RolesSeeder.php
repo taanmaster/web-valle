@@ -14,6 +14,7 @@ class RolesSeeder extends Seeder
         $webmaster = Role::firstOrCreate(['name' => 'webmaster']);
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $citizen = Role::firstOrCreate(['name' => 'citizen']);
+        $transparency = Role::firstOrCreate(['name' => 'transparency']);
 
         // Asignar permisos al rol webmaster
         $webmaster->givePermissionTo('all_access');
@@ -55,12 +56,28 @@ class RolesSeeder extends Seeder
             ],
         ];
 
+        $transparency_modules = [
+            'transparency' => [
+                'transparency_view',
+                'transparency_dependencies',
+                'transparency_obligations',
+                'transparency_files',
+            ],
+        ];
+
         // Crear permisos y asignar a roles
         foreach ($modules as $module => $permissions) {
             foreach ($permissions as $permission) {
                 $perm = Permission::firstOrCreate(['name' => $permission]);
                 $admin->givePermissionTo($perm);
                 $webmaster->givePermissionTo($perm);
+            }
+        }
+
+        foreach ($transparency_modules as $tm => $permissions) {
+            foreach ($permissions as $permission) {
+                $perm = Permission::firstOrCreate(['name' => $permission]);
+                $transparency->givePermissionTo($perm);
             }
         }
     }
