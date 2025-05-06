@@ -253,4 +253,9 @@ class FrontController extends Controller
     {
         return view('front.building');
     }
+
+    public function treasury()
+    {
+        return view('front.treasury');
+    }
 }

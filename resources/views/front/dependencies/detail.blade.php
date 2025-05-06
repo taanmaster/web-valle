@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-bottom: 30px;">
             @if($dependency->image_cover != NULL)
             <div class="card card-image card-image-banner wow fadeInUp">
                 <img src="{{ asset('images/dependencies/' . $dependency->image_cover) }}" class="card-img-top" alt="Portada de {{ $dependency->name }}">
@@ -31,7 +31,7 @@
         <div class="col-md-12">
             <div class="row">
                 @foreach($dependency->obligations as $obligation)
-                <div class="col-md-3">
+                <div class="col-md-3" style="margin-bottom: 30px;">
                     <a href="{{ route('obligation.detail', $obligation->slug) }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp h-100">
                         <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
                             <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>

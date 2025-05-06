@@ -29,26 +29,9 @@
                 <span>Gaceta Municipal</span>
             </a>
         </li>
+        
         <li>
-          <a href="http://186.96.176.239/ley-general-de-contabilidad-gubernamental-casa-de-cultura" target="_blank">
-            <ion-icon name="git-compare-outline"></ion-icon>
-            <span>Casa de la Cultura</span>
-          </a>
-        </li>
-        <li>
-          <a href="http://186.96.176.239/ley-general-de-contabilidad-gubernamental-y-las-normas-expedidas-por-la-conac-municipios/64-apartado-unidad-de-transparencia/descentralizados/797-ley-general-de-contabilidad-gubernamental-y-las-normas-expedidas-por-la-conac-municipios-dif" target="_blank">
-            <ion-icon name="book-outline"></ion-icon>
-            <span>DIF</span>
-          </a>
-        </li>
-        <li>
-          <a href="http://186.96.176.239/ley-general-de-contabilidad-gubernamental-y-las-normas-expedidas-por-la-conac-municipios-sapam" target="_blank">
-            <ion-icon name="wallet-outline"></ion-icon>
-            <span>SAPAM</span>
-          </a>
-        </li>
-        <li>
-          <a href="http://186.96.176.239/tesoreria" target="_blank">
+          <a href="{{ route('treasury.list') }}">
             <ion-icon name="layers-outline"></ion-icon>
             <span>Tesorería</span>
           </a>

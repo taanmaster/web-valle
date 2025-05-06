@@ -14,6 +14,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     Route::get('/en-construccion', 'FrontController@building')->name('building');
 
+    Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
+
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
         'uses' => 'FrontController@gazetteList',
@@ -36,17 +38,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
     ])->where('date', '[0-9]{4}-[0-9]{2}');
 
     // Módulo Transparencia
-    Route::get('/transparencia/dependencias', [
+    Route::get('/mod-transparencia/dependencias', [
         'uses' => 'FrontController@dependencyList',
         'as' => 'dependency.list',
     ]);
 
-    Route::get('/transparencia/dependencias/{slug}', [
+    Route::get('/mod-transparencia/dependencias/{slug}', [
         'uses' => 'FrontController@dependencyDetail',
         'as' => 'dependency.detail',
     ])->where('slug', '[\w\d\-\_]+');
 
-    Route::get('/transparencia/obligaciones/{slug}', [
+    Route::get('/mod-transparencia/obligaciones/{slug}', [
         'uses' => 'FrontController@obligationDetail',
         'as' => 'obligation.detail',
     ])->where('slug', '[\w\d\-\_]+');

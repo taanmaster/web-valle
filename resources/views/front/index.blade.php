@@ -155,7 +155,7 @@
         <!-- Dependencias -->
         <div class="row">
             @foreach ($dependencies as $dependency)
-                <div class="col-md-6">
+                <div class="col-md-6" style="margin-bottom: 30px;">
                     @if ($dependency->image_cover != null)
                         <a href="{{ route('dependency.detail', $dependency->slug) }}"
                             class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
