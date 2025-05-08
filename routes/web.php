@@ -68,6 +68,21 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'regulatory-agenda-dependency.show'
     ]);
 
+    // Modulo Blog
+    Route::get('/blog', [
+        'uses' => 'FrontController@blog',
+        'as' => 'blog.index',
+    ]);
+
+    Route::get('/blog/list', [
+        'uses' => 'FrontController@blogList',
+        'as' => 'blog.list',
+    ]);
+
+    Route::get('/blog/{slug}', [
+        'uses' => 'FrontController@blogDetail',
+        'as' => 'blog.detail',
+    ])->where('slug', '[\w\d\-\_]+');
     /*
     Route::get('/transparencia/documentos/{slug}', [
         'uses' => 'FrontController@documentDetail',
@@ -89,7 +104,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Usuarios */
         Route::resource('users', UserController::class);
-        
+
         Route::get('profile', [
             'uses' => 'DashboardController@adminProfile',
             'as' => 'admin.profile',
@@ -431,6 +446,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/regulatory_agenda_new/{id}', [
             'uses' => 'RegulatoryAgendaRegulationController@create',
             'as' => 'regulatory_agenda_regulation.create'
+        ]);
+
+        Route::resource('blogAmin', BlogController::class)->names([
+            'index' => 'blog.admin.index',
+            'show' => 'blog.admin.show',
         ]);
     });
 });

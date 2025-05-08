@@ -29,6 +29,9 @@ use App\Models\RegulatoryAgendaDependency;
 use App\Models\RegulatoryAgendaRegulation;
 use Illuminate\Http\Request;
 
+// Modelos Blog
+use App\Models\Blog;
+
 class FrontController extends Controller
 {
     public function index()
@@ -257,5 +260,30 @@ class FrontController extends Controller
     public function treasury()
     {
         return view('front.treasury');
+    }
+
+    public function blog()
+    {
+        $fav_posts = Blog::where('is_fav', true)->orderBy('updated_at', 'desc')->limit(3)->get();
+        $posts = Blog::orderBy('updated_at', 'desc')->take(6)->get();
+
+        return view('front.blog.index')->with([
+            'posts' => $posts,
+            'fav_posts' => $fav_posts
+        ]);
+    }
+
+    public function blogDetail($slug)
+    {
+        $post = Blog::where('slug', $slug)->first();
+
+        return view('front.blog.show')->with('post', $post);
+    }
+
+    public function blogList()
+    {
+        $posts = Blog::orderBy('updated_at', 'desc')->paginate(8);
+
+        return view('front.blog.list')->with('category', $category);
     }
 }
