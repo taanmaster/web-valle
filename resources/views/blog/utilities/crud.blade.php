@@ -1,3 +1,18 @@
+@push('stylesheets')
+    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .dropzone {
+            min-height: 10rem;
+            border: 3px dotted #d9d9d9;
+            position: relative;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+@endpush
+
 <div class="row layout-spacing">
     <div class="main-content">
         <div class="row align-items-center mb-4">
@@ -76,30 +91,6 @@
                             @if ($mode == 1) disabled @endif>
                     </div>
                 </div>
-                @if ($mode == 2)
-                    <div class="col-md-1">
-                        <label for="photos" class="col-form-label">Imágenes adicionales</label>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div id="dropzoneForm" class="dropzone">
-                            <div class="dz-message" data-dz-message>
-                                <span>
-                                    <img src="{{ asset('assets/images/illustrations/upload.svg') }}"
-                                        class="me-auto ms-auto d-block" width="40%" alt="">
-                                    <br>
-                                    Arrastra y suelta aquí tus archivos o da click para buscar
-                                </span>
-                            </div>
-                        </div>
-
-                        <p class="text-bold"><small>Peso máximo por archivo: 10MB</small></p>
-
-                        <div align="center">
-                            <button type="button" class="btn btn-info" id="submit-all">Subir Imagenes</button>
-                        </div>
-                    </div>
-                @endif
             </div>
 
             <div class="row m-3">
@@ -150,6 +141,32 @@
                 </div>
             @endif
         </form>
+
+        @if ($mode == 2)
+            <div class="col-md-1">
+                <label for="photos" class="col-form-label">Imágenes adicionales</label>
+            </div>
+
+            <div class="col-md-12">
+                <div id="dropzoneForm" class="dropzone">
+                    <div class="dz-message" data-dz-message>
+                        <span>
+                            <img src="{{ asset('assets/images/illustrations/upload.svg') }}"
+                                class="me-auto ms-auto d-block" width="40%" alt="">
+                            <br>
+                            Arrastra y suelta aquí tus archivos o da click para buscar
+                        </span>
+                    </div>
+                </div>
+
+                <p class="text-bold"><small>Peso máximo por archivo: 10MB</small></p>
+
+                <div align="center">
+                    <button type="button" class="btn btn-info" id="submit-all">Subir Imagenes</button>
+                </div>
+            </div>
+        @endif
+
     </div>
 </div>
 @if ($mode == 2)
@@ -165,7 +182,7 @@
                 },
                 autoProcessQueue: false,
                 parallelUploads: 20,
-                acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar",
+                acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
                 autoDiscover: false,
                 maxFilesize: 15,
                 addRemoveLinks: true,

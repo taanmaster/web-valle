@@ -68,4 +68,8 @@
             </div>
         @endforeach
     </div>
+
+    <div class="d-flex align-items-center justify-content-center">
+        {{ $blogs->links() }}
+    </div>
 </div>

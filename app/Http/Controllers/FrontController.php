@@ -272,9 +272,12 @@ class FrontController extends Controller
         $fav_posts = Blog::where('is_fav', true)->orderBy('updated_at', 'desc')->limit(3)->get();
         $posts = Blog::orderBy('updated_at', 'desc')->take(6)->get();
 
+        $mode = 0;
+
         return view('front.blog.index')->with([
             'posts' => $posts,
-            'fav_posts' => $fav_posts
+            'fav_posts' => $fav_posts,
+            'mode' => $mode
         ]);
     }
 
@@ -288,7 +291,11 @@ class FrontController extends Controller
     public function blogList()
     {
         $posts = Blog::orderBy('updated_at', 'desc')->paginate(8);
+        $mode = 1;
 
-        return view('front.blog.list')->with('category', $category);
+        return view('front.blog.list')->with([
+            'posts' => $posts,
+            'mode' => $mode
+        ]);
     }
 }

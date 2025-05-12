@@ -78,7 +78,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'blog.index',
     ]);
 
-    Route::get('/blog/list', [
+    Route::get('/blog/lista', [
         'uses' => 'FrontController@blogList',
         'as' => 'blog.list',
     ]);
@@ -461,8 +461,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         ]);
 
         /* Repositorio funciones Asincronas */
-        Route::post('dropzone/blog/upload/{id}', 'BlogController@uploadFile')->name('dropzone.blog.upload');
-        Route::get('dropzone/blog/fetch/{id}', 'BlogController@fetchFile')->name('dropzone.blog.fetch');
-        Route::get('dropzone/blog/delete/{id}', 'BlogController@deleteFile')->name('dropzone.blog.delete');
+        Route::group(['prefix' => 'blog'], function () {
+            Route::post('dropzone/upload/{id}', 'BlogController@uploadFile')->name('dropzone.blog.upload');
+            Route::get('dropzone/fetch/{id}', 'BlogController@fetchFile')->name('dropzone.blog.fetch');
+            Route::get('dropzone/delete/{id}', 'BlogController@deleteFile')->name('dropzone.blog.delete');
+        });
     });
 });

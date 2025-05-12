@@ -78,9 +78,11 @@ class BlogController extends Controller
         $var_file = new BlogImage();
         $var_file->blog_id = $blog->id;
 
+        dd($var_file);
+
         $file = $request->file('file');
-        $filename = $blog->name . '_' . Str::random(8) . '_file' . '.' . $file->getClientOriginalExtension();
-        $location = public_path('files/blog/');
+        $filename = Str::random(8) . '_image' . '.' . $file->getClientOriginalExtension();
+        $location = public_path('images/blog/');
         $file->move($location, $filename);
 
         $var_file->image_path = $location . $filename;
@@ -94,56 +96,21 @@ class BlogController extends Controller
         $blog = Blog::find($id);
 
         $output = '<div class="row">';
-        foreach ($blog->files as $file) {
-            $icon = 'fa-file';
-            $badge = '';
-            $publicPath = url('files/transparency/' . $file->filename);
+        foreach ($blog->images as $file) {
+            $publicPath = url('images/blog/' . $file->image_path);
 
-            switch ($file->file_extension) {
-                case 'pdf':
-                    $icon = 'fa-file-pdf';
-                    $badge = 'PDF';
-                    break;
-                case 'doc':
-                case 'docx':
-                    $icon = 'fa-file-word';
-                    $badge = 'Word';
-                    break;
-                case 'xls':
-                case 'xlsx':
-                    $icon = 'fa-file-excel';
-                    $badge = 'Excel';
-                    break;
-                case 'ppt':
-                case 'pptx':
-                    $icon = 'fa-file-powerpoint';
-                    $badge = 'PowerPoint';
-                    break;
-                case 'txt':
-                    $icon = 'fa-file-alt';
-                    $badge = 'Texto';
-                    break;
-                case 'zip':
-                case 'rar':
-                    $icon = 'fa-file-archive';
-                    $badge = 'Archivo';
-                    break;
-                default:
-                    $icon = 'fa-file';
-                    $badge = 'Archivo';
-                    break;
-            }
+            $icon = 'fa-file';
+            $badge = 'Archivo';
 
             $output .= '
             <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-body text-center">
                         <i class="fas ' . $icon . ' fa-3x"></i>
-                        <h5 class="card-title mt-2">' . $file->name . '</h5>
+                        <h5 class="card-title mt-2">' . $file->image_path . '</h5>
                         <span class="badge bg-primary">' . $badge . '</span>
                         <input type="text" class="form-control mt-2" id="filePath' . $file->id . '" value="' . $publicPath . '" readonly>
-                        <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard(\'filePath' . $file->id . '\')">Copiar Ruta</button>
-                        <button type="button" class="btn btn-link remove_file mt-2" id="' . $file->filename . '">Eliminar</button>
+                        <button type="button" class="btn btn-link remove_file mt-2" id="' . $file->image_path . '">Eliminar</button>
                     </div>
                 </div>
             </div>
@@ -156,14 +123,14 @@ class BlogController extends Controller
 
     function deleteFile(Request $request)
     {
-        $file = BlogImage::where('image_path', $request->name)->first();
+        $file = BlogImage::where('image_path', $request->image_path)->first();
 
         if ($file) {
             // Eliminar el archivo de la base de datos
             $file->delete();
 
             // Eliminar el archivo del sistema de archivos
-            $filePath = public_path('files/blog/' . $request->name);
+            $filePath = public_path('images/blog/' . $request->image_path);
             if (\File::exists($filePath)) {
                 \File::delete($filePath);
             }
