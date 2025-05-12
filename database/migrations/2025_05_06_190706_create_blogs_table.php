@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('content_2')->nullable();
             $table->string('hero_img')->nullable();
             $table->string('category');
-            $table->boolean('is_fav')->default(false);
+            $table->boolean('is_fav')->nullable();
             $table->boolean('is_active')->default(true);
             $table->date('published_at')->nullable();
             $table->text('writer')->nullable();

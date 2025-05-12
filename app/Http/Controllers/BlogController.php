@@ -23,31 +23,42 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        $mode = 0;
+
+        return view('blog.create', [
+            'mode' => $mode,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
      */
-    public function show(Blog $blog)
+    public function show($id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+
+        $mode = 1;
+
+        return view('blog.show', [
+            'blog' => $blog,
+            'mode' => $mode,
+        ]);
     }
 
-    /**
+    /**e
      * Show the form for editing the specified resource.
      */
-    public function edit(Blog $blog)
+    public function edit($id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+
+        $mode = 2;
+
+        return view('blog.edit', [
+            'blog' => $blog,
+            'mode' => $mode,
+        ]);
     }
 
     /**
@@ -61,8 +72,11 @@ class BlogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Blog $blog)
+    public function destroy($id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+        $blog->delete();
+
+        return redirect()->route('blog.admin.index')->with('success', 'Blog eliminado correctamente.');
     }
 }

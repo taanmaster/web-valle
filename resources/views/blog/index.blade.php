@@ -20,8 +20,7 @@
         <div class="main-content">
             <div class="row align-items-center mb-4">
                 <div class="col text-start">
-                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreate"
-                        class="btn btn-primary">Nueva Entrada</a>
+                    <a href="{{ route('blog.admin.create') }}" class="btn btn-primary">Nueva Entrada</a>
                 </div>
             </div>
 
@@ -35,17 +34,19 @@
                                         style="width:30%; margin-bottom: 40px;">
                                     <h4>¡No hay elementos guardados en la base de datos!</h4>
                                     <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
-                                    <a href="{{ route('citizens.create') }}" data-bs-toggle="modal"
-                                        data-bs-target="#modalCreate" class="btn btn-sm btn-primary btn-uppercase"><i
-                                            class="fas fa-plus"></i> Nueva Entrada</a>
+                                    <a href="{{ route('blog.admin.create') }}"
+                                        class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nueva
+                                        Entrada</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             @else
-                <div class="row">
-                    <livewire:blog.entries-table />
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <livewire:blog.entries-table />
+                    </div>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-center">

@@ -21,13 +21,11 @@ class EntriesTable extends Component
 
 
     public $published_date = '';
-    public $is_active = true;
     public $category = '';
 
     public function resetFilters()
     {
         $this->published_date = '';
-        $this->is_active = '';
         $this->category = '';
     }
 
@@ -37,10 +35,7 @@ class EntriesTable extends Component
 
         $query = Blog::query();
         if ($this->published_date) {
-            $query->whereDate('published_date', $this->published_date);
-        }
-        if ($this->is_active !== '') {
-            $query->where('is_active', $this->is_active);
+            $query->whereDate('published_at', $this->published_date);
         }
         if ($this->category !== '') {
             $query->where('category', $this->category);

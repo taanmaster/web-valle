@@ -6,16 +6,16 @@
     <!-- this is breadcrumbs -->
     @component('components.breadcrumb')
         @slot('li_1')
-            Intranet
+            Blog
         @endslot
         @slot('li_2')
             Entrada
         @endslot
         @slot('title')
-            Crear
+            Crear Entrada
         @endslot
     @endcomponent
 
 
-    <livewire:blog.crud :mode="$mode" :blog="$blog" />
+    <livewire:blog.crud :mode="$mode" />
 @endsection

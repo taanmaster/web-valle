@@ -451,6 +451,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::resource('blogAmin', BlogController::class)->names([
             'index' => 'blog.admin.index',
             'show' => 'blog.admin.show',
+            'edit' => 'blog.admin.edit',
+            'create' => 'blog.admin.create',
+            'destroy' => 'blog.admin.destroy',
         ]);
     });
 });
