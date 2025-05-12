@@ -83,7 +83,7 @@
                     <label for="images" class="col-form-label">Imagenes</label>
                 </div>
                 <div class="col-md">
-
+                    <livewire:dropzone wire:model="photos" :rules="['image', 'mimes:png,jpeg', 'max:10420']" :multiple="true" />
                 </div>
             </div>
 

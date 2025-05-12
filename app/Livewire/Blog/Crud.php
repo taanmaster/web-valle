@@ -12,6 +12,8 @@ use Livewire\Attributes\Validate;
 use Livewire\Attributes\On;
 use Intervention\Image\Facades\Image as Image;
 use Livewire\WithFileUploads;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 
 
 //Modelos
@@ -41,6 +43,7 @@ class Crud extends Component
     public $writer = '';
 
     public $categories = [];
+    public array $photos = [];
 
     public function mount()
     {
@@ -133,6 +136,11 @@ class Crud extends Component
                 'published_at' => $this->published_at,
                 'writer' => $this->writer,
             ]);
+
+
+            foreach ($this->photos as $photo) {
+                Storage::putFile('photos', new File($photo['path']));
+            }
 
             return redirect()->route('blog.admin.index');
         }
