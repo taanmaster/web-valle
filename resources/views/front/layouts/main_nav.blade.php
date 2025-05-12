@@ -38,8 +38,15 @@
             </li>
 
             <li>
+                <a href="{{ route('sare.index') }}">
+                    <ion-icon name="layers-outline"></ion-icon>
+                    <span>S.A.R.E</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('blog.index') }}">
-                    <ion-icon name="book"></ion-icon>
+                    <ion-icon name="book-outline"></ion-icon>
                     <span>Blog</span>
                 </a>
             </li>

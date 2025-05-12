@@ -81,6 +81,8 @@ class Crud extends Component
             'writer' => 'nullable',
         ]);
 
+        dd($this->photos);
+
         if ($this->blog) {
 
 

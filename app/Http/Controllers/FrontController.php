@@ -262,6 +262,11 @@ class FrontController extends Controller
         return view('front.treasury');
     }
 
+    public function sare()
+    {
+        return view('front.sare');
+    }
+
     public function blog()
     {
         $fav_posts = Blog::where('is_fav', true)->orderBy('updated_at', 'desc')->limit(3)->get();

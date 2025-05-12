@@ -137,6 +137,25 @@ small {
     right: 0;
 }
 
+.icon {
+
+    width: 40px;
+    height: 40px;
+    background-color: #E6A655;
+    color: white;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon ion-icon {
+    color: white;
+    margin-bottom: 0;
+    width: 1.4em;
+    height: 1.4em;
+}
+
 /* HEADER STYLES
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .page-header {

@@ -12,7 +12,7 @@
             Blog
         @endslot
         @slot('title')
-            Entradas
+            Blog
         @endslot
     @endcomponent
 

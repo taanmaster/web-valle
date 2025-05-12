@@ -4,6 +4,7 @@ use App\Http\Controllers\RegulatoryAgendaController;
 use App\Http\Controllers\RegulatoryAgendaDependencyController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
 use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
+use App\Http\Controllers\BlogController;
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/en-construccion', 'FrontController@building')->name('building');
 
     Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
+
+    /*SARE*/
+    Route::get('/sare', 'FrontController@sare')->name('sare.index');
 
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
@@ -455,5 +459,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'create' => 'blog.admin.create',
             'destroy' => 'blog.admin.destroy',
         ]);
+
+        /* Repositorio funciones Asincronas */
+        Route::post('dropzone/blog/upload/{id}', 'BlogController@uploadFile')->name('dropzone.blog.upload');
+        Route::get('dropzone/blog/fetch/{id}', 'BlogController@fetchFile')->name('dropzone.blog.fetch');
+        Route::get('dropzone/blog/delete/{id}', 'BlogController@deleteFile')->name('dropzone.blog.delete');
     });
 });
