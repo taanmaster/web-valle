@@ -33,6 +33,15 @@
                                 <label class="form-check-label" for="in_index">Mostrar en la página web</label>
                             </div>
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="belongs_to_treasury" name="belongs_to_treasury" value="1">
+                                <label class="form-check-label" for="belongs_to_treasury">Esta dependencia pertenece a TESORERÍA</label>
+                            </div>
+
+                            <small>Al seleccionar esta opción solo TESORERÍA podrá ver y operar esta información.</small>
+                        </div>
                     </div>
                 </div>
 

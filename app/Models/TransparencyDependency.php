@@ -16,6 +16,8 @@ class TransparencyDependency extends Model
         'logo',
         'image_cover',
         'in_index',
+        'belongs_to_treasury',
+        'belongs_to',
     ];
 
     public function users()

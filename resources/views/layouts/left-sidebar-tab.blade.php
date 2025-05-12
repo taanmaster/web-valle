@@ -205,6 +205,17 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('rates_and_costs.index') }}">Tarifas y Costos</a>
                         </li>
+                    </ul>  
+
+                    <div class="title-box mt-5">
+                        <h6 class="menu-title">Documentos y Dependencias</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
+                        </li>
                     </ul>
                 </div>
             @endif
