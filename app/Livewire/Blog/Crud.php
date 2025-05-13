@@ -133,7 +133,7 @@ class Crud extends Component
             return redirect()->route('blog.admin.index');
         } else {
 
-            if ($this->hero_img) {
+            if ($this->hero_img != null) {
                 $imageCoverPath = $this->hero_img;
                 $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
                 $imageCoverLocation = public_path('images/blog/' . $imageCoverName);
