@@ -81,11 +81,7 @@ class Crud extends Component
             'writer' => 'nullable',
         ]);
 
-        dd($this->photos);
-
         if ($this->blog) {
-
-
             // Si se sube una nueva imagen
             if ($this->hero_img) {
                 $imageCoverPath = $this->hero_img;
@@ -138,11 +134,6 @@ class Crud extends Component
                 'published_at' => $this->published_at,
                 'writer' => $this->writer,
             ]);
-
-
-            foreach ($this->photos as $photo) {
-                Storage::putFile('photos', new File($photo['path']));
-            }
 
             return redirect()->route('blog.admin.index');
         }

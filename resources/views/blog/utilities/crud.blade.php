@@ -113,8 +113,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="category" class="form-label">Escrito por la
-                        dirección de...</label>
+                    <label for="category" class="form-label">Categorías</label>
                     <select class="form-select" name="category" wire:model.change="category"
                         @if ($mode == 1) disabled @endif>
                         <option selected>Seleccionar tipo</option>

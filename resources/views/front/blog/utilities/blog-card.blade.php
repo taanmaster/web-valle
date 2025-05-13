@@ -1,4 +1,4 @@
-<a href="" class="col-md-6 mb-4">
+<a href="{{ route('blog.detail', $blog->slug) }}" class="col-md-6 mb-4">
     <div class="card">
         <img src="{{ asset('images/blog/' . $blog->hero_img) }}" class="card-img-top" alt="Portada de {{ $blog->title }}">
         <div class="card-body">

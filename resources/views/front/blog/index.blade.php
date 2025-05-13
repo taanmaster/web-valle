@@ -32,7 +32,7 @@
             <div class="row">
                 @foreach ($fav_posts->take(3) as $index => $fav_post)
                     @if ($index === 0)
-                        <a href="" class="col-md-12 mb-3">
+                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-12 mb-3">
                             <div class="card card-image card-image-banner wow fadeInUp">
                                 <img src="{{ asset('storage/' . $fav_post->image) }}" alt="">
                                 <div class="overlay"></div>
@@ -46,7 +46,7 @@
                             </div>
                         </a>
                     @else
-                        <a href="" class="col-md-6 mb-4">
+                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-6 mb-4">
                             <div class="card">
                                 <img src="{{ asset('images/blog/' . $fav_post->hero_img) }}" class="card-img-top"
                                     alt="Portada de {{ $fav_post->title }}">

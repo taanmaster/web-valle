@@ -287,9 +287,9 @@ class FrontController extends Controller
 
     public function blogDetail($slug)
     {
-        $post = Blog::where('slug', $slug)->first();
+        $blog = Blog::where('slug', $slug)->first();
 
-        return view('front.blog.show')->with('post', $post);
+        return view('front.blog.detail')->with('blog', $blog);
     }
 
     public function blogList()
