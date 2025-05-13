@@ -1,6 +1,7 @@
 @push('stylesheets')
     <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css" />
 
     <style>
         .dropzone {
@@ -65,9 +66,11 @@
                 <div class="col-md-1">
                     <label for="content_1" class="col-form-label">Contenido 1 (Primer parte del artículo)</label>
                 </div>
-                <div class="col-md">
-                    <textarea class="form-control" wire:model="content_1" name="content_1" rows="3"
-                        @if ($mode == 1) disabled @endif></textarea>
+                <div class="col-md" wire:ignore>
+                    <input id="content_1" type="hidden" wire:model.defer="content_1"
+                        @if ($mode == 1) disabled @endif>
+                    <trix-editor wire:ignore input="content_1" id="trix-content_1"
+                        @if ($mode == 1) disabled @endif></trix-editor>
                 </div>
             </div>
 
@@ -75,9 +78,13 @@
                 <div class="col-md-1">
                     <label for="content_2" class="col-form-label">Contenido 2 (Segunda parte del artículo)</label>
                 </div>
-                <div class="col-md">
-                    <textarea class="form-control" wire:model="content_2" name="content_2" rows="3"
-                        @if ($mode == 1) disabled @endif></textarea>
+                <div class="col-md" wire:ignore>
+
+                    <input id="content_2" type="hidden" wire:model.defer="content_2"
+                        @if ($mode == 1) disabled @endif>
+                    <trix-editor wire:ignore input="content_2" id="trix-content_2"
+                        @if ($mode == 1) disabled @endif></trix-editor>
+
                 </div>
             </div>
 
@@ -167,6 +174,30 @@
         @endif
 
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const editor1 = document.querySelector('#trix-content_1');
+            const editor2 = document.querySelector('#trix-content_2');
+
+            editor1.addEventListener('trix-change', function() {
+                const value = document.querySelector('#content_1').value;
+
+                Livewire.dispatch('updateContent1', {
+                    'payload': value
+                });
+            });
+
+            editor2.addEventListener('trix-change', function() {
+                const value = document.querySelector('input#content_2').value;
+                Livewire.dispatch('updateContent2', {
+                    'payload': value
+                });
+            });
+        });
+    </script>
+
 </div>
 @if ($mode == 2)
     @push('scripts')

@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.6",
         "maatwebsite/excel": "^3.1",
+        "mantix/livewire-jodit-text-editor": "^1.6",
         "mews/purifier": "^3.4",
         "spatie/laravel-permission": "^6.7"
     },

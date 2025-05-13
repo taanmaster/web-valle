@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="row w-100">
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-4 mb-md-0">
                             <a href="{{ route('gazette.list', 'ordinary') }}" class="folder-card folder-green">
                                 <div class="folder-head"></div>
                                 <div class="folder-body">
@@ -104,7 +104,7 @@
                             </a>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-4 mb-md-0">
                             <a href="{{ route('gazette.list', 'solemn') }}" class="folder-card folder-yellow">
                                 <div class="folder-head"></div>
                                 <div class="folder-body">
@@ -124,7 +124,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3 mb-md-0">
                             <a href="{{ route('gazette.list', 'extraordinary') }}" class="folder-card folder-blue">
                                 <div class="folder-head"></div>
                                 <div class="folder-body">

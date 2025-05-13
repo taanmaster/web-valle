@@ -15,7 +15,7 @@
             </div>
 
             <div class="col-md-12 mb-4">
-                {{ $blog->content_1 }}
+                {!! $blog->content_1 !!}
             </div>
 
             @if (count($blog->images) > 0)
@@ -37,7 +37,7 @@
             @endif
 
             <div class="col-md-12 mb-4">
-                {{ $blog->content_2 }}
+                {!! $blog->content_2 !!}
             </div>
         </div>
     </div>

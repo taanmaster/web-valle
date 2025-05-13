@@ -169,7 +169,7 @@ class FrontController extends Controller
     // Módulo Dependencias
     public function dependencyList()
     {
-        $dependencies = TransparencyDependency::orderBy('name', 'asc')->get();
+        $dependencies = TransparencyDependency::orderBy('name', 'desc')->get();
 
         return view('front.dependencies.index')
             ->with('dependencies', $dependencies);

@@ -8,6 +8,7 @@ use Livewire\Component;
 use Str;
 use Auth;
 use Session;
+use Carbon\Carbon;
 use Livewire\Attributes\Validate;
 use Livewire\Attributes\On;
 use Intervention\Image\Facades\Image as Image;
@@ -30,6 +31,7 @@ class Crud extends Component
     //Modes: 0: create, 1 show, 2 edit
     public $mode;
 
+
     //Campos
     public $title;
     public $slug = '';
@@ -51,8 +53,11 @@ class Crud extends Component
             $this->fetchBlogData();
         }
 
+        $this->published_at = Carbon::now()->format('Y-m-d');
+
         $this->categories = TransparencyDependency::all();
     }
+
     public function fetchBlogData()
     {
         $this->title = $this->blog->title;
@@ -66,6 +71,19 @@ class Crud extends Component
         $this->published_at = $this->blog->published_at;
         $this->writer = $this->blog->writer;
     }
+
+    #[On('updateContent1')]
+    public function updateContent1($payload)
+    {
+        $this->content_1 = $payload;
+    }
+
+    #[On('updateContent2')]
+    public function updateContent2($payload)
+    {
+        $this->content_2 = $payload;
+    }
+
 
     public function save()
     {
@@ -115,13 +133,16 @@ class Crud extends Component
             return redirect()->route('blog.admin.index');
         } else {
 
-            $imageCoverPath = $this->hero_img;
-            $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
-            $imageCoverLocation = public_path('images/blog/' . $imageCoverName);
-            Image::make($imageCoverPath)->resize(960, null, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($imageCoverLocation);
-
+            if ($this->hero_img) {
+                $imageCoverPath = $this->hero_img;
+                $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
+                $imageCoverLocation = public_path('images/blog/' . $imageCoverName);
+                Image::make($imageCoverPath)->resize(960, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($imageCoverLocation);
+            } else {
+                $imageCoverName = '';
+            }
 
             Blog::create([
                 'title' => $this->title,
