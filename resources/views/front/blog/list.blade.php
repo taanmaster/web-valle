@@ -17,9 +17,7 @@
         </div>
 
         <div class="row">
-
             <livewire:front.blog.list-blog :mode="$mode" />
-
         </div>
     </div>
 @endsection

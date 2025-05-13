@@ -46,7 +46,7 @@
                             </div>
                         </a>
                     @else
-                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-6 mb-4">
+                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-6 mb-4 card-blog">
                             <div class="card">
                                 <img src="{{ asset('images/blog/' . $fav_post->hero_img) }}" class="card-img-top"
                                     alt="Portada de {{ $fav_post->title }}">

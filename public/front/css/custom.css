@@ -782,6 +782,15 @@ body {
     }
 }
 
+/* BLOG STYLES */
+.card-blog {
+    text-decoration: none;
+}
+
+.card-blog:hover {
+    text-decoration: underline;
+}
+
 /* FOOTER
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .page-footer {
