@@ -99,7 +99,7 @@ class Crud extends Component
             'writer' => 'nullable',
         ]);
 
-        if ($this->blog) {
+        if ($this->blog != null) {
             // Si se sube una nueva imagen
             if ($this->hero_img) {
                 $imageCoverPath = $this->hero_img;
@@ -141,7 +141,7 @@ class Crud extends Component
                     $constraint->aspectRatio();
                 })->save($imageCoverLocation);
             } else {
-                $imageCoverName = '';
+                $imageCoverName = 'empty-image.jpg';
             }
 
             Blog::create([
@@ -154,6 +154,7 @@ class Crud extends Component
                 'category' => $this->category,
                 'published_at' => $this->published_at,
                 'writer' => $this->writer,
+                'is_fav' => $this->is_fav,
             ]);
 
             return redirect()->route('blog.admin.index');
