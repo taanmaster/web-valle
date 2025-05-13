@@ -2,13 +2,18 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-5">
+                {{--
                 <p class="mb-0">Horarios Presidencia: <strong>Lunes a Viernes de 8:00 am - 4:00 pm</strong></p>
+                 --}}
             </div>
             <div class="col-md-7">
                 <div class="d-flex gap-3 justify-content-end flex-column flex-md-row">
+                    {{--
                     <a href="" class="btn d-flex align-items-center gap-2 btn-success disabled"><ion-icon
                             name="card-outline"></ion-icon> Pago en Linea</a>
-                    <a href="" class="btn d-flex align-items-center gap-2 btn-primary disabled"><ion-icon
+                             --}}
+                    <a href="{{ route('denuncia.net') }}"
+                        class="btn d-flex align-items-center gap-2 btn-primary disabled"><ion-icon
                             name="radio-outline"></ion-icon> Denuncia Ciudadana</a>
                     @guest
                         @if (Route::has('login'))
