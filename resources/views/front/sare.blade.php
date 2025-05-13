@@ -65,8 +65,7 @@
                     <div class="card-content">
                         <h2>Requisitos:</h2>
                         <p>Se deberá completar el expediente de solicitud con el
-                            <a href="{{ asset('files/sare/FORMATO_UNICO_PERMISO_DE_USO_DE_SUELO_DIRECCIÓN_DE_ECONOMÍA_FINAL.pdf') }}"
-                                target="_blank">Formato Único SARE</a>
+                            <a href="{{ asset('files/sare/Permiso_de_Suelo.pdf') }}" target="_blank">Formato Único SARE</a>
                             y copia simple de la siguiente documentación:
                         </p>
                     </div>
