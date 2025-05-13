@@ -42,7 +42,28 @@ class Form extends Component
 
     public function save()
     {
-        CitizenComplain::create([
+
+        $savedFiles = collect($this->files)->map(function ($file) {
+            $originalName = $file->getClientOriginalName();
+            $cleanName = preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $originalName);
+            $filename = time() . '_' . $cleanName;
+
+            // Guarda en storage/app/public/complains
+            $path = $file->storePubliclyAs('complains', $filename, 'public');
+
+            // URL accesible vía navegador
+            $url = Storage::url($path);
+
+            return [
+                'name' => $originalName,
+                'path' => $url,
+                'size' => $file->getSize(),
+                'type' => $file->getClientMimeType(),
+                'extension' => $file->getClientOriginalExtension(),
+            ];
+        });
+
+        $complain = CitizenComplain::create([
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
@@ -51,21 +72,9 @@ class Form extends Component
             'subject' => $this->subject,
         ]);
 
-        $this->files = collect($this->files)->map(function ($file) {
-            $path = $file->store('complains', 'public');
-            $url = Storage::disk('public')->url($path);
-
-            return [
-                'name' => $file->getClientOriginalName(),
-                'path' => $url,
-                'size' => $file->getSize(),
-                'type' => $file->getClientMimeType(),
-                'extension' => $file->getClientOriginalExtension(),
-            ];
-        });
-        foreach ($this->files as $file) {
+        foreach ($savedFiles as $file) {
             CitizenComplainFile::create([
-                'complain_id' => CitizenComplain::latest()->first()->id,
+                'complain_id' => $complain->id,
                 'name' => $file['name'],
                 'filename' => $file['path'],
                 'file_extension' => $file['extension'],
