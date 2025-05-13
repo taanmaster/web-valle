@@ -43,17 +43,17 @@
                 <div class="card card-normal wow fadeInUp h-100">
                     <div class="card-content">
                         <h2>Deberán cumplirse los siguientes criterios:</h2>
-                        <p>I. El giro solicitado por el ciudadano deberá estar contenido dentro del <a
-                                href="javascript:void(0)">Catálogo de
-                                Giros Comerciales y de Servicios SARE</a> que determine el H. Ayuntamiento de Valle de
-                            Santiago y
-                            las Direcciones correspondientes.
+                        <p>I. El giro solicitado por el ciudadano deberá estar contenido dentro del
+                            <a href="{{ asset('files/sare/Bajo_Riesgo_Catalog.pdf') }}" target="_blank">Catálogo de Giros
+                                Comerciales y de Servicios SARE</a>
+                            que determine el H. Ayuntamiento de Valle de Santiago y las Direcciones correspondientes.
                             II. El local deberá estar previamente edificado o construido.
                             III. El inmueble destinado a la actividad de comercio o servicio no deberá exceder de un
                             área de 240 m2.
                             IV. Contar con servicios básicos de agua potable, luz y alcantarillado.
                             V. Sin venta de bebidas alcohólicas.
-                            VI. Vigencia de Permiso de un año.</p>
+                            VI. Vigencia de Permiso de un año.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -64,10 +64,11 @@
                 <div class="card card-normal wow fadeInUp h-100">
                     <div class="card-content">
                         <h2>Requisitos:</h2>
-                        <p>Se deberá completar el expediente de solicitud con el <a href="javascript:void(0)">Formato Único
-                                SARE</a> y
-                            copia simple de la
-                            siguiente documentación:</p>
+                        <p>Se deberá completar el expediente de solicitud con el
+                            <a href="{{ asset('files/sare/FORMATO_UNICO_PERMISO_DE_USO_DE_SUELO_DIRECCIÓN_DE_ECONOMÍA_FINAL.pdf') }}"
+                                target="_blank">Formato Único SARE</a>
+                            y copia simple de la siguiente documentación:
+                        </p>
                     </div>
                 </div>
             </div>
