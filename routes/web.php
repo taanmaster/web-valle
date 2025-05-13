@@ -4,6 +4,7 @@ use App\Http\Controllers\RegulatoryAgendaController;
 use App\Http\Controllers\RegulatoryAgendaDependencyController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
 use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
+use App\Http\Controllers\BlogController;
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/en-construccion', 'FrontController@building')->name('building');
 
     //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
+
+    /*SARE*/
+    Route::get('/sare', 'FrontController@sare')->name('sare.index');
+
+    /*Denuncia NET*/
+    Route::get('/denuncia-net', 'FrontController@denunciaNet')->name('denuncia.net');
 
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
@@ -73,6 +80,21 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'regulatory-agenda-dependency.show'
     ]);
 
+    // Modulo Blog
+    Route::get('/blog', [
+        'uses' => 'FrontController@blog',
+        'as' => 'blog.index',
+    ]);
+
+    Route::get('/blog/lista', [
+        'uses' => 'FrontController@blogList',
+        'as' => 'blog.list',
+    ]);
+
+    Route::get('/blog/{slug}', [
+        'uses' => 'FrontController@blogDetail',
+        'as' => 'blog.detail',
+    ])->where('slug', '[\w\d\-\_]+');
     /*
     Route::get('/transparencia/documentos/{slug}', [
         'uses' => 'FrontController@documentDetail',
@@ -94,7 +116,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Usuarios */
         Route::resource('users', UserController::class);
-        
+
         Route::get('profile', [
             'uses' => 'DashboardController@adminProfile',
             'as' => 'admin.profile',
@@ -441,6 +463,27 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/regulatory_agenda_new/{id}', [
             'uses' => 'RegulatoryAgendaRegulationController@create',
             'as' => 'regulatory_agenda_regulation.create'
+        ]);
+
+        Route::resource('blogAmin', BlogController::class)->names([
+            'index' => 'blog.admin.index',
+            'show' => 'blog.admin.show',
+            'edit' => 'blog.admin.edit',
+            'create' => 'blog.admin.create',
+            'destroy' => 'blog.admin.destroy',
+        ]);
+
+        /* Repositorio funciones Asincronas */
+        Route::group(['prefix' => 'blog'], function () {
+            Route::post('dropzone/upload/{id}', 'BlogController@uploadFile')->name('dropzone.blog.upload');
+            Route::get('dropzone/fetch/{id}', 'BlogController@fetchFile')->name('dropzone.blog.fetch');
+            Route::get('dropzone/delete/{id}', 'BlogController@deleteFile')->name('dropzone.blog.delete');
+        });
+
+        /*Denuncia Ciudadana*/
+        Route::get('/citizen-complain', [
+            'uses' => 'CitizenComplainController@index',
+            'as' => 'citizen_complain.index',
         ]);
     });
 });

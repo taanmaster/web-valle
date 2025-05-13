@@ -29,6 +29,13 @@ use App\Models\RegulatoryAgendaDependency;
 use App\Models\RegulatoryAgendaRegulation;
 use Illuminate\Http\Request;
 
+// Modelos Blog
+use App\Models\Blog;
+
+// Modelos Denuncia Ciudadana
+use App\Models\CitizenComplaint;
+use App\Models\CitizenComplaintFile;
+
 class FrontController extends Controller
 {
     public function index()
@@ -261,5 +268,52 @@ class FrontController extends Controller
     public function building()
     {
         return view('front.building');
+    }
+
+    public function treasury()
+    {
+        return view('front.treasury');
+    }
+
+    public function sare()
+    {
+        return view('front.sare');
+    }
+
+    public function blog()
+    {
+        $fav_posts = Blog::where('is_fav', true)->orderBy('updated_at', 'desc')->limit(3)->get();
+        $posts = Blog::orderBy('updated_at', 'desc')->take(6)->get();
+
+        $mode = 0;
+
+        return view('front.blog.index')->with([
+            'posts' => $posts,
+            'fav_posts' => $fav_posts,
+            'mode' => $mode
+        ]);
+    }
+
+    public function blogDetail($slug)
+    {
+        $blog = Blog::where('slug', $slug)->first();
+
+        return view('front.blog.detail')->with('blog', $blog);
+    }
+
+    public function blogList()
+    {
+        $posts = Blog::orderBy('updated_at', 'desc')->paginate(8);
+        $mode = 1;
+
+        return view('front.blog.list')->with([
+            'posts' => $posts,
+            'mode' => $mode
+        ]);
+    }
+
+    public function denunciaNet()
+    {
+        return view('front.citizen_complain.index');
     }
 }

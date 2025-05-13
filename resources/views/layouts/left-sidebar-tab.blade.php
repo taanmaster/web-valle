@@ -45,8 +45,8 @@
                     @endif
 
                     @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Secretaría Particular"
-                            data-bs-trigger="hover">
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
+                            title="Secretaría Particular" data-bs-trigger="hover">
                             <a href="#vallePrivateSecretary" id="uikit-tab" class="nav-link">
                                 <i class="ti ti-bookmark menu-icon"></i>
                             </a>
@@ -62,12 +62,14 @@
                         </li>
                     @endif
 
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Agenda Regulatoria"
-                        data-bs-trigger="hover">
-                        <a href="#valleDevelopment" id="pages-tab" class="nav-link">
-                            <i class="ti ti-notebook menu-icon"></i>
-                        </a>
-                    </li>
+                    @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
+                            title="Agenda Regulatoria" data-bs-trigger="hover">
+                            <a href="#valleDevelopment" id="pages-tab" class="nav-link">
+                                <i class="ti ti-notebook menu-icon"></i>
+                            </a>
+                        </li>
+                    @endif
 
                     @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Configuraciones"
@@ -130,6 +132,13 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('popups.index') }}">Popups</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('blog.admin.index') }}">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('citizen_complain.index') }}">Denuncia ciudadana</a>
                         </li>
                     </ul>
                 </div>
@@ -272,18 +281,18 @@
             @endif
 
             @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
-            <div id="valleDevelopment" class="main-icon-menu-pane tab-pane" role="tabpanel"
-                aria-labelledby="pages-tab">
-                <div class="title-box">
-                    <h6 class="menu-title">Desarrollo institucional</h6>
+                <div id="valleDevelopment" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="pages-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Desarrollo institucional</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('regulatory_agenda.index') }}">Agenda
+                                Regulatoria</a>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('regulatory_agenda.index') }}">Agenda
-                            Regulatoria</a>
-                    </li>
-                </ul>
-            </div>
             @endif
 
             @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
