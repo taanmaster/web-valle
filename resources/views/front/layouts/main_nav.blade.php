@@ -52,6 +52,13 @@
             </li>
 
             <li>
+                <a href="{{ route('denuncia.net') }}">
+                    <ion-icon name="newspaper-outline"></ion-icon>
+                    <span>Denuncia Ciudadana</span>
+                </a>
+            </li>
+
+            <li>
                 <div class="switch">
                     <input type="checkbox" id="mode" checked>
                     <label for="mode">

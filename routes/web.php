@@ -20,6 +20,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /*SARE*/
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
 
+    /*Denuncia NET*/
+    Route::get('/denuncia-net', 'FrontController@denunciaNet')->name('denuncia.net');
+
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
         'uses' => 'FrontController@gazetteList',
@@ -466,5 +469,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('dropzone/fetch/{id}', 'BlogController@fetchFile')->name('dropzone.blog.fetch');
             Route::get('dropzone/delete/{id}', 'BlogController@deleteFile')->name('dropzone.blog.delete');
         });
+
+        /*Denuncia Ciudadana*/
+        Route::get('/citizen-complain', [
+            'uses' => 'CitizenComplainController@index',
+            'as' => 'citizen_complain.index',
+        ]);
     });
 });

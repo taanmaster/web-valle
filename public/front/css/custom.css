@@ -149,6 +149,10 @@ small {
     justify-content: center;
 }
 
+.icon.blue {
+    background-color: #507CCC;
+}
+
 .icon ion-icon {
     color: white;
     margin-bottom: 0;

@@ -32,6 +32,10 @@ use Illuminate\Http\Request;
 // Modelos Blog
 use App\Models\Blog;
 
+// Modelos Denuncia Ciudadana
+use App\Models\CitizenComplaint;
+use App\Models\CitizenComplaintFile;
+
 class FrontController extends Controller
 {
     public function index()
@@ -297,5 +301,10 @@ class FrontController extends Controller
             'posts' => $posts,
             'mode' => $mode
         ]);
+    }
+
+    public function denunciaNet()
+    {
+        return view('front.citizen_complain.index');
     }
 }
