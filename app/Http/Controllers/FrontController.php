@@ -186,20 +186,14 @@ class FrontController extends Controller
     // Módulo Obligaciones
     public function obligationDetail($slug)
     {
-        $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
-
         Carbon::setLocale('es');
 
+        $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
         $documents = TransparencyDocument::where('obligation_id', $obligation->id)->orderBy('year', 'desc')->get();
 
-        $dates = TransparencyDocument::selectRaw('YEAR(year) as year')
-            ->groupBy('year')
-            ->orderBy('year', 'desc')
-            ->get()
-            ->pluck('year')
-            ->map(function ($year) {
-                return Carbon::createFromDate($year, 1, 15);
-            });
+        $dates = $documents->pluck('year')->unique()->map(function ($year) {
+            return Carbon::createFromDate($year, 1, 15)->format('Y');
+        });
 
         return view('front.dependencies.obligation_detail')
             ->with('obligation', $obligation)
@@ -210,20 +204,16 @@ class FrontController extends Controller
     // Módulo Documentos
     public function filterTransparencyDocumentByDate($slug, $date)
     {
-        $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
-
         Carbon::setLocale('es');
 
+        $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
         $documents = TransparencyDocument::where('obligation_id', $obligation->id)->where('year', '=', $date)->orderBy('year', 'desc')->get();
 
-        $dates = TransparencyDocument::selectRaw('YEAR(year) as year')
-            ->groupBy('year')
-            ->orderBy('year', 'desc')
-            ->get()
-            ->pluck('year')
-            ->map(function ($year) {
-                return Carbon::createFromDate($year, 1, 15);
-            });
+        $all_documents = TransparencyDocument::where('obligation_id', $obligation->id)->orderBy('year', 'desc')->get();
+
+        $dates = $all_documents->pluck('year')->unique()->map(function ($year) {
+            return Carbon::createFromDate($year, 1, 15)->format('Y');
+        });
 
         return view('front.dependencies.obligation_detail')->with([
             'obligation' => $obligation,
