@@ -26,10 +26,7 @@
                                 <div class="text-center" style="padding:80px 0px 100px 0px;">
                                     <img src="{{ asset('assets/images/empty.svg') }}" class="ml-auto mr-auto"
                                         style="width:30%; margin-bottom: 40px;">
-                                    <h4>¡No hay dependencias guardadas en la base de datos!</h4>
-                                    <p class="mb-4">Empieza a cargarlas en la sección correspondiente.</p>
-                                    <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-uppercase new-income"><i
-                                            class="fas fa-plus"></i> Nueva dependencia</a>
+                                    <h4>¡No hay denuncias guardadas en la base de datos!</h4>
                                 </div>
                             </div>
                         </div>
