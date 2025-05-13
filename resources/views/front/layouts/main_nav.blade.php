@@ -5,9 +5,7 @@
         </a>
 
         <button class="toggle-mob-menu" aria-expanded="false" aria-label="open menu">
-            <svg width="20" height="20" aria-hidden="true">
-                <use xlink:href="#down"></use>
-            </svg>
+            <ion-icon name="menu"></ion-icon>
         </button>
 
         <ul class="admin-menu list-unstyled">

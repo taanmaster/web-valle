@@ -318,6 +318,8 @@ body {
 
     .page-header nav {
         flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .page-header .logo {
@@ -330,7 +332,16 @@ body {
     }
 
     .page-header .toggle-mob-menu {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .page-header .toggle-mob-menu ion-icon {
+        width: 20px;
+        height: 20px;
     }
 
     .page-header .admin-menu {
