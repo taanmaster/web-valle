@@ -15,7 +15,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     Route::get('/en-construccion', 'FrontController@building')->name('building');
 
-    Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
+    //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
 
     /*SARE*/
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
@@ -45,17 +45,22 @@ Route::namespace('App\Http\Controllers')->group(function () {
     ])->where('date', '[0-9]{4}-[0-9]{2}');
 
     // Módulo Transparencia
-    Route::get('/mod-transparencia/dependencias', [
+    Route::get('/dependencias', [
         'uses' => 'FrontController@dependencyList',
         'as' => 'dependency.list',
     ]);
 
-    Route::get('/mod-transparencia/dependencias/{slug}', [
+    Route::get('/tesoreria/dependencias', [
+        'uses' => 'FrontController@treasuryDependencyList',
+        'as' => 'treasury.dependency.list',
+    ]);
+
+    Route::get('/dependencias/{slug}', [
         'uses' => 'FrontController@dependencyDetail',
         'as' => 'dependency.detail',
     ])->where('slug', '[\w\d\-\_]+');
 
-    Route::get('/mod-transparencia/obligaciones/{slug}', [
+    Route::get('/obligaciones/{slug}', [
         'uses' => 'FrontController@obligationDetail',
         'as' => 'obligation.detail',
     ])->where('slug', '[\w\d\-\_]+');
@@ -429,6 +434,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::resource('revenue_law_rates_and_fees', TsrRevenueLawRateAndFeeController::class)->names([
                 'index' => 'rates_and_costs.index',
                 'destroy' => 'rates_and_cost.destroy',
+            ]);
+
+            // Documentos y Dependencias
+            Route::resource('dependencies', TreasuryDependencyController::class)->names([
+                'index' => 'treasury_dependencies.index',
             ]);
         });
 

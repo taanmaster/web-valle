@@ -169,7 +169,7 @@ class FrontController extends Controller
     // Módulo Dependencias
     public function dependencyList()
     {
-        $dependencies = TransparencyDependency::orderBy('name', 'desc')->get();
+        $dependencies = TransparencyDependency::where('belongs_to_treasury', false)->orderBy('name', 'asc')->get();
 
         return view('front.dependencies.index')
             ->with('dependencies', $dependencies);
@@ -245,6 +245,15 @@ class FrontController extends Controller
         $dependency = RegulatoryAgendaDependency::find($id);
 
         return view('front.regulatory_agenda.show')->with('dependency', $dependency);
+    }
+
+    // Módulo Tesorería
+    public function treasuryDependencyList()
+    {
+        $dependencies = TransparencyDependency::where('belongs_to_treasury', true)->orderBy('name', 'asc')->get();
+
+        return view('front.treasury.index')
+            ->with('dependencies', $dependencies);
     }
 
     // Módulo Textos Legales

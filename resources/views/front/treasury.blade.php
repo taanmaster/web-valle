@@ -54,6 +54,18 @@
                 </div>
             </a>
         </div>
+
+        <div class="col-md-6 mb-4">
+            <a href="http://186.96.176.239/tesoreria" target="_blank" class="card link-card card-normal card-alignment-bottom wow fadeInUp h-100">
+                <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                    <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                </div>
+
+                <div class="card-content">
+                    <h4>Tesorería</h4>
+                </div>
+            </a>
+        </div>
     </div>
 </div>
 @endsection

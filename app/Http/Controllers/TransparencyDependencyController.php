@@ -19,7 +19,7 @@ class TransparencyDependencyController extends Controller
 {
     public function index()
     {
-        $transparency_dependencies = TransparencyDependency::paginate(10);
+        $transparency_dependencies = TransparencyDependency::where('belongs_to_treasury', false)->paginate(10);
 
         return view('transparency_dependencies.index')->with('transparency_dependencies', $transparency_dependencies);
     }
@@ -37,27 +37,33 @@ class TransparencyDependencyController extends Controller
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'image_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'in_index' => 'boolean',
+            'belongs_to_treasury' => 'boolean',
         ]);
 
         // Subir archivos
-        $logoPath = $request->file('logo');
-        $logoName = Str::random(8) . '_logo' . '.' . $logoPath->getClientOriginalExtension();
-        $logoLocation = public_path('images/dependencies/' . $logoName);
-        Image::make($logoPath)->resize(960, null, function($constraint) { $constraint->aspectRatio(); })->save($logoLocation);
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo');
+            $logoName = Str::random(8) . '_logo' . '.' . $logoPath->getClientOriginalExtension();
+            $logoLocation = public_path('images/dependencies/' . $logoName);
+            Image::make($logoPath)->resize(960, null, function($constraint) { $constraint->aspectRatio(); })->save($logoLocation);
+        }
 
-        $imageCoverPath = $request->file('image_cover');
-        $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
-        $imageCoverLocation = public_path('images/dependencies/' . $imageCoverName);
-        Image::make($imageCoverPath)->resize(960, null, function($constraint) { $constraint->aspectRatio(); })->save($imageCoverLocation);
+        if ($request->hasFile('image_cover')) {
+            $imageCoverPath = $request->file('image_cover');
+            $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
+            $imageCoverLocation = public_path('images/dependencies/' . $imageCoverName);
+            Image::make($imageCoverPath)->resize(960, null, function($constraint) { $constraint->aspectRatio(); })->save($imageCoverLocation);
+        }
 
         // Guardar datos en la base de datos
         $transparency_dependency = TransparencyDependency::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'description' => $request->description,
-            'logo' => $logoName,
-            'image_cover' => $imageCoverName,
+            'logo' => $logoName ?? null,
+            'image_cover' => $imageCoverName ?? null,
             'in_index' => $request->in_index ?? false,
+            'belongs_to_treasury' => $request->belongs_to_treasury ?? false,
         ]);
 
         // Mensaje de session
