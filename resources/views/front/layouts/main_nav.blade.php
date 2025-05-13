@@ -37,12 +37,14 @@
                 </a>
             </li>
 
+            {{--
             <li>
                 <a href="{{ route('treasury.list') }}">
                     <ion-icon name="layers-outline"></ion-icon>
                     <span>Tesorería</span>
                 </a>
             </li>
+             --}}
 
             <li>
                 <a href="{{ route('sare.index') }}">
