@@ -13,7 +13,7 @@
                             name="card-outline"></ion-icon> Pago en Linea</a>
                              --}}
                     <a href="{{ route('denuncia.net') }}"
-                        class="btn d-flex align-items-center gap-2 btn-primary disabled"><ion-icon
+                        class="btn d-flex align-items-center gap-2 btn-primary"><ion-icon
                             name="radio-outline"></ion-icon> Denuncia Ciudadana</a>
                     @guest
                         @if (Route::has('login'))

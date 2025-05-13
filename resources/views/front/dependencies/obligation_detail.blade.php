@@ -19,10 +19,13 @@
                 <div class="row w-100">
                     <div class="col-md-12 mb-4">
                         <h6 class="mb-3">Filtrar por Año</h6>
-                        <ul class="nav nav-pills">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link {{ !request('date') ? 'active' : '' }}" href="{{ route('obligation.detail', $obligation->slug) }}">Ver Todos</a>
+                            </li>
                             @foreach($dates as $date)
                                 <li class="nav-item">
-                                    <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="{{ route('document.filter', [$obligation->slug, $date->format('Y')]) }}">{{ $date->translatedFormat('Y') }}</a>
+                                    <a class="nav-link {{ request('date') == $date ? 'active' : '' }}" href="{{ route('document.filter', [$obligation->slug, $date]) }}">{{ $date }}</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -33,10 +36,11 @@
                             @foreach($documents as $document)
                             <div class="col-md-3">
                                 <a href="{{ asset('files/documents/' . $document->filename) }}" target="_blank" class="card gazette-card d-block">
-                                    <h4>{{ $document->name }}</h4>
+                                    <h4 class="mb-0">{{ $document->name }}</h4>
+                                    <small class="text-muted mt-1 mb-3 d-block">ID BD: {{ $document->id }}</small>
                                     <div>
                                         <p class="mb-0">{{ $document->name }}</p>
-                                        <p>{{ Carbon\Carbon::parse($document->year)->translatedFormat('Y') }}</p>
+                                        <p>{{ Carbon\Carbon::createFromFormat('Y', $document->year)->format('Y') }}</p>
                                     </div>
                                     <div class="btn btn-primary w-100 d-flex align-items-center justify-content-between gap-2">Descargar el Archivo <ion-icon name="download-outline"></ion-icon></div>
                                 </a>
