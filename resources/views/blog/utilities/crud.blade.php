@@ -130,9 +130,9 @@
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label for="is_fav" class="form-label">Añadir a destacados</label>
-                    <select class="form-select" name="is_fav" wire:model="is_fav" required>
-                        <option>Seleccionar opción</option>
+                    <label for="is_fav" class="form-label">Añadir a destacados *</label>
+                    <select class="form-select" name="is_fav" wire:model.live="is_fav" required>
+                        <option value="">Seleccionar opción</option>
                         <option value="0">No</option>
                         <option value="1">Si</option>
                     </select>
@@ -143,7 +143,9 @@
                 <div class="m-3 d-flex justify-content-end" style="gap: 12px">
                     <a href="{{ route('blog.admin.index') }}" style="max-width: 110px"
                         class="btn btn-secondary btn-sm">Cancelar</a>
-                    <button type="submit" style="max-width: 110px" class="btn btn-dark btn-sm">Guardar
+
+                    <button type="submit" style="max-width: 110px" class="btn btn-primary btn-sm"
+                        @if ($is_fav == '') disabled @endif>Guardar
                         datos</button>
                 </div>
             @endif
