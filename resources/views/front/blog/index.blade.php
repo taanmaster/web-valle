@@ -54,7 +54,7 @@
                                 <div class="overlay"></div>
                                 <div class="card-content w-100">
                                     <div class="d-flex aling-items-center justify-content-between w-100">
-                                        <h1 class="mb-0">{{ $fav_post->title }}</h1>
+                                        <h3 class="mb-0">{{ $fav_post->title }}</h3>
                                         <p class="mb-0 truncate-text">{{ $fav_post->writer }}</p>
                                     </div>
 
