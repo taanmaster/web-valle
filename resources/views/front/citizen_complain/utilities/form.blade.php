@@ -1,4 +1,33 @@
 <div class="col-md-12">
+
+    @push('styles')
+        <style>
+            .alert-modal {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                min-width: 330px;
+                max-width: 900px;
+                width: 900px;
+                height: 600px;
+                background-color: #fff;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                border-radius: 8px;
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            }
+
+            .alert-modal.visible {
+                display: flex;
+            }
+        </style>
+    @endpush
+
+
     <div class="card wow fadeInUp">
         <div class="card-content p-4">
             <div class="row align-items-center mb-4">
@@ -71,10 +100,14 @@
     </div>
 
 
-    @if ($state == 'completed')
-        <div class="alert alert-success mt-3" role="alert">
-            <strong>¡Gracias!</strong>
-            Hemos recibido su denuncia, queja o sugerencia. Folio: <strong>{{ $folio }}</strong>
-        </div>
-    @endif
+
+    <div class="alert-modal @if ($state == 'completed') visible @endif" role="alert">
+
+        <button wire:click="clean" class="btn-close" style="position: absolute; top: 10px; right: 10px;">
+        </button>
+
+        <h1>¡Gracias!</h1>
+        <p>Hemos recibido su denuncia, queja o sugerencia.</p> <br> Folio: <strong>{{ $folio }}</strong>
+    </div>
+
 </div>

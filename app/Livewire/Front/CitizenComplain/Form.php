@@ -85,8 +85,6 @@ class Form extends Component
         $this->folio = CitizenComplain::latest()->first()->id;
 
         session()->flash('message', 'Su queja ha sido registrada con éxito. Gracias por su colaboración.');
-
-        $this->clean();
     }
 
     public function clean()
