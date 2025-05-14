@@ -131,8 +131,8 @@
                 </div>
                 <div class="col-md-6">
                     <label for="is_fav" class="form-label">Añadir a destacados</label>
-                    <select class="form-select" name="is_fav" wire:model="is_fav">
-                        <option value="">Seleccionar opción</option>
+                    <select class="form-select" name="is_fav" wire:model="is_fav" required>
+                        <option>Seleccionar opción</option>
                         <option value="0">No</option>
                         <option value="1">Si</option>
                     </select>
