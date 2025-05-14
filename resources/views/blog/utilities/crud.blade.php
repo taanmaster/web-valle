@@ -68,7 +68,7 @@
                 </div>
                 <div class="col-md" wire:ignore>
                     <input id="content_1" type="hidden" wire:model.defer="content_1"
-                        @if ($mode == 1) disabled @endif>
+                        @if ($mode == 1) disabled @endif value="{{ $content_1 }}">
                     <trix-editor wire:ignore input="content_1" id="trix-content_1"
                         @if ($mode == 1) disabled @endif></trix-editor>
                 </div>
@@ -81,7 +81,7 @@
                 <div class="col-md" wire:ignore>
 
                     <input id="content_2" type="hidden" wire:model.defer="content_2"
-                        @if ($mode == 1) disabled @endif>
+                        @if ($mode == 1) disabled @endif value="{{ $content_2 }}">
                     <trix-editor wire:ignore input="content_2" id="trix-content_2"
                         @if ($mode == 1) disabled @endif></trix-editor>
 
@@ -202,6 +202,24 @@
                 Livewire.dispatch('updateContent2', {
                     'payload': value
                 });
+            });
+
+            document.addEventListener('livewire:load', function() {
+                setTimeout(() => {
+                    const content1 = document.querySelector('#content_1');
+                    const content2 = document.querySelector('#content_2');
+
+                    const editor1 = document.querySelector('#trix-content_1');
+                    const editor2 = document.querySelector('#trix-content_2');
+
+                    if (content1 && editor1) {
+                        editor1.editor.loadHTML(content1.value);
+                    }
+
+                    if (content2 && editor2) {
+                        editor2.editor.loadHTML(content2.value);
+                    }
+                }, 300); // espera breve para asegurar que Livewire haya montado los datos
             });
         });
     </script>
