@@ -802,6 +802,11 @@ body {
     text-decoration: underline;
 }
 
+.card-blog .card-img-top {
+    height: 300px;
+    object-fit: cover;
+}
+
 /* FOOTER
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .page-footer {

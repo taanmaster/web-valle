@@ -47,7 +47,7 @@
                             </div>
                         </a>
                     @else
-                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-6 mb-4 card-blog">
+                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-6 mb-4">
                             <div class="card card-image justify-content-end wow fadeInUp" style="height: 400px">
                                 <img class="card-img-top" src="{{ asset('images/blog/' . $fav_post->hero_img) }}"
                                     alt="">
