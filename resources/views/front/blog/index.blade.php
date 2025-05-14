@@ -34,9 +34,10 @@
                     @if ($index === 0)
                         <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-12 mb-3">
                             <div class="card card-image card-image-banner wow fadeInUp">
-                                <img src="{{ asset('storage/' . $fav_post->image) }}" alt="">
+                                <img class="card-img-top" src="{{ asset('images/blog/' . $fav_post->hero_img) }}"
+                                    alt="">
                                 <div class="overlay"></div>
-                                <div class="content w-100">
+                                <div class="card-content w-100">
                                     <div class="d-flex aling-items-center justify-content-between w-100">
                                         <h1 class="mb-0">{{ $fav_post->title }}</h1>
                                         <p class="mb-0">{{ $fav_post->writer }}</p>
@@ -47,23 +48,16 @@
                         </a>
                     @else
                         <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-6 mb-4 card-blog">
-                            <div class="card">
-                                <img src="{{ asset('images/blog/' . $fav_post->hero_img) }}" class="card-img-top"
-                                    alt="Portada de {{ $fav_post->title }}">
-                                <div class="card-body">
-                                    <p>
-                                        {{ $fav_post->published_at }}
-                                    </p>
-                                    <h5 class="card-title mb-3">{{ $fav_post->title }}</h5>
-                                    <p class="card-text">
-                                        {{ $fav_post->description }}
-                                    </p>
-
-                                    <div class="d-flex mt-3 w-100 justify-content-between align-items-center">
-                                        <p class="mb-0">
-                                            {{ $fav_post->category }}
-                                        </p>
+                            <div class="card card-image justify-content-end wow fadeInUp" style="height: 400px">
+                                <img class="card-img-top" src="{{ asset('images/blog/' . $fav_post->hero_img) }}"
+                                    alt="">
+                                <div class="overlay"></div>
+                                <div class="card-content w-100">
+                                    <div class="d-flex aling-items-center justify-content-between w-100">
+                                        <h1 class="mb-0">{{ $fav_post->title }}</h1>
+                                        <p class="mb-0 truncate-text">{{ $fav_post->writer }}</p>
                                     </div>
+
                                 </div>
                             </div>
                         </a>

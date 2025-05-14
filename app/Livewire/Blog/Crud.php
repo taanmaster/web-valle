@@ -101,7 +101,7 @@ class Crud extends Component
 
         if ($this->blog != null) {
             // Si se sube una nueva imagen
-            if ($this->hero_img) {
+            if ($this->hero_img != $this->blog->hero_img) {
                 $imageCoverPath = $this->hero_img;
                 $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
                 $imageCoverLocation = public_path('images/blog/' . $imageCoverName);

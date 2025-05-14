@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\BlogImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Http\File;
+use Intervention\Image\Facades\Image as Image;
 
 class BlogController extends Controller
 {
@@ -70,23 +74,20 @@ class BlogController extends Controller
         //
     }
 
-    function uploadFile(Request $request, $id)
+    public function uploadFile(Request $request, $id)
     {
-        $blog = Blog::find($id);
+        $blog = Blog::findOrFail($id);
 
-        // Guardar datos en la base de datos
-        $var_file = new BlogImage();
-        $var_file->blog_id = $blog->id;
+        foreach ($request->file('file') as $file) {
+            $filename = Str::random(8) . '_image.' . $file->getClientOriginalExtension();
+            $location = public_path('images/blog/');
+            $file->move($location, $filename);
 
-        dd($var_file);
-
-        $file = $request->file('file');
-        $filename = Str::random(8) . '_image' . '.' . $file->getClientOriginalExtension();
-        $location = public_path('images/blog/');
-        $file->move($location, $filename);
-
-        $var_file->image_path = $location . $filename;
-        $var_file->save();
+            $var_file = new BlogImage();
+            $var_file->blog_id = $blog->id;
+            $var_file->image_path = 'images/blog/' . $filename;
+            $var_file->save();
+        }
 
         return response()->json(['success' => $filename]);
     }
@@ -97,7 +98,7 @@ class BlogController extends Controller
 
         $output = '<div class="row">';
         foreach ($blog->images as $file) {
-            $publicPath = url('images/blog/' . $file->image_path);
+            $publicPath = url($file->image_path);
 
             $icon = 'fa-file';
             $badge = 'Archivo';
@@ -121,19 +122,22 @@ class BlogController extends Controller
         echo $output;
     }
 
-    function deleteFile(Request $request)
+    public function deleteFile(Request $request)
     {
-        $file = BlogImage::where('image_path', $request->image_path)->first();
+        $imageName = $request->image_path;
+
+        // Busca el archivo solo por el nombre
+        $file = BlogImage::where('image_path', 'like', '%' . $imageName)->first();
 
         if ($file) {
-            // Eliminar el archivo de la base de datos
-            $file->delete();
-
-            // Eliminar el archivo del sistema de archivos
-            $filePath = public_path('images/blog/' . $request->image_path);
+            // Eliminar archivo físico
+            $filePath = public_path('images/blog/' . $imageName);
             if (\File::exists($filePath)) {
                 \File::delete($filePath);
             }
+
+            // Eliminar registro en base de datos
+            $file->delete();
 
             return response()->json(['success' => 'Archivo eliminado correctamente.']);
         }

@@ -17,7 +17,7 @@
                 <tr>
                     <td>{{ $complain->id }}</td>
                     <td>
-                        <strong>Nombre:</strong> {{ $complain->name ?? 'N/A' }}<br>
+                        {{ $complain->name ?? 'N/A' }}<br>
                     </td>
                     <td>
                         {{ $complain->address ?? 'N/A' }}

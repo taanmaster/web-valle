@@ -18,20 +18,23 @@
                 {!! $blog->content_1 !!}
             </div>
 
-            @if (count($blog->images) > 0)
+            @if ($blog->images != null)
                 <div class="col-md-12 mb-4">
-                    <div class="row">
-                        @foreach ($blog->images->take(3) as $index => $image)
-                            @if ($index === 0)
-                                <div class="col-md-6 mb-4">
-                                    <img src="{{ asset('images/blog/' . $image) }}" class="img-fluid" alt="">
-                                </div>
-                            @else
-                                <div class="col-md-3 mb-4">
-                                    <img src="{{ asset('images/blog/' . $image) }}" class="img-fluid" alt="">
-                                </div>
-                            @endif
+                    <div class="row h-100">
+                        @foreach ($blog->images->take(1) as $index => $image)
+                            <div class="col-md-6 h-100">
+                                <img src="{{ asset($image->image_path) }}" class="img-fluid h-100 w-100"
+                                    style="object-fit: cover; border-radius:8px" alt="">
+                            </div>
                         @endforeach
+                        <div class="col-md-6 d-flex flex-column justify-content-between">
+                            @foreach ($blog->images->skip(1)->take(2) as $index => $image)
+                                <div class="w-100">
+                                    <img src="{{ asset($image->image_path) }}" class="img-fluid" alt=""
+                                        style="object-fit: cover; border-radius:8px">
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             @endif
@@ -39,6 +42,19 @@
             <div class="col-md-12 mb-4">
                 {!! $blog->content_2 !!}
             </div>
+
+            @if (count($blog->images) > 3)
+                <div class="col-md-12 mb-4">
+                    <div class="row">
+                        @foreach ($blog->images->skip(3)->take(4) as $index => $image)
+                            <div class="col-md-3 h-100">
+                                <img src="{{ asset($image->image_path) }}" class="img-fluid h-100 w-100"
+                                    style="object-fit: cover; border-radius:8px" alt="">
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

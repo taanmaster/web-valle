@@ -474,10 +474,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         ]);
 
         /* Repositorio funciones Asincronas */
-        Route::group(['prefix' => 'blog'], function () {
+        Route::group(['prefix' => 'blogAdmin'], function () {
             Route::post('dropzone/upload/{id}', 'BlogController@uploadFile')->name('dropzone.blog.upload');
             Route::get('dropzone/fetch/{id}', 'BlogController@fetchFile')->name('dropzone.blog.fetch');
-            Route::get('dropzone/delete/{id}', 'BlogController@deleteFile')->name('dropzone.blog.delete');
+            Route::post('dropzone/delete/', 'BlogController@deleteFile')->name('dropzone.blog.delete');
         });
 
         /*Denuncia Ciudadana*/

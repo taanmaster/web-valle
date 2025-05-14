@@ -154,8 +154,15 @@
                 <label for="photos" class="col-form-label">Imágenes adicionales</label>
             </div>
 
+            <div id="uploaded_image">
+
+            </div>
+            <hr>
+
             <div class="col-md-12">
-                <div id="dropzoneForm" class="dropzone">
+                <form action="{{ route('dropzone.blog.upload', $blog->id) }}" method="POST"
+                    enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+                    @csrf
                     <div class="dz-message" data-dz-message>
                         <span>
                             <img src="{{ asset('assets/images/illustrations/upload.svg') }}"
@@ -164,7 +171,7 @@
                             Arrastra y suelta aquí tus archivos o da click para buscar
                         </span>
                     </div>
-                </div>
+                </form>
 
                 <p class="text-bold"><small>Peso máximo por archivo: 10MB</small></p>
 
@@ -206,34 +213,41 @@
         <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
 
         <script>
-            var myDropzone = new Dropzone("#dropzoneForm", {
+            Dropzone.autoDiscover = false; // Siempre antes de cualquier inicialización
+
+            const myDropzone = new Dropzone("#dropzoneForm", {
                 url: "{{ route('dropzone.blog.upload', $blog->id) }}",
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
+                paramName: 'file',
                 autoProcessQueue: false,
-                parallelUploads: 20,
-                acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
-                autoDiscover: false,
-                maxFilesize: 15,
+                parallelUploads: 10,
+                uploadMultiple: true,
+                acceptedFiles: ".png,.jpg,.jpeg,.gif,.bmp",
+                maxFilesize: 15, // MB
                 addRemoveLinks: true,
+                dictDefaultMessage: "Arrastra y suelta tus imágenes aquí o da click para subir.",
                 init: function() {
-                    var submitButton = document.querySelector("#submit-all");
-                    myDropzone = this;
+                    let dz = this;
 
-                    submitButton.addEventListener('click', function() {
-                        myDropzone.processQueue();
-                    });
-
-                    this.on("complete", function() {
-                        if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
-                            var _this = this;
-                            _this.removeAllFiles();
+                    document.getElementById("submit-all").addEventListener("click", function() {
+                        if (dz.getQueuedFiles().length > 0) {
+                            dz.processQueue();
+                        } else {
+                            alert("No hay imágenes para subir.");
                         }
-                        load_images();
                     });
 
-                },
+                    dz.on("queuecomplete", function() {
+                        dz.removeAllFiles();
+                        load_images(); // opcional, si quieres recargar galería
+                    });
+
+                    dz.on("error", function(file, errorMessage) {
+                        console.error("Error subiendo archivo:", errorMessage);
+                    });
+                }
             });
 
             load_images();
@@ -244,29 +258,28 @@
                     success: function(data) {
                         $('#uploaded_image').html(data);
                     }
-                })
+                });
             }
 
             $(document).on('click', '.remove_file', function() {
-                var name = $(this).attr('id');
-                $.ajax({
-                    url: "{{ route('dropzone.blog.delete', $blog->id) }}",
-                    data: {
-                        name: name
-                    },
-                    success: function(data) {
-                        load_images();
-                    }
-                })
-            });
+                var imagePath = $(this).attr('id'); // Aquí estamos obteniendo el nombre del archivo
+                if (!imagePath) {
+                    console.log('No se encontró el archivo');
+                    return;
+                }
 
-            function copyToClipboard(elementId) {
-                var copyText = document.getElementById(elementId);
-                copyText.select();
-                copyText.setSelectionRange(0, 99999); // For mobile devices
-                document.execCommand("copy");
-                alert("Ruta copiada: " + copyText.value);
-            }
+                $.ajax({
+                    url: "{{ route('dropzone.blog.delete') }}",
+                    type: 'POST',
+                    data: {
+                        image_path: imagePath, // Aquí pasamos el nombre del archivo
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        load_images(); // Recargar las imágenes
+                    },
+                });
+            });
         </script>
     @endpush
 @endif
