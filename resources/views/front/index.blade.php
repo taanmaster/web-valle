@@ -202,7 +202,8 @@
                         <h2>Agenda Regulatoria</h2>
                         <p>Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
                         <a href="{{ route('regulatory-agenda.index') }}"
-                            class="btn btn-secondary d-flex align-items-center gap-2" style="width: fit-content">Acceder a
+                            class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0"
+                            style="width: fit-content">Acceder a
                             directorio
                             de
                             Dependencias

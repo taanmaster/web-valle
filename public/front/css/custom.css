@@ -346,16 +346,18 @@ body {
 
     .page-header .admin-menu {
         position: absolute;
-        left: 98px;
+        right: 60px;
         top: 57px;
         margin-top: 0;
-        z-index: 2;
+        z-index: 999;
         border-radius: var(--border-radius);
         background: var(--page-header-bgColor);
         visibility: hidden;
         opacity: 0;
         transform: scale(0.95);
         transition: all 0.2s;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        ;
     }
 
     .page-header .admin-menu li:nth-last-child(2) {
