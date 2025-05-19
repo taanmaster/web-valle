@@ -49,7 +49,7 @@
                 <i class="fas {{ $icon }} fa-3x"></i>
                 <h5 class="card-title mt-2">{{ $transparency_file->name }}</h5>
                 <span class="badge bg-primary">{{ $badge }}</span>
-                <input type="text" class="form-control mt-2" id="filePath{{ $transparency_file->id }}" value="{{ $publicPath }}" readonly>
+                <input type="text" class="form-control mt-2" id="filePath{{ $transparency_file->id }}" value="{{ str_replace(' ', '%20', $publicPath) }}" readonly>
                 <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard('filePath{{ $transparency_file->id }}')">Copiar Ruta</button>
                 <button type="button" class="btn btn-link remove_file mt-2" id="{{ $transparency_file->filename }}">Eliminar</button>
             </div>
