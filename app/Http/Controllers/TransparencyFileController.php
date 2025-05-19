@@ -36,7 +36,7 @@ class TransparencyFileController extends Controller
         $var_file->dependency_id = $dependency->id;
 
         $file = $request->file('file');
-        $filename = $dependency->name . '_' . Str::random(8) . '_file' . '.' . $file->getClientOriginalExtension();
+        $filename = Str::slug($dependency->name) . '_' . Str::random(8) . '_file' . '.' . $file->getClientOriginalExtension();
         $location = public_path('files/transparency/');
         $file->move($location, $filename);
 
