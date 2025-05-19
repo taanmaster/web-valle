@@ -9,6 +9,7 @@ use Session;
 
 // Modelos
 use App\Models\TransparencyDocument;
+use App\Models\TransparencyObligation;
 
 use Illuminate\Http\Request;
 
@@ -57,6 +58,22 @@ class TransparencyDocumentController extends Controller
         return redirect()->back();
     }
 
+    public function show($id)
+    {
+        $transparency_document = TransparencyDocument::find($id);
+
+        return view('transparency_documents.show')->with('transparency_document', $transparency_document);
+    }
+
+    public function edit($id)
+    {
+        $transparency_document = TransparencyDocument::find($id);
+
+        $transparency_obligation = TransparencyObligation::find($id);
+
+        return view('transparency_documents.edit')->with('transparency_document', $transparency_document)->with('transparency_obligation', $transparency_obligation);
+    }
+
     public function update(Request $request, $id)
     {
         // Validar
@@ -86,7 +103,6 @@ class TransparencyDocumentController extends Controller
 
         // Actualizar datos en la base de datos
         $transparency_document->update([
-            'obligation_id' => $request->obligation_id,
             'name' => $request->name,
             'description' => $request->description,
             'period' => $request->period,
@@ -98,6 +114,18 @@ class TransparencyDocumentController extends Controller
         Session::flash('success', 'Información editada exitosamente.');
 
         // Enviar a vista
+        return redirect()->back();
+    }
+
+    public function deleteFile($id)
+    {
+        $transparency_document = TransparencyDocument::find($id);
+
+        // Actualizar el campo filename a null
+        $transparency_document->filename = 'empty';
+        $transparency_document->save();
+
+        Session::flash('success', 'Se eliminó el archivo de manera exitosa.');
         return redirect()->back();
     }
 

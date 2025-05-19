@@ -182,6 +182,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         /* ------------------- */
         /* ------------------- */
 
+        Route::put('/transparency_documents/{id}/deleteFile', [
+            'uses' => 'TransparencyDocumentController@deleteFile',
+            'as' => 'transparency_documents.deleteFile',
+        ]);
+
         /* Transparencia */
         Route::group(['prefix' => 'transparency'], function () {
             Route::resource('dependencies', TransparencyDependencyController::class)->names([
