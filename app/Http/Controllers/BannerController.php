@@ -141,7 +141,7 @@ class BannerController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = 'bannerdesktop' . time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('img/banners/' . $filename);
+            $location = public_path('front/img/banners/' . $filename);
 
             Image::make($image)->resize(1280,null, function($constraint){ $constraint->aspectRatio(); })->save($location);
 
@@ -152,7 +152,7 @@ class BannerController extends Controller
         if ($request->hasFile('image_responsive')) {
             $image = $request->file('image_responsive');
             $filename = 'bannerresponsive' . time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('img/banners/' . $filename);
+            $location = public_path('front/img/banners/' . $filename);
 
             Image::make($image)->resize(1280,null, function($constraint){ $constraint->aspectRatio(); })->save($location);
             $banner->image_responsive = $filename;
