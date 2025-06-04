@@ -357,6 +357,44 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'supplier_checklists.destroy',
             ]);
 
+            /* Cuentas por Cobrar */
+            Route::group(['prefix' => 'account_due'], function () {
+                Route::get('dashboard', [
+                    'uses' => 'TsrAccountsDueController@dashboard',
+                    'as' => 'account_due.dashboard',
+                ]);
+
+                Route::get('profiles', [
+                    'uses' => 'TsrAccountsDueController@profiles',
+                    'as' => 'account_due.profiles',
+                ]);
+
+                Route::get('integer_registers', [
+                    'uses' => 'TsrAccountsDueController@integerRegisters',
+                    'as' => 'account_due.integer_registers',
+                ]);
+
+                Route::get('treasury_cash', [
+                    'uses' => 'TsrAccountsDueController@treasuryCash',
+                    'as' => 'account_due.treasury_cash',
+                ]);
+
+                Route::get('payments', [
+                    'uses' => 'TsrAccountsDueController@payments',
+                    'as' => 'account_due.payments',
+                ]);
+
+                Route::get('receipts', [
+                    'uses' => 'TsrAccountsDueController@receipts',
+                    'as' => 'account_due.receipts',
+                ]);
+
+                Route::get('reconciliations', [
+                    'uses' => 'TsrAccountsDueController@reconciliations',
+                    'as' => 'account_due.reconciliation',
+                ]);
+            });
+
             /* Generador de Documentación */
             Route::post('/supplier_checklists/{id}/download-Checklist', [
                 'uses' => 'TreasuryAccountPayableSupplierChecklistController@downloadChecklist',

@@ -198,6 +198,47 @@
                     </ul>
 
                     <div class="title-box mt-5">
+                        <h6 class="menu-title">Cuentas por Cobrar</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('account_due.dashboard') }}">Dashboard</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('account_due.profiles') }}">Listado perfiles cuentas por cobrar</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('account_due.integer_registers') }}">Registro de Enteros</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('account_due.treasury_cash') }}">Caja</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('account_due.payments') }}">Ingresos a cobro</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('account_due.receipts') }}">Recibo</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('account_due.reconciliation') }}">Conciliación</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box mt-5">
                         <h6 class="menu-title">Tarífas</h6>
                     </div>
 
@@ -214,7 +255,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('rates_and_costs.index') }}">Tarifas y Costos</a>
                         </li>
-                    </ul>  
+                    </ul>
 
                     <div class="title-box mt-5">
                         <h6 class="menu-title">Documentos y Dependencias</h6>
