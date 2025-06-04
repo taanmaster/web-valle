@@ -209,12 +209,12 @@
 
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ route('account_due.profiles') }}">Listado perfiles cuentas por cobrar</a>
+                                href="{{ route('billing_accounts.index') }}">Perfiles cuentas por cobrar</a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ route('account_due.integer_registers') }}">Registro de Enteros</a>
+                                href="{{ route('integer_registers.index') }}">Registro de Enteros</a>
                         </li>
 
                         <li class="nav-item">

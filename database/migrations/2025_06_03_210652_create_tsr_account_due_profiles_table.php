@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tsr_billing_accounts', function (Blueprint $table) {
+        Schema::create('tsr_account_due_profiles', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tsr_billing_accounts');
+        Schema::dropIfExists('tsr_account_due_profiles');
     }
 };

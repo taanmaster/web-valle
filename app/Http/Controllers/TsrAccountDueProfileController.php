@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TsrDailyCashReport;
+use App\Models\TsrAccountDueProfile;
 use Illuminate\Http\Request;
 
-class TsrDailyCashReportController extends Controller
+class TsrAccountDueProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class TsrDailyCashReportController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TsrDailyCashReport $tsrDailyCashReport)
+    public function show(TsrAccountDueProfile $tsrAccountDueProfile)
     {
         //
     }
@@ -42,7 +42,7 @@ class TsrDailyCashReportController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TsrDailyCashReport $tsrDailyCashReport)
+    public function edit(TsrAccountDueProfile $tsrAccountDueProfile)
     {
         //
     }
@@ -50,7 +50,7 @@ class TsrDailyCashReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TsrDailyCashReport $tsrDailyCashReport)
+    public function update(Request $request, TsrAccountDueProfile $tsrAccountDueProfile)
     {
         //
     }
@@ -58,7 +58,7 @@ class TsrDailyCashReportController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TsrDailyCashReport $tsrDailyCashReport)
+    public function destroy(TsrAccountDueProfile $tsrAccountDueProfile)
     {
         //
     }

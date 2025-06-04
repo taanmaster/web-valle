@@ -5,6 +5,7 @@ use App\Http\Controllers\RegulatoryAgendaDependencyController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
 use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\TsrBillingAccountController;
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
 use Illuminate\Support\Facades\Route;
@@ -364,35 +365,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
                     'as' => 'account_due.dashboard',
                 ]);
 
-                Route::get('profiles', [
-                    'uses' => 'TsrAccountsDueController@profiles',
-                    'as' => 'account_due.profiles',
-                ]);
 
-                Route::get('integer_registers', [
-                    'uses' => 'TsrAccountsDueController@integerRegisters',
-                    'as' => 'account_due.integer_registers',
-                ]);
 
-                Route::get('treasury_cash', [
-                    'uses' => 'TsrAccountsDueController@treasuryCash',
-                    'as' => 'account_due.treasury_cash',
-                ]);
-
-                Route::get('payments', [
-                    'uses' => 'TsrAccountsDueController@payments',
-                    'as' => 'account_due.payments',
-                ]);
-
-                Route::get('receipts', [
-                    'uses' => 'TsrAccountsDueController@receipts',
-                    'as' => 'account_due.receipts',
-                ]);
-
-                Route::get('reconciliations', [
-                    'uses' => 'TsrAccountsDueController@reconciliations',
-                    'as' => 'account_due.reconciliation',
-                ]);
             });
 
             /* Generador de Documentación */
