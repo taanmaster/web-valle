@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TsrAccountDueProfile;
+use App\Models\TsrAccountDueProvisionalInteger;
 use Illuminate\Http\Request;
 
-class TsrAccountDueProfileController extends Controller
+class TsrAccountDueProvisionalIntegerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('tsr_accounts_due.profiles.index');
+        return view('tsr_accounts_due.provisional_registers.index');
     }
 
     /**
@@ -34,7 +34,7 @@ class TsrAccountDueProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TsrAccountDueProfile $tsrAccountDueProfile)
+    public function show(TsrAccountDueProvisionalInteger $tsrAccountDueProvisionalInteger)
     {
         //
     }
@@ -42,7 +42,7 @@ class TsrAccountDueProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TsrAccountDueProfile $tsrAccountDueProfile)
+    public function edit(TsrAccountDueProvisionalInteger $tsrAccountDueProvisionalInteger)
     {
         //
     }
@@ -50,7 +50,7 @@ class TsrAccountDueProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TsrAccountDueProfile $tsrAccountDueProfile)
+    public function update(Request $request, TsrAccountDueProvisionalInteger $tsrAccountDueProvisionalInteger)
     {
         //
     }
@@ -58,7 +58,7 @@ class TsrAccountDueProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TsrAccountDueProfile $tsrAccountDueProfile)
+    public function destroy(TsrAccountDueProvisionalInteger $tsrAccountDueProvisionalInteger)
     {
         //
     }

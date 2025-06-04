@@ -209,24 +209,25 @@
 
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ route('billing_accounts.index') }}">Perfiles cuentas por cobrar</a>
+                                href="{{ route('account_due_profiles.index') }}">Perfiles cuentas por cobrar</a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ route('integer_registers.index') }}">Registro de Enteros</a>
+                                href="{{ route('account_due_provisional_integers.index') }}">Registro de Enteros</a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ route('account_due.treasury_cash') }}">Caja</a>
+                                href="{{ route('account_due.cashbox') }}">Caja</a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ route('account_due.payments') }}">Ingresos a cobro</a>
+                                href="{{ route('account_due_incomes.index') }}">Ingresos a cobro</a>
                         </li>
 
+                        {{--
                         <li class="nav-item">
                             <a class="nav-link"
                                 href="{{ route('account_due.receipts') }}">Recibo</a>
@@ -236,6 +237,7 @@
                             <a class="nav-link"
                                 href="{{ route('account_due.reconciliation') }}">Conciliación</a>
                         </li>
+                         --}}
                     </ul>
 
                     <div class="title-box mt-5">

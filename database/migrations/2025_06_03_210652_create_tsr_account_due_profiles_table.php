@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('tsr_account_due_profiles', function (Blueprint $table) {
             $table->id();
+
+            $table->string('name');
+            $table->string('RFC/CURP');
+            $table->string('type_of_person'); // Persona física o moral
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->string('code')->unique();
+
+
             $table->timestamps();
         });
     }

@@ -365,9 +365,59 @@ Route::namespace('App\Http\Controllers')->group(function () {
                     'as' => 'account_due.dashboard',
                 ]);
 
+                Route::get('cashbox', [
+                    'uses' => 'TsrAccountsDueController@cashbox',
+                    'as' => 'account_due.cashbox',
+                ]);
 
+                Route::resource('profiles', TsrAccountDueProfileController::class)->names([
+                    'index' => 'account_due_profiles.index',
+                    'create' => 'account_due_profiles.create',
+                    'store' => 'account_due_profiles.store',
+                    'show' => 'account_due_profiles.show',
+                    'edit' => 'account_due_profiles.edit',
+                    'update' => 'account_due_profiles.update',
+                    'destroy' => 'account_due_profiles.destroy',
+                ]);
 
+                Route::resource('provisional_integers', TsrAccountDueProvisionalIntegerController::class)->names([
+                    'index' => 'account_due_provisional_integers.index',
+                    'create' => 'account_due_provisional_integers.create',
+                    'store' => 'account_due_provisional_integers.store',
+                    'show' => 'account_due_provisional_integers.show',
+                    'edit' => 'account_due_provisional_integers.edit',
+                    'update' => 'account_due_provisional_integers.update',
+                    'destroy' => 'account_due_provisional_integers.destroy',
+                ]);
+
+                Route::resource('incomes', TsrAccountDueIncomeController::class)->names([
+                    'index' => 'account_due_incomes.index',
+                    'create' => 'account_due_incomes.create',
+                    'store' => 'account_due_incomes.store',
+                    'show' => 'account_due_incomes.show',
+                    'edit' => 'account_due_incomes.edit',
+                    'update' => 'account_due_incomes.update',
+                    'destroy' => 'account_due_incomes.destroy',
+                ]);
+
+                Route::resource('income_receipts', TsrAccountDueIncomeReceiptController::class)->names([
+                    'index' => 'account_due_income_receipts.index',
+                    'create' => 'account_due_income_receipts.create',
+                    'store' => 'account_due_income_receipts.store',
+                    'show' => 'account_due_income_receipts.show',
+                    'edit' => 'account_due_income_receipts.edit',
+                    'update' => 'account_due_income_receipts.update',
+                    'destroy' => 'account_due_income_receipts.destroy',
+                ]);
             });
+
+            /*Generador de Cajas para Tesorería*/
+            Route::resource('cashiers', TsrCashierController::class)->names([
+                'store' => 'tsr_cashiers.store',
+                'update' => 'tsr_cashiers.update',
+                'destroy' => 'tsr_cashiers.destroy',
+            ]);
+
 
             /* Generador de Documentación */
             Route::post('/supplier_checklists/{id}/download-Checklist', [
