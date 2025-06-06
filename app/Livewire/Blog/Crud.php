@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Storage;
 
 //Modelos
 use App\Models\TsrAccountDueProfile;
+use App\Models\Blog;
+use App\Models\TransparencyDependency;
 
 class Crud extends Component
 {
