@@ -13,12 +13,9 @@ class CitizenComplain extends Model
         'name',
         'email',
         'phone',
-        'description',
-        'status',
-        'response',
-        'response_date',
-        'created_at',
-        'updated_at'
+        'address',
+        'message',
+        'subject',
     ];
 
     public function files()

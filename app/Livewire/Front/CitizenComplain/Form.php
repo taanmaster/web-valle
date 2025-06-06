@@ -68,7 +68,7 @@ class Form extends Component
             'email' => $this->email,
             'phone' => $this->phone,
             'address' => $this->address,
-            'complain' => $this->complain,
+            'message' => $this->complain,
             'subject' => $this->subject,
         ]);
 

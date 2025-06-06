@@ -7,57 +7,42 @@ use Illuminate\Http\Request;
 
 class TsrAccountDueProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view('tsr_accounts_due.profiles.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $mode = 0; // Create mode
+
+        return view('tsr_accounts_due.profiles.create')->with('mode', $mode);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TsrAccountDueProfile $tsrAccountDueProfile)
+    public function show($id)
     {
-        //
+        $mode = 1; // Show mode
+
+        return view('tsr_accounts_due.profiles.show')->with('mode', $mode);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TsrAccountDueProfile $tsrAccountDueProfile)
+    public function edit($id)
     {
-        //
+        $mode = 2; // Edit mode
+
+        return view('tsr_accounts_due.profiles.edit')->with('mode', $mode);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, TsrAccountDueProfile $tsrAccountDueProfile)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(TsrAccountDueProfile $tsrAccountDueProfile)
     {
         //

@@ -4,8 +4,8 @@
 <!-- this is breadcrumbs -->
 @component('components.breadcrumb')
 @slot('li_1') Intranet @endslot
-@slot('li_2') Cuentas por pagar @endslot
-@slot('title') Dashboard @endslot
+@slot('li_2') Cuentas por cobrar @endslot
+@slot('title') Caja @endslot
 @endcomponent
 
 <div class="row layout-spacing">
