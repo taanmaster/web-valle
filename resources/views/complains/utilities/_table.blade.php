@@ -32,7 +32,7 @@
                         {{ $complain->subject ?? 'N/A' }}
                     </td>
                     <td>
-                        {{ $complain->complain ?? 'N/A' }}
+                        {{ $complain->message ?? 'N/A' }}
                     </td>
                     <td>
                         @if ($complain->files)
