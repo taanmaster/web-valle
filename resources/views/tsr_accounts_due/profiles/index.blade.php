@@ -12,7 +12,7 @@
     <div class="main-content">
         <div class="row align-items-center mb-4">
             <div class="col text-start">
-                <a href="javascript:void(0)" class="btn btn-primary new-income">Nuevo Ingreso</a>
+                <a href="{{ route('account_due_profiles.create') }}" class="btn btn-primary new-income">Nuevo Perfil</a>
             </div>
         </div>
 

@@ -9,7 +9,18 @@ class TsrAccountDueProfile extends Model
 {
     use HasFactory;
 
-    public function provisionalInregers()
+    protected $fillable = [
+        'name',
+        'rfc_curp',
+        'type_of_person', // Persona física o moral
+        'email',
+        'phone',
+        'address',
+        'zipcode',
+        'code',
+    ];
+
+    public function integers()
     {
         return $this->hasMany(TsrAccountDueProvisionalInteger::class, 'account_due_profile_id');
     }

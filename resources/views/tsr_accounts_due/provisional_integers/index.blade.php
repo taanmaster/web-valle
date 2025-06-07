@@ -10,12 +10,7 @@
 
 <div class="row layout-spacing">
     <div class="main-content">
-        <div class="row align-items-center mb-4">
-            <div class="col text-start">
-                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-primary">Nueva Dependencia</a>
-            </div>
-        </div>
-
+        <livewire:tsr_accounts_due.provisional_integer.table/>
     </div>
 </div>
 @endsection

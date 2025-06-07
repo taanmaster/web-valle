@@ -27,34 +27,39 @@ class Crud extends Component
     // Campos
     #[Validate('required')]
     public $name = '';
-    public $rfcCurp = '';
+    public $rfc_curp = '';
     public $typeOfPerson = ''; // Persona física o moral
     public $email = '';
     public $phone = '';
     public $address = '';
     public $zipcode = '';
     public $code = '';
+    public $created_date = '';
     public $today;
 
     public function mount()
     {
+
+        $this->today = Carbon::now()->format('Y-m-d');
+
+        $this->code = strtoupper(Str::random(10)); // Alfanumérico, 10 caracteres, en mayúsculas
+
         if ($this->profile != null) {
             $this->fetchProfileData();
         }
-
-        $this->today = Carbon::now()->format('Y-m-d');
     }
 
     public function fetchProfileData()
     {
         $this->name = $this->profile->name;
-        $this->rfcCurp = $this->profile->rfc_curp;
+        $this->rfc_curp = $this->profile->rfc_curp;
         $this->typeOfPerson = $this->profile->type_of_person;
         $this->email = $this->profile->email;
         $this->phone = $this->profile->phone;
         $this->address = $this->profile->address;
         $this->zipcode = $this->profile->zipcode;
         $this->code = $this->profile->code;
+        $this->created_date = $this->profile->created_at->format('Y-m-d');
     }
 
     public function save()
@@ -65,7 +70,7 @@ class Crud extends Component
 
             $this->profile->update([
                 'name' => $this->name,
-                'rfc_curp' => $this->rfcCurp,
+                'rfc_curp' => $this->rfc_curp,
                 'type_of_person' => $this->typeOfPerson,
                 'email' => $this->email,
                 'phone' => $this->phone,
@@ -83,20 +88,19 @@ class Crud extends Component
 
         } else {
 
-            // Generar un código único para el perfil
-            $unique_code = strtoupper(Str::random(10)); // Alfanumérico, 10 caracteres, en mayúsculas
-
-
             TsrAccountDueProfile::create([
                 'name' => $this->name,
-                'rfc_curp' => $this->rfcCurp,
+                'rfc_curp' => $this->rfc_curp,
                 'type_of_person' => $this->typeOfPerson,
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'address' => $this->address,
                 'zipcode' => $this->zipcode,
-                'code' => $unique_code,
+                'code' => $this->code,
             ]);
+
+            // Crear el perfil
+            $this->profile = TsrAccountDueProfile::where('code', $this->code)->first();
 
             // Mensaje de sesión
             Session::flash('success', 'Cuenta creada correctamente.');

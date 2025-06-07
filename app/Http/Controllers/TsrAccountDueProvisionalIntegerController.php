@@ -9,7 +9,7 @@ class TsrAccountDueProvisionalIntegerController extends Controller
 {
     public function index()
     {
-        return view('tsr_accounts_due.provisional_registers.index');
+        return view('tsr_accounts_due.provisional_integers.index');
     }
 
     public function create()

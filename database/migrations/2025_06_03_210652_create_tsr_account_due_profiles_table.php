@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('RFC/CURP');
+            $table->string('rfc_curp');
             $table->string('type_of_person'); // Persona física o moral
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
