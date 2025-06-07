@@ -227,17 +227,11 @@
                                 href="{{ route('account_due_incomes.index') }}">Ingresos a cobro</a>
                         </li>
 
-                        {{--
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('account_due.receipts') }}">Recibo</a>
-                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ route('account_due.reconciliation') }}">Conciliación</a>
+                                href="{{ route('account_due_income_receipts.index') }}">Recibo</a>
                         </li>
-                         --}}
                     </ul>
 
                     <div class="title-box mt-5">

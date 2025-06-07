@@ -20,7 +20,9 @@ class TsrAccountDueIncomeController extends Controller
      */
     public function create()
     {
-        //
+        $mode = 0; // Create mode
+
+        return view('tsr_accounts_due.incomes.create')->with('mode', $mode);
     }
 
     /**
@@ -34,17 +36,25 @@ class TsrAccountDueIncomeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TsrAccountDueIncome $tsrAccountDueIncome)
+    public function show($id)
     {
-        //
+        $mode = 1; // Show mode
+
+        $income = TsrAccountDueIncome::findOrFail($id);
+
+        return view('tsr_accounts_due.incomes.show')->with('mode', $mode)->with('income', $income);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TsrAccountDueIncome $tsrAccountDueIncome)
+    public function edit($id)
     {
-        //
+        $mode = 2; // Edit mode
+
+        $income = TsrAccountDueIncome::findOrFail($id);
+
+        return view('tsr_accounts_due.incomes.edit')->with('mode', $mode)->with('income', $income);
     }
 
     /**
@@ -58,7 +68,7 @@ class TsrAccountDueIncomeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TsrAccountDueIncome $tsrAccountDueIncome)
+    public function destroy($id)
     {
         //
     }

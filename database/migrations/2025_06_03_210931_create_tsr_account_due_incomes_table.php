@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('qty_integer')->nullable();
             $table->string('name')->nullable();
             $table->string('type_of_person'); // Persona física o moral
-            $table->string('RFC/CURP')->nullable();
+            $table->string('rfc_curp')->nullable();
             $table->string('address')->nullable();
             $table->string('zipcode')->nullable();
 

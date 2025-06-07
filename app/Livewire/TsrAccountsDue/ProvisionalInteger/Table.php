@@ -26,9 +26,17 @@ class Table extends Component
     public $start_date = '';
     public $end_date = '';
     public $folio = '';
-    public $dependency_name = '';
+    public $dependency_name = []; // Ahora es un array
 
     public $dependencies = [];
+
+    #[On('select')]
+    public function listenerReferenceHere($selectedValue)
+    {
+        if (!in_array($selectedValue, $this->dependency_name)) {
+            $this->dependency_name[] = $selectedValue;
+        }
+    }
 
     public function mount()
     {
@@ -41,11 +49,12 @@ class Table extends Component
         $this->start_date = '';
         $this->end_date = '';
         $this->folio = '';
-        $this->dependency_name = '';
+        $this->dependency_name = [];
     }
 
     public function render()
     {
+
         $query = TsrAccountDueProvisionalInteger::query();
 
         if ($this->profile !== '') {
@@ -61,8 +70,9 @@ class Table extends Component
         if ($this->folio !== '') {
             $query->where('id', 'like', '%' . $this->folio . '%');
         }
-
-
+        if (!empty($this->dependency_name)) {
+            $query->whereIn('dependency_name', $this->dependency_name);
+        }
 
         $integers = $query->latest()->paginate(8);
 

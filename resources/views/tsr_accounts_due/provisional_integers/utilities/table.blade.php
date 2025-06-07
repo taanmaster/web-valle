@@ -1,5 +1,9 @@
 <div>
 
+    @push('stylesheets')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    @endpush
+
     <div class="row mb-3">
         <div class="col-md-3">
             <label for="">Rango de fechas</label>
@@ -15,15 +19,16 @@
             <input type="text" class="form-control" wire:model.live="folio">
         </div>
 
+        {{--
         <div class="col-md-3">
             <label for="">Departamento</label>
-            <select class="form-select" wire:model.live="dependency_name">
-                <option value="">Seleccione un departamento</option>
+            <select class="js-example-basic-multiple w-100" multiple="multiple" wire:model="dependency_name" wire:ignore.self>
                 @foreach ($dependencies as $dependency)
                     <option value="{{ $dependency->name }}">{{ $dependency->name }}</option>
                 @endforeach
             </select>
         </div>
+         --}}
     </div>
 
     <div class="table-responsive">
@@ -79,7 +84,10 @@
     </div>
 
     @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
         <script>
+
             var enteroModal = new bootstrap.Modal(document.getElementById('enteroModal'), {
                 keyboard: false
             });
@@ -93,6 +101,17 @@
                     });
                 });
             });
+
+
+            // In your Javascript (external .js resource or <script> tag)
+                $(document).ready(function() {
+                    $('.js-example-basic-multiple').select2();
+
+                    $('.js-example-basic-multiple').on('change', function(e) {
+                        Livewire.dispatch('select',
+                        $('.js-example-basic-multiple').select2("val"));
+                    });
+                });
         </script>
     @endpush
 </div>
