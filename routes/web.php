@@ -402,12 +402,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
                 Route::resource('income_receipts', TsrAccountDueIncomeReceiptController::class)->names([
                     'index' => 'account_due_income_receipts.index',
-                    'create' => 'account_due_income_receipts.create',
-                    'store' => 'account_due_income_receipts.store',
-                    'show' => 'account_due_income_receipts.show',
-                    'edit' => 'account_due_income_receipts.edit',
-                    'update' => 'account_due_income_receipts.update',
                     'destroy' => 'account_due_income_receipts.destroy',
+                ]);
+
+                Route::get('/income_receipts/{id}/create', [
+                    'uses' => 'TsrAccountDueIncomeReceiptController@create',
+                    'as' => 'account_due_income_receipts.create',
                 ]);
             });
 

@@ -8,7 +8,7 @@
                 background-color: white;
                 box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
                 z-index: 5;
-                width: 98%;
+                width: 99%;
                 display: flex;
                 flex-direction: column;
             }
@@ -43,7 +43,10 @@
                 </div>
                 <div class="col-3 text-end">
                     @if ($mode == 1)
-                        <a href="{{ route('account_due_profiles.index') }}" class="btn btn-secondary btn-sm"
+                        <a href="{{ route('account_due_income_receipts.create', $income->id) }}"
+                            class="btn btn-outline-primary btn-sm me-2">Generar Recibo</a>
+
+                        <a href="{{ route('account_due_incomes.index') }}" class="btn btn-secondary btn-sm"
                             style="max-width: 110px">Regresar</a>
                     @endif
                 </div>
@@ -68,51 +71,64 @@
                     <div class="col-md">
                         <select name="concept" id="concept" wire:model="concept" class="form-control"
                             @if ($mode == 1) disabled @endif>
-                            <option value="">A</option>
+                            <option selected>Seleccionar concepto</option>
+                            <option>h</option>
                         </select>
                     </div>
                 </div>
+
+                @if ($mode == 0)
+                    <div class="row m-3">
+                        <div class="col-md-12">
+                            <label for="typeOfPerson" class="col-form-label">Buscar entero provisional por folio</label>
+
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">
+
+                                </span>
+                                <input type="number" name="searchFolio" wire:model.live="searchFolio"
+                                    class="form-control" @if ($mode == 1) disabled @endif>
+                            </div>
+
+                            <div
+                                class="position-absolute drop-search p-3 pt-1 @if ($searchFolio == null) d-none @endif">
+                                <!-- Cities dependent select menu... -->
+
+                                <label for="provisional_integer_id" class="col-form-label mb-1">Enteros
+                                    provisionales</label>
+
+                                @php
+                                    $integers = \App\Models\TsrAccountDueProvisionalInteger::where(
+                                        'id',
+                                        'like',
+                                        '%' . $searchFolio . '%',
+                                    )->get();
+                                @endphp
+
+                                @if ($integers->count() > 0)
+                                    @foreach ($integers as $integer)
+                                        <button type="button" wire:click="selectInteger({{ $integer->id }})"
+                                            class="btn">
+                                            {{ $integer->id }}
+                                        </button>
+                                    @endforeach
+                                @else
+                                    <p>No existe</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 <div class="row align-items-center m-3">
                     <div class="col-md-6">
                         <div class="row align-items-center">
                             <div class="col-md-2">
-                                <label for="typeOfPerson" class="col-form-label">Folio</label>
+                                <label for="folio" class="col-form-label">Folio</label>
                             </div>
                             <div class="col-md position-relative">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="basic-addon1">
-
-                                    </span>
-                                    <input type="number" name="searchFolio" wire:model.live="searchFolio"
-                                        class="form-control" @if ($mode == 1) disabled @endif>
-                                </div>
-
-                                <div
-                                    class="position-absolute drop-search p-3 pt-1 @if ($searchFolio == null) d-none @endif">
-                                    <!-- Cities dependent select menu... -->
-
-                                    <label for="provisional_integer_id" class="col-form-label mb-1">Enteros
-                                        provisionales</label>
-
-                                    @php
-                                        $integers = \App\Models\TsrAccountDueProvisionalInteger::where(
-                                            'id',
-                                            'like',
-                                            '%' . $searchFolio . '%',
-                                        )->get();
-                                    @endphp
-
-                                    @if ($integers->count() > 0)
-                                        @foreach ($integers as $integer)
-                                            <button wire:click="selectInteger({{ $integer->id }})" class="btn">
-                                                {{ $integer->id }}
-                                            </button>
-                                        @endforeach
-                                    @else
-                                        <p>No existe</p>
-                                    @endif
-                                </div>
+                                <input type="number" name="folio" wire:model="folio" class="form-control"
+                                    @if ($mode == 1) disabled @endif disabled>
                             </div>
                         </div>
                     </div>
@@ -170,7 +186,8 @@
                                 <label for="address" class="col-form-label">Domicilio</label>
                             </div>
                             <div class="col-md">
-                                <input type="text" name="address" wire:model="address" class="form-control" disabled>
+                                <input type="text" name="address" wire:model="address" class="form-control"
+                                    disabled>
                             </div>
                         </div>
                     </div>
@@ -217,7 +234,8 @@
                         <label for="observations">Observaciones</label>
                     </div>
                     <div class="col">
-                        <textarea name="observations" id="observations" class="form-control" wire:model="observations"></textarea>
+                        <textarea name="observations" id="observations" class="form-control" wire:model="observations"
+                            @if ($mode == 1) disabled @endif></textarea>
                     </div>
                 </div>
 
@@ -226,7 +244,8 @@
                         <label for="work">Obra</label>
                     </div>
                     <div class="col">
-                        <input type="text" name="work" wire:model="work" class="form-control">
+                        <input type="text" name="work" wire:model="work" class="form-control"
+                            @if ($mode == 1) disabled @endif>
                     </div>
                 </div>
 
@@ -235,7 +254,8 @@
                         <label for="locality">Localidad</label>
                     </div>
                     <div class="col">
-                        <input type="text" name="locality" wire:model="locality" class="form-control">
+                        <input type="text" name="locality" wire:model="locality" class="form-control"
+                            @if ($mode == 1) disabled @endif>
                     </div>
                 </div>
 
@@ -244,24 +264,10 @@
                         <label for="basis">Fundamento</label>
                     </div>
                     <div class="col">
-                        <input type="text" name="basis" wire:model="basis" class="form-control">
+                        <input type="text" name="basis" wire:model="basis" class="form-control"
+                            @if ($mode == 1) disabled @endif>
                     </div>
                 </div>
-
-                @if ($mode == 1)
-                    <div class="row align-items-center m-3">
-                        <div class="col-md-6">
-                            <label for="presentation_date" class="form-label">Fecha de alta</label>
-                            <input type="date" class="form-control" disabled
-                                @if ($mode == 1) value="{{ $created_date }}" @endif
-                                value="{{ $today }}">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="name" class="form-label">Clave única de la cuenta</label>
-                            <input type="text" class="form-control" wire:model="code" name="code" disabled>
-                        </div>
-                    </div>
-                @endif
 
                 @if ($mode != 1)
                     <div class="m-3 d-flex justify-content-end" style="gap: 12px">

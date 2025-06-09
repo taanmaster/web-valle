@@ -65,7 +65,7 @@ class Crud extends Component
     }
 
 
-    public function fetchIncomeDate()
+    public function fetchIncomeData()
     {
         $this->department = $this->income->department;
         $this->concept = $this->income->concept;

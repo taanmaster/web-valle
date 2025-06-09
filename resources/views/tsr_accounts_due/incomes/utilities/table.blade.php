@@ -21,7 +21,9 @@
                 <tr>
                     <th>#Recibo</th>
                     <th>Fecha y hora</th>
+                    <th>Departamento</th>
                     <th>Contribuyente</th>
+                    <th>Clave</th>
                     <th>Concepto de cobro</th>
                     <th>Importe</th>
                     <th>Acciones</th>
@@ -31,15 +33,15 @@
                 @foreach ($incomes as $income)
                     <tr>
                         <td>{{ $income->id }}</td>
-                        <td>{{ $income->created_at->format('d/m/Y hh:mm') }}</td>
+                        <td>{{ $income->created_at->format('d/m/Y h:m') }}</td>
+                        <td>{{ $income->department }}</td>
                         <td>{{ $income->name }}</td>
+                        <td>{{ $income->code }}</td>
                         <td>{{ $income->concept }}</td>
                         <td>{{ number_format($income->qty_integer, 2) }}</td>
                         <td>
-                            <a href="{{ route('account_due_profiles.show', $income->id) }}"
+                            <a href="{{ route('account_due_incomes.show', $income->id) }}"
                                 class="btn btn-primary btn-sm">Ver</a>
-                            <a href="{{ route('account_due_profiles.edit', $income->id) }}"
-                                class="btn btn-secondary btn-sm">Editar</a>
 
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"

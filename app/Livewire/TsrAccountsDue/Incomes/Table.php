@@ -26,6 +26,7 @@ class Table extends Component
     public $departments_names = [];
     public $concepts_names = [];
     public $basis_names = [];
+    public $code = '';
 
     public $dependencies = [];
     public $concepts = [];
@@ -44,6 +45,7 @@ class Table extends Component
         $this->departments_names = [];
         $this->concepts_names = [];
         $this->basis_names = [];
+        $this->code = [];
     }
 
     public function render()
@@ -55,6 +57,10 @@ class Table extends Component
         }
         if ($this->end_date) {
             $query->whereDate('created_at', '<=', $this->end_date);
+        }
+
+        if ($this->code !== '') {
+            $query->where('code', 'like', '%' . $this->code . '%');
         }
 
         if (!empty($this->departments_names)) {

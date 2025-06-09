@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TsrAccountDueIncomeReceipt;
+use App\Models\TsrAccountDueIncome;
 use Illuminate\Http\Request;
 
 class TsrAccountDueIncomeReceiptController extends Controller
@@ -18,9 +19,13 @@ class TsrAccountDueIncomeReceiptController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $mode = 0;
+
+        $income = TsrAccountDueIncome::findOrFail($id);
+
+        return view('tsr_accounts_due.incomes_receipts.create')->with('mode', $mode)->with('income', $income);
     }
 
     /**
