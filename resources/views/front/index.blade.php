@@ -37,13 +37,35 @@
 
         <div class="row justify-content-center">
             <div class="col-md-12">
+                <style type="text/css">
+                    .main-banner{
+                        display: block;
+                    }
+                    
+                    .responsive-banner{
+                        display: none;
+                    }
+
+                    @media (max-width: 760px) {
+                        .main-banner{
+                            display: none;
+                        }
+                            .responsive-banner{
+                            display: block;
+                            height: auto !important;
+                            width: 100%;
+                        }
+                    }
+                </style>
+                
                 @if (!empty($banners))
                     <div class="owl-carousel owl-theme main-carousel">
                         @foreach ($banners as $banner)
                             <div class="item main-banner banner-{{ $banner->id }}">
                                 <div class="card card-image card-image-banner wow fadeInUp">
-                                    <img class="card-img-top" src="{{ asset('front/img/banners/' . $banner->image) }}"
-                                        alt="">
+                                    <img class="card-img-top desktop-banner" src="{{ asset('front/img/banners/' . $banner->image ) }}" alt="">
+						            <img class="card-img-top responsive-banner" src="{{ asset('front/img/banners/' . $banner->image_responsive ) }}" alt="">
+
                                     <div class="overlay"></div>
                                     <div class="card-content">
                                         <h2>{{ $banner->title }}</h2>
