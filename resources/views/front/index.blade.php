@@ -38,20 +38,21 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <style type="text/css">
-                    .main-banner{
-                        display: block;
+                    .desktop-banner{
+                        display: block !important;
                     }
                     
                     .responsive-banner{
-                        display: none;
+                        display: none !important;
                     }
 
                     @media (max-width: 760px) {
-                        .main-banner{
-                            display: none;
+                        .desktop-banner{
+                            display: none !important;
                         }
-                            .responsive-banner{
-                            display: block;
+                        
+                        .responsive-banner{
+                            display: block !important;
                             height: auto !important;
                             width: 100%;
                         }
@@ -63,8 +64,8 @@
                         @foreach ($banners as $banner)
                             <div class="item main-banner banner-{{ $banner->id }}">
                                 <div class="card card-image card-image-banner wow fadeInUp">
-                                    <img class="card-img-top desktop-banner" src="{{ asset('front/img/banners/' . $banner->image ) }}" alt="">
-						            <img class="card-img-top responsive-banner" src="{{ asset('front/img/banners/' . $banner->image_responsive ) }}" alt="">
+                                    <img class="card-img-top desktop-banner" src="{{ asset('img/banners/' . $banner->image ) }}" alt="">
+						            <img class="card-img-top responsive-banner" src="{{ asset('img/banners/' . $banner->image_responsive ) }}" alt="">
 
                                     <div class="overlay"></div>
                                     <div class="card-content">
