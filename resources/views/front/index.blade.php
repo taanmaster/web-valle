@@ -64,8 +64,8 @@
                         @foreach ($banners as $banner)
                             <div class="item main-banner banner-{{ $banner->id }}">
                                 <div class="card card-image card-image-banner wow fadeInUp">
-                                    <img class="card-img-top desktop-banner" src="{{ asset('img/banners/' . $banner->image ) }}" alt="">
-						            <img class="card-img-top responsive-banner" src="{{ asset('img/banners/' . $banner->image_responsive ) }}" alt="">
+                                    <img class="card-img-top desktop-banner" src="{{ asset('front/img/banners/' . $banner->image ) }}" alt="">
+						            <img class="card-img-top responsive-banner" src="{{ asset('front/img/banners/' . $banner->image_responsive ) }}" alt="">
 
                                     <div class="overlay"></div>
                                     <div class="card-content">
