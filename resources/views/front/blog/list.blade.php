@@ -9,8 +9,7 @@
                     <div class="overlay"></div>
                     <div class="card-content">
                         <h2>Cambia la forma en la que ves tu ciudad</h2>
-                        <p>Este blog es un espacio para descubrir todo lo que está pasando cerca de ti. Aquí compartimos
-                            historias que inspiran, informan y conectan.</p>
+                        <p>Este blog es un espacio para descubrir todo lo que está pasando cerca de ti. Aquí compartimos historias que inspiran, informan y conectan.</p>
                     </div>
                 </div>
             </div>

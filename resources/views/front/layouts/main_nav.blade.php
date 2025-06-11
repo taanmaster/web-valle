@@ -30,19 +30,10 @@
 
             <li>
                 <a href="{{ route('treasury.dependency.list') }}">
-                    <ion-icon name="layers-outline"></ion-icon>
+                    <ion-icon name="stats-chart-outline"></ion-icon>
                     <span>Tesorería</span>
                 </a>
             </li>
-
-            {{--
-            <li>
-                <a href="{{ route('treasury.list') }}">
-                    <ion-icon name="layers-outline"></ion-icon>
-                    <span>Tesorería</span>
-                </a>
-            </li>
-             --}}
 
             <li>
                 <a href="{{ route('sare.index') }}">
@@ -53,19 +44,17 @@
 
             <li>
                 <a href="{{ route('blog.index') }}">
-                    <ion-icon name="book-outline"></ion-icon>
-                    <span>Blog</span>
+                    <ion-icon name="newspaper-outline"></ion-icon>
+                    <span>Noticias</span>
                 </a>
             </li>
 
-            {{--  
             <li>
-                <a href="{{ route('denuncia.net') }}">
-                    <ion-icon name="newspaper-outline"></ion-icon>
-                    <span>Denuncia Ciudadana</span>
+                <a href="{{ route('contraloria.index') }}">
+                    <ion-icon name="library-outline"></ion-icon>
+                    <span>Contraloría</span>
                 </a>
             </li>
-            --}}
             
             <li>
                 <div class="switch">

@@ -9,15 +9,14 @@
                     <div class="overlay"></div>
                     <div class="card-content">
                         <h2>Cambia la forma en la que ves tu ciudad</h2>
-                        <p>Este blog es un espacio para descubrir todo lo que está pasando cerca de ti. Aquí compartimos
-                            historias que inspiran, informan y conectan.</p>
+                        <p>Este blog es un espacio para descubrir todo lo que está pasando cerca de ti. Aquí compartimos historias que inspiran, informan y conectan.</p>
                     </div>
                 </div>
             </div>
         </div>
 
         @if (count($fav_posts) > 0)
-            <div class="row">
+            <div class="row wow fadeInUp">
                 <h2>Artículos Destacados</h2>
                 <div class="d-flex align-items-center justify-content-between w-100">
                     <p class="mb-0">Categoría basada en el número de lecturas.</p>
@@ -29,7 +28,7 @@
             </div>
 
 
-            <div class="row">
+            <div class="row wow fadeInUp">
                 @foreach ($fav_posts->take(3) as $index => $fav_post)
                     @if ($index === 0)
                         <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-12 mb-3">
@@ -66,7 +65,7 @@
             </div>
         @endif
 
-        <div class="row mb-4">
+        <div class="row wow fadeInUp mb-4">
             <h2>Artículos Recientes</h2>
             <div class="d-flex align-items-center justify-content-between w-100">
                 <p class="mb-0">Categoría basada en el número de lecturas.</p>
@@ -77,10 +76,8 @@
             </div>
         </div>
 
-        <div class="row">
-
+        <div class="row wow fadeInUp">
             <livewire:front.blog.list-blog :mode="$mode" />
-
         </div>
     </div>
 @endsection

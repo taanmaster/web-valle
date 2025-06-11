@@ -175,32 +175,6 @@ small {
     background: var(--page-header-bgColor);
 }
 
-/*In case you prefer an absolutely positioned header that covers the full page height, add these styles*/
-/*
-body {
-    position: relative;
-}
-
-.page-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-}
-*/
-
-/*remove these styles*/
-/*
-.page-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: auto;
-}
-*/
-
 .page-header nav {
     display: flex;
     flex-direction: column;
@@ -679,6 +653,12 @@ body {
     top: 30px;
 }
 
+.link-card .card-icon-static{
+    position: relative !important;
+    right: initial !important;
+    top: initial !important;
+}
+
 .link-card:hover {
     transform: scale(1.05);
     z-index: 2;
@@ -688,11 +668,36 @@ body {
     transform: rotate(-45deg);
 }
 
+.link-card:hover .card-icon-static ion-icon{
+    transform: none !important;
+}
+
 .card-alignment-bottom {
     align-items: flex-start;
     justify-content: end;
     flex-direction: column;
     gap: 35px;
+}
+
+/* BANNER */
+.desktop-banner{
+    display: block !important;
+}
+
+.responsive-banner{
+    display: none !important;
+}
+
+@media (max-width: 760px) {
+    .desktop-banner{
+        display: none !important;
+    }
+    
+    .responsive-banner{
+        display: block !important;
+        height: auto !important;
+        width: 100%;
+    }
 }
 
 /* FOLDER STYLES */
