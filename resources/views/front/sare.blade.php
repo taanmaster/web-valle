@@ -201,6 +201,11 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-12 mt-3">
+                    <h3>Puedes realizar el trámite en Calle Emilio Carranza No. 27, Zona Centro, Valle de Santiago, Gto., en un horario de atención de lunes a viernes, de 8:00 a.m. a 4:00 p.m.</h3>
+                </div>
+                
             </div>
         </div>
 
