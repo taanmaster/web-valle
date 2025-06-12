@@ -116,7 +116,6 @@
             </div>
         </div>
         
-
         <div class="col-md-12 mb-4">
             <a href="{{ route('transparency.obligations', 'Graficas') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp h-100">
                 <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">

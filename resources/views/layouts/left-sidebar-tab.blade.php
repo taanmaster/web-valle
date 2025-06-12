@@ -137,6 +137,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('blog.admin.index') }}">Blog</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('events.index') }}">Eventos</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('citizen_complain.index') }}">Denuncia ciudadana</a>
                         </li>

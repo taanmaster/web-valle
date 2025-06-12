@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->date('date_start');
-            $table->date('date_end')->nullable();
+            $table->datetime('date_start');
+            $table->datetime('date_end')->nullable();
             $table->string('location');
             $table->string('venue')->nullable();
             $table->string('blog_url')->nullable();
+            $table->boolean('is_active')->default(true);
 
             $table->timestamps();
         });

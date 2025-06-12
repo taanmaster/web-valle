@@ -167,6 +167,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'popups.status',
         ]);
 
+        Route::resource('events', EventController::class);
+
+        Route::post('/events/status/{id}', [
+            'uses' => 'EventController@status',
+            'as' => 'events.status',
+        ]);
+
         /* ------------------- */
         /* ------------------- */
 
