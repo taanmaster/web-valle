@@ -135,7 +135,7 @@ class EventController extends Controller
         Session::flash('success', 'El evento se ha editado satisfactoriamente.');
 
         // Enviar a vista
-        return redirect()->route('events.show', $event->id);
+        return redirect()->route('events.index');
     }
 
     public function status(Request $request)
