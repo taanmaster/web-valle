@@ -18,6 +18,12 @@
         box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         background-color: #fff;
         font-family: var(--bs-body-font-family);
+        position: relative; /* Añadido para posicionamiento de elementos hijos */
+    }
+    
+    /* Clase para controlar el estado durante la animación */
+    .calendar-animating .month.in {
+        opacity: 1 !important; /* Forzar visibilidad durante la animación */
     }
 
     .cal-header {
@@ -86,10 +92,15 @@
 
     .month {
         opacity: 0;
+        position: relative;
     }
 
     .month.new {
         animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .month.in {
+        opacity: 1; /* Aseguramos que el mes entrante sea visible */
     }
 
     .month.in.next {
@@ -391,6 +402,10 @@
             opacity: 0;
             transform: translateY(30%) scale(0.95);
         }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
 
     @keyframes moveToBottomFadeMonth {
@@ -405,6 +420,10 @@
             opacity: 0;
             transform: translateY(-30%) scale(0.95);
         }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
 
     @keyframes fadeIn {
@@ -413,10 +432,14 @@
         }
         to {
             opacity: 1;
+            visibility: visible; /* Asegurar que el elemento sea visible */
         }
     }
 
     @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
         to {
             opacity: 0;
         }
@@ -488,13 +511,14 @@
             this.el = document.querySelector(selector);
             this.events = events;
             this.current = moment().date(1);
+            this.isAnimating = false; // Añadimos esta propiedad para controlar el estado de la animación
             this.draw();
             var current = document.querySelector('.today');
             if(current) {
-            var self = this;
-            window.setTimeout(function() {
-                self.openDay(current);
-            }, 500);
+                var self = this;
+                window.setTimeout(function() {
+                    self.openDay(current);
+                }, 500);
             }
         }
 
@@ -535,26 +559,56 @@
             var self = this;
             
             if(this.month) {
-            this.oldMonth = this.month;
-            this.oldMonth.className = 'month out ' + (self.next ? 'next' : 'prev');
-            this.oldMonth.addEventListener('webkitAnimationEnd', function() {
-                self.oldMonth.parentNode.removeChild(self.oldMonth);
-                self.month = createElement('div', 'month');
-                self.backFill();
-                self.currentMonth();
-                self.fowardFill();
-                self.el.appendChild(self.month);
-                window.setTimeout(function() {
-                self.month.className = 'month in ' + (self.next ? 'next' : 'prev');
-                }, 16);
-            });
+                this.oldMonth = this.month;
+                this.oldMonth.className = 'month out ' + (self.next ? 'next' : 'prev');
+                
+                // Flag para controlar la ejecución única de handleAnimationEnd
+                var animationEndExecuted = false;
+                
+                var handleAnimationEnd = function() {
+                    // Evitar ejecuciones múltiples
+                    if (animationEndExecuted) return;
+                    animationEndExecuted = true;
+                    
+                    // Verificar si oldMonth y su parentNode todavía existen
+                    if (self.oldMonth && self.oldMonth.parentNode) {
+                        self.oldMonth.parentNode.removeChild(self.oldMonth);
+                    }
+                    
+                    // Crear nuevo mes y configurar su contenido
+                    self.month = createElement('div', 'month');
+                    self.el.appendChild(self.month);
+                    self.backFill();
+                    self.currentMonth();
+                    self.fowardFill();
+                    
+                    // Aplicar la clase después de un pequeño retraso para asegurar que el DOM se haya actualizado
+                    requestAnimationFrame(function() {
+                        self.month.className = 'month in ' + (self.next ? 'next' : 'prev');
+                    });
+                };
+                
+                // Agregar listeners de eventos para diferentes navegadores
+                this.oldMonth.addEventListener('webkitAnimationEnd', handleAnimationEnd, { once: true });
+                this.oldMonth.addEventListener('oanimationend', handleAnimationEnd, { once: true });
+                this.oldMonth.addEventListener('msAnimationEnd', handleAnimationEnd, { once: true });
+                this.oldMonth.addEventListener('animationend', handleAnimationEnd, { once: true });
+                
+                // Fallback por si la animación no se ejecuta correctamente
+                // Usamos un tiempo más largo para dar tiempo a que las animaciones terminen naturalmente
+                setTimeout(handleAnimationEnd, 600);
             } else {
+                // Inicialización del primer mes
                 this.month = createElement('div', 'month');
                 this.el.appendChild(this.month);
                 this.backFill();
                 this.currentMonth();
                 this.fowardFill();
-                this.month.className = 'month new';
+                
+                // Aplicar la clase new para la animación inicial
+                requestAnimationFrame(function() {
+                    self.month.className = 'month new';
+                });
             }
         }
 
@@ -858,15 +912,45 @@
         }
 
         Calendar.prototype.nextMonth = function() {
+            // Evita múltiples clics rápidos durante la animación
+            if (this.isAnimating) return;
+            this.isAnimating = true;
+            
+            var self = this;
             this.current.add('months', 1);
             this.next = true;
+            
+            // Aplicar una clase al contenedor principal durante la animación
+            if (this.el) this.el.classList.add('calendar-animating');
+            
             this.draw();
+            
+            // Restablecer el estado después de un tiempo suficiente para la animación
+            setTimeout(function() {
+                self.isAnimating = false;
+                if (self.el) self.el.classList.remove('calendar-animating');
+            }, 700); // Un poco más largo para asegurar que la animación se complete
         }
 
         Calendar.prototype.prevMonth = function() {
+            // Evita múltiples clics rápidos durante la animación
+            if (this.isAnimating) return;
+            this.isAnimating = true;
+            
+            var self = this;
             this.current.subtract('months', 1);
             this.next = false;
+            
+            // Aplicar una clase al contenedor principal durante la animación
+            if (this.el) this.el.classList.add('calendar-animating');
+            
             this.draw();
+            
+            // Restablecer el estado después de un tiempo suficiente para la animación
+            setTimeout(function() {
+                self.isAnimating = false;
+                if (self.el) self.el.classList.remove('calendar-animating');
+            }, 700); // Un poco más largo para asegurar que la animación se complete
         }
 
         window.Calendar = Calendar;
@@ -905,8 +989,23 @@
         // Validar que Moment.js esté disponible
         if (typeof moment !== 'function') {
             console.error('Moment.js no está disponible. El calendario no funcionará correctamente.');
+            document.getElementById('calendar').innerHTML = 
+                '<div class="alert alert-danger">Error: Moment.js no está disponible. Por favor, recarga la página.</div>';
             return;
         }
+
+        // Pre-validar datos antes de inicializar
+        if (!Array.isArray(data)) {
+            console.error('Los datos proporcionados no son un array válido');
+            data = [];
+        }
+
+        data.forEach(function(event, index) {
+            if (event.date && !event.date.isValid()) {
+                console.warn('Evento con fecha inválida en el índice ' + index, event);
+                event.date = moment(); // Dar un valor predeterminado
+            }
+        });
 
         // Inicializar calendario con manejo de errores
         try {
@@ -916,7 +1015,7 @@
             console.error('Error al inicializar el calendario:', error);
             // Mostrar mensaje de error al usuario
             document.getElementById('calendar').innerHTML = 
-                '<div class="alert alert-danger">Error al cargar el calendario. Por favor, recarga la página.</div>';
+                '<div class="alert alert-danger">Error al cargar el calendario. Por favor, recarga la página o contacta al administrador.</div>';
         }
     }();
 </script>
