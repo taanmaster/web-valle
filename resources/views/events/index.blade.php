@@ -9,6 +9,14 @@
 @endcomponent
 
 <style>
+    .text-primary{
+        color: #551312;
+    }
+
+    .primary{
+        background-color: #551312;
+    }
+
     #calendar {
         width: 100%;
         margin: 0 auto;
@@ -29,7 +37,7 @@
     .cal-header {
         height: 60px;
         width: 100%;
-        background: var(--bs-primary);
+        background: #551312;
         text-align: center;
         position: relative;
         z-index: 100;
@@ -43,6 +51,7 @@
         line-height: 60px;
         font-weight: 500;
         color: #fff;
+        text-transform: capitalize;
     }
 
     .left,
@@ -189,7 +198,7 @@
     }
 
     .primary {
-        background: var(--bs-primary);
+        background: #551312;
     }
     .success {
         background: var(--bs-success);
@@ -265,7 +274,7 @@
         border-radius: 0.25rem;
         margin-bottom: 10px;
         background-color: rgba(var(--bs-primary-rgb), 0.05);
-        border-left: 4px solid var(--bs-primary);
+        border-left: 4px solid #551312;
     }
 
     .event:last-child {
@@ -311,7 +320,7 @@
     .event-url {
         display: inline-block;
         font-size: 0.875rem;
-        color: var(--bs-primary);
+        color: #551312;
         text-decoration: none;
         padding: 2px 0;
     }
@@ -461,6 +470,7 @@
             <div class="card-body">
                 <!-- Sección de filtros y búsqueda -->
                 <div class="row mb-4">
+                    {{--  
                     <div class="col-md-8">
                         <form action="{{ route('events.index') }}" method="GET" class="row g-3">
                             <div class="col-md-4">
@@ -486,7 +496,8 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-md-4 text-end">
+                    --}}
+                    <div class="col-md-4 text-start">
                         <a href="{{ route('events.create') }}" class="btn btn-primary">
                             <i class="bx bx-plus me-1"></i> Crear Evento
                         </a>
@@ -502,9 +513,12 @@
 </div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/lang/es.js"></script>
 
 <script>
     !function() {
+        // Configurar Moment.js para usar español
+        moment.lang('es');
         var today = moment();
 
         function Calendar(selector, events) {
@@ -523,17 +537,17 @@
         }
 
         Calendar.prototype.draw = function() {
-            //Create Header
+            //Crear titular
             this.drawHeader();
 
-            //Draw Month
+            //Crear el més
             this.drawMonth();
         }
 
         Calendar.prototype.drawHeader = function() {
             var self = this;
             if(!this.header) {
-            //Create the header elements
+            //Crear los elementos de la cabecera
             this.header = createElement('div', 'cal-header');
             this.header.className = 'cal-header';
 
@@ -545,7 +559,7 @@
             var left = createElement('div', 'left');
             left.addEventListener('click', function() { self.prevMonth(); });
 
-            //Append the Elements
+            //Adendo de los elementos
             this.header.appendChild(this.title); 
             this.header.appendChild(right);
             this.header.appendChild(left);
@@ -562,7 +576,7 @@
                 this.oldMonth = this.month;
                 this.oldMonth.className = 'month out ' + (self.next ? 'next' : 'prev');
                 
-                // Flag para controlar la ejecución única de handleAnimationEnd
+                // Bandera de estatus para controlar la ejecución única de handleAnimationEnd
                 var animationEndExecuted = false;
                 
                 var handleAnimationEnd = function() {
