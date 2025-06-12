@@ -36,6 +36,9 @@ use App\Models\Blog;
 use App\Models\CitizenComplaint;
 use App\Models\CitizenComplaintFile;
 
+// Modelo Eventos
+use App\Models\Event;
+
 class FrontController extends Controller
 {
     public function index()
@@ -67,6 +70,8 @@ class FrontController extends Controller
         //Cargar Dependencias regulatorias
         $regulation_dependencies = RegulatoryAgendaDependency::all();
 
+        $events = Event::where('is_active', true)->orderBy('date_start', 'asc')->paginate(90);
+
         return view('front.index')->with([
             'gazettes' => $gazettes,
             'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
@@ -77,7 +82,8 @@ class FrontController extends Controller
             'banners' => $banners,
             'popup' => $popup,
             'headerbands' => $headerbands,
-            'regulation_dependencies' => $regulation_dependencies
+            'regulation_dependencies' => $regulation_dependencies,
+            'events' => $events
         ]);
     }
 

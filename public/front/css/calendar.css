@@ -1,0 +1,449 @@
+#calendar {
+    width: 100%;
+    margin: 0 auto;
+    height: auto;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    background-color: #fff;
+    font-family: var(--bs-body-font-family);
+    position: relative; /* Añadido para posicionamiento de elementos hijos */
+}
+
+/* Clase para controlar el estado durante la animación */
+.calendar-animating .month.in {
+    opacity: 1 !important; /* Forzar visibilidad durante la animación */
+}
+
+.cal-header {
+    height: auto;
+    width: 100%;
+    background: #551312;
+    text-align: center;
+    position: relative;
+    z-index: 100;
+    border-radius: 0.25rem 0.25rem 0 0;
+    padding: 10px 0px;
+}
+
+.cal-header h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.2em;
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: -.5px;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.left,
+.right {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 50%;
+    margin-top: -12px;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.left:hover,
+.right:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.left {
+    left: 20px;
+}
+
+.left:before {
+    content: '';
+    border-width: 3px 5px 3px 0px;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+    display: block;
+}
+
+.right {
+    right: 20px;
+}
+
+.right:before {
+    content: '';
+    border-width: 3px 0 3px 5px;
+
+    border-style: solid;
+    border-color: transparent transparent transparent #fff;
+    display: block;
+}
+
+.month {
+    opacity: 0;
+    position: relative;
+}
+
+.month.new {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.month.in {
+    opacity: 1; /* Aseguramos que el mes entrante sea visible */
+}
+
+.month.in.next {
+    animation: moveFromTopFadeMonth 0.4s ease-out forwards;
+}
+
+.month.out.next {
+    animation: moveToTopFadeMonth 0.4s ease-in forwards;
+}
+
+.month.in.prev {
+    animation: moveFromBottomFadeMonth 0.4s ease-out forwards;
+}
+
+.month.out.prev {
+    animation: moveToBottomFadeMonth 0.4s ease-in forwards;
+}
+
+.week {
+    background: #f8f9fa;
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 0px;
+    position: relative;
+}
+
+.day {
+    flex: 1;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 100;
+    transition: background-color 0.2s;
+    border-right: 1px solid #dee2e6;
+}
+
+.day:last-child {
+    border-right: none;
+}
+
+.day:hover {
+    background-color: #e9ecef;
+}
+
+.day.other {
+    color: #adb5bd;
+}
+
+.day.today {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    font-weight: bold;
+}
+
+.day-name {
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    color: #6c757d;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.day-number {
+    font-size: .9em;
+    font-weight: 400;
+}
+
+.day .day-events {
+    list-style: none;
+    margin: 5px 0 0;
+    margin-bottom: 5px;
+    padding: 0;
+    text-align: center;
+    height: auto;
+    line-height: 6px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.day .day-events span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin: 0 1px;
+}
+
+.primary {
+    background: #551312;
+}
+.success {
+    background: var(--bs-success);
+}
+.info {
+    background: var(--bs-info);
+}
+.warning {
+    background: var(--bs-warning);
+}
+.danger {
+    background: var(--bs-danger);
+}
+
+.details {
+    position: relative;
+    width: 100%;
+    min-height: 120px;
+    background: #fff;
+    margin: 10px 0;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid #dee2e6;
+    clear: both;
+    overflow: hidden;
+    display: block;
+    z-index: 200;
+}
+
+.details.in {
+    animation: moveFromTopFade 0.5s ease forwards;
+}
+
+.details.out {
+    animation: moveToTopFade 0.5s ease forwards;
+    display: none;
+}
+
+.arrow {
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #fff transparent;
+    filter: drop-shadow(0px -2px 1px rgba(0,0,0,0.1));
+}
+
+.events {
+    padding: 15px;
+    overflow-y: auto;
+    max-height: 250px;
+}
+
+.events.in {
+    animation: fadeIn 0.3s ease both;
+    animation-delay: 0.3s;
+}
+
+.details.out .events {
+    animation: fadeOutShrink 0.4s ease forwards;
+}
+
+.events.out {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+.event {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 15px;
+    border-radius: 0.25rem;
+    margin-bottom: 10px;
+    background-color: rgba(var(--bs-primary-rgb), 0.05);
+    border-left: 4px solid #551312;
+}
+
+.event:last-child {
+    margin-bottom: 0;
+}
+
+.event.empty {
+    color: #6c757d;
+    justify-content: center;
+}
+
+.event-category {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    margin: 5px 0 0;
+}
+
+.event-content {
+    margin-left: 10px;
+    flex: 1;
+}
+
+.event-name {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #212529;
+    margin-bottom: 2px;
+}
+
+.event-time {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 2px;
+}
+
+.event-location {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 4px;
+}
+
+.event-url {
+    display: inline-block;
+    font-size: 0.875rem;
+    color: #551312;
+    text-decoration: none;
+    padding: 2px 0;
+}
+
+.event-url:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para los indicadores de eventos */
+.day.has-events {
+    position: relative;
+}
+
+.event-indicator {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin: 0 1px;
+}
+
+.more-events {
+    display: inline-block;
+    font-size: 10px;
+    color: #6c757d;
+    margin-left: 2px;
+}
+
+/* Mejoras para dispositivos móviles */
+@media (max-width: 576px) {
+    .day-name {
+        font-size: 0.65rem;
+    }
+    
+    .day-number {
+        font-size: 1.2rem;
+    }
+    
+    .day {
+        padding: 8px 4px;
+    }
+    
+    .event-name {
+        font-size: 0.9rem;
+    }
+}
+
+/* Animación suave al hacer hover en días con eventos */
+.day.has-events:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    transition: background-color 0.3s ease;
+}
+
+@keyframes moveFromTopFade {
+    from {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        max-height: 500px;
+        transform: translateY(0);
+    }
+}
+
+@keyframes moveToTopFade {
+    from {
+        opacity: 1;
+        max-height: 500px;
+    }
+    to {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes moveToTopFadeMonth {
+    to {
+        opacity: 0;
+        transform: translateY(-30%) scale(0.95);
+    }
+}
+
+@keyframes moveFromTopFadeMonth {
+    from {
+        opacity: 0;
+        transform: translateY(30%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes moveToBottomFadeMonth {
+    to {
+        opacity: 0;
+        transform: translateY(30%) scale(0.95);
+    }
+}
+
+@keyframes moveFromBottomFadeMonth {
+    from {
+        opacity: 0;
+        transform: translateY(-30%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+        visibility: visible; /* Asegurar que el elemento sea visible */
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOutShrink {
+    to {
+        opacity: 0;
+        padding: 0;
+        height: 0;
+    }
+}
