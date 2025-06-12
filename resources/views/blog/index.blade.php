@@ -49,8 +49,8 @@
                     </div>
                 </div>
 
-                <div class="d-flex align-items-center justify-content-center">
-                    {{ $blogs->links() }}
+                <div class="align-items-center mt-4">
+                    {{ $blogs->links('pagination::bootstrap-5') }}
                 </div>
             @endif
         </div>

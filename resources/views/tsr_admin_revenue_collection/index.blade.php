@@ -49,8 +49,8 @@
                     @include('tsr_admin_revenue_collection.utilities._table')
                 </div>
 
-                <div class="d-flex align-items-center justify-content-center">
-                    {{ $sections->links() }}
+                <div class="align-items-center mt-4">
+                    {{ $sections->links('pagination::bootstrap-5') }}
                 </div>
             @endif
         </div>

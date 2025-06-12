@@ -37,8 +37,8 @@
                     @include('complains.utilities._table')
                 </div>
 
-                <div class="d-flex align-items-center justify-content-center">
-                    {{ $complains->links() }}
+                <div class="align-items-center mt-4">
+                    {{ $complains->links('pagination::bootstrap-5') }}
                 </div>
             @endif
         </div>

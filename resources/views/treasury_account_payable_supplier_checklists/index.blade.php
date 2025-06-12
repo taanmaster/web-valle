@@ -38,8 +38,8 @@
             @include('treasury_account_payable_suppliers.utilities._table')
         </div>
     
-        <div class="d-flex align-items-center justify-content-center">
-            {{ $suppliers->links() }}
+        <div class="align-items-center mt-4">
+            {{ $suppliers->links('pagination::bootstrap-5') }}
         </div>
         @endif    
     </div>

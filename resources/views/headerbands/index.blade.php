@@ -36,8 +36,8 @@
             @include('headerbands.utilities._table')
         </div>
     
-        <div class="d-flex align-items-center justify-content-center">
-            {{ $headerbands->links() }}
+        <div class="align-items-center mt-4">
+            {{ $headerbands->links('pagination::bootstrap-5') }}
         </div>
         @endif    
     </div>

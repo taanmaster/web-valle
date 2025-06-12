@@ -56,7 +56,7 @@ class EventController extends Controller
         // Ordenar por fecha de inicio, eventos próximos primero
         $query->orderBy('date_start', 'asc');
         
-        $events = $query->paginate(10)->withQueryString();
+        $events = $query->paginate(30)->withQueryString();
         
         return view('events.index', compact('events'));
     }

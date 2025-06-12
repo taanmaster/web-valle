@@ -69,6 +69,7 @@
                     <td class="text-end" style="min-width: 200px;">
                         <div class="d-flex gap-2">
                             {{-- 
+                            Ocultado ya que se muestra en calendario
                             <a href="{{ route('events.show', $event->id) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Ver Detalle">
                                 Ver Detalle
                             </a>
@@ -111,8 +112,8 @@
         </table>                    
     </div>
     
-    <div class="d-flex justify-content-center mt-4">
-        {{ $events->links() }}
+    <div class="align-items-center mt-4">
+        {{ $events->links('pagination::bootstrap-5') }}
     </div>
 </div>
 

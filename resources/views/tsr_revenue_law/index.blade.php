@@ -47,8 +47,8 @@
                     @include('tsr_revenue_law.utilities._table')
                 </div>
 
-                <div class="d-flex align-items-center justify-content-center">
-                    {{ $incomes->links() }}
+                <div class="align-items-center mt-4">
+                    {{ $incomes->links('pagination::bootstrap-5') }}
                 </div>
             @endif
 
