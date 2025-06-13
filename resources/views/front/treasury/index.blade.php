@@ -2,24 +2,17 @@
 
 @section('content')
     <div class="container">
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card card-normal card-alignment-bottom wow fadeInUp">
-                    <div class="card-title">
-                        <div class="d-flex gap-3 mb-3">
-                            <div class="card-icon bg-secondary text-white d-flex align-items-center justify-content-center">
-                                <ion-icon name="documents-outline"></ion-icon>
-                            </div>
 
-                            <h3>Tesorería</h3>
-                        </div>
-
-                        <p class="card-title-description mb-2">Información relevante sobre tesorería.</p>
-                    </div>
+        <div class="title-container wow fadeInUp mb-4">
+            <div class="d-flex align-items-center mb-2" style="gap: 12px">
+                <div class="icon bg-secondary">
+                    <ion-icon name="documents-outline"></ion-icon>
                 </div>
+                <h3 class="mb-0">Tesorería</h3>
             </div>
+            <p class="title-description mb-0">Información relevante sobre tesorería.</p>
         </div>
-
+        
         <div class="row w-100">
             @foreach ($dependencies as $dependency)
                 <div class="col-md-6 mb-4">

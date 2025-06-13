@@ -19,10 +19,10 @@
             <div class="row wow fadeInUp">
                 <div class="col-md-12">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="card-icon card-icon-static bg-warning text-white d-flex align-items-center justify-content-center">
+                        <div class="card-icon card-icon-static bg-primary text-white d-flex align-items-center justify-content-center">
                             <ion-icon name="documents-outline"></ion-icon>
                         </div>
-                        <h2 class="mb-0">Artículos Destacados</h2>
+                        <h3 class="mb-0">Artículos Destacados</h3>
                     </div>
                 </div>
 

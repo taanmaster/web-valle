@@ -687,6 +687,13 @@ small {
     gap: 35px;
 }
 
+.card-alignment-center {
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 35px;
+}
+
 /* BANNER */
 .desktop-banner{
     display: block !important;

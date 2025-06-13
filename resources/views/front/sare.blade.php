@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container">
-
         <div class="row justify-content-center mb-4">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner wow fadeInUp">
@@ -82,17 +81,18 @@
 
 
         <div class="mb-3">
-            <div class="d-flex align-items-center" style="gap: 12px">
-                <div class="icon">
-                    <ion-icon name="copy-outline"></ion-icon>
+            <div class="d-flex align-items-center mb-4 mt-5 wow fadeInUp" style="gap: 12px">
+                <div class="icon bg-primary">
+                    <ion-icon name="business-outline"></ion-icon>
                 </div>
-                <h2>Si tu negocio se encuentra en Zona Urbana</h2>
+                <h3 class="mb-0">Si tu negocio se encuentra en Zona Urbana</h2>
             </div>
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="card card-normal wow fadeInUp h-100">
                         <div class="card-content">
-                            <h3>Persona Física:</h3>
+                            <h4>Persona Física:</h4>
                             <ol>
                                 <li>
                                     Documento que acredite propiedad del inmueble (Título de propiedad, Escrituras, Cesión
@@ -115,7 +115,7 @@
                 <div class="col-md-6">
                     <div class="card card-normal wow fadeInUp h-100">
                         <div class="card-content">
-                            <h3>Persona Moral:</h3>
+                            <h4>Persona Moral:</h4>
                             <ol>
                                 <li>
                                     Acta constitutiva de la Empresa.
@@ -145,17 +145,18 @@
         </div>
 
         <div class="mb-3">
-            <div class="d-flex align-items-center" style="gap: 12px">
-                <div class="icon">
-                    <ion-icon name="copy-outline"></ion-icon>
+            <div class="d-flex align-items-center mb-4 mt-5 wow fadeInUp" style="gap: 12px">
+                <div class="icon bg-warning">
+                    <ion-icon name="sunny-outline"></ion-icon>
                 </div>
-                <h2>Si tu negocio se encuentra en Zona Rural</h2>
+                <h3 class="mb-0">Si tu negocio se encuentra en Zona Rural</h3>
             </div>
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="card card-normal wow fadeInUp h-100">
                         <div class="card-content">
-                            <h3>Persona Física:</h3>
+                            <h4>Persona Física:</h4>
                             <ol>
                                 <li>
                                     Documento que acredite propiedad del inmueble (Constancia del delegado/comisariado o
@@ -178,7 +179,7 @@
                 <div class="col-md-6">
                     <div class="card card-normal wow fadeInUp h-100">
                         <div class="card-content">
-                            <h3>Persona Moral:</h3>
+                            <h4>Persona Moral:</h4>
                             <ol>
                                 <li>
                                     Acta constitutiva de la Empresa.
@@ -202,10 +203,9 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 mt-3">
+                <div class="col-md-12 mt-5 wow fadeInUp text-center">
                     <h3>Puedes realizar el trámite en Calle Emilio Carranza No. 27, Zona Centro, Valle de Santiago, Gto., en un horario de atención de lunes a viernes, de 8:00 a.m. a 4:00 p.m.</h3>
                 </div>
-                
             </div>
         </div>
 
