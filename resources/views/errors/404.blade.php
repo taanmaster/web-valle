@@ -40,7 +40,6 @@
                                 <div class="card-body bg-light-alt text-center">
                                     &copy; <script>
                                         document.write(new Date().getFullYear())
-
                                     </script> Valle de Santiago
                                 </div>
                                 <!--end card-body-->
@@ -58,5 +57,4 @@
         <!--end row-->
     </div>
     <!--end container-->
-
-    @endsection
+@endsection

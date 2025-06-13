@@ -2,7 +2,7 @@
 
 :root {
     --page-header-bgColor: #F5F5F5;
-    --page-header-bgColor-hover: #1d2636;
+    --page-header-bgColor-hover: #551312;
     --page-header-txtColor: #171616;
     --page-header-headingColor: #7889a4;
     --page-header-width: 250px;
@@ -260,7 +260,7 @@ small {
 .page-header .admin-menu button:hover,
 .page-header .admin-menu button:focus {
     background: var(--page-header-bgColor-hover);
-    color: var(--blue);
+    color: #fff;
     outline: none;
 }
 
@@ -502,7 +502,7 @@ small {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .light-mode {
     --page-header-bgColor: #f1efec;
-    --page-header-bgColor-hover: #b9e4e0;
+    --page-header-bgColor-hover: #551312;
     --page-header-txtColor: #2c303a;
     --page-header-headingColor: #979595;
     --page-content-bgColor: #fff;
@@ -513,7 +513,7 @@ small {
 .light-mode .page-header .admin-menu a:focus,
 .light-mode .page-header .admin-menu button:hover,
 .light-mode .page-header .admin-menu button:focus {
-    color: var(--black);
+    color: #fff;
 }
 
 .light-mode .page-header .logo svg,
