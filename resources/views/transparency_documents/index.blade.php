@@ -41,8 +41,8 @@
             @include('transparency_documents.utilities._table')
         </div>
     
-        <div class="d-flex align-items-center justify-content-center">
-            {{ $transparency_documents->links() }}
+        <div class="align-items-center mt-4">
+            {{ $transparency_documents->links('pagination::bootstrap-5') }}
         </div>
         @endif    
     </div>

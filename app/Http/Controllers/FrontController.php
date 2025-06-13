@@ -36,6 +36,9 @@ use App\Models\Blog;
 use App\Models\CitizenComplaint;
 use App\Models\CitizenComplaintFile;
 
+// Modelo Eventos
+use App\Models\Event;
+
 class FrontController extends Controller
 {
     public function index()
@@ -57,8 +60,8 @@ class FrontController extends Controller
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
 
         // Modulo Transparencia
-        // Cargar las dependencias que quieren mostrar en la página de inicio.
-        $dependencies = TransparencyDependency::where('in_index', true)->get();
+        // Cargar las dependencias que quieren mostrar en la página de inicio de Transparencia
+        $dependencies = TransparencyDependency::where('in_index', true)->where('slug', '!=', 'unidad-de-transparencia-y-acceso-a-la-informacion')->get();
 
         $banners = Banner::where('is_active', true)->orderBy('priority', 'asc')->get();
         $popup = Popup::where('is_active', true)->orderBy('updated_at', 'desc')->first();
@@ -66,6 +69,8 @@ class FrontController extends Controller
 
         //Cargar Dependencias regulatorias
         $regulation_dependencies = RegulatoryAgendaDependency::all();
+
+        $events = Event::where('is_active', true)->orderBy('date_start', 'asc')->paginate(90);
 
         return view('front.index')->with([
             'gazettes' => $gazettes,
@@ -77,7 +82,8 @@ class FrontController extends Controller
             'banners' => $banners,
             'popup' => $popup,
             'headerbands' => $headerbands,
-            'regulation_dependencies' => $regulation_dependencies
+            'regulation_dependencies' => $regulation_dependencies,
+            'events' => $events
         ]);
     }
 
@@ -167,9 +173,67 @@ class FrontController extends Controller
 
     // Módulo Transparencia
     // Módulo Dependencias
-    public function dependencyList()
+    public function transparencyIndex()
     {
         $dependencies = TransparencyDependency::where('belongs_to_treasury', false)->orderBy('name', 'asc')->get();
+
+        return view('front.transparency')->with('dependencies', $dependencies);
+    }
+
+    public function transparencyObligations($type)
+    {
+        $dependency = TransparencyDependency::where('slug', 'unidad-de-transparencia-y-acceso-a-la-informacion')->first();
+        $obligations = TransparencyObligation::where('dependency_id', $dependency->id)->where('type', $type)->get();
+
+        $submenu_name = 'Transparencia';
+        $submenu_description = 'Información adicional de transparencia';
+
+        switch ($type) {
+            case 'Común':
+                $submenu_name = 'Obligaciones Comunes';
+                $submenu_description = 'Información adicional de transparencia';
+                break;
+            
+            case 'Especifica':
+                $submenu_name = 'Obligaciones Específicas';
+                $submenu_description = 'Información adicional de transparencia';
+                break;
+            
+            case 'Aplicabilidad':
+                $submenu_name = 'Tabla de Aplicabilidad';
+                $submenu_description = 'Información adicional de transparencia';
+                break;
+
+            case 'Clasificados':
+                $submenu_name = 'Índice de Expedientes Clasificados';
+                $submenu_description = 'Información adicional de transparencia';
+                break;
+
+            case 'Graficas':
+                $submenu_name = 'Gráficas Informativas';
+                $submenu_description = 'Información adicional de transparencia';
+                break;
+
+            case 'Proactiva':
+                $submenu_name = 'Transparencia Proactiva';
+                $submenu_description = 'Información adicional de transparencia';
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        return view('front.dependencies.transparency_obligations')
+        ->with('dependency', $dependency)
+        ->with('obligations', $obligations)
+        ->with('submenu_name', $submenu_name)
+        ->with('submenu_description', $submenu_description);
+    }
+
+    public function dependencyList()
+    {
+        $dependencies = TransparencyDependency::where('belongs_to_treasury', false)->where('slug', '!=', 'unidad-de-transparencia-y-acceso-a-la-informacion')->orderBy('name', 'asc')->get();
 
         return view('front.dependencies.index')
             ->with('dependencies', $dependencies);
@@ -260,16 +324,19 @@ class FrontController extends Controller
         return view('front.building');
     }
 
+    // Pantallas Tesorería
     public function treasury()
     {
         return view('front.treasury');
     }
 
+    // Pantallas SARE
     public function sare()
     {
         return view('front.sare');
     }
 
+    // Pantallas Blog/Noticias
     public function blog()
     {
         $fav_posts = Blog::where('is_fav', true)->orderBy('updated_at', 'desc')->limit(3)->get();
@@ -302,6 +369,33 @@ class FrontController extends Controller
         ]);
     }
 
+    // Pantallas Contraloria
+    public function contraloria()
+    {
+        return view('front.contraloria.index');
+    }
+
+    public function contraloriaFaults()
+    {
+        return view('front.contraloria.faults');
+    }
+
+    public function contraloriaFaultsNotSerious()
+    {
+        return view('front.contraloria.faults_not_serious');
+    }
+
+    public function contraloriaFaultsNotSeriousRules()
+    {
+        return view('front.contraloria.faults_not_serious_rules');
+    }
+
+    public function contraloriaFaultsSerious()
+    {
+        return view('front.contraloria.faults_serious');
+    }
+
+    // Pantallas DenunciaNet
     public function denunciaNet()
     {
         return view('front.citizen_complain.index');

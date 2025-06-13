@@ -21,6 +21,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /*SARE*/
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
 
+    // Contraloría
+    Route::get('/contraloria', 'FrontController@contraloria')->name('contraloria.index');
+    Route::get('/contraloria/faltas-administrativas', 'FrontController@contraloriaFaults')->name('contraloria.faults');
+    Route::get('/contraloria/faltas-administrativas/no-graves', 'FrontController@contraloriaFaultsNotSerious')->name('contraloria.faults.not-serious');
+    Route::get('/contraloria/faltas-administrativas/sanciones-faltas-no-graves', 'FrontController@contraloriaFaultsNotSeriousRules')->name('contraloria.faults.not-serious-rules');
+    Route::get('/contraloria/faltas-administrativas/graves', 'FrontController@contraloriaFaultsSerious')->name('contraloria.faults.serious');
+
     /*Denuncia NET*/
     Route::get('/denuncia-net', 'FrontController@denunciaNet')->name('denuncia.net');
 
@@ -46,6 +53,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
     ])->where('date', '[0-9]{4}-[0-9]{2}');
 
     // Módulo Transparencia
+    Route::get('/unidad-de-transparencia-y-acceso-a-la-informacion', [
+        'uses' => 'FrontController@transparencyIndex',
+        'as' => 'transparency.index',
+    ]);
+
+    Route::get('/unidad-de-transparencia-y-acceso-a-la-informacion/obligaciones/{type}', [
+        'uses' => 'FrontController@transparencyObligations',
+        'as' => 'transparency.obligations',
+    ]);
+
     Route::get('/dependencias', [
         'uses' => 'FrontController@dependencyList',
         'as' => 'dependency.list',
@@ -148,6 +165,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/popups/status/{id}', [
             'uses' => 'PopupController@status',
             'as' => 'popups.status',
+        ]);
+
+        Route::resource('events', EventController::class);
+
+        Route::post('/events/status/{id}', [
+            'uses' => 'EventController@status',
+            'as' => 'events.status',
         ]);
 
         /* ------------------- */

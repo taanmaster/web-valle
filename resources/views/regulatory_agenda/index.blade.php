@@ -47,8 +47,8 @@
                     @include('regulatory_agenda.utilities._table')
                 </div>
 
-                <div class="d-flex align-items-center justify-content-center">
-                    {{ $dependecies->links() }}
+                <div class="align-items-center mt-4">
+                    {{ $dependecies->links('pagination::bootstrap-5') }}
                 </div>
             @endif
         </div>

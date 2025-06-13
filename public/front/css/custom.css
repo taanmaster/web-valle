@@ -2,7 +2,7 @@
 
 :root {
     --page-header-bgColor: #F5F5F5;
-    --page-header-bgColor-hover: #1d2636;
+    --page-header-bgColor-hover: #551312;
     --page-header-txtColor: #171616;
     --page-header-headingColor: #7889a4;
     --page-header-width: 250px;
@@ -175,32 +175,6 @@ small {
     background: var(--page-header-bgColor);
 }
 
-/*In case you prefer an absolutely positioned header that covers the full page height, add these styles*/
-/*
-body {
-    position: relative;
-}
-
-.page-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-}
-*/
-
-/*remove these styles*/
-/*
-.page-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: auto;
-}
-*/
-
 .page-header nav {
     display: flex;
     flex-direction: column;
@@ -286,7 +260,7 @@ body {
 .page-header .admin-menu button:hover,
 .page-header .admin-menu button:focus {
     background: var(--page-header-bgColor-hover);
-    color: var(--blue);
+    color: #fff;
     outline: none;
 }
 
@@ -528,7 +502,7 @@ body {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .light-mode {
     --page-header-bgColor: #f1efec;
-    --page-header-bgColor-hover: #b9e4e0;
+    --page-header-bgColor-hover: #551312;
     --page-header-txtColor: #2c303a;
     --page-header-headingColor: #979595;
     --page-content-bgColor: #fff;
@@ -539,7 +513,7 @@ body {
 .light-mode .page-header .admin-menu a:focus,
 .light-mode .page-header .admin-menu button:hover,
 .light-mode .page-header .admin-menu button:focus {
-    color: var(--black);
+    color: #fff;
 }
 
 .light-mode .page-header .logo svg,
@@ -603,6 +577,14 @@ body {
 .owl-theme .owl-nav {
     margin-top: 0px;
     margin-bottom: 30px;
+}
+
+.owl-prev, .owl-next{
+    width: 30px;
+    height: 30px;
+    border-radius: 100% !important;
+    background-color: #551312 !important;
+    color: #fff !important;
 }
 
 .card-image {
@@ -679,6 +661,12 @@ body {
     top: 30px;
 }
 
+.link-card .card-icon-static{
+    position: relative !important;
+    right: initial !important;
+    top: initial !important;
+}
+
 .link-card:hover {
     transform: scale(1.05);
     z-index: 2;
@@ -688,11 +676,43 @@ body {
     transform: rotate(-45deg);
 }
 
+.link-card:hover .card-icon-static ion-icon{
+    transform: none !important;
+}
+
 .card-alignment-bottom {
     align-items: flex-start;
     justify-content: end;
     flex-direction: column;
     gap: 35px;
+}
+
+.card-alignment-center {
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 35px;
+}
+
+/* BANNER */
+.desktop-banner{
+    display: block !important;
+}
+
+.responsive-banner{
+    display: none !important;
+}
+
+@media (max-width: 760px) {
+    .desktop-banner{
+        display: none !important;
+    }
+    
+    .responsive-banner{
+        display: block !important;
+        height: auto !important;
+        width: 100%;
+    }
 }
 
 /* FOLDER STYLES */

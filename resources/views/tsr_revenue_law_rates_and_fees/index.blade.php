@@ -46,8 +46,8 @@
                     @include('tsr_revenue_law_rates_and_fees.utilities._table')
                 </div>
 
-                <div class="d-flex align-items-center justify-content-center">
-                    {{ $rates->links() }}
+                <div class="align-items-center mt-4">
+                    {{ $rates->links('pagination::bootstrap-5') }}
                 </div>
             @endif
 

@@ -191,7 +191,6 @@ class BannerController extends Controller
     public function destroy($id)
     {
         $banner = Banner::find($id);
-
         $banner->delete();
 
         Session::flash('success', 'El banner se elimino correctamente.');

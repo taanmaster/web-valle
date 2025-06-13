@@ -39,8 +39,8 @@
             @include('financial_support_types.utilities._table')
         </div>
     
-        <div class="d-flex align-items-center justify-content-center">
-            {{ $financial_support_types->links() }}
+        <div class="align-items-center mt-4">
+            {{ $financial_support_types->links('pagination::bootstrap-5') }}
         </div>
         @endif    
     </div>

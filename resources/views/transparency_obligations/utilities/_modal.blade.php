@@ -4,7 +4,7 @@
             <div class="modal-header bg-dark">
                 <h6 class="modal-title m-0 text-white" id="modalCreate">Nueva Obligación</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div><!--end modal-header-->
+            </div>
 
             <form method="POST" action="{{ route('transparency_obligations.store') }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -38,6 +38,10 @@
                             <select class="form-control" id="type" name="type" required>
                                 <option value="Especifica">Especifica</option>
                                 <option value="Común">Común</option>
+                                <option value="Aplicabilidad">Tabla de Aplicabilidad</option>
+                                <option value="Clasificados">Índice de expedientes clasificados</option>
+                                <option value="Graficas">Gráficas Informativas</option>
+                                <option value="Proactiva">Transparencia Proactiva</option>
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -47,6 +51,7 @@
                                 <option value="Anual">Anual</option>
                                 <option value="Semestral">Semestral</option>
                                 <option value="Trianual">Trianual</option>
+                                <option value="Mensual">Mensual</option>
                             </select>
                         </div>
                     </div>
@@ -57,6 +62,6 @@
                     <button type="submit" class="btn btn-dark btn-sm">Guardar datos</button>
                 </div>
             </form>
-        </div><!--end modal-content-->
-    </div><!--end modal-dialog-->
-</div><!--end modal-->
+        </div>
+    </div>
+</div>

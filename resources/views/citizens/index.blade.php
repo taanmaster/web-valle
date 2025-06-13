@@ -39,8 +39,8 @@
             @include('citizens.utilities._table')
         </div>
     
-        <div class="d-flex align-items-center justify-content-center">
-            {{ $citizens->links() }}
+        <div class="align-items-center mt-4">
+            {{ $citizens->links('pagination::bootstrap-5') }}
         </div>
         @endif    
     </div>

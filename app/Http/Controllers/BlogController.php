@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
+use PDF;
+use Str;
+use Auth;
+use Session;
+use Carbon\Carbon;
+
+// Modelos
 use App\Models\Blog;
 use App\Models\BlogImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Http\File;
 use Intervention\Image\Facades\Image as Image;
 
@@ -17,7 +24,6 @@ class BlogController extends Controller
      */
     public function index()
     {
-
         return view('blog.index', [
             'blogs' => Blog::latest()->paginate(10),
         ]);

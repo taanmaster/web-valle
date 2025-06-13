@@ -41,8 +41,8 @@
             @include('transparency_dependencies.utilities._table')
         </div>
     
-        <div class="d-flex align-items-center justify-content-center">
-            {{ $transparency_dependencies->links() }}
+        <div class="align-items-center mt-4">
+            {{ $transparency_dependencies->links('pagination::bootstrap-5') }}
         </div>
         @endif    
     </div>

@@ -36,8 +36,8 @@
             @include('popups.utilities._table')
         </div>
     
-        <div class="d-flex align-items-center justify-content-center">
-            {{ $popups->links() }}
+        <div class="align-items-center mt-4">
+            {{ $popups->links('pagination::bootstrap-5') }}
         </div>
         @endif    
     </div>

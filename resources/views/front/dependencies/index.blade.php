@@ -22,6 +22,29 @@
     </div>
 
     <div class="row w-100">
+        <div class="col-md-6 mb-4">
+            @php
+                $transparency_dependency = App\Models\TransparencyDependency::where('slug', 'unidad-de-transparencia-y-acceso-a-la-informacion')->first();
+            @endphp
+            
+            @if($transparency_dependency->image_cover != NULL)
+            <a href="{{ route('transparency.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                <img src="{{ asset('images/dependencies/' . $transparency_dependency->image_cover) }}" class="card-img-top" alt="Portada de {{ $transparency_dependency->name }}">
+                <div class="overlay"></div>
+                
+                <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                    <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                </div>
+
+                <div class="card-content">
+                    <img src="{{ asset('images/dependencies/' . $transparency_dependency->logo) }}" class="card-logo mb-3" alt="Logotipo de {{ $transparency_dependency->name }}" style="height: 80px;">
+                    <h4>{{ $transparency_dependency->name }}</h4>
+                    <p class="mb-0">{{ $transparency_dependency->description }}</p>
+                </div>
+            </a>
+            @endif
+        </div>
+
         @foreach($dependencies as $dependency)
         <div class="col-md-6 mb-4">
             @if($dependency->image_cover != NULL)

@@ -39,8 +39,8 @@
             @include('gazettes.utilities._table')
         </div>
     
-        <div class="d-flex align-items-center justify-content-center">
-            {{ $gazettes->links() }}
+        <div class="align-items-center mt-4">
+            {{ $gazettes->links('pagination::bootstrap-5') }}
         </div>
         @endif    
     </div>
