@@ -15,10 +15,18 @@ use Livewire\Attributes\On;
 //Modelos
 use App\Models\TsrAccountDueIncome;
 use App\Models\TsrAccountDueProvisionalInteger;
-
+use App\Models\TsrRevenueLawRateAndFee;
+use App\Models\TsrRevenueLawIncome;
+use App\Models\TsrAdminRevenueColletionSection;
+use App\Models\TsrRevenueLawConcept;
+use App\Models\TsrAdminRevenueColletionVariant;
+use Livewire\WithPagination;
 
 class Crud extends Component
 {
+
+    use WithPagination;
+
     public $income;
 
     public $integer;
@@ -26,10 +34,43 @@ class Crud extends Component
     //Modes: 0: create, 1 show, 2 edit
     public $mode;
 
+    public $showDrop = false;
+    public $concept_type = '';
+
+
+    //Costos y Tarifas
+    public $rates;
+
+
+    //Ley de Ingresos
+    public $incomes;
+    public $concepts;
+
+
+    //Diposiciones
+    public $sections;
+    public $variants;
+
+    public $section;
+    public $article;
+    public $fraction;
+    public $clasue;
+    public $variant;
+
+
+
+    //Busquedas
+    public $searchConcept = '';
+    public $searchConceptLaw = '';
+    public $searchAdmin = '';
+
+
     // Campos
     #[Validate('required')]
     public $department = '';
+    #[Validate('required')]
     public $concept = '';
+    #[Validate('required')]
     public $folio = '';
     public $provisional_integer_id = '';
     public $qty_text = '';
@@ -94,6 +135,8 @@ class Crud extends Component
         $this->folio = $integer->id;
         $this->provisional_integer_id = $integer->id;
 
+        $this->department = $integer->dependency_name;
+
         $this->qty_text = $integer->qty_text;
         $this->qty_integer = $integer->qty_integer;
 
@@ -102,10 +145,55 @@ class Crud extends Component
         $this->rfc_curp = $integer->profile->rfc_curp;
         $this->address = $integer->address;
         $this->zipcode = $integer->zipcode;
+        $this->basis = $integer->basis;
 
         $this->searchFolio = '';
+        $this->concept = '';
+
+
+        switch ($integer->basis) {
+            case 'Otros':
+                $this->concept_type = 'Costos';
+                break;
+
+            case 'Ley de Ingresos':
+                $this->concept_type = 'Ley';
+                break;
+
+            case 'Disposiciones Administrativas':
+                $this->concept_type = 'Disposiciones';
+                break;
+        }
     }
 
+    public function updatedSearchConcept()
+    {
+
+        if ($this->concept_type === 'Ley') {
+            $this->concepts = TsrRevenueLawConcept::when($this->searchConcept, function ($query) {
+                $query->where('concept', 'like', '%' . $this->searchConcept . '%');
+            })->get();
+        }
+
+        if ($this->concept_type === 'Disposiciones') {
+            $this->variants = TsrAdminRevenueColletionVariant::when($this->searchConcept, function ($query) {
+                $query->where('name', 'like', '%' . $this->searchConcept . '%');
+            })->get();
+        }
+
+        if ($this->concept_type === 'Costos') {
+            $this->rates = TsrRevenueLawRateAndFee::when($this->searchConcept, function ($query) {
+                $query->where('section', 'like', '%' . $this->searchConcept . '%');
+            })->get();
+        }
+    }
+
+    public function selectConcept($concept)
+    {
+        $this->concept = $concept;
+
+        $this->searchConcept = '';
+    }
 
     public function save()
     {

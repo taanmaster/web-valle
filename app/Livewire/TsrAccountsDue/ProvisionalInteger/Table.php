@@ -33,8 +33,12 @@ class Table extends Component
     #[On('select')]
     public function listenerReferenceHere($selectedValue)
     {
-        if (!in_array($selectedValue, $this->dependency_name)) {
-            $this->dependency_name[] = $selectedValue;
+
+        if ($selectedValue != null) {
+
+            if (!in_array($selectedValue, $this->dependency_name)) {
+                $this->dependency_name[] = $selectedValue;
+            }
         }
     }
 

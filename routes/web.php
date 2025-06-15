@@ -424,6 +424,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                     'destroy' => 'account_due_incomes.destroy',
                 ]);
 
+                Route::get('/income/closed/{id}', [
+                    'uses' => 'TsrAccountDueIncomeController@close',
+                    'as' => 'account_due_incomes.close',
+                ]);
+
                 Route::resource('income_receipts', TsrAccountDueIncomeReceiptController::class)->names([
                     'index' => 'account_due_income_receipts.index',
                     'destroy' => 'account_due_income_receipts.destroy',

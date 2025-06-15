@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TsrAccountDueIncome;
 use Illuminate\Http\Request;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class TsrAccountDueIncomeController extends Controller
 {
     /**
@@ -57,9 +59,13 @@ class TsrAccountDueIncomeController extends Controller
         return view('tsr_accounts_due.incomes.edit')->with('mode', $mode)->with('income', $income);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function close($id)
+    {
+        $pdf = PDF::loadView('pdf')->setPaper('A4');
+
+        return $pdf->download();
+    }
+
     public function update(Request $request, TsrAccountDueIncome $tsrAccountDueIncome)
     {
         //

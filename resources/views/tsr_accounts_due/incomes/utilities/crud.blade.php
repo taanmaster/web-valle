@@ -13,12 +13,23 @@
                 flex-direction: column;
             }
 
+            .concept-search {
+                min-height: 200px;
+                max-height: 640px;
+                height: fit-content;
+            }
+
             .drop-search .btn {
                 text-align: left;
             }
 
             .drop-search .btn:hover {
                 background-color: #F2F4FF;
+            }
+
+            .accordion-button::after {
+                margin-left: auto;
+                margin-right: auto;
             }
         </style>
     @endpush
@@ -54,29 +65,6 @@
             <form method="POST" wire:submit="save" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
-                <div class="row align-items-center m-3">
-                    <div class="col-md-2">
-                        <label for="name" class="col-form-label">Departamento</label>
-                    </div>
-                    <div class="col-md">
-                        <input type="text" name="department" wire:model="department" class="form-control"
-                            @if ($mode == 1) disabled @endif>
-                    </div>
-                </div>
-
-                <div class="row align-items-center m-3">
-                    <div class="col-md-2">
-                        <label for="name" class="col-form-label">Concepto</label>
-                    </div>
-                    <div class="col-md">
-                        <select name="concept" id="concept" wire:model="concept" class="form-control"
-                            @if ($mode == 1) disabled @endif>
-                            <option selected>Seleccionar concepto</option>
-                            <option>h</option>
-                        </select>
-                    </div>
-                </div>
-
                 @if ($mode == 0)
                     <div class="row m-3">
                         <div class="col-md-12">
@@ -87,7 +75,8 @@
 
                                 </span>
                                 <input type="number" name="searchFolio" wire:model.live="searchFolio"
-                                    class="form-control" @if ($mode == 1) disabled @endif>
+                                    class="form-control" @if ($mode == 1) disabled @endif
+                                    placeholder="Buscar por número de Folio">
                             </div>
 
                             <div
@@ -120,6 +109,258 @@
                     </div>
                 @endif
 
+                @if ($mode == 0)
+                    <div class="row align-items-center m-3">
+                        <div class="col-md-12">
+                            <label for="name" class="col-form-label">Buscar
+
+                                @switch($concept_type)
+                                    @case('Costos')
+                                        Tarifa y costo
+                                    @break;
+                                    @case('Ley')
+                                        Ley de Ingresos
+                                    @break;
+                                    @case('Disposiciones')
+                                        Disposición administrativa
+                                    @break;
+                                @endswitch
+
+                                para concepto
+
+                            </label>
+                            <input type="text" name="searchConcept" wire:model.live="searchConcept"
+                                class="form-control" @if ($folio == null) disabled @endif
+                                placeholder="Buscar por nombre">
+                            <div
+                                class="position-absolute drop-search concept-search p-3 pt-4 @if ($searchConcept == null) d-none @endif">
+                                <div class="container" style="overflow: scroll">
+                                    @switch($concept_type)
+                                        @case('Costos')
+                                            <div class="row mb-3">
+                                                <div class="col">
+                                                    <h4>Tarifas y costos de ingresos</h4>
+                                                </div>
+                                            </div>
+
+                                            @if ($rates != null)
+                                                <div class="table-responsive px-3">
+                                                    <table class="table table-striped table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Sección</th>
+                                                                <th>Número</th>
+                                                                <th>Tipo</th>
+                                                                <th>Concepto/Descripción</th>
+                                                                <th>Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($rates as $rate)
+                                                                <tr>
+                                                                    <td>
+                                                                        <button type="button"
+                                                                            wire:click="selectConcept('{{ $rate->section }}')"
+                                                                            class="btn btn-sm btn-primary">
+                                                                            Seleccionar
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $rate->section }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $rate->order_number }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $rate->type }}
+                                                                    </td>
+                                                                    <td>
+                                                                        @switch($rate->type)
+                                                                            @case('Tarifa/Costo')
+                                                                                {{ $rate->concept }}
+                                                                            @break
+
+                                                                            @case('Informativo')
+                                                                                {{ $rate->description }}
+                                                                            @break
+                                                                        @endswitch
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $rate->cost ?? 'N/A' }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            @endif
+                                        @break
+
+                                        @case('Ley')
+                                            <div class="row mb-3">
+                                                <div class="col">
+                                                    <h4>Ley de Ingresos</h4>
+                                                </div>
+                                            </div>
+
+                                            @if ($concepts != null)
+                                                <div class="table-responsive px-3">
+                                                    <table class="table table-striped table-hover">
+                                                        <thead class="">
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>CRI</th>
+                                                                <th>Concepto</th>
+                                                                <th>Tipo</th>
+                                                                <th>Entidad</th>
+                                                                <th>Ley</th>
+                                                                <th>Ingreso estimado</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($concepts as $concept)
+                                                                <tr>
+                                                                    <td>
+                                                                        <button type="button"
+                                                                            wire:click="selectConcept('{{ $concept->concept }}')"
+                                                                            class="btn btn-sm btn-primary">
+                                                                            Seleccionar
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $concept->CRI }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $concept->concept }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $concept->income->type }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $concept->income->entity }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $concept->income->law }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $concept->estimated_income }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            @endif
+                                        @break
+
+                                        @case('Disposiciones')
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h4>Disposiciones Administrativas de Recaudación</h4>
+                                                </div>
+                                            </div>
+
+                                            @if ($variants != null)
+                                                <div class="table-responsive px-3">
+                                                    <table class="table table-striped table-hover">
+                                                        <thead class="">
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Nombre de Variante</th>
+                                                                <th>Sección</th>
+                                                                <th>Artículo</th>
+                                                                <th>Fracción</th>
+                                                                <th>
+                                                                    Cláusula
+                                                                </th>
+                                                                <th>Tarifa</th>
+                                                                <th>Unidades</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($variants as $variant)
+                                                                <tr>
+                                                                    <td>
+                                                                        <button type="button"
+                                                                            wire:click="selectConcept('{{ $variant->name }}')"
+                                                                            class="btn btn-sm btn-primary">
+                                                                            Seleccionar
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
+                                                                        <strong>
+                                                                            {{ $variant->name }}
+                                                                        </strong>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $variant->clause->fraction->article->section->name ?? 'N/A' }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $variant->clause->fraction->article->name ?? 'N/A' }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $variant->clause->fraction->fraction ?? 'N/A' }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $variant->clause->clause ?? 'N/A' }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $variant->units }}
+                                                                    </td>
+
+                                                                    @php
+                                                                        $numero_str = $variant->quote;
+                                                                        $numero = (float) $numero_str; // Convertir el string a float
+                                                                    @endphp
+
+                                                                    <td>
+                                                                        {{ number_format($numero, 2) }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            @endif
+                                        @break
+
+                                    @endswitch
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="row m-3">
+                    <div class="col-2">
+                        <label for="basis">Fundamento</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="basis" wire:model="basis" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="row align-items-center m-3">
+                    <div class="col-md-2">
+                        <label for="name" class="col-form-label">Concepto</label>
+                    </div>
+                    <div class="col-md">
+                        <input type="text" name="concept" wire:model.live="concept" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="row align-items-center m-3">
+                    <div class="col-md-2">
+                        <label for="name" class="col-form-label">Departamento</label>
+                    </div>
+                    <div class="col-md">
+                        <input type="text" name="department" wire:model="department" class="form-control" disabled>
+                    </div>
+                </div>
+
+
                 <div class="row align-items-center m-3">
                     <div class="col-md-6">
                         <div class="row align-items-center">
@@ -138,8 +379,8 @@
                                 <label for="qty_integer" class="col-form-label">Cantidad</label>
                             </div>
                             <div class="col-md">
-                                <input type="number" name="qty_integer" wire:model="qty_integer" class="form-control"
-                                    disabled>
+                                <input type="number" name="qty_integer" wire:model="qty_integer"
+                                    class="form-control" disabled>
                             </div>
                         </div>
                     </div>
@@ -255,16 +496,6 @@
                     </div>
                     <div class="col">
                         <input type="text" name="locality" wire:model="locality" class="form-control"
-                            @if ($mode == 1) disabled @endif>
-                    </div>
-                </div>
-
-                <div class="row m-3">
-                    <div class="col-2">
-                        <label for="basis">Fundamento</label>
-                    </div>
-                    <div class="col">
-                        <input type="text" name="basis" wire:model="basis" class="form-control"
                             @if ($mode == 1) disabled @endif>
                     </div>
                 </div>
