@@ -86,8 +86,6 @@ class Crud extends Component
         foreach ($this->denominaciones as $valor => $cantidad) {
             $this->total_value += $valor * $cantidad;
         }
-
-        return redirect()->route('account_due_incomes.close', $this->account_due_income_id);
     }
 
     public function save()
@@ -117,8 +115,6 @@ class Crud extends Component
         ]);
 
         session()->flash('message', 'Cobro registrado con éxito.');
-
-        $this->generatePdf();
 
         // Mensaje de sesión
         return redirect()->route('account_due_incomes.close', $this->account_due_income_id);

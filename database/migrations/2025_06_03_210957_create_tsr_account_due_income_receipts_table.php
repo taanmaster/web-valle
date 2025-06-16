@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('cashier_user')->nullable();
             $table->string('cashier')->nullable();
             $table->string('qty_text')->nullable();
-            $table->string('qty_integer')->nullable();
+            $table->integer('qty_integer')->nullable();
             $table->string('depositor')->nullable();
 
             // Totales de ingreso a partir del metodo de pago
