@@ -511,4 +511,47 @@
             </form>
         </div>
     </div>
+
+    @if ($mode == 1 && $income->receipt != null)
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#Recibo</th>
+                        <th>Fecha y hora</th>
+                        <th>Usuario de caja</th>
+                        <th>Caja</th>
+                        <th>Ingreso</th>
+                        <th>Cuenta</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ $income->receipt->id }}</td>
+                        <td>{{ $income->receipt->created_at->format('d/m/Y h:m') }}</td>
+                        <td>{{ $income->receipt->cashier_user }}</td>
+                        <td>{{ $income->receipt->cashier }}</td>
+
+                        @php
+                            $value = (int) $income->receipt->qty_integer;
+                        @endphp
+
+                        <td>{{ number_format($value, 2) }}</td>
+                        <td>{{ $income->receipt->account }}</td>
+                        <td>
+
+                            @if ($income->receipt->total_cash > 0)
+                                <a href="{{ route('account_due_incomes.close', $income->receipt->id) }}"
+                                    class="btn btn-primary btn-sm">Imprimir</a>
+                            @endif
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    @else
+        <h1>Dos</h1>
+    @endif
+    <div class="row"></div>
 </div>

@@ -208,34 +208,25 @@
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('account_due.dashboard') }}">Dashboard</a>
+                            <a class="nav-link" href="{{ route('account_due.dashboard') }}">Dashboard</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('account_due_profiles.index') }}">Perfiles cuentas por cobrar</a>
+                            <a class="nav-link" href="{{ route('account_due_profiles.index') }}">Perfiles cuentas por
+                                cobrar</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('account_due_provisional_integers.index') }}">Registro de Enteros</a>
+                            <a class="nav-link" href="{{ route('account_due_provisional_integers.index') }}">Registro
+                                de Enteros</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('account_due.cashbox') }}">Caja</a>
+                            <a class="nav-link" href="{{ route('account_due.cashbox') }}">Caja</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('account_due_incomes.index') }}">Ingresos a cobro</a>
-                        </li>
-
-
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('account_due_income_receipts.index') }}">Recibo</a>
+                            <a class="nav-link" href="{{ route('account_due_incomes.index') }}">Ingresos a cobro</a>
                         </li>
                     </ul>
 
@@ -264,8 +255,7 @@
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
+                            <a class="nav-link" href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
                         </li>
                     </ul>
                 </div>

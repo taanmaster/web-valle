@@ -7,67 +7,105 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Recibo</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #551312;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .margin-top {
+            margin-top: 20px;
+        }
+
+        .w-half {
+            width: 50%;
+        }
+    </style>
 </head>
 
 <body>
     <table class="w-full">
         <tr>
             <td class="w-half">
-                <img src="{{ asset('laraveldaily.png') }}" alt="laravel daily" width="200" />
+                {{ $receipt->created_at->format('Y-m-d') }}
             </td>
             <td class="w-half">
-                <h2>Invoice ID: 834847473</h2>
+                <h2>Recibo de ingreso</h2>
             </td>
         </tr>
     </table>
 
     <div class="margin-top">
-        <table class="w-full">
-            <tr>
-                <td class="w-half">
-                    <div>
-                        <h4>To:</h4>
-                    </div>
-                    <div>John Doe</div>
-                    <div>123 Acme Str.</div>
-                </td>
-                <td class="w-half">
-                    <div>
-                        <h4>From:</h4>
-                    </div>
-                    <div>Laravel Daily</div>
-                    <div>London</div>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="margin-top">
-        <table class="products">
-            <tr>
-                <th>Qty</th>
-                <th>Description</th>
-                <th>Price</th>
-            </tr>
-
-            @foreach ($data as $item)
-                <tr class="items">
-                    <td>
-                        {{ $item['quantity'] }}
-                    </td>
-                    <td>
-                        {{ $item['description'] }}
-                    </td>
-                    <td>
-                        {{ $item['price'] }}
-                    </td>
+        <table>
+            <thead>
+                <tr>
+                    <th>Denominación</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
                 </tr>
-            @endforeach
-        </table>
-    </div>
+            </thead>
+            <tbody>
+                @php
+                    $denominaciones = json_decode($receipt->denominations, true) ?? [];
+                    $total_value = 0;
+                @endphp
 
-    <div class="total">
-        Total: $129.00 USD
+                @foreach ($denominaciones as $valor => $cantidad)
+                    @if ($cantidad > 0)
+                        @php
+                            $total = $valor * $cantidad;
+                            $total_value += $total;
+                        @endphp
+                        <tr>
+                            <td>{{ $valor }}</td>
+                            <td>{{ $cantidad }}</td>
+                            <td>{{ $total }}</td>
+                        </tr>
+                    @endif
+                @endforeach
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td></td>
+                    <td><strong>{{ $total_value }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 

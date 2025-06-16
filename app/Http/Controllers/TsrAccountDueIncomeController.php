@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TsrAccountDueIncome;
+use App\Models\TsrAccountDueIncomeReceipt;
 use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -61,7 +62,11 @@ class TsrAccountDueIncomeController extends Controller
 
     public function close($id)
     {
-        $pdf = PDF::loadView('tsr_accounts_due.income_receipts.utilities.pdf')->setPaper('A4');
+        $receipt = TsrAccountDueIncomeReceipt::find($id);
+
+        $pdf = PDF::loadView('tsr_accounts_due.incomes_receipts.utilities.pdf', [
+            'receipt' => $receipt
+        ])->setPaper('A4');
 
         return $pdf->download();
     }
