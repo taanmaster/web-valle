@@ -61,7 +61,7 @@ class TsrAccountDueIncomeController extends Controller
 
     public function close($id)
     {
-        $pdf = PDF::loadView('pdf')->setPaper('A4');
+        $pdf = PDF::loadView('tsr_accounts_due.income_receipts.utilities.pdf')->setPaper('A4');
 
         return $pdf->download();
     }

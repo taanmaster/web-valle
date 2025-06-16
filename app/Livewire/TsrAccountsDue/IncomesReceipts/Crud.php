@@ -117,12 +117,7 @@ class Crud extends Component
         session()->flash('message', 'Cobro registrado con éxito.');
 
         // Mensaje de sesión
-        return redirect()->route('account_due_incomes.close', $this->account_due_income_id);
-    }
-
-    public function generatePdf()
-    {
-        return redirect()->route('account_due_incomes.close', $this->account_due_income_id);
+        return redirect()->route('account_due_incomes.show', $this->account_due_income_id);
     }
 
     public function render()

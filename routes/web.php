@@ -438,6 +438,21 @@ Route::namespace('App\Http\Controllers')->group(function () {
                     'uses' => 'TsrAccountDueIncomeReceiptController@create',
                     'as' => 'account_due_income_receipts.create',
                 ]);
+
+                Route::get('daily_cashier_report', [
+                    'uses' => 'TsrAccountsDueController@dailyReport',
+                    'as' => 'account_due.daily',
+                ]);
+
+                Route::get('/daily_cashier_report_export/{id}', [
+                    'uses' => 'TsrAccountsDueController@exportDaily',
+                    'as' => 'account_due_daily.export',
+                ]);
+
+                Route::get('cashier_report', [
+                    'uses' => 'TsrAccountsDueController@report',
+                    'as' => 'account_due.report',
+                ]);
             });
 
             /*Generador de Cajas para Tesorería*/
