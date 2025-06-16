@@ -42,7 +42,13 @@ class ListBlog extends Component
             $query->where('category', $this->category);
         }
 
-        $blogs = $query->latest()->paginate(8);
+        if ($this->mode == 0) {
+            $blogs = $query->get()->take(3);
+        } else {
+            $blogs = $query->latest()->paginate(8);
+        }
+
+
 
         return view('front.blog.utilities.list-blog', [
             'blogs' => $blogs,

@@ -193,12 +193,12 @@ class FrontController extends Controller
                 $submenu_name = 'Obligaciones Comunes';
                 $submenu_description = 'Información adicional de transparencia';
                 break;
-            
+
             case 'Especifica':
                 $submenu_name = 'Obligaciones Específicas';
                 $submenu_description = 'Información adicional de transparencia';
                 break;
-            
+
             case 'Aplicabilidad':
                 $submenu_name = 'Tabla de Aplicabilidad';
                 $submenu_description = 'Información adicional de transparencia';
@@ -225,10 +225,10 @@ class FrontController extends Controller
         }
 
         return view('front.dependencies.transparency_obligations')
-        ->with('dependency', $dependency)
-        ->with('obligations', $obligations)
-        ->with('submenu_name', $submenu_name)
-        ->with('submenu_description', $submenu_description);
+            ->with('dependency', $dependency)
+            ->with('obligations', $obligations)
+            ->with('submenu_name', $submenu_name)
+            ->with('submenu_description', $submenu_description);
     }
 
     public function dependencyList()
@@ -344,10 +344,13 @@ class FrontController extends Controller
 
         $mode = 0;
 
+        $categories = ['General', 'Turismo', 'Eventos'];
+
         return view('front.blog.index')->with([
             'posts' => $posts,
             'fav_posts' => $fav_posts,
-            'mode' => $mode
+            'mode' => $mode,
+            'categories' => $categories
         ]);
     }
 
@@ -358,14 +361,31 @@ class FrontController extends Controller
         return view('front.blog.detail')->with('blog', $blog);
     }
 
-    public function blogList()
+    public function blogList($category)
+    {
+        $posts = Blog::orderBy('updated_at', 'desc')->where('category', $category)->paginate(8);
+        $mode = 1;
+
+        $category = $category;
+
+        return view('front.blog.list')->with([
+            'posts' => $posts,
+            'mode' => $mode,
+            'category' => $category
+        ]);
+    }
+
+    public function blogAll()
     {
         $posts = Blog::orderBy('updated_at', 'desc')->paginate(8);
         $mode = 1;
 
+        $category = '';
+
         return view('front.blog.list')->with([
             'posts' => $posts,
-            'mode' => $mode
+            'mode' => $mode,
+            'category' => $category
         ]);
     }
 

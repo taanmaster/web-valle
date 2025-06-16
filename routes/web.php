@@ -104,8 +104,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'blog.index',
     ]);
 
-    Route::get('/blog/lista', [
+    Route::get('/blog/lista/{category}', [
         'uses' => 'FrontController@blogList',
+        'as' => 'blog.list-filter',
+    ]);
+
+    Route::get('/blog/todos', [
+        'uses' => 'FrontController@blogAll',
         'as' => 'blog.list',
     ]);
 

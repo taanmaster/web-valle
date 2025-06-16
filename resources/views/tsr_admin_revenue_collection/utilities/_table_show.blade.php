@@ -181,8 +181,8 @@
                                             <tr>
                                                 <th>Nombre de Variante</th>
                                                 <th>Descripción</th>
-                                                <th>Tarifa</th>
                                                 <th>Unidades</th>
+                                                <th>Tarifa</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>

@@ -26,9 +26,46 @@
     @endif
 
     <div class="row">
-        @foreach ($blogs as $blog)
-            @include('front.blog.utilities.blog-card')
-        @endforeach
+
+        @if ($mode == 0)
+            @foreach ($blogs->take(3) as $index => $blog)
+                @if ($index === 0)
+                    <a href="{{ route('blog.detail', $blog->slug) }}" class="col-md-12 mb-3">
+                        <div class="card card-image card-image-banner wow fadeInUp">
+                            <img class="card-img-top" src="{{ asset('images/blog/' . $blog->hero_img) }}"
+                                alt="">
+                            <div class="overlay"></div>
+                            <div class="card-content w-100">
+                                <div class="d-flex aling-items-center justify-content-between w-100">
+                                    <h1 class="mb-0">{{ $blog->title }}</h1>
+                                    <p class="mb-0">{{ $blog->writer }}</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                @else
+                    <a href="{{ route('blog.detail', $blog->slug) }}" class="col-md-6 mb-4">
+                        <div class="card card-image justify-content-end wow fadeInUp" style="height: 400px">
+                            <img class="card-img-top" src="{{ asset('images/blog/' . $blog->hero_img) }}"
+                                alt="">
+                            <div class="overlay"></div>
+                            <div class="card-content w-100">
+                                <div class="d-flex aling-items-center justify-content-between w-100">
+                                    <h3 class="mb-0">{{ $blog->title }}</h3>
+                                    <p class="mb-0 truncate-text">{{ $blog->writer }}</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                @endif
+            @endforeach
+        @else
+            @foreach ($blogs as $blog)
+                @include('front.blog.utilities.blog-card')
+            @endforeach
+        @endif
     </div>
 
 

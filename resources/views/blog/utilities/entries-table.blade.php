@@ -45,6 +45,13 @@
                         @endif
                         <br>
 
+                        <input type="text" class="form-control mt-2"
+                            id="https://www.valledesantiago.gob.mx/blog/{{ $blog->slug }}"
+                            value="https://www.valledesantiago.gob.mx/blog/{{ $blog->slug }}" readonly>
+                        <button type="button" class="btn btn-outline-primary mt-2"
+                            onclick="copyToClipboard('https://www.valledesantiago.gob.mx/blog/{{ $blog->slug }}')">Copiar
+                            Ruta</button>
+
                         <div class="d-flex mt-3 w-100 justify-content-between align-items-center">
                             <p class="mb-0">
                                 {{ $blog->category }}
@@ -72,4 +79,16 @@
     <div class="d-flex align-items-center justify-content-center">
         {{ $blogs->links() }}
     </div>
+
+    @push('scripts')
+        <script>
+            function copyToClipboard(elementId) {
+                var copyText = document.getElementById(elementId);
+                copyText.select();
+                copyText.setSelectionRange(0, 99999); // For mobile devices
+                document.execCommand("copy");
+                alert("Ruta copiada: " + copyText.value);
+            }
+        </script>
+    @endpush
 </div>
