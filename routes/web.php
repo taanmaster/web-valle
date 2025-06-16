@@ -453,6 +453,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                     'uses' => 'TsrAccountsDueController@report',
                     'as' => 'account_due.report',
                 ]);
+
+                Route::get('/cashier_report_export/{id}', [
+                    'uses' => 'TsrAccountsDueController@exportCustome',
+                    'as' => 'account_due_custome.export',
+                ]);
             });
 
             /*Generador de Cajas para Tesorería*/
