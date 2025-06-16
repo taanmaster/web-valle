@@ -107,6 +107,20 @@
             </tbody>
         </table>
     </div>
+
+    <div style="width:100%; display:flex">
+
+        <div style="width:60%">
+
+            <strong>{{ $receipt->cashier_user }}</strong>
+        </div>
+        <div style="width:60%">
+
+
+            <strong>{{ $receipt->income->name }}</strong>
+        </div>
+
+    </div>
 </body>
 
 </html>
