@@ -1,7 +1,7 @@
 <div>
 
     @push('stylesheets')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @endpush
 
     <div class="row mb-3">
@@ -62,7 +62,8 @@
                                 data-id="{{ $integer->id }}">
                                 <i class="bx bx-edit"></i> Ver
                             </a>
-                            <a href="javascript:void(0)" class="btn btn-secondary btn-sm">Descargar</a>
+                            <a href="{{ route('account_due_provisional_integers.print', $integer->id) }}"
+                                class="btn btn-secondary btn-sm">Descargar</a>
                         </td>
                     </tr>
                 @endforeach
@@ -73,13 +74,13 @@
     <!-- Modal -->
     <div class="modal fade" id="enteroModal" tabindex="-1" aria-labelledby="enteroModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h1 class="modal-title fs-5" id="enteroModalLabel">Entero Provisional para Pago</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="enteroModalLabel">Entero Provisional para Pago</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <livewire:tsr_accounts_due.profiles.integer-modal />
             </div>
-            <livewire:tsr_accounts_due.profiles.integer-modal/>
-        </div>
         </div>
     </div>
 
@@ -87,7 +88,6 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script>
-
             var enteroModal = new bootstrap.Modal(document.getElementById('enteroModal'), {
                 keyboard: false
             });
@@ -104,14 +104,14 @@
 
 
             // In your Javascript (external .js resource or <script> tag)
-                $(document).ready(function() {
-                    $('.js-example-basic-multiple').select2();
+            $(document).ready(function() {
+                $('.js-example-basic-multiple').select2();
 
-                    $('.js-example-basic-multiple').on('change', function(e) {
-                        Livewire.dispatch('select',
+                $('.js-example-basic-multiple').on('change', function(e) {
+                    Livewire.dispatch('select',
                         $('.js-example-basic-multiple').select2("val"));
-                    });
                 });
+            });
         </script>
     @endpush
 </div>

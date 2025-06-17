@@ -108,17 +108,25 @@
         </table>
     </div>
 
-    <div style="width:100%; display:flex">
-
-        <div style="width:60%">
-
-            <strong>{{ $receipt->cashier_user }}</strong>
-        </div>
-        <div style="width:60%">
+    <div style="margin-top: 50px">
 
 
-            <strong>{{ $receipt->income->name }}</strong>
-        </div>
+        <table>
+            <tbody>
+                <tr>
+                    <td style="text-align: center">
+                        Firma y nombre de cajero
+                        <br>
+                        <strong>{{ $receipt->cashier_user }}</strong>
+                    </td>
+                    <td style="text-align: center">
+                        Firma y nombre de depositante
+                        <br>
+                        <strong>{{ $receipt->income->name }}</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
     </div>
 </body>

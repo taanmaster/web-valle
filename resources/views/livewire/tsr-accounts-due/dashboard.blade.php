@@ -17,7 +17,7 @@
         <div class="col-md-8">
             <div class="card h-100">
                 <div class="card-header">
-                    <h4 class="card-title">Line Chart</h4>
+                    <h4 class="card-title">Estados de cuenta</h4>
                 </div><!--end card-header-->
                 <div class="card-body">
                     <canvas id="lineChart" width="1809" height="600"></canvas>
@@ -27,7 +27,7 @@
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-header">
-                    <h4 class="card-title">Line Chart</h4>
+                    <h4 class="card-title">Ingresos</h4>
                 </div><!--end card-header-->
                 <div class="card-body">
                     <canvas id="barChart" style="height: 100%"></canvas>
@@ -228,16 +228,20 @@
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
+
         <script>
             const ctx = document.getElementById('lineChart');
+
+            var dataFromPHP = <?php echo $jsonData; ?>;
 
             new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: '{{ implode(', ', $weekDays) }}',
                     datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
+                        label: 'Estados de cuenta',
+                        data: [],
                         borderWidth: 1
                     }]
                 },
@@ -255,12 +259,11 @@
             new Chart(ct, {
                 type: 'bar',
                 data: {
-                    labels: '{{ implode(', ', $weekDays) }}',
                     datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
-                        borderWidth: 1
-                    }]
+                        label: 'Ingresos de cobro por día',
+                        data: dataFromPHP // Usar los datos desde PHP
+                    }],
+                    labels: dataFromPHP.map(item => item.x) // Extraer las etiquetas (días)
                 },
                 options: {
                     scales: {

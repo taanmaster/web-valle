@@ -7,6 +7,7 @@ use App\Models\TsrAccountDueDailyReport;
 use Illuminate\Http\Request;
 use App\Models\TsrAccountDueIncomeReceipt;
 use App\Models\TsrAccountDueIncome;
+use App\Models\TsrAccountDueProvisionalInteger;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class TsrAccountsDueController extends Controller
@@ -19,6 +20,27 @@ class TsrAccountsDueController extends Controller
     public function cashbox()
     {
         $receipts = TsrAccountDueIncomeReceipt::get()->take(8);
+
+        $weekDays = [];
+        $inicio = Carbon::now()->startOfWeek();
+
+        $data = [];
+
+        for ($i = 0; $i < 5; $i++) {
+            $weekDays[] = $inicio->copy()->addDays($i)->format('d');
+        }
+
+        for ($i = 0; $i < 5; $i++) {
+            $fecha = $inicio->copy()->addDays($i);
+            $incomes = $this->totalIncomes($fecha); // Función que debes definir para obtener el total
+
+            $this->data[] = [
+                'x' => $fecha->format('d'), // Día del mes
+                'y' => $incomes // Total de TsrAccountDueIncomes
+            ];
+        }
+
+
 
         return view('tsr_accounts_due.cashbox')->with('receipts', $receipts);
     }
@@ -135,5 +157,17 @@ class TsrAccountsDueController extends Controller
         $today = today()->format('Y-m-d');
 
         return $pdf->download('Reporte' . $today . '.pdf');
+    }
+
+    public function printInteger($id)
+    {
+        $integer = TsrAccountDueProvisionalInteger::find($id);
+
+        $pdf = PDF::loadView('tsr_accounts_due.provisional_integers.utilities.pdf', [
+            'integer' => $integer,
+        ])->setPaper('A4');
+
+
+        return $pdf->download('Entero.pdf');
     }
 }

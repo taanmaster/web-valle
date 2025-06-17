@@ -28,6 +28,8 @@ class Dashboard extends Component
     public $total = '';
 
     public $weekDays = [];
+    public $data = [];
+    public $jsonData;
 
 
     public function mount()
@@ -48,8 +50,26 @@ class Dashboard extends Component
         $this->total = TsrAccountDueProvisionalInteger::sum('qty_integer');
 
         for ($i = 0; $i < 5; $i++) {
-            $this->weekDays[] = $inicio->copy()->addDays($i)->format('d-m');
+            $this->weekDays[] = $inicio->copy()->addDays($i)->format('d');
         }
+
+
+        for ($i = 0; $i < 5; $i++) {
+            $fecha = $inicio->copy()->addDays($i);
+            $incomes = $this->totalIncomes($fecha); // Función que debes definir para obtener el total
+
+            $this->data[] = [
+                'x' => $fecha->format('d'), // Día del mes
+                'y' => $incomes // Total de TsrAccountDueIncomes
+            ];
+        }
+
+        $this->jsonData = json_encode($this->data);
+    }
+
+    function totalIncomes($fecha)
+    {
+        return TsrAccountDueIncome::whereDate('created_at', $fecha)->count();
     }
 
     public function render()

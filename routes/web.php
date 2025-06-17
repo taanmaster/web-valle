@@ -419,6 +419,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                     'destroy' => 'account_due_provisional_integers.destroy',
                 ]);
 
+                Route::get('/provisional_integers/print/{id}', [
+                    'uses' => 'TsrAccountsDueController@printInteger',
+                    'as' => 'account_due_provisional_integers.print',
+                ]);
+
                 Route::resource('incomes', TsrAccountDueIncomeController::class)->names([
                     'index' => 'account_due_incomes.index',
                     'create' => 'account_due_incomes.create',

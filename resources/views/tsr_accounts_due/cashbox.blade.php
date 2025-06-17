@@ -24,11 +24,9 @@
                 </div>
 
 
-                <div class="col-2 text-end">
+                <div class="col-4 text-end d-flex" style="gap: 12px">
                     <a href="{{ route('account_due.daily') }}" class="btn btn-sm btn-secondary">Exportar reporte
                         diario</a>
-                </div>
-                <div class="col-2 text-end">
                     <a href="{{ route('account_due.report') }}" class="btn btn-sm btn-secondary">Exportar reporte
                         personalizado</a>
                 </div>

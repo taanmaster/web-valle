@@ -103,6 +103,7 @@ class IntegerModal extends Component
         $this->director = $this->integer->director;
         $this->payment_date = $this->integer->created_at;
         $this->created_by = $this->integer->created_by;
+        $this->payment_date = $this->integer->created_at->format('Y-m-d');
     }
 
     public function save()

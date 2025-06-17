@@ -551,7 +551,7 @@
             </table>
         </div>
     @else
-        <h1>Dos</h1>
+        <h2>No hay recibo de este ingreso</h2>
     @endif
     <div class="row"></div>
 </div>
