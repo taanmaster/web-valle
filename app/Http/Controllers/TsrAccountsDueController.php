@@ -9,6 +9,7 @@ use App\Models\TsrAccountDueIncomeReceipt;
 use App\Models\TsrAccountDueIncome;
 use App\Models\TsrAccountDueProvisionalInteger;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Carbon;
 
 class TsrAccountsDueController extends Controller
 {
@@ -21,28 +22,38 @@ class TsrAccountsDueController extends Controller
     {
         $receipts = TsrAccountDueIncomeReceipt::get()->take(8);
 
-        $weekDays = [];
-        $inicio = Carbon::now()->startOfWeek();
 
-        $data = [];
+        $recibos = TsrAccountDueIncomeReceipt::whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),  // lunes
+            Carbon::now()->endOfWeek()     // domingo
+        ])->get();
 
-        for ($i = 0; $i < 5; $i++) {
-            $weekDays[] = $inicio->copy()->addDays($i)->format('d');
+
+        $weekCounts = [
+            'Monday' => 0,  // Mo
+            'Tuesday' => 0, // Tu
+            'Wednesday' => 0, // We
+            'Thursday' => 0, // Th
+            'Friday' => 0, // Fr
+            'Saturday' => 0, // Sa
+            'Sunday' => 0  // Su
+        ];
+
+
+        foreach ($recibos as $recibo) {
+            $day = Carbon::parse($recibo->created_at)->format('l'); // Ej: 'Monday'
+            if (isset($weekCounts[$day])) {
+                $weekCounts[$day]++;
+            }
         }
 
-        for ($i = 0; $i < 5; $i++) {
-            $fecha = $inicio->copy()->addDays($i);
-            $incomes = $this->totalIncomes($fecha); // Función que debes definir para obtener el total
-
-            $this->data[] = [
-                'x' => $fecha->format('d'), // Día del mes
-                'y' => $incomes // Total de TsrAccountDueIncomes
-            ];
-        }
+        // Convertir a array de valores en orden
+        $values = array_values($weekCounts);
 
 
 
-        return view('tsr_accounts_due.cashbox')->with('receipts', $receipts);
+
+        return view('tsr_accounts_due.cashbox')->with('receipts', $receipts)->with('values', $values);
     }
 
     public function dailyReport()

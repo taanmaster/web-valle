@@ -88,9 +88,10 @@
             new Chart(ct, {
                 type: 'bar',
                 data: {
-                    labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+                    labels: ['Lu', 'Ma', 'Mie', 'Ju', 'Vi', 'Sa', 'Do'],
                     datasets: [{
-                        data: [12, 19, 3, 5, 2, 3],
+                        label: 'Recibos',
+                        data: @json($values),
                         borderWidth: 1
                     }]
                 },
