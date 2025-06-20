@@ -28,13 +28,15 @@
                 </a>
             </li>
 
+            {{--  
             <li>
                 <a href="{{ route('treasury.dependency.list') }}">
                     <ion-icon name="stats-chart-outline"></ion-icon>
                     <span>Tesorería</span>
                 </a>
             </li>
-
+            --}}
+            
             <li>
                 <a href="{{ route('sare.index') }}">
                     <ion-icon name="layers-outline"></ion-icon>

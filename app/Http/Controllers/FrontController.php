@@ -234,9 +234,11 @@ class FrontController extends Controller
     public function dependencyList()
     {
         $dependencies = TransparencyDependency::where('belongs_to_treasury', false)->where('slug', '!=', 'unidad-de-transparencia-y-acceso-a-la-informacion')->orderBy('name', 'asc')->get();
+        $treasury_dependencies = TransparencyDependency::where('belongs_to_treasury', true)->orderBy('name', 'asc')->get();
 
         return view('front.dependencies.index')
-            ->with('dependencies', $dependencies);
+            ->with('dependencies', $dependencies)
+            ->with('treasury_dependencies', $treasury_dependencies);
     }
 
     public function dependencyDetail($slug)
