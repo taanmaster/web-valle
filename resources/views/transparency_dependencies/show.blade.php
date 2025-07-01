@@ -50,6 +50,7 @@
                                     <small>Actualizado: {{ $transparency_dependency->updated_at }}</small>
                                 </div>
                                 <div class="col-md-12">
+                                    {{--
                                     <div class="btn-group mt-4" role="group" aria-label="Basic example">
                                         <form method="POST"
                                             action="{{ route('transparency_dependencies.destroy', $transparency_dependency->id) }}"
@@ -61,6 +62,7 @@
                                             {{ method_field('DELETE') }}
                                         </form>
                                     </div>
+                                    --}}
                                 </div>
                             </div>
                         </div>
