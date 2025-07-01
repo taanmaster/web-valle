@@ -32,6 +32,7 @@
                         <a href="{{ route('transparency_obligations.show', $transparency_obligation->id) }}" class="btn btn-sm btn-outline-primary">Ver Detalle</a>
                         <a href="{{ route('transparency_obligations.edit', $transparency_obligation->id) }}" class="btn btn-sm btn-outline-secondary">Editar</a>
                         
+                        {{--  
                         <form method="POST" action="{{ route('transparency_obligations.destroy', $transparency_obligation->id) }}" style="display: inline-block;">
                             <button type="submit" class="btn btn-sm btn-outline-danger">
                                 <i class='bx bx-trash-alt text-danger'></i> Eliminar
@@ -39,6 +40,7 @@
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
                         </form>
+                        --}}
                     </div>
                 </td> 
             </tr>

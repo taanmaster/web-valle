@@ -40,7 +40,8 @@
                             <a href="{{ route('transparency_documents.edit', $transparency_document->id) }}"
                                 class="btn btn-sm btn-icon"><i class='bx bx-edit'></i> Editar</a>
 
-
+                            
+                                {{--  
                             <form method="POST"
                                 action="{{ route('transparency_documents.destroy', $transparency_document->id) }}"
                                 style="display: inline-block;">
@@ -50,6 +51,7 @@
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                             </form>
+                            --}}
                         </div>
                     </td>
                 </tr>

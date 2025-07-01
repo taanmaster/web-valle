@@ -19,6 +19,7 @@
                 <div class="btn-group mt-3" role="group" aria-label="Basic example">
                     <a href="{{ route('transparency_dependencies.show', $dependency->id) }}" class="btn btn-sm btn-outline-primary"><i class='bx bx-show-alt'></i> Ver Detalle</a>
                     <a href="{{ route('transparency_dependencies.edit', $dependency->id) }}" class="btn btn-sm btn-outline-secondary"><i class='bx bx-edit'></i> Editar</a>
+                    {{--  
                     <form method="POST" action="{{ route('transparency_dependencies.destroy', $dependency->id) }}" style="display: inline-block;">
                         <button type="submit" class="btn btn-sm btn-outline-danger">
                             <i class='bx bx-trash-alt text-danger'></i> Eliminar
@@ -26,6 +27,7 @@
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
                     </form>
+                    --}}
                 </div>
             </div>
         </div>
