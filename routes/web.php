@@ -78,12 +78,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'dependency.detail',
     ])->where('slug', '[\w\d\-\_]+');
 
-    Route::get('/obligaciones/{slug}', [
+    Route::get('/obligaciones/{dependency}/{slug}', [
         'uses' => 'FrontController@obligationDetail',
         'as' => 'obligation.detail',
     ])->where('slug', '[\w\d\-\_]+');
 
-    Route::get('/filtrar-documentos/{slug}/{date}', [
+    Route::get('/filtrar-documentos/{dependency}/{slug}/{date}', [
         'uses' => 'FrontController@filterTransparencyDocumentByDate',
         'as' => 'document.filter',
     ])->where('date', '[0-9]{4}');
@@ -263,6 +263,22 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'edit' => 'transparency_documents.edit',
                 'update' => 'transparency_documents.update',
                 'destroy' => 'transparency_documents.destroy',
+            ]);
+
+            // Rutas para subida por chunks de documentos de transparencia
+            Route::post('/documents/init-chunk-upload', [
+                'uses' => 'TransparencyDocumentController@initChunkUpload',
+                'as' => 'transparency_documents.init-chunk-upload',
+            ]);
+            
+            Route::post('/documents/upload-chunk', [
+                'uses' => 'TransparencyDocumentController@uploadChunk',
+                'as' => 'transparency_documents.upload-chunk',
+            ]);
+            
+            Route::post('/documents/finalize-chunk-upload', [
+                'uses' => 'TransparencyDocumentController@finalizeChunkUpload',
+                'as' => 'transparency_documents.finalize-chunk-upload',
             ]);
 
             Route::resource('files', TransparencyFileController::class)->names([

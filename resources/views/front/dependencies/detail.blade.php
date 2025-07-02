@@ -35,7 +35,7 @@
                 <div class="row">
                     @foreach ($dependency->obligations as $obligation)
                         <div class="col-md-3" style="margin-bottom: 30px;">
-                            <a href="{{ route('obligation.detail', $obligation->slug) }}"
+                            <a href="{{ route('obligation.detail', [$dependency, $obligation->slug]) }}"
                                 class="card link-card card-normal card-alignment-bottom wow fadeInUp h-100">
                                 <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
                                     <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>

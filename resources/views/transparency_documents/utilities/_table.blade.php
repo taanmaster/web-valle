@@ -28,9 +28,15 @@
                     </td>
                     <td>{{ $transparency_document->year }}</td>
                     <td>
-                        <a href="{{ asset('files/documents/' . $transparency_document->filename) }}" target="_blank">
-                            {{ $transparency_document->filename }}
-                        </a>
+                        @if($transparency_document->s3_asset_url != null)
+                            <a href="{{ $transparency_document->s3_asset_url }}" target="_blank">
+                                {{ $transparency_document->filename }}
+                            </a>
+                        @else
+                            <a href="{{ asset('files/documents/' . $transparency_document->filename) }}" target="_blank">
+                                {{ $transparency_document->filename }}
+                            </a>
+                        @endif
                     </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">

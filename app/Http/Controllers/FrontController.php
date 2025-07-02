@@ -250,11 +250,11 @@ class FrontController extends Controller
     }
 
     // Módulo Obligaciones
-    public function obligationDetail($slug)
+    public function obligationDetail($dependency, $slug)
     {
         Carbon::setLocale('es');
 
-        $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
+        $obligation = TransparencyObligation::where('dependency_id', $dependency)->where('slug', '=', $slug)->first();
         $documents = TransparencyDocument::where('obligation_id', $obligation->id)->orderBy('year', 'desc')->get();
 
         $dates = $documents->pluck('year')->unique()->map(function ($year) {
@@ -262,17 +262,18 @@ class FrontController extends Controller
         });
 
         return view('front.dependencies.obligation_detail')
+            ->with('dependency', TransparencyDependency::find($dependency))
             ->with('obligation', $obligation)
             ->with('documents', $documents)
             ->with('dates', $dates);
     }
 
     // Módulo Documentos
-    public function filterTransparencyDocumentByDate($slug, $date)
+    public function filterTransparencyDocumentByDate($dependency, $slug, $date)
     {
         Carbon::setLocale('es');
 
-        $obligation = TransparencyObligation::where('slug', '=', $slug)->first();
+        $obligation = TransparencyObligation::where('dependency_id', $dependency)->where('slug', '=', $slug)->first();
         $documents = TransparencyDocument::where('obligation_id', $obligation->id)->where('year', '=', $date)->orderBy('year', 'desc')->get();
 
         $all_documents = TransparencyDocument::where('obligation_id', $obligation->id)->orderBy('year', 'desc')->get();
@@ -282,6 +283,7 @@ class FrontController extends Controller
         });
 
         return view('front.dependencies.obligation_detail')->with([
+            'dependency' => TransparencyDependency::find($dependency),
             'obligation' => $obligation,
             'documents' => $documents,
             'dates' => $dates
