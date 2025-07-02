@@ -21,11 +21,11 @@
                         <h6 class="mb-3">Filtrar por Año</h6>
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link {{ !request('date') ? 'active' : '' }}" href="{{ route('obligation.detail', $obligation->slug) }}">Ver Todos</a>
+                                <a class="nav-link {{ !request('date') ? 'active' : '' }}" href="{{ route('obligation.detail', [$dependency, $obligation->slug]) }}">Ver Todos</a>
                             </li>
                             @foreach($dates as $date)
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request('date') == $date ? 'active' : '' }}" href="{{ route('document.filter', [$obligation->slug, $date]) }}">{{ $date }}</a>
+                                    <a class="nav-link {{ request('date') == $date ? 'active' : '' }}" href="{{ route('document.filter', [$dependency, $obligation->slug, $date]) }}">{{ $date }}</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -35,7 +35,11 @@
                         <div class="row">
                             @foreach($documents as $document)
                             <div class="col-md-3">
+                                @if($document->s3_asset_url != null)
+                                    <a href="{{ $document->s3_asset_url }}" target="_blank" class="card gazette-card d-block">
+                                @else
                                 <a href="{{ asset('files/documents/' . $document->filename) }}" target="_blank" class="card gazette-card d-block">
+                                @endif
                                     <h4 class="mb-0">{{ $document->name }}</h4>
                                     <small class="text-muted mt-1 mb-3 d-block">ID BD: {{ $document->id }}</small>
                                     <div>

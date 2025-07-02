@@ -78,12 +78,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'dependency.detail',
     ])->where('slug', '[\w\d\-\_]+');
 
-    Route::get('/obligaciones/{slug}', [
+    Route::get('/obligaciones/{dependency}/{slug}', [
         'uses' => 'FrontController@obligationDetail',
         'as' => 'obligation.detail',
     ])->where('slug', '[\w\d\-\_]+');
 
-    Route::get('/filtrar-documentos/{slug}/{date}', [
+    Route::get('/filtrar-documentos/{dependency}/{slug}/{date}', [
         'uses' => 'FrontController@filterTransparencyDocumentByDate',
         'as' => 'document.filter',
     ])->where('date', '[0-9]{4}');
@@ -191,6 +191,22 @@ Route::namespace('App\Http\Controllers')->group(function () {
         /* Gaceta Municipal */
         Route::resource('gazettes', GazetteController::class);
         Route::resource('gazette_files', GazetteFileController::class);
+        
+        // Rutas para subida por chunks
+        Route::post('/gazettes/init-chunk-upload', [
+            'uses' => 'GazetteController@initChunkUpload',
+            'as' => 'gazettes.init-chunk-upload',
+        ]);
+        
+        Route::post('/gazettes/upload-chunk', [
+            'uses' => 'GazetteController@uploadChunk',
+            'as' => 'gazettes.upload-chunk',
+        ]);
+        
+        Route::post('/gazettes/finalize-chunk-upload', [
+            'uses' => 'GazetteController@finalizeChunkUpload',
+            'as' => 'gazettes.finalize-chunk-upload',
+        ]);
 
         Route::get('/gaceta-municipal/funciones/busqueda', [
             'uses' => 'SearchController@gazetteQuery',
@@ -249,6 +265,22 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'transparency_documents.destroy',
             ]);
 
+            // Rutas para subida por chunks de documentos de transparencia
+            Route::post('/documents/init-chunk-upload', [
+                'uses' => 'TransparencyDocumentController@initChunkUpload',
+                'as' => 'transparency_documents.init-chunk-upload',
+            ]);
+            
+            Route::post('/documents/upload-chunk', [
+                'uses' => 'TransparencyDocumentController@uploadChunk',
+                'as' => 'transparency_documents.upload-chunk',
+            ]);
+            
+            Route::post('/documents/finalize-chunk-upload', [
+                'uses' => 'TransparencyDocumentController@finalizeChunkUpload',
+                'as' => 'transparency_documents.finalize-chunk-upload',
+            ]);
+
             Route::resource('files', TransparencyFileController::class)->names([
                 'index' => 'transparency_files.index',
                 'create' => 'transparency_files.create',
@@ -273,6 +305,38 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('dropzone/upload/{id}', 'TransparencyFileController@uploadFile')->name('dropzone.upload');
             Route::get('dropzone/fetch/{id}', 'TransparencyFileController@fetchFile')->name('dropzone.fetch');
             Route::get('dropzone/delete/{id}', 'TransparencyFileController@deleteFile')->name('dropzone.delete');
+            
+            // Rutas para subida por chunks de archivos de transparencia
+            Route::post('/files/init-chunk-upload', [
+                'uses' => 'TransparencyFileController@initChunkUpload',
+                'as' => 'transparency_files.init-chunk-upload',
+            ]);
+            
+            Route::post('/files/upload-chunk', [
+                'uses' => 'TransparencyFileController@uploadChunk',
+                'as' => 'transparency_files.upload-chunk',
+            ]);
+            
+            Route::post('/files/finalize-chunk-upload', [
+                'uses' => 'TransparencyFileController@finalizeChunkUpload',
+                'as' => 'transparency_files.finalize-chunk-upload',
+            ]);
+            
+            // Rutas para subida por chunks de archivos de transparencia
+            Route::post('/files/init-chunk-upload', [
+                'uses' => 'TransparencyFileController@initChunkUpload',
+                'as' => 'transparency_files.init-chunk-upload',
+            ]);
+            
+            Route::post('/files/upload-chunk', [
+                'uses' => 'TransparencyFileController@uploadChunk',
+                'as' => 'transparency_files.upload-chunk',
+            ]);
+            
+            Route::post('/files/finalize-chunk-upload', [
+                'uses' => 'TransparencyFileController@finalizeChunkUpload',
+                'as' => 'transparency_files.finalize-chunk-upload',
+            ]);
         });
 
         /* ------------------- */

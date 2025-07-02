@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Str;
 use Auth;
 use Session;
+use Storage;
 
 // Modelos
 use App\Models\Gazette;
@@ -21,16 +22,6 @@ class GazetteFileController extends Controller
     * pero existen casos donde se adjuntas múltiples.
     */
 
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         $gazette = Gazette::find($request->gazette_id);
@@ -44,13 +35,22 @@ class GazetteFileController extends Controller
 
         $document = $request->file('document');
         $filename = 'gaceta_' .  $request->name . '_' . $gazette->document_number . '.' . $document->getClientOriginalExtension();
+        
+        /*
         $location = public_path('files/gazettes/');
         $document->move($location, $filename);
+        */
 
+        $filepath = 'gazettes/' . $filename;
         $file->filename = $filename;
         $file->file_extension = $document->getClientOriginalExtension();
-        $file->uploaded_by = Auth::user()->id;
+        $file->filesize = $document->getSize();
 
+        /* Guardar en S3 */
+        Storage::disk('s3')->put($filepath, file_get_contents($document));
+        $file->s3_asset_url = Storage::disk('s3')->url($filepath);
+
+        $file->uploaded_by = Auth::user()->id;
         $file->save();
 
         // Mensaje de session
@@ -58,21 +58,6 @@ class GazetteFileController extends Controller
 
         // Enviar a vista
         return redirect()->back();
-    }
-
-    public function show(GazetteFile $gazetteFile)
-    {
-        //
-    }
-
-    public function edit(GazetteFile $gazetteFile)
-    {
-        //
-    }
-
-    public function update(Request $request, GazetteFile $gazetteFile)
-    {
-        //
     }
 
     public function destroy($id)

@@ -40,7 +40,13 @@
                 
                 @foreach($gazette->files as $file)
                 <p class="mb-0">Archivo #{{ $file->name }}</p>
+                
+                @if($file->s3_asset_url != null)
+                <a class="btn btn-sm btn-primary" href="{{ $file->s3_asset_url }}">Descargar Archivo</a>
+                @else
                 <a class="btn btn-sm btn-primary" href="{{ asset('files/gazettes/'. $file->filename) }}">Descargar Archivo</a>
+                @endif
+
                 <p class="text-muted">Subido por: {{ $file->uploader->name }}</p>
                 @endforeach
                 
