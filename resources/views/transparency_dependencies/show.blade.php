@@ -123,6 +123,25 @@
                         <hr>
 
                         <div class="col-md-12">
+                            <!-- Contenedor para barra de progreso de archivos grandes -->
+                            <div class="col-md-12 mb-3" id="large_file_upload_progress_container" style="display: none;">
+                                <div class="alert alert-info">
+                                    <strong>Subiendo archivo grande...</strong>
+                                </div>
+                                <div class="progress" style="height: 25px;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
+                                         role="progressbar" 
+                                         id="large_file_upload_progress" 
+                                         style="width: 0%;" 
+                                         aria-valuenow="0" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                         <span class="progress-text">0%</span>
+                                    </div>
+                                </div>
+                                <small class="text-muted mt-2 d-block" id="large_file_upload_status">Iniciando subida...</small>
+                            </div>
+
                             <div id="dropzoneForm" class="dropzone">
                                 <div class="dz-message" data-dz-message>
                                     <span>
@@ -130,11 +149,11 @@
                                             class="me-auto ms-auto d-block" width="40%" alt="">
                                         <br>
                                         Arrastra y suelta aquí tus archivos o da click para buscar
+                                        <br>
+                                        <small class="text-muted">Archivos grandes (>8MB) se subirán automáticamente por fragmentos</small>
                                     </span>
                                 </div>
                             </div>
-
-                            <p class="text-bold"><small>Peso máximo por archivo: 10MB</small></p>
 
                             <div align="center">
                                 <button type="button" class="btn btn-info" id="submit-all">Subir Documentos</button>
@@ -191,6 +210,10 @@
         <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
 
         <script>
+            // Límite de tamaño para decidir si usar subida por chunks (8MB)
+            const LARGE_FILE_THRESHOLD = 8 * 1024 * 1024;
+            const CHUNK_SIZE = 2 * 1024 * 1024; // 2MB chunks
+            
             var myDropzone = new Dropzone("#dropzoneForm", {
                 url: "{{ route('dropzone.upload', $transparency_dependency->id) }}",
                 headers: {
@@ -200,11 +223,21 @@
                 parallelUploads: 20,
                 acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar",
                 autoDiscover: false,
-                maxFilesize: 15,
+                maxFilesize: 100, // Aumentamos el límite para permitir archivos grandes
                 addRemoveLinks: true,
                 init: function() {
                     var submitButton = document.querySelector("#submit-all");
                     myDropzone = this;
+
+                    // Interceptar archivos grandes antes de que Dropzone los procese
+                    this.on("addedfile", function(file) {
+                        if (file.size > LARGE_FILE_THRESHOLD) {
+                            // Remover el archivo de Dropzone ya que lo manejaremos por chunks
+                            this.removeFile(file);
+                            // Procesar archivo grande inmediatamente
+                            handleLargeFileUpload(file);
+                        }
+                    });
 
                     submitButton.addEventListener('click', function() {
                         myDropzone.processQueue();
@@ -217,9 +250,154 @@
                         }
                         load_images();
                     });
-
                 },
             });
+
+            // Función para manejar archivos grandes por chunks
+            async function handleLargeFileUpload(file) {
+                try {
+                    const progressContainer = document.getElementById('large_file_upload_progress_container');
+                    const progressBar = document.getElementById('large_file_upload_progress');
+                    const uploadStatus = document.getElementById('large_file_upload_status');
+                    
+                    progressContainer.style.display = 'block';
+                    updateLargeFileProgress(0, 'Preparando subida de archivo grande...');
+                    
+                    // Paso 1: Inicializar subida por chunks
+                    updateLargeFileProgress(10, 'Inicializando subida...');
+                    const initResponse = await initChunkUpload(file);
+                    if (!initResponse.success) {
+                        throw new Error('Error al inicializar subida');
+                    }
+                    
+                    // Paso 2: Subir chunks
+                    updateLargeFileProgress(15, 'Iniciando subida por fragmentos...');
+                    await uploadChunks(file, initResponse.upload_id, initResponse.total_chunks);
+                    
+                    // Paso 3: Finalizar subida
+                    updateLargeFileProgress(90, 'Finalizando subida...');
+                    const finalizeResponse = await finalizeUpload(initResponse.upload_id);
+                    if (!finalizeResponse.success) {
+                        throw new Error(finalizeResponse.error || 'Error al finalizar subida');
+                    }
+                    
+                    updateLargeFileProgress(100, 'Completado exitosamente');
+                    
+                    // Recargar lista de archivos
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                        load_images();
+                    }, 1000);
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    updateLargeFileProgress(0, 'Error: ' + error.message);
+                    
+                    setTimeout(() => {
+                        document.getElementById('large_file_upload_progress_container').style.display = 'none';
+                    }, 3000);
+                }
+            }
+
+            async function initChunkUpload(file) {
+                const formData = new FormData();
+                formData.append('_token', "{{ csrf_token() }}");
+                formData.append('filename', file.name);
+                formData.append('filesize', file.size);
+                formData.append('chunk_size', CHUNK_SIZE);
+                formData.append('dependency_id', '{{ $transparency_dependency->id }}');
+                
+                const response = await fetch('{{ route("transparency_files.init-chunk-upload") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Error al inicializar subida');
+                }
+                
+                return await response.json();
+            }
+            
+            async function uploadChunks(file, uploadId, totalChunks) {
+                for (let i = 0; i < totalChunks; i++) {
+                    const start = i * CHUNK_SIZE;
+                    const end = Math.min(start + CHUNK_SIZE, file.size);
+                    const chunk = file.slice(start, end);
+                    
+                    const formData = new FormData();
+                    formData.append('_token', "{{ csrf_token() }}");
+                    formData.append('upload_id', uploadId);
+                    formData.append('chunk_number', i);
+                    formData.append('chunk', chunk, `chunk_${i}`);
+                    
+                    const response = await fetch('{{ route("transparency_files.upload-chunk") }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(`Error en fragmento ${i + 1}: ${errorData.error || 'Error desconocido'}`);
+                    }
+                    
+                    const result = await response.json();
+                    if (!result.success) {
+                        throw new Error(`Error en fragmento ${i + 1}: ${result.error}`);
+                    }
+                    
+                    // Calcular progreso entre 15% y 85%
+                    const chunkProgress = 15 + (70 * (i + 1) / totalChunks);
+                    updateLargeFileProgress(chunkProgress, `Subiendo fragmento ${i + 1} de ${totalChunks} (${result.progress.toFixed(1)}%)`);
+                }
+            }
+            
+            async function finalizeUpload(uploadId) {
+                const formData = new FormData();
+                formData.append('_token', "{{ csrf_token() }}");
+                formData.append('upload_id', uploadId);
+                
+                const response = await fetch('{{ route("transparency_files.finalize-chunk-upload") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Error al finalizar subida');
+                }
+                
+                return await response.json();
+            }
+            
+            function updateLargeFileProgress(percent, message) {
+                const progressBar = document.getElementById('large_file_upload_progress');
+                const uploadStatus = document.getElementById('large_file_upload_status');
+                
+                progressBar.style.width = percent + '%';
+                progressBar.setAttribute('aria-valuenow', percent);
+                progressBar.querySelector('.progress-text').textContent = Math.round(percent) + '%';
+                uploadStatus.textContent = message;
+                
+                if (percent === 100) {
+                    progressBar.classList.remove('progress-bar-animated');
+                    progressBar.classList.remove('bg-primary');
+                    progressBar.classList.add('bg-success');
+                }
+            }
 
             load_images();
 

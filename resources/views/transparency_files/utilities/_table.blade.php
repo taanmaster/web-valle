@@ -9,7 +9,14 @@
                 @php
                     $icon = 'fa-file';
                     $badge = '';
-                    $publicPath = url('files/transparency/' . $transparency_file->filename);
+                    $publicPath_old = url('files/transparency/' . $transparency_file->filename);
+                    
+                    // Condicional para determinar qué ruta usar (igual que en fetchFile)
+                    if ($transparency_file->s3_asset_url !== null) {
+                        $publicPath = $transparency_file->s3_asset_url; // Usar ruta de Amazon AWS
+                    } else {
+                        $publicPath = $publicPath_old; // Usar ruta local tradicional
+                    }
 
                     switch ($transparency_file->file_extension) {
                         case 'pdf':
@@ -49,6 +56,11 @@
                 <i class="fas {{ $icon }} fa-3x"></i>
                 <h5 class="card-title mt-2">{{ $transparency_file->name }}</h5>
                 <span class="badge bg-primary">{{ $badge }}</span>
+                @if($transparency_file->filesize)
+                    <small class="text-muted d-block mt-1">
+                        {{ $transparency_file->filesize > 0 ? number_format($transparency_file->filesize / 1024, 2) . ' KB' : 'N/A' }}
+                    </small>
+                @endif
                 <input type="text" class="form-control mt-2" id="filePath{{ $transparency_file->id }}" value="{{ str_replace(' ', '%20', $publicPath) }}" readonly>
                 <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard('filePath{{ $transparency_file->id }}')">Copiar Ruta</button>
             </div>

@@ -305,6 +305,38 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('dropzone/upload/{id}', 'TransparencyFileController@uploadFile')->name('dropzone.upload');
             Route::get('dropzone/fetch/{id}', 'TransparencyFileController@fetchFile')->name('dropzone.fetch');
             Route::get('dropzone/delete/{id}', 'TransparencyFileController@deleteFile')->name('dropzone.delete');
+            
+            // Rutas para subida por chunks de archivos de transparencia
+            Route::post('/files/init-chunk-upload', [
+                'uses' => 'TransparencyFileController@initChunkUpload',
+                'as' => 'transparency_files.init-chunk-upload',
+            ]);
+            
+            Route::post('/files/upload-chunk', [
+                'uses' => 'TransparencyFileController@uploadChunk',
+                'as' => 'transparency_files.upload-chunk',
+            ]);
+            
+            Route::post('/files/finalize-chunk-upload', [
+                'uses' => 'TransparencyFileController@finalizeChunkUpload',
+                'as' => 'transparency_files.finalize-chunk-upload',
+            ]);
+            
+            // Rutas para subida por chunks de archivos de transparencia
+            Route::post('/files/init-chunk-upload', [
+                'uses' => 'TransparencyFileController@initChunkUpload',
+                'as' => 'transparency_files.init-chunk-upload',
+            ]);
+            
+            Route::post('/files/upload-chunk', [
+                'uses' => 'TransparencyFileController@uploadChunk',
+                'as' => 'transparency_files.upload-chunk',
+            ]);
+            
+            Route::post('/files/finalize-chunk-upload', [
+                'uses' => 'TransparencyFileController@finalizeChunkUpload',
+                'as' => 'transparency_files.finalize-chunk-upload',
+            ]);
         });
 
         /* ------------------- */
