@@ -37,14 +37,16 @@
                         @foreach($gazette->files as $file)
                         <div class="col-md-3">
                             <div class="card p-4 mb-0">
+                                @if($file->s3_asset_url != null)
+                                <a target="_blank" href="{{ $file->s3_asset_url }}">Descargar Archivo: {{ $file->name }}</a>
+                                @else
                                 <a target="_blank" href="{{ asset('files/gazettes/' . $file->filename) }}">Descargar Archivo: {{ $file->name }}</a>
+                                @endif
                             </div>
                         </div>
                         @endforeach
                     </div>
                 </div>
-                
-                
             </div>
         </div>
     </div>

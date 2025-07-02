@@ -191,6 +191,22 @@ Route::namespace('App\Http\Controllers')->group(function () {
         /* Gaceta Municipal */
         Route::resource('gazettes', GazetteController::class);
         Route::resource('gazette_files', GazetteFileController::class);
+        
+        // Rutas para subida por chunks
+        Route::post('/gazettes/init-chunk-upload', [
+            'uses' => 'GazetteController@initChunkUpload',
+            'as' => 'gazettes.init-chunk-upload',
+        ]);
+        
+        Route::post('/gazettes/upload-chunk', [
+            'uses' => 'GazetteController@uploadChunk',
+            'as' => 'gazettes.upload-chunk',
+        ]);
+        
+        Route::post('/gazettes/finalize-chunk-upload', [
+            'uses' => 'GazetteController@finalizeChunkUpload',
+            'as' => 'gazettes.finalize-chunk-upload',
+        ]);
 
         Route::get('/gaceta-municipal/funciones/busqueda', [
             'uses' => 'SearchController@gazetteQuery',

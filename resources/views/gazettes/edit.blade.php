@@ -128,8 +128,12 @@
                                     <a href="javascript:void(0)" data-bs-toggle="dropdown" class="btn btn-sm btn-outline-secondary" aria-expanded="false">Opciones</a>
 
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="position: absolute; transform: translate3d(-181px, -158px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        @if($file->s3_asset_url != null)
+                                        <a target="_blank" href="{{ $file->s3_asset_url }}" class="dropdown-item">Descargar </a>
+                                        @else
                                         <a target="_blank" href="{{ asset('files/gazettes/' . $file->filename ) }}" class="dropdown-item">Descargar </a>
-
+                                        @endif
+                                        
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#modalSubirArchivo_{{ $file->id }}" class="dropdown-item">Actualizar </a>
                                         <div class="dropdown-divider"></div>
 
