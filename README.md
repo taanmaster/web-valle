@@ -171,3 +171,22 @@ npm install
 
 npm run build
 ```
+
+# Configuración PHP para archivos grandes
+# Agregar estas líneas a tu .htaccess o configurar en php.ini
+
+# Aumentar límite de tamaño de archivo (500MB)
+php_value upload_max_filesize 500M
+php_value post_max_size 500M
+
+# Aumentar tiempo de ejecución para archivos grandes
+php_value max_execution_time 300
+php_value max_input_time 300
+
+# Aumentar memoria disponible
+php_value memory_limit 512M
+
+# Para nginx, agregar a tu configuración:
+# client_max_body_size 500M;
+# client_body_timeout 300s;
+# client_header_timeout 300s;
