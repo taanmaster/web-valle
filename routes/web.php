@@ -233,6 +233,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'transparency_documents.deleteFile',
         ]);
 
+        /* DIF */
+        Route::group(['prefix' => 'dif'], function () {
+            Route::resource('doctors', DIFDoctorController::class);
+            Route::resource('specialties', DIFSpecialtyController::class);
+            Route::resource('consult_types', DIFConsultTypeController::class);
+            Route::resource('services', DIFServiceController::class);
+            Route::resource('payment_concepts', DIFPaymentConceptController::class);
+            Route::resource('coordinations', DIFCoordinationController::class);
+            Route::resource('programs', DIFProgramController::class);
+        });
+
         /* Transparencia */
         Route::group(['prefix' => 'transparency'], function () {
             Route::resource('dependencies', TransparencyDependencyController::class)->names([

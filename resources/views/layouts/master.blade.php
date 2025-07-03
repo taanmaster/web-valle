@@ -16,6 +16,7 @@
     @livewireStyles
 
     @include('layouts.head-css')
+    @stack('stylesheets')
 </head>
 
 <body id="body" class="">

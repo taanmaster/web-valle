@@ -30,3 +30,11 @@
 .leftbar-tab-menu .main-icon-menu .pro-metrica-end {
     background-color: transparent;
 }
+
+.title-box .menu-title {
+    font-size: 1em;
+    font-weight: 600;
+    color: #7C3235;
+    text-transform: uppercase;
+    margin-top: 20px;
+}
