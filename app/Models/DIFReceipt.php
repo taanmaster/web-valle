@@ -13,6 +13,7 @@ class DIFReceipt extends Model
         'receipt_num',
         'receipt_date',
         'pacient_id',
+        'doctor_id',
         'appointment',
         'location',
         'subtotal',
@@ -40,5 +41,11 @@ class DIFReceipt extends Model
     public function receiptConcepts()
     {
         return $this->hasMany(DIFReceiptConcept::class, 'receipt_id');
+    }
+
+    // Relación con el doctor
+    public function doctor()
+    {
+        return $this->belongsTo(DIFDoctor::class, 'doctor_id');
     }
 }

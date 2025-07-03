@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('d_i_f_receipts', function (Blueprint $table) {
             $table->id();
+            
+            $table->integer('doctor_id')->unsigned();
+            $table->integer('pacient_id')->unsigned();
 
             $table->string('receipt_num')->unique();
             $table->date('receipt_date');
-            $table->string('pacient_id');
-
+            
             $table->string('appointment')->nullable();
             $table->string('location')->nullable();
 

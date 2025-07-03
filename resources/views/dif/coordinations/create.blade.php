@@ -84,7 +84,7 @@
     @endcomponent
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <div class="card">
                 <div class="card-header">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -101,82 +101,80 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('dif.coordinations.store') }}">
                         @csrf
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="name">Nombre:</label>
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Ingresa el nombre de la coordinación" value="{{ old('name') }}">
-                                </div>
-                                
-                                <div class="form-group mb-3">
-                                    <label for="description">Descripción:</label>
-                                    <textarea name="description" id="description" class="form-control" placeholder="Ingresa la descripción de la coordinación (opcional)" rows="4">{{ old('description') }}</textarea>
-                                </div>
+                        <div class="form-group mb-3">
+                            <label for="name">Nombre:</label>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Ingresa el nombre de la coordinación" value="{{ old('name') }}">
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="description">Descripción:</label>
+                            <textarea name="description" id="description" class="form-control" placeholder="Ingresa la descripción de la coordinación (opcional)" rows="4">{{ old('description') }}</textarea>
+                        </div>
 
-                                <div class="form-group mb-3">
-                                    <label for="is_active">Estado:</label>
-                                    <select name="is_active" id="is_active" class="form-control">
-                                        <option value="1" {{ old('is_active', '1') == '1' ? 'selected' : '' }}>Activo</option>
-                                        <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Inactivo</option>
-                                    </select>
+                        <hr>
+
+                        <div class="mb-3">
+                            <h5><i class="fas fa-folder"></i> Programas Asociados</h5>
+                            <p class="text-muted">Selecciona los programas que pertenecen a esta coordinación:</p>
+                            
+                            <!-- Buscador de programas -->
+                            <div class="form-group mb-3">
+                                <label for="program-search" class="form-label">
+                                    <i class="fas fa-search me-1"></i>Buscar Programas
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search search-icon"></i>
+                                    </span>
+                                    <input type="text" 
+                                        id="program-search" 
+                                        class="form-control" 
+                                        placeholder="Ej: educación, salud, apoyo alimentario..." 
+                                        autocomplete="off"
+                                        aria-describedby="search-help">
+                                </div>
+                                <small id="search-help" class="form-text text-muted">
+                                    Escribe el nombre, descripción o dirección del programa que buscas
+                                </small>
+                            </div>
+
+                            <!-- Programas seleccionados -->
+                            <div id="selected-programs" class="mb-3" style="display: none;">
+                                <h6><i class="fas fa-check-circle text-success"></i> Programas Seleccionados:</h6>
+                                <div id="selected-programs-list" class="d-flex flex-wrap gap-2"></div>
+                            </div>
+                            
+                            <!-- Contenedor de programas -->
+                            <div class="programs-container" style="max-height: 300px; overflow-y: auto; padding: 15px;">
+                                <div id="programs-list">
+                                    <!-- Los programas se cargarán aquí dinámicamente -->
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                        <h6 class="text-muted">Buscar Programas</h6>
+                                        <p class="text-muted mb-0">Comienza a escribir para buscar programas disponibles...</p>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="col-md-6">
-                                <h5><i class="fas fa-folder"></i> Programas Asociados</h5>
-                                <p class="text-muted">Selecciona los programas que pertenecen a esta coordinación:</p>
-                                
-                                <!-- Buscador de programas -->
-                                <div class="form-group mb-3">
-                                    <label for="program-search" class="form-label">
-                                        <i class="fas fa-search me-1"></i>Buscar Programas
-                                    </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-search search-icon"></i>
-                                        </span>
-                                        <input type="text" 
-                                               id="program-search" 
-                                               class="form-control" 
-                                               placeholder="Ej: educación, salud, apoyo alimentario..." 
-                                               autocomplete="off"
-                                               aria-describedby="search-help">
-                                    </div>
-                                    <small id="search-help" class="form-text text-muted">
-                                        Escribe el nombre, descripción o dirección del programa que buscas
-                                    </small>
-                                </div>
-
-                                <!-- Programas seleccionados -->
-                                <div id="selected-programs" class="mb-3" style="display: none;">
-                                    <h6><i class="fas fa-check-circle text-success"></i> Programas Seleccionados:</h6>
-                                    <div id="selected-programs-list" class="d-flex flex-wrap gap-2"></div>
-                                </div>
-                                
-                                <!-- Contenedor de programas -->
-                                <div class="programs-container" style="max-height: 300px; overflow-y: auto; padding: 15px;">
-                                    <div id="programs-list">
-                                        <!-- Los programas se cargarán aquí dinámicamente -->
-                                        <div class="text-center py-4">
-                                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                                            <h6 class="text-muted">Buscar Programas</h6>
-                                            <p class="text-muted mb-0">Comienza a escribir para buscar programas disponibles...</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-3">
-                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllVisiblePrograms()">
-                                        <i class="fas fa-check-double"></i> Seleccionar Visibles
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deselectAllPrograms()">
-                                        <i class="fas fa-times"></i> Deseleccionar Todos
-                                    </button>
-                                </div>
-
-                                <!-- Inputs ocultos para enviar al controlador -->
-                                <div id="hidden-inputs"></div>
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllVisiblePrograms()">
+                                    <i class="fas fa-check-double"></i> Seleccionar Visibles
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deselectAllPrograms()">
+                                    <i class="fas fa-times"></i> Deseleccionar Todos
+                                </button>
                             </div>
+
+                            <!-- Inputs ocultos para enviar al controlador -->
+                            <div id="hidden-inputs"></div>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="is_active">Estado:</label>
+                            <select name="is_active" id="is_active" class="form-control">
+                                <option value="1" {{ old('is_active', '1') == '1' ? 'selected' : '' }}>Activo</option>
+                                <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Inactivo</option>
+                            </select>
                         </div>
 
                         <div class="form-group mt-4">

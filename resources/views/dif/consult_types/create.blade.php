@@ -29,17 +29,17 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('dif.consult_types.store') }}">
                         @csrf
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="name">Nombre:</label>
                             <input type="text" name="name" id="name" class="form-control" placeholder="Ingresa el nombre del tipo de consulta" value="{{ old('name') }}">
                         </div>
                         
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="description">Descripción:</label>
                             <textarea name="description" id="description" class="form-control" placeholder="Ingresa la descripción del tipo de consulta (opcional)" rows="4">{{ old('description') }}</textarea>
                         </div>
 
-                        <div class="form-group">
+                        <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Guardar</button>
                             <a href="{{ route('dif.consult_types.index') }}" class="btn btn-secondary">Cancelar</a>
                         </div>

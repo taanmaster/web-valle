@@ -310,7 +310,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'dif.programs.destroy',
             ]);
 
-            Route::resource('receipts', 'DIFReceiptController')->names([
+            Route::resource('receipts', DIFReceiptController::class)->names([
                 'index' => 'dif.receipts.index',
                 'create' => 'dif.receipts.create',
                 'store' => 'dif.receipts.store',
@@ -323,6 +323,26 @@ Route::namespace('App\Http\Controllers')->group(function () {
             // Ruta AJAX para calcular totales
             Route::post('receipts/calculate-totals', 'DIFReceiptController@calculateTotals')
                 ->name('dif.receipts.calculate-totals');
+
+            Route::resource('consults', DIFDoctorConsultController::class)->names([
+                'index' => 'dif.consults.index',
+                'create' => 'dif.consults.create',
+                'store' => 'dif.consults.store',
+                'show' => 'dif.consults.show',
+                'edit' => 'dif.consults.edit',
+                'update' => 'dif.consults.update',
+                'destroy' => 'dif.consults.destroy',
+            ]);
+
+            Route::resource('prescriptions', DIFPrescriptionController::class)->names([
+                'index' => 'dif.prescriptions.index',
+                'create' => 'dif.prescriptions.create',
+                'store' => 'dif.prescriptions.store',
+                'show' => 'dif.prescriptions.show',
+                'edit' => 'dif.prescriptions.edit',
+                'update' => 'dif.prescriptions.update',
+                'destroy' => 'dif.prescriptions.destroy',
+            ]);
         });
 
         /* Transparencia */

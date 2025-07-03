@@ -66,7 +66,7 @@ class DIFDoctorController extends Controller
 
     public function show($id)
     {
-        $doctor = Doctor::find($id);
+        $doctor = Doctor::with(['consultations', 'prescriptions', 'receipts'])->find($id);
         
         return view('dif.doctors.show')->with('doctor', $doctor);
     }

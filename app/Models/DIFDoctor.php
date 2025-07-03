@@ -30,6 +30,11 @@ class DIFDoctor extends Model
 
     public function prescriptions()
     {
-        return $this->hasMany(DIFPrescriptionFile::class, 'doctor_id');
+        return $this->hasMany(DIFPrescription::class, 'doctor_id');
+    }
+
+    public function receipts()
+    {
+        return $this->hasMany(DIFReceipt::class, 'doctor_id');
     }
 }
