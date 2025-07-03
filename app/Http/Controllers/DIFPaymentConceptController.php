@@ -106,4 +106,36 @@ class DIFPaymentConceptController extends Controller
         Session::flash('success', 'Concepto de pago eliminado de manera exitosa.');
         return redirect()->route('dif.payment_concepts.index');
     }
+
+    public function search(Request $request)
+    {
+        $search_query = $request->input('query');
+
+        // Si la petición es AJAX, devolver JSON
+        if ($request->ajax() || $request->wantsJson()) {
+            $concepts = PaymentConcept::where('is_active', true)
+                ->where(function($query) use ($search_query) {
+                    $query->where('name', 'LIKE', "%{$search_query}%")
+                          ->orWhere('description', 'LIKE', "%{$search_query}%");
+                })
+                ->limit(20)
+                ->get()
+                ->map(function ($concept) {
+                    return [
+                        'id' => $concept->id,
+                        'name' => $concept->name,
+                        'description' => $concept->description,
+                        'amount' => $concept->amount,
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'concepts' => $concepts
+            ]);
+        }
+
+        // Si no es AJAX, redirigir al índice con búsqueda
+        return redirect()->route('dif.payment_concepts.index', ['search' => $search_query]);
+    }
 }

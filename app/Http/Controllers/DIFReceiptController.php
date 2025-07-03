@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Models\DIFReceipt as Receipt;
 use App\Models\DIFPaymentConcept as PaymentConcept;
 use App\Models\DIFReceiptConcept as ReceiptConcept;
+use App\Models\DIFDoctor as Doctor;
 use Illuminate\Http\Request;
 
 class DIFReceiptController extends Controller
@@ -37,19 +38,23 @@ class DIFReceiptController extends Controller
         // Obtener todos los conceptos de pago activos
         $paymentConcepts = PaymentConcept::where('is_active', true)->get();
         
+        // Obtener todos los doctores (sin filtro is_active ya que no existe esa columna)
+        $doctors = Doctor::with('specialty')->get();
+        
         // Generar número de recibo automático
         $receiptNum = $this->generateReceiptNumber();
         
-        return view('dif.receipts.create', compact('paymentConcepts', 'receiptNum'));
+        return view('dif.receipts.create', compact('paymentConcepts', 'receiptNum', 'doctors'));
     }
 
     public function store(Request $request)
     {
         //Validar
         $this->validate($request, array(
-            'receipt_num' => 'required|unique:dif_receipts,receipt_num|max:255',
+            'receipt_num' => 'required|unique:d_i_f_receipts,receipt_num|max:255',
             'receipt_date' => 'required|date',
-            'pacient_id' => 'required|max:255',
+            'doctor_id' => 'required|exists:d_i_f_doctors,id',
+            'patient_id' => 'required|exists:citizens,id',
             'appointment' => 'nullable|max:255',
             'location' => 'nullable|max:255',
             'subtotal' => 'required|numeric|min:0',
@@ -59,14 +64,15 @@ class DIFReceiptController extends Controller
             'issued_by' => 'required|max:255',
             'status' => 'required|in:pending,completed,cancelled',
             'concept_ids' => 'required|array|min:1',
-            'concept_ids.*' => 'exists:dif_payment_concepts,id',
+            'concept_ids.*' => 'exists:d_i_f_payment_concepts,id',
         ));
 
         // Guardar recibo
         $receipt = Receipt::create([
             'receipt_num' => $request->receipt_num,
             'receipt_date' => $request->receipt_date,
-            'pacient_id' => $request->pacient_id,
+            'doctor_id' => $request->doctor_id,
+            'pacient_id' => $request->patient_id, // Nota: mantener 'pacient_id' como está en la migración
             'appointment' => $request->appointment,
             'location' => $request->location,
             'subtotal' => $request->subtotal,
@@ -91,29 +97,31 @@ class DIFReceiptController extends Controller
 
     public function show($id)
     {
-        $receipt = Receipt::with(['paymentConcepts'])->find($id);
+        $receipt = Receipt::with(['paymentConcepts', 'doctor.specialty', 'patient'])->find($id);
         
         return view('dif.receipts.show')->with('receipt', $receipt);
     }
 
     public function edit($id)
     {
-        $receipt = Receipt::with(['paymentConcepts'])->find($id);
+        $receipt = Receipt::with(['paymentConcepts', 'doctor', 'patient'])->find($id);
         $paymentConcepts = PaymentConcept::where('is_active', true)->get();
+        $doctors = Doctor::with('specialty')->get();
         
         // Obtener IDs de conceptos seleccionados
         $selectedConcepts = $receipt->paymentConcepts->pluck('id')->toArray();
 
-        return view('dif.receipts.edit', compact('receipt', 'paymentConcepts', 'selectedConcepts'));
+        return view('dif.receipts.edit', compact('receipt', 'paymentConcepts', 'selectedConcepts', 'doctors'));
     }
 
     public function update(Request $request, $id)
     {
         //Validar
         $this->validate($request, array(
-            'receipt_num' => 'required|max:255|unique:dif_receipts,receipt_num,'.$id,
+            'receipt_num' => 'required|max:255|unique:d_i_f_receipts,receipt_num,'.$id,
             'receipt_date' => 'required|date',
-            'pacient_id' => 'required|max:255',
+            'doctor_id' => 'required|exists:d_i_f_doctors,id',
+            'patient_id' => 'required|exists:citizens,id',
             'appointment' => 'nullable|max:255',
             'location' => 'nullable|max:255',
             'subtotal' => 'required|numeric|min:0',
@@ -123,7 +131,7 @@ class DIFReceiptController extends Controller
             'issued_by' => 'required|max:255',
             'status' => 'required|in:pending,completed,cancelled',
             'concept_ids' => 'required|array|min:1',
-            'concept_ids.*' => 'exists:dif_payment_concepts,id',
+            'concept_ids.*' => 'exists:d_i_f_payment_concepts,id',
         ));
 
         $receipt = Receipt::find($id);
@@ -131,7 +139,8 @@ class DIFReceiptController extends Controller
         $receipt->update([
             'receipt_num' => $request->receipt_num,
             'receipt_date' => $request->receipt_date,
-            'pacient_id' => $request->pacient_id,
+            'doctor_id' => $request->doctor_id,
+            'pacient_id' => $request->patient_id, // Nota: mantener 'pacient_id' como está en la migración
             'appointment' => $request->appointment,
             'location' => $request->location,
             'subtotal' => $request->subtotal,
@@ -171,17 +180,19 @@ class DIFReceiptController extends Controller
      */
     private function generateReceiptNumber()
     {
-        $today = Carbon::now()->format('Ymd');
-        $lastReceipt = Receipt::where('receipt_num', 'like', "REC-{$today}-%")->orderBy('receipt_num', 'desc')->first();
+        // Obtener el último recibo ordenado por número de folio
+        $lastReceipt = Receipt::orderBy('receipt_num', 'desc')->first();
         
         if ($lastReceipt) {
-            $lastNumber = intval(substr($lastReceipt->receipt_num, -4));
+            // Extraer el número del último recibo (formato: REC-XXXX)
+            $lastNumber = intval(str_replace('REC-', '', $lastReceipt->receipt_num));
             $newNumber = $lastNumber + 1;
         } else {
-            $newNumber = 1;
+            // Si no hay recibos previos, empezar desde 1000
+            $newNumber = 1000;
         }
         
-        return "REC-{$today}-" . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+        return "REC-" . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
     }
 
     /**

@@ -25,7 +25,7 @@ class DIFDoctorController extends Controller
                   ->orWhere('email', 'LIKE', "%{$search}%");
         }
         
-        $doctors = $query->with('speciality')->paginate(30);
+        $doctors = $query->with('specialty')->paginate(30);
 
         return view('dif.doctors.index', compact('doctors'));
     }

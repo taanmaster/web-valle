@@ -48,4 +48,10 @@ class DIFReceipt extends Model
     {
         return $this->belongsTo(DIFDoctor::class, 'doctor_id');
     }
+
+    // Relación con el paciente (citizen)
+    public function patient()
+    {
+        return $this->belongsTo(Citizen::class, 'pacient_id');
+    }
 }

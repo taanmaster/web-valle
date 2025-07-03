@@ -18,7 +18,7 @@ class DIFDoctor extends Model
         'phone',
     ];
 
-    public function speciality()
+    public function specialty()
     {
         return $this->belongsTo(DIFSpecialty::class, 'specialty_id');
     }
