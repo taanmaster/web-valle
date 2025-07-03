@@ -39,7 +39,7 @@
                         <h4 class="card-title mb-2 text-dark">{{ $doctor->name }}</h4>
                         <p class="text-muted mb-3">
                             <i class="fas fa-stethoscope me-2"></i>
-                            {{ $doctor->speciality->name ?? 'N/A' }}
+                            {{ $doctor->specialty->name ?? 'N/A' }}
                         </p>
                         
                         <hr>
@@ -158,7 +158,7 @@
                                     Listado de Pacientes, Recetas y Recibos
                                 </h5>
                             </div>
-                            
+
                             <div class="card-body">
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs" id="doctorTabs" role="tablist">
@@ -183,18 +183,26 @@
                                 <div class="tab-content mt-3" id="doctorTabsContent">
                                     <!-- Pacientes Tab -->
                                     <div class="tab-pane fade show active" id="patients" role="tabpanel">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="mb-0">Consultas del Doctor</h6>
-                                            <a href="{{ route('dif.consults.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-plus me-2"></i>Nueva Consulta
-                                            </a>
+                                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded" style="gap: 1rem;">
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-0 text-primary">
+                                                    <i class="fas fa-stethoscope me-2"></i>Consultas del Doctor
+                                                </h6>
+                                                <small class="text-muted">Historial de consultas médicas realizadas</small>
+                                            </div>
+                                            <div class="d-flex" style="flex-shrink:0;">
+                                                <a href="{{ route('dif.consults.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-primary btn-sm ms-auto" style="white-space:nowrap;">
+                                                    <i class="fas fa-plus me-2"></i>Nueva Consulta
+                                                </a>
+                                            </div>
                                         </div>
                                         
                                         @if($doctor->consultations->count() > 0)
                                             <div class="table-responsive">
-                                                <table class="table table-hover">
-                                                    <thead class="table-light">
+                                                <table class="table table-striped">
+                                                    <thead>
                                                         <tr>
+                                                            <th>Número</th>
                                                             <th>Fecha</th>
                                                             <th>Paciente</th>
                                                             <th>Tipo</th>
@@ -203,20 +211,42 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach($doctor->consultations->take(10) as $consultation)
+                                                        @foreach($doctor->consultations->take(10) as $consult)
                                                             <tr>
-                                                                <td>{{ $consultation->created_at->format('d/m/Y') }}</td>
-                                                                <td>{{ $consultation->patient_name ?? 'N/A' }}</td>
-                                                                <td>{{ $consultation->consultation_type ?? 'General' }}</td>
                                                                 <td>
-                                                                    <span class="badge bg-{{ $consultation->status == 'completed' ? 'success' : 'warning' }}">
-                                                                        {{ ucfirst($consultation->status ?? 'Pendiente') }}
-                                                                    </span>
+                                                                    <span class="badge bg-primary">{{ $consult->consult_num }}</span>
                                                                 </td>
                                                                 <td>
-                                                                    <a href="{{ route('dif.doctor-consults.show', $consultation->id) }}" class="btn btn-sm btn-outline-primary">
-                                                                        <i class="fas fa-eye"></i>
-                                                                    </a>
+                                                                    <i class="fas fa-calendar text-muted"></i>
+                                                                    {{ $consult->consult_date?->format('d/m/Y') ?? 'N/A' }}
+                                                                </td>
+                                                                <td>
+                                                                    @if($consult->citizen)
+                                                                        <strong>{{ $consult->citizen->name }}</strong>
+                                                                        <br><small class="text-muted">{{ $consult->citizen->curp }}</small>
+                                                                    @else
+                                                                        <span class="text-muted">No asignado</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if($consult->consultType)
+                                                                        <span class="badge bg-info">{{ $consult->consultType->name }}</span>
+                                                                    @else
+                                                                        <span class="text-muted">N/A</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    <span class="badge {{ $consult->status_badge }}">{{ $consult->status_name }}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a href="{{ route('dif.consults.show', $consult) }}" class="btn btn-info btn-sm" title="Ver">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </a>
+                                                                        <a href="{{ route('dif.consults.edit', $consult) }}" class="btn btn-warning btn-sm" title="Editar">
+                                                                            <i class="fas fa-edit"></i>
+                                                                        </a>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -225,26 +255,37 @@
                                             </div>
                                             @if($doctor->consultations->count() > 10)
                                                 <div class="text-center mt-3">
-                                                    <a href="{{ route('dif.doctor-consults.index', ['doctor_id' => $doctor->id]) }}" class="btn btn-outline-primary">
-                                                        Ver todas las consultas
+                                                    <a href="{{ route('dif.consults.index', ['doctor_id' => $doctor->id]) }}" class="btn btn-outline-primary">
+                                                        <i class="fas fa-list me-2"></i>Ver todas las consultas ({{ $doctor->consultations->count() }})
                                                     </a>
                                                 </div>
                                             @endif
                                         @else
                                             <div class="text-center py-4">
-                                                <i class="fas fa-user-injured text-muted mb-3" style="font-size: 3rem;"></i>
-                                                <p class="text-muted">No hay consultas registradas</p>
+                                                <i class="fas fa-stethoscope fa-3x text-muted mb-3"></i>
+                                                <h6 class="text-muted">No hay consultas registradas</h6>
+                                                <p class="text-muted mb-0">Este doctor aún no tiene consultas médicas asignadas.</p>
+                                                <a href="{{ route('dif.consults.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-primary btn-sm mt-2">
+                                                    <i class="fas fa-plus"></i> Crear Primera Consulta
+                                                </a>
                                             </div>
                                         @endif
                                     </div>
 
                                     <!-- Recetas Tab -->
                                     <div class="tab-pane fade" id="prescriptions" role="tabpanel">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="mb-0">Recetas del Doctor</h6>
-                                            <a href="{{ route('dif.prescriptions.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-plus me-2"></i>Nueva Receta
-                                            </a>
+                                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded" style="gap: 1rem;">
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-0 text-success">
+                                                    <i class="fas fa-prescription-bottle me-2"></i>Recetas del Doctor
+                                                </h6>
+                                                <small class="text-muted">Recetas médicas emitidas por el doctor</small>
+                                            </div>
+                                            <div class="d-flex" style="flex-shrink:0;">
+                                                <a href="{{ route('dif.prescriptions.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-success btn-sm" style="white-space:nowrap;">
+                                                    <i class="fas fa-plus me-2"></i>Nueva Receta
+                                                </a>
+                                            </div>
                                         </div>
                                         
                                         @if($doctor->prescriptions->count() > 0)
@@ -297,9 +338,14 @@
 
                                     <!-- Recibos Tab -->
                                     <div class="tab-pane fade" id="receipts" role="tabpanel">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="mb-0">Recibos del Doctor</h6>
-                                            <a href="{{ route('dif.receipts.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-primary btn-sm">
+                                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+                                            <div>
+                                                <h6 class="mb-0 text-info">
+                                                    <i class="fas fa-receipt me-2"></i>Recibos del Doctor
+                                                </h6>
+                                                <small class="text-muted">Recibos de pago generados por el doctor</small>
+                                            </div>
+                                            <a href="{{ route('dif.receipts.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-info btn-sm">
                                                 <i class="fas fa-plus me-2"></i>Nuevo Recibo
                                             </a>
                                         </div>

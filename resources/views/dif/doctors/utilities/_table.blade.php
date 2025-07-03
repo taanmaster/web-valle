@@ -17,7 +17,7 @@
                 <th scope="row">#{{ $doctor->id }}</th>
                 <td>{{ $doctor->employee_num }}</td>
                 <td>{{ $doctor->name }}</td>
-                <td>{{ $doctor->speciality->name ?? 'N/A' }}</td>
+                <td>{{ $doctor->specialty->name ?? 'N/A' }}</td>
                 <td class="text-muted">
                     @if($doctor->phone)
                         {{ $doctor->phone }}<br>

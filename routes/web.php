@@ -9,6 +9,9 @@ use App\Http\Controllers\TsrBillingAccountController;
 use App\Http\Controllers\DIFReceiptController;
 use App\Http\Controllers\DIFProgramController;
 use App\Http\Controllers\DIFCoordinationController;
+use App\Http\Controllers\DIFDoctorConsultController;
+use App\Http\Controllers\DIFPrescriptionController;
+use App\Http\Controllers\DIFPrescriptionFileController;
 
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
@@ -277,6 +280,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'dif.services.destroy',
             ]);
 
+            // Ruta para búsqueda de conceptos de pago via Ajax (debe ir antes del resource)
+            Route::get('payment-concepts/search', 'DIFPaymentConceptController@search')->name('dif.payment-concepts.search');
+
             Route::resource('payment_concepts', DIFPaymentConceptController::class)->names([
                 'index' => 'dif.payment_concepts.index',
                 'create' => 'dif.payment_concepts.create',
@@ -324,6 +330,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('receipts/calculate-totals', 'DIFReceiptController@calculateTotals')
                 ->name('dif.receipts.calculate-totals');
 
+            // Rutas para búsqueda de pacientes via Ajax (debe ir antes del resource)
+            Route::get('patients/search', 'SearchController@citizenQuery')->name('dif.patients.search');
+            Route::get('patients/{id}', 'CitizenController@show')->name('dif.patients.show');
+
             Route::resource('consults', DIFDoctorConsultController::class)->names([
                 'index' => 'dif.consults.index',
                 'create' => 'dif.consults.create',
@@ -343,6 +353,18 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'dif.prescriptions.update',
                 'destroy' => 'dif.prescriptions.destroy',
             ]);
+
+            // Rutas para archivos de prescripciones
+            Route::resource('prescription-files', DIFPrescriptionFileController::class)->names([
+                'index' => 'dif.prescription-files.index',
+                'create' => 'dif.prescription-files.create',
+                'store' => 'dif.prescription-files.store',
+                'show' => 'dif.prescription-files.show',
+                'edit' => 'dif.prescription-files.edit',
+                'update' => 'dif.prescription-files.update',
+                'destroy' => 'dif.prescription-files.destroy',
+            ]);
+            Route::get('prescription-files/{prescriptionFile}/download', [DIFPrescriptionFileController::class, 'download'])->name('dif.prescription-files.download');
         });
 
         /* Transparencia */
