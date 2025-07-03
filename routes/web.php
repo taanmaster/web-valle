@@ -6,6 +6,9 @@ use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
 use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\TsrBillingAccountController;
+use App\Http\Controllers\DIFReceiptController;
+use App\Http\Controllers\DIFProgramController;
+use App\Http\Controllers\DIFCoordinationController;
 
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
@@ -246,12 +249,80 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'dif.doctors.destroy',
             ]);
 
-            Route::resource('specialties', DIFSpecialtyController::class);
-            Route::resource('consult_types', DIFConsultTypeController::class);
-            Route::resource('services', DIFServiceController::class);
-            Route::resource('payment_concepts', DIFPaymentConceptController::class);
-            Route::resource('coordinations', DIFCoordinationController::class);
-            Route::resource('programs', DIFProgramController::class);
+            Route::resource('specialties', DIFSpecialtyController::class)->names([
+                'index' => 'dif.specialties.index',
+                'create' => 'dif.specialties.create',
+                'store' => 'dif.specialties.store',
+                'show' => 'dif.specialties.show',
+                'edit' => 'dif.specialties.edit',
+                'update' => 'dif.specialties.update',
+                'destroy' => 'dif.specialties.destroy',
+            ]);
+            Route::resource('consult_types', DIFConsultTypeController::class)->names([
+                'index' => 'dif.consult_types.index',
+                'create' => 'dif.consult_types.create',
+                'store' => 'dif.consult_types.store',
+                'show' => 'dif.consult_types.show',
+                'edit' => 'dif.consult_types.edit',
+                'update' => 'dif.consult_types.update',
+                'destroy' => 'dif.consult_types.destroy',
+            ]);
+            Route::resource('services', DIFServiceController::class)->names([
+                'index' => 'dif.services.index',
+                'create' => 'dif.services.create',
+                'store' => 'dif.services.store',
+                'show' => 'dif.services.show',
+                'edit' => 'dif.services.edit',
+                'update' => 'dif.services.update',
+                'destroy' => 'dif.services.destroy',
+            ]);
+
+            Route::resource('payment_concepts', DIFPaymentConceptController::class)->names([
+                'index' => 'dif.payment_concepts.index',
+                'create' => 'dif.payment_concepts.create',
+                'store' => 'dif.payment_concepts.store',
+                'show' => 'dif.payment_concepts.show',
+                'edit' => 'dif.payment_concepts.edit',
+                'update' => 'dif.payment_concepts.update',
+                'destroy' => 'dif.payment_concepts.destroy',
+            ]);
+
+            Route::resource('coordinations', DIFCoordinationController::class)->names([
+                'index' => 'dif.coordinations.index',
+                'create' => 'dif.coordinations.create',
+                'store' => 'dif.coordinations.store',
+                'show' => 'dif.coordinations.show',
+                'edit' => 'dif.coordinations.edit',
+                'update' => 'dif.coordinations.update',
+                'destroy' => 'dif.coordinations.destroy',
+            ]);
+
+            // Ruta para búsqueda de programas via Ajax (debe ir antes del resource)
+            Route::get('programs/search', [DIFProgramController::class, 'search'])->name('dif.programs.search');
+
+            Route::resource('programs', DIFProgramController::class)->names([
+                'index' => 'dif.programs.index',
+                'create' => 'dif.programs.create',
+                'store' => 'dif.programs.store',
+                'show' => 'dif.programs.show',
+                'edit' => 'dif.programs.edit',
+                'update' => 'dif.programs.update',
+                'destroy' => 'dif.programs.destroy',
+            ]);
+
+            Route::resource('receipts', 'DIFReceiptController')->names([
+                'index' => 'dif.receipts.index',
+                'create' => 'dif.receipts.create',
+                'store' => 'dif.receipts.store',
+                'show' => 'dif.receipts.show',
+                'edit' => 'dif.receipts.edit',
+                'update' => 'dif.receipts.update',
+                'destroy' => 'dif.receipts.destroy',
+            ]);
+
+            // Ruta AJAX para calcular totales
+            Route::post('receipts/calculate-totals', 'DIFReceiptController@calculateTotals')
+                ->name('dif.receipts.calculate-totals');
         });
 
         /* Transparencia */

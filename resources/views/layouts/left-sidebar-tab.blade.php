@@ -347,16 +347,16 @@
                             <a class="nav-link" href="{{ route('dif.doctors.index') }}">Doctores</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('specialties.index') }}">Especialidades</a>
+                            <a class="nav-link" href="{{ route('dif.specialties.index') }}">Especialidades</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('consult_types.index') }}">Tipos de Consulta</a>
+                            <a class="nav-link" href="{{ route('dif.consult_types.index') }}">Tipos de Consulta</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('services.index') }}">Servicios</a>
+                            <a class="nav-link" href="{{ route('dif.services.index') }}">Servicios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('payment_concepts.index') }}">Conceptos de Cobro</a>
+                            <a class="nav-link" href="{{ route('dif.payment_concepts.index') }}">Conceptos de Cobro</a>
                         </li>
                     </ul>
 
@@ -369,10 +369,10 @@
                             <a class="nav-link" href="#">Pacientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('coordinations.index') }}">Coordinaciones</a>
+                            <a class="nav-link" href="{{ route('dif.coordinations.index') }}">Coordinaciones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('programs.index') }}">Programas</a>
+                            <a class="nav-link" href="{{ route('dif.programs.index') }}">Programas</a>
                         </li>
                     </ul>
                 </div>

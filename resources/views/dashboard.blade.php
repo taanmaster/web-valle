@@ -167,7 +167,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-lg-6 col-sm-6 mb-3">
+                    <div class="col-lg-4 col-sm-6 mb-3">
                         <div class="card border-0 bg-light">
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -191,7 +191,29 @@
                         </div>
                     </div>
                     
-                    <div class="col-lg-6 col-sm-6 mb-3">
+                    <div class="col-lg-4 col-sm-6 mb-3">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <h6 class="card-title mb-1">Respaldo de Servidor</h6>
+                                        <small class="text-muted">Viernes entre 8pm y 12am</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-info">
+                                            <i class="fas fa-circle me-1" style="font-size: 8px;"></i>
+                                            PROGRAMADO
+                                        </span>
+                                        <div class="mt-1">
+                                            <small class="text-info fw-bold">Automático</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-sm-6 mb-3">
                         <div class="card border-0 bg-light">
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center justify-content-between">
