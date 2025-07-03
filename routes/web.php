@@ -6,6 +6,7 @@ use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
 use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\TsrBillingAccountController;
+
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
 use Illuminate\Support\Facades\Route;
@@ -235,7 +236,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* DIF */
         Route::group(['prefix' => 'dif'], function () {
-            Route::resource('doctors', DIFDoctorController::class);
+            Route::resource('doctors', DIFDoctorController::class)->names([
+                'index' => 'dif.doctors.index',
+                'create' => 'dif.doctors.create',
+                'store' => 'dif.doctors.store',
+                'show' => 'dif.doctors.show',
+                'edit' => 'dif.doctors.edit',
+                'update' => 'dif.doctors.update',
+                'destroy' => 'dif.doctors.destroy',
+            ]);
+
             Route::resource('specialties', DIFSpecialtyController::class);
             Route::resource('consult_types', DIFConsultTypeController::class);
             Route::resource('services', DIFServiceController::class);

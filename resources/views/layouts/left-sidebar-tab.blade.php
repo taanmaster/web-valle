@@ -344,7 +344,7 @@
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('doctors.index') }}">Doctores</a>
+                            <a class="nav-link" href="{{ route('dif.doctors.index') }}">Doctores</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('specialties.index') }}">Especialidades</a>

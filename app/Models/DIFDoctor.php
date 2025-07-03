@@ -9,6 +9,15 @@ class DIFDoctor extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'employee_num',
+        'name',
+        'specialty_id',
+        'full_address',
+        'email',
+        'phone',
+    ];
+
     public function speciality()
     {
         return $this->belongsTo(DIFSpecialty::class, 'specialty_id');
