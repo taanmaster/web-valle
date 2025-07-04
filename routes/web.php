@@ -24,10 +24,6 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /*DIF*/
     Route::get('/dif', 'FrontController@dif')->name('dif.index');
 
-    Route::get('/dif/blog', 'FrontController@difBlog')->name('dif.blog');
-    Route::get('/dif/blog/{slug}', 'FrontController@difBlogDetail')->name('dif.blog.detail')
-        ->where('slug', '[\w\d\-\_]+');
-
 
     // Contraloría
     Route::get('/contraloria', 'FrontController@contraloria')->name('contraloria.index');

@@ -35,7 +35,7 @@
                         <div class="overlay"></div>
                         <div class="card-content">
                             <p>Bienvenido al</p>
-                            <h2>Sistema de Apertura Rápida de Empresas</h2>
+                            <h2>Dif</h2>
                             <p>del H. Ayuntamiento de Valle de Santiago, Guanajuato.</p>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
 
         @if (count($fav_posts) > 0)
             <div class="row wow fadeInUp">
-                <div class="col-md-12">
+                <div class="d-flex align-items-center justify-content-between w-100 mb-3">
                     <div class="d-flex align-items-center gap-3">
                         <div
                             class="card-icon card-icon-static bg-primary text-white d-flex align-items-center justify-content-center">
@@ -111,11 +111,7 @@
                         </div>
                         <h3 class="mb-0">Artículos Destacados</h3>
                     </div>
-                </div>
-
-                <div class="d-flex align-items-center justify-content-between w-100 mb-3">
-                    <p class="mb-0">Categoría basada en el número de lecturas.</p>
-                    <a href="{{ route('blog.list') }}" class="btn btn-link p-0">
+                    <a href="{{ route('blog.list-filter', $category) }}" class="btn btn-link p-0">
                         Ver más artículos
                         <ion-icon name="arrow-forward"></ion-icon>
                     </a>
@@ -261,11 +257,22 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6 position-relative">
                 <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/croquis.png') }}" alt="Dif Croquis">
+                    <img class="card-img-top" src="{{ asset('front/img/croquis.png') }}" alt="Dif Croquis"
+                        style="object-fit: scale-down">
                     <div class="overlay"></div>
                 </div>
+
+                <div class="position-absolute start-0 bottom-0 end-0 p-1 text-center" style="z-index: 3">
+                    <a href="https://maps.app.goo.gl/efF4ux4ppMbkrbTi6" target="_blank" class="btn btn-primary mb-2">
+                        Haz click para encontrarnos
+                    </a>
+                    <p class="mb-0">
+                        MA. Gertrudis Vargas #36 Tel. 4566430196
+                    </p>
+                </div>
+
             </div>
         </div>
     </div>

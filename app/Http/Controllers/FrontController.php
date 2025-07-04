@@ -348,29 +348,9 @@ class FrontController extends Controller
 
         $banners = DifBanner::where('is_active', true)->orderBy('priority', 'asc')->get();
 
-        return view('front.dif')->with('fav_posts', $fav_posts)->with('banners', $banners);
-    }
-
-    public function difBlog()
-    {
-        $posts = Blog::where('category', 'Dif')->orderBy('updated_at', 'desc')->take(6)->get();
-
-        $mode = 0;
-
         $category = 'Dif';
 
-        return view('front.dif_blog.index')->with([
-            'posts' => $posts,
-            'mode' => $mode,
-            'category' => $category
-        ]);
-    }
-
-    public function difBlogDetail($slug)
-    {
-        $blog = Blog::where('slug', $slug)->first();
-
-        return view('front.dif_blog.detail')->with('blog', $blog);
+        return view('front.dif')->with('fav_posts', $fav_posts)->with('banners', $banners)->with('category', $category);
     }
 
     // Pantallas Blog/Noticias
