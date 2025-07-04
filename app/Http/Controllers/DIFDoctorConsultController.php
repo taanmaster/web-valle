@@ -75,7 +75,7 @@ class DIFDoctorConsultController extends Controller
 
     public function show(DIFDoctorConsult $consult)
     {
-        $consult->load(['doctor', 'consultType', 'citizen']);
+        $consult->load(['doctor.specialty', 'consultType', 'citizen.medicalProfile']);
         return view('dif.consults.show', compact('consult'));
     }
 

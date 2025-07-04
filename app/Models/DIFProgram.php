@@ -27,4 +27,10 @@ class DIFProgram extends Model
     {
         return $this->belongsToMany(DIFCoordination::class, 'd_i_f_coordination_programs', 'program_id', 'coordination_id');
     }
+
+    // Relación many-to-many con perfiles médicos
+    public function medicalProfiles()
+    {
+        return $this->belongsToMany(CitizenMedicalProfile::class, 'medical_profile_programs', 'program_id', 'medical_profile_id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 // Ayudantes
+use PDF;
 use Str;
 use Auth;
 use Session;
@@ -210,5 +211,37 @@ class DIFReceiptController extends Controller
             'subtotal' => number_format($subtotal, 2),
             'total' => number_format($total, 2)
         ]);
+    }
+
+    /**
+     * Descargar recibo en formato PDF
+     */
+    public function downloadReceipt($id, Request $request)
+    {
+        $receipt = Receipt::with(['paymentConcepts', 'doctor.specialty', 'patient'])->find($id);
+        
+        if (!$receipt) {
+            Session::flash('error', 'Recibo no encontrado.');
+            return redirect()->back();
+        }
+       
+        $filename = "recibo_dif_" . Str::slug($receipt->receipt_num) . ".pdf";
+        
+        $pdf = PDF::loadView('_files.dif._receipt_invoice', [
+            'receipt' => $receipt
+        ]);
+        
+        // Crear directorio si no existe
+        $directory = public_path('dif/receipts/');
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
+        
+        $pdf->save($directory . $filename);
+        
+        // Mensaje de session
+        Session::flash('success', 'Recibo descargado exitosamente.');
+
+        return response()->download($directory . $filename);
     }
 }

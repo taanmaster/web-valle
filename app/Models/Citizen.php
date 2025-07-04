@@ -25,4 +25,9 @@ class Citizen extends Model
     {
         return $this->hasMany(DIFPrescription::class, 'patient_id');
     }
+
+    public function medicalProfile()
+    {
+        return $this->hasOne(CitizenMedicalProfile::class);
+    }
 }

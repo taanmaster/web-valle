@@ -57,8 +57,22 @@ class DIFDoctorController extends Controller
             'phone' => $request->phone,
         ]);
 
+        $doctor_user = new User([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+    
+        $rol = Role::findByName($request->rol);
+
+        // Guardar primero el admin
+        $doctor_user->save();
+
+        // Asignar el Rol
+        $doctor_user->assignRole($rol->name);
+
         // Mensaje de session
-        Session::flash('success', 'Doctor guardado correctamente.');
+        Session::flash('success', 'Doctor guardado correctamente. Se creó su usuario y se le asignó el rol de doctor.');
 
         // Enviar a vista
         return redirect()->route('dif.doctors.index');

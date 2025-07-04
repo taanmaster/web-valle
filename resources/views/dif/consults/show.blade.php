@@ -119,8 +119,11 @@
                                                 <div class="d-flex align-items-center">
                                                     <i class="fas fa-user text-info me-2"></i>
                                                     <div>
-                                                        <strong>{{ $consult->citizen->name }}</strong>
-                                                        <br><small class="text-muted">CURP: {{ $consult->citizen->curp }}</small>
+                                                        <strong>{{ $consult->citizen->name }} {{ $consult->citizen->first_name }} {{ $consult->citizen->last_name }}</strong>
+                                                        <br><small class="text-muted">ID: {{ $consult->citizen->id }}</small>
+                                                        @if($consult->citizen->curp)
+                                                            <br><small class="text-muted">CURP: {{ $consult->citizen->curp }}</small>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             @else
@@ -153,6 +156,176 @@
                                 <div class="card bg-light">
                                     <div class="card-body">
                                         <p class="mb-0">{{ $consult->consult_description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Perfil Médico del Paciente -->
+                    @if($consult->citizen && $consult->citizen->medicalProfile)
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h5 class="mb-3">
+                                    <i class="fas fa-user-md text-success"></i> Perfil Médico del Paciente
+                                </h5>
+                                <div class="card border-success">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- Información Personal del Perfil -->
+                                            <div class="col-md-6">
+                                                <h6 class="text-success mb-3">
+                                                    <i class="fas fa-id-card"></i> Información Personal
+                                                </h6>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-borderless">
+                                                        <tr>
+                                                            <th width="40%">Número Médico:</th>
+                                                            <td>
+                                                                <span class="badge bg-success">{{ $consult->citizen->medicalProfile->medical_num }}</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Género:</th>
+                                                            <td>
+                                                                @if($consult->citizen->medicalProfile->gender == 'Masculino')
+                                                                    <span class="badge bg-primary">{{ $consult->citizen->medicalProfile->gender }}</span>
+                                                                @elseif($consult->citizen->medicalProfile->gender == 'Femenino')
+                                                                    <span class="badge bg-pink">{{ $consult->citizen->medicalProfile->gender }}</span>
+                                                                @else
+                                                                    <span class="badge bg-secondary">{{ $consult->citizen->medicalProfile->gender }}</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Edad:</th>
+                                                            <td>
+                                                                @if($consult->citizen->medicalProfile->age)
+                                                                    <i class="fas fa-birthday-cake text-info me-1"></i>
+                                                                    {{ $consult->citizen->medicalProfile->age }} años
+                                                                @else
+                                                                    <span class="text-muted">No especificada</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Teléfono:</th>
+                                                            <td>
+                                                                @if($consult->citizen->medicalProfile->phone)
+                                                                    <i class="fas fa-phone text-success me-1"></i>
+                                                                    {{ $consult->citizen->medicalProfile->phone }}
+                                                                @else
+                                                                    <span class="text-muted">No especificado</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Email:</th>
+                                                            <td>
+                                                                @if($consult->citizen->medicalProfile->email)
+                                                                    <i class="fas fa-envelope text-primary me-1"></i>
+                                                                    {{ $consult->citizen->medicalProfile->email }}
+                                                                @else
+                                                                    <span class="text-muted">No especificado</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <!-- Información Médica -->
+                                            <div class="col-md-6">
+                                                <h6 class="text-danger mb-3">
+                                                    <i class="fas fa-heartbeat"></i> Información Médica
+                                                </h6>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-borderless">
+                                                        <tr>
+                                                            <th width="40%">Tipo de Sangre:</th>
+                                                            <td>
+                                                                @if($consult->citizen->medicalProfile->blood_type)
+                                                                    <span class="badge bg-danger">{{ $consult->citizen->medicalProfile->blood_type }}</span>
+                                                                @else
+                                                                    <span class="text-muted">No especificado</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Alergias:</th>
+                                                            <td>
+                                                                @if($consult->citizen->medicalProfile->allergies)
+                                                                    <span class="text-warning">
+                                                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                                                        {{ $consult->citizen->medicalProfile->allergies }}
+                                                                    </span>
+                                                                @else
+                                                                    <span class="text-success">
+                                                                        <i class="fas fa-check-circle me-1"></i>
+                                                                        Sin alergias conocidas
+                                                                    </span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Condiciones Médicas:</th>
+                                                            <td>
+                                                                @if($consult->citizen->medicalProfile->medical_conditions)
+                                                                    <div class="alert alert-warning py-1 px-2 mb-0">
+                                                                        <small>{{ Str::limit($consult->citizen->medicalProfile->medical_conditions, 80) }}</small>
+                                                                    </div>
+                                                                @else
+                                                                    <span class="text-muted">Sin condiciones médicas registradas</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Medicamentos:</th>
+                                                            <td>
+                                                                @if($consult->citizen->medicalProfile->medications)
+                                                                    <div class="alert alert-info py-1 px-2 mb-0">
+                                                                        <small>{{ Str::limit($consult->citizen->medicalProfile->medications, 80) }}</small>
+                                                                    </div>
+                                                                @else
+                                                                    <span class="text-muted">Sin medicamentos registrados</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Botón para ver perfil completo -->
+                                        <div class="text-center mt-3 pt-3 border-top">
+                                            <a href="{{ route('dif.medical_profiles.show', $consult->citizen->medicalProfile->id) }}" 
+                                               class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-eye me-1"></i>
+                                                Ver Perfil Médico Completo
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @elseif($consult->citizen)
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h5 class="mb-3">
+                                    <i class="fas fa-user-md text-warning"></i> Perfil Médico del Paciente
+                                </h5>
+                                <div class="alert alert-warning">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                                        <div>
+                                            <h6 class="mb-1">No hay perfil médico disponible</h6>
+                                            <p class="mb-2">Este paciente no tiene un perfil médico registrado en el sistema.</p>
+                                            <a href="{{ route('dif.medical_profiles.create') }}?citizen_id={{ $consult->citizen->id }}" 
+                                               class="btn btn-warning btn-sm">
+                                                <i class="fas fa-plus me-1"></i>
+                                                Crear Perfil Médico
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

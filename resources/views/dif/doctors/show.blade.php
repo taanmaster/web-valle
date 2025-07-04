@@ -364,6 +364,7 @@
                                                             <th>Método de Pago</th>
                                                             <th>Estado</th>
                                                             <th>Expedido por</th>
+                                                            <th>Descarga</th>
                                                             <th>Acciones</th>
                                                         </tr>
                                                     </thead>
@@ -408,6 +409,13 @@
                                                                     @endswitch
                                                                 </td>
                                                                 <td>{{ $receipt->issued_by }}</td>
+                                                                <td>
+                                                                    <a href="{{ route('dif.receipts.download', $receipt->id) }}" 
+                                                                       class="btn btn-success btn-sm" 
+                                                                       title="Descargar Recibo PDF">
+                                                                        <i class="fas fa-download"></i>
+                                                                    </a>
+                                                                </td>
                                                                 <td>
                                                                     <div class="btn-group" role="group">
                                                                         <a href="{{ route('dif.receipts.show', $receipt->id) }}" 
