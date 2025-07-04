@@ -366,7 +366,7 @@
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Pacientes</a>
+                            <a class="nav-link" href="{{ route('dif.medical_profiles.index') }}">Pacientes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dif.coordinations.index') }}">Coordinaciones</a>

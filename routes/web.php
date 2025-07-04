@@ -12,6 +12,7 @@ use App\Http\Controllers\DIFCoordinationController;
 use App\Http\Controllers\DIFDoctorConsultController;
 use App\Http\Controllers\DIFPrescriptionController;
 use App\Http\Controllers\DIFPrescriptionFileController;
+use App\Http\Controllers\CitizenMedicalProfileController;
 
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
@@ -330,9 +331,29 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('receipts/calculate-totals', 'DIFReceiptController@calculateTotals')
                 ->name('dif.receipts.calculate-totals');
 
+            // Ruta para descargar recibo en PDF
+            Route::get('receipts/{id}/download', 'DIFReceiptController@downloadReceipt')
+                ->name('dif.receipts.download');
+
             // Rutas para búsqueda de pacientes via Ajax (debe ir antes del resource)
             Route::get('patients/search', 'SearchController@citizenQuery')->name('dif.patients.search');
             Route::get('patients/{id}', 'CitizenController@show')->name('dif.patients.show');
+
+            // Este modulo es el perfil de los pacientes que esta vinculado a un ciudadano (citizen).
+            // Para diferenciarlo del modulo de ciudadanos, se usa el prefijo 'medical-profile'
+            
+            // Ruta para obtener información del ciudadano via Ajax (debe ir antes del resource)
+            Route::get('medical-profiles/citizen/{id}', [CitizenMedicalProfileController::class, 'getCitizenInfo'])->name('dif.medical_profiles.citizen_info');
+            
+            Route::resource('medical-profiles', CitizenMedicalProfileController::class)->names([
+                'index' => 'dif.medical_profiles.index',
+                'create' => 'dif.medical_profiles.create',
+                'store' => 'dif.medical_profiles.store',
+                'show' => 'dif.medical_profiles.show',
+                'edit' => 'dif.medical_profiles.edit',
+                'update' => 'dif.medical_profiles.update',
+                'destroy' => 'dif.medical_profiles.destroy',
+            ]);
 
             Route::resource('consults', DIFDoctorConsultController::class)->names([
                 'index' => 'dif.consults.index',

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->string('employee_num');
+            $table->integer('user_id')->unsigned()->nullable();
+            
             $table->string('name');
             $table->integer('specialty_id')->unsigned();
 
