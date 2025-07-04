@@ -28,7 +28,7 @@
                 </a>
             </li>
 
-            {{--  
+            {{--
             <li>
                 <a href="{{ route('treasury.dependency.list') }}">
                     <ion-icon name="stats-chart-outline"></ion-icon>
@@ -36,7 +36,7 @@
                 </a>
             </li>
             --}}
-            
+
             <li>
                 <a href="{{ route('sare.index') }}">
                     <ion-icon name="layers-outline"></ion-icon>
@@ -57,7 +57,14 @@
                     <span>Contraloría</span>
                 </a>
             </li>
-            
+
+            <li>
+                <a href="{{ route('dif.index') }}">
+                    <ion-icon name="library-outline"></ion-icon>
+                    <span>DIF</span>
+                </a>
+            </li>
+
             <li>
                 <div class="switch">
                     <input type="checkbox" id="mode" checked>

@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Models\Popup;
 use App\Models\Banner;
 use App\Models\Headerband;
+use App\Models\DifBanner;
 
 // Modelos Gaceta Municipal
 use App\Models\Gazette;
@@ -340,13 +341,25 @@ class FrontController extends Controller
         return view('front.sare');
     }
 
+    // Pantallas DIF
+    public function dif()
+    {
+        $fav_posts = Blog::where('is_fav', true)->where('category', 'DIF')->orderBy('updated_at', 'desc')->limit(3)->get();
+
+        $banners = DifBanner::where('is_active', true)->orderBy('priority', 'asc')->get();
+
+        $category = 'Dif';
+
+        return view('front.dif')->with('fav_posts', $fav_posts)->with('banners', $banners)->with('category', $category);
+    }
+
     // Pantallas Blog/Noticias
     public function blog()
     {
         $fav_posts = Blog::where('is_fav', true)->orderBy('updated_at', 'desc')->limit(3)->get();
         $posts = Blog::orderBy('updated_at', 'desc')->take(6)->get();
 
-        $mode = 0;
+        $mode = 1;
 
         $categories = ['General', 'Turismo', 'Eventos'];
 

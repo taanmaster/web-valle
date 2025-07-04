@@ -127,6 +127,7 @@
                         <option value="General">General</option>
                         <option value="Turismo">Turismo</option>
                         <option value="Eventos">Eventos</option>
+                        <option value="Dif">DIF</option>
                     </select>
                 </div>
                 <div class="col-md-6">
