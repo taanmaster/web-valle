@@ -21,6 +21,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /*SARE*/
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
 
+    /*DIF*/
+    Route::get('/dif', 'FrontController@dif')->name('dif.index');
+
+    Route::get('/dif/blog', 'FrontController@difBlog')->name('dif.blog');
+    Route::get('/dif/blog/{slug}', 'FrontController@difBlogDetail')->name('dif.blog.detail')
+        ->where('slug', '[\w\d\-\_]+');
+
+
     // Contraloría
     Route::get('/contraloria', 'FrontController@contraloria')->name('contraloria.index');
     Route::get('/contraloria/faltas-administrativas', 'FrontController@contraloriaFaults')->name('contraloria.faults');
@@ -191,18 +199,18 @@ Route::namespace('App\Http\Controllers')->group(function () {
         /* Gaceta Municipal */
         Route::resource('gazettes', GazetteController::class);
         Route::resource('gazette_files', GazetteFileController::class);
-        
+
         // Rutas para subida por chunks
         Route::post('/gazettes/init-chunk-upload', [
             'uses' => 'GazetteController@initChunkUpload',
             'as' => 'gazettes.init-chunk-upload',
         ]);
-        
+
         Route::post('/gazettes/upload-chunk', [
             'uses' => 'GazetteController@uploadChunk',
             'as' => 'gazettes.upload-chunk',
         ]);
-        
+
         Route::post('/gazettes/finalize-chunk-upload', [
             'uses' => 'GazetteController@finalizeChunkUpload',
             'as' => 'gazettes.finalize-chunk-upload',
@@ -270,12 +278,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'uses' => 'TransparencyDocumentController@initChunkUpload',
                 'as' => 'transparency_documents.init-chunk-upload',
             ]);
-            
+
             Route::post('/documents/upload-chunk', [
                 'uses' => 'TransparencyDocumentController@uploadChunk',
                 'as' => 'transparency_documents.upload-chunk',
             ]);
-            
+
             Route::post('/documents/finalize-chunk-upload', [
                 'uses' => 'TransparencyDocumentController@finalizeChunkUpload',
                 'as' => 'transparency_documents.finalize-chunk-upload',
@@ -305,34 +313,34 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('dropzone/upload/{id}', 'TransparencyFileController@uploadFile')->name('dropzone.upload');
             Route::get('dropzone/fetch/{id}', 'TransparencyFileController@fetchFile')->name('dropzone.fetch');
             Route::get('dropzone/delete/{id}', 'TransparencyFileController@deleteFile')->name('dropzone.delete');
-            
+
             // Rutas para subida por chunks de archivos de transparencia
             Route::post('/files/init-chunk-upload', [
                 'uses' => 'TransparencyFileController@initChunkUpload',
                 'as' => 'transparency_files.init-chunk-upload',
             ]);
-            
+
             Route::post('/files/upload-chunk', [
                 'uses' => 'TransparencyFileController@uploadChunk',
                 'as' => 'transparency_files.upload-chunk',
             ]);
-            
+
             Route::post('/files/finalize-chunk-upload', [
                 'uses' => 'TransparencyFileController@finalizeChunkUpload',
                 'as' => 'transparency_files.finalize-chunk-upload',
             ]);
-            
+
             // Rutas para subida por chunks de archivos de transparencia
             Route::post('/files/init-chunk-upload', [
                 'uses' => 'TransparencyFileController@initChunkUpload',
                 'as' => 'transparency_files.init-chunk-upload',
             ]);
-            
+
             Route::post('/files/upload-chunk', [
                 'uses' => 'TransparencyFileController@uploadChunk',
                 'as' => 'transparency_files.upload-chunk',
             ]);
-            
+
             Route::post('/files/finalize-chunk-upload', [
                 'uses' => 'TransparencyFileController@finalizeChunkUpload',
                 'as' => 'transparency_files.finalize-chunk-upload',
@@ -531,6 +539,23 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::get('/cashier_report_export/{id}', [
                     'uses' => 'TsrAccountsDueController@exportCustome',
                     'as' => 'account_due_custome.export',
+                ]);
+            });
+
+            /* DIF */
+            Route::group(['prefix' => 'dif'], function () {
+                Route::resource('banners', DifBannerController::class)->names([
+                    'index' => 'dif.banners.index',
+                    'create' => 'dif.banners.create',
+                    'store' => 'dif.banners.store',
+                    'show' => 'dif.banners.show',
+                    'edit' => 'dif.banners.edit',
+                    'update' => 'dif.banners.update',
+                    'destroy' => 'dif.banners.destroy',
+                ]);
+                Route::post('/banners/status/{id}', [
+                    'uses' => 'DifBannerController@status',
+                    'as' => 'dif.banners.status',
                 ]);
             });
 

@@ -146,6 +146,15 @@
                             <a class="nav-link" href="{{ route('citizen_complain.index') }}">Denuncia ciudadana</a>
                         </li>
                     </ul>
+
+                    <div class="title-box mt-4">
+                        <h6 class="menu-title">DIF</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.banners.index') }}">Banners</a>
+                        </li>
+                    </ul>
                 </div>
             @endif
 
