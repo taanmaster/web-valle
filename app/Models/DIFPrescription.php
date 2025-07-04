@@ -25,4 +25,9 @@ class DIFPrescription extends Model
     {
         return $this->belongsTo(DIFDoctor::class, 'doctor_id');
     }
+
+    public function patient()
+    {
+        return $this->belongsTo(Citizen::class, 'patient_id');
+    }
 }

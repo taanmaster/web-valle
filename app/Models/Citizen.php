@@ -20,4 +20,9 @@ class Citizen extends Model
     {
         return $this->hasMany(FinancialSupport::class);
     }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(DIFPrescription::class, 'patient_id');
+    }
 }

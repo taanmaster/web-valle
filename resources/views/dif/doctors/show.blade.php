@@ -338,47 +338,123 @@
 
                                     <!-- Recibos Tab -->
                                     <div class="tab-pane fade" id="receipts" role="tabpanel">
-                                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
-                                            <div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded" style="gap: 1rem;">
+                                            <div class="flex-grow-1">
                                                 <h6 class="mb-0 text-info">
                                                     <i class="fas fa-receipt me-2"></i>Recibos del Doctor
                                                 </h6>
                                                 <small class="text-muted">Recibos de pago generados por el doctor</small>
                                             </div>
-                                            <a href="{{ route('dif.receipts.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-info btn-sm">
-                                                <i class="fas fa-plus me-2"></i>Nuevo Recibo
-                                            </a>
+                                            <div class="d-flex" style="flex-shrink:0;">
+                                                <a href="{{ route('dif.receipts.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-info btn-sm" style="white-space:nowrap;">
+                                                    <i class="fas fa-plus me-2"></i>Nuevo Recibo
+                                                </a>
+                                            </div>
                                         </div>
                                         
                                         @if($doctor->receipts->count() > 0)
                                             <div class="table-responsive">
-                                                <table class="table table-hover">
-                                                    <thead class="table-light">
+                                                <table class="table table-striped">
+                                                    <thead>
                                                         <tr>
-                                                            <th>Número</th>
+                                                            <th>Folio</th>
                                                             <th>Fecha</th>
                                                             <th>Paciente</th>
                                                             <th>Total</th>
+                                                            <th>Método de Pago</th>
                                                             <th>Estado</th>
+                                                            <th>Expedido por</th>
                                                             <th>Acciones</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach($doctor->receipts->take(10) as $receipt)
                                                             <tr>
-                                                                <td>{{ $receipt->receipt_num }}</td>
-                                                                <td>{{ $receipt->receipt_date->format('d/m/Y') }}</td>
-                                                                <td>{{ $receipt->patient_name ?? 'N/A' }}</td>
-                                                                <td>${{ number_format($receipt->total, 2) }}</td>
                                                                 <td>
-                                                                    <span class="badge bg-{{ $receipt->status == 'paid' ? 'success' : ($receipt->status == 'pending' ? 'warning' : 'danger') }}">
-                                                                        {{ ucfirst($receipt->status) }}
-                                                                    </span>
+                                                                    <span class="badge bg-primary">{{ $receipt->receipt_num }}</span>
+                                                                </td>
+                                                                <td>{{ $receipt->receipt_date->format('d/m/Y') }}</td>
+                                                                <td>{{ $receipt->pacient_id }}</td>
+                                                                <td class="text-end">
+                                                                    <strong>${{ number_format($receipt->total, 2) }}</strong>
                                                                 </td>
                                                                 <td>
-                                                                    <a href="{{ route('dif.receipts.show', $receipt->id) }}" class="btn btn-sm btn-outline-primary">
-                                                                        <i class="fas fa-eye"></i>
-                                                                    </a>
+                                                                    @switch($receipt->payment_method)
+                                                                        @case('cash')
+                                                                            <i class="fas fa-money-bill-wave text-success"></i> Efectivo
+                                                                            @break
+                                                                        @case('card')
+                                                                            <i class="fas fa-credit-card text-primary"></i> Tarjeta
+                                                                            @break
+                                                                        @case('transfer')
+                                                                            <i class="fas fa-exchange-alt text-info"></i> Transferencia
+                                                                            @break
+                                                                        @case('check')
+                                                                            <i class="fas fa-money-check text-warning"></i> Cheque
+                                                                            @break
+                                                                    @endswitch
+                                                                </td>
+                                                                <td>
+                                                                    @switch($receipt->status)
+                                                                        @case('pending')
+                                                                            <span class="badge bg-warning">Pendiente</span>
+                                                                            @break
+                                                                        @case('completed')
+                                                                            <span class="badge bg-success">Completado</span>
+                                                                            @break
+                                                                        @case('cancelled')
+                                                                            <span class="badge bg-danger">Cancelado</span>
+                                                                            @break
+                                                                    @endswitch
+                                                                </td>
+                                                                <td>{{ $receipt->issued_by }}</td>
+                                                                <td>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a href="{{ route('dif.receipts.show', $receipt->id) }}" 
+                                                                           class="btn btn-info btn-sm" title="Ver">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </a>
+                                                                        <a href="{{ route('dif.receipts.edit', $receipt->id) }}" 
+                                                                           class="btn btn-warning btn-sm" title="Editar">
+                                                                            <i class="fas fa-edit"></i>
+                                                                        </a>
+                                                                        <button type="button" class="btn btn-danger btn-sm" 
+                                                                                data-bs-toggle="modal" 
+                                                                                data-bs-target="#deleteModal{{ $receipt->id }}" 
+                                                                                title="Eliminar">
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </button>
+                                                                    </div>
+
+                                                                    <!-- Modal de Confirmación para cada registro -->
+                                                                    <div class="modal fade" id="deleteModal{{ $receipt->id }}" tabindex="-1" aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title">
+                                                                                        <i class="fas fa-exclamation-triangle text-warning"></i> Confirmar Eliminación
+                                                                                    </h5>
+                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <p>¿Estás seguro de que deseas eliminar este recibo?</p>
+                                                                                    <div class="alert alert-info">
+                                                                                        <strong>Folio:</strong> {{ $receipt->receipt_num }}<br>
+                                                                                        <strong>Paciente:</strong> {{ $receipt->pacient_id }}<br>
+                                                                                        <strong>Total:</strong> ${{ number_format($receipt->total, 2) }}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                                    <form method="POST" action="{{ route('dif.receipts.destroy', $receipt->id) }}" style="display:inline">
+                                                                                        @csrf
+                                                                                        @method('DELETE')
+                                                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -388,14 +464,18 @@
                                             @if($doctor->receipts->count() > 10)
                                                 <div class="text-center mt-3">
                                                     <a href="{{ route('dif.receipts.index', ['doctor_id' => $doctor->id]) }}" class="btn btn-outline-primary">
-                                                        Ver todos los recibos
+                                                        <i class="fas fa-list me-2"></i>Ver todos los recibos ({{ $doctor->receipts->count() }})
                                                     </a>
                                                 </div>
                                             @endif
                                         @else
                                             <div class="text-center py-4">
                                                 <i class="fas fa-receipt text-muted mb-3" style="font-size: 3rem;"></i>
-                                                <p class="text-muted">No hay recibos registrados</p>
+                                                <h6 class="text-muted">No hay recibos registrados</h6>
+                                                <p class="text-muted mb-0">Este doctor aún no tiene recibos de pago generados.</p>
+                                                <a href="{{ route('dif.receipts.create', ['doctor_id' => $doctor->id]) }}" class="btn btn-info btn-sm mt-2">
+                                                    <i class="fas fa-plus"></i> Crear Primer Recibo
+                                                </a>
                                             </div>
                                         @endif
                                     </div>
