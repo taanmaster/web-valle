@@ -30,7 +30,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
 
     /*DIF*/
-    Route::get('/dif', 'FrontController@dif')->name('dif.index');
+    Route::get('/dependencia-dif', 'FrontController@dif')->name('dif.index');
 
 
     // Contraloría
@@ -345,10 +345,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             // Este modulo es el perfil de los pacientes que esta vinculado a un ciudadano (citizen).
             // Para diferenciarlo del modulo de ciudadanos, se usa el prefijo 'medical-profile'
-            
+
             // Ruta para obtener información del ciudadano via Ajax (debe ir antes del resource)
             Route::get('medical-profiles/citizen/{id}', [CitizenMedicalProfileController::class, 'getCitizenInfo'])->name('dif.medical_profiles.citizen_info');
-            
+
             Route::resource('medical-profiles', CitizenMedicalProfileController::class)->names([
                 'index' => 'dif.medical_profiles.index',
                 'create' => 'dif.medical_profiles.create',
