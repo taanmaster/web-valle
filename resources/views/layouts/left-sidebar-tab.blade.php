@@ -39,7 +39,7 @@
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería"
                             data-bs-trigger="hover">
                             <a href="#valleTreasury" id="uikit-tab" class="nav-link">
-                                <i class="ti ti-planet menu-icon"></i>
+                                <i class="ti ti-archive menu-icon"></i>
                             </a>
                         </li>
                     @endif
@@ -67,6 +67,15 @@
                             title="Agenda Regulatoria" data-bs-trigger="hover">
                             <a href="#valleDevelopment" id="pages-tab" class="nav-link">
                                 <i class="ti ti-notebook menu-icon"></i>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('all'))
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="DIF"
+                            data-bs-trigger="hover">
+                            <a href="#valleDIF" id="dif-tab" class="nav-link">
+                                <i class="ti ti-heart menu-icon"></i>
                             </a>
                         </li>
                     @endif
@@ -331,6 +340,48 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('regulatory_agenda.index') }}">Agenda
                                 Regulatoria</a>
+                        </li>
+                    </ul>
+                </div>
+            @endif
+
+            @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('all'))
+                <div id="valleDIF" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="dif-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Perfiles</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.doctors.index') }}">Doctores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.specialties.index') }}">Especialidades</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.consult_types.index') }}">Tipos de Consulta</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.services.index') }}">Servicios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.payment_concepts.index') }}">Conceptos de Cobro</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Pacientes</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.medical_profiles.index') }}">Pacientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.coordinations.index') }}">Coordinaciones</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.programs.index') }}">Programas</a>
                         </li>
                     </ul>
                 </div>

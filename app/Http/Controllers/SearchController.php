@@ -35,6 +35,34 @@ class SearchController extends Controller
     {
         $search_query = $request->input('query');
 
+        // Si la petición es AJAX, devolver JSON
+        if ($request->ajax() || $request->wantsJson()) {
+            $citizens = Citizen::where('name', 'LIKE', "%{$search_query}%")
+                ->orWhere('first_name', 'LIKE', "%{$search_query}%")
+                ->orWhere('last_name', 'LIKE', "%{$search_query}%")
+                ->orWhere('curp', 'LIKE', "%{$search_query}%")
+                ->orWhere('phone', 'LIKE', "%{$search_query}%")
+                ->orWhere('email', 'LIKE', "%{$search_query}%")
+                ->limit(20)
+                ->get()
+                ->map(function ($citizen) {
+                    return [
+                        'id' => $citizen->id,
+                        'name' => $citizen->name,
+                        'curp' => $citizen->curp,
+                        'phone' => $citizen->phone,
+                        'email' => $citizen->email,
+                        'address' => $citizen->address,
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'patients' => $citizens
+            ]);
+        }
+
+        // Si no es AJAX, devolver vista tradicional
         $citizens = Citizen::where('name', 'LIKE', "%{$search_query}%")
             ->orWhere('first_name', 'LIKE', "%{$search_query}%")
             ->orWhere('last_name', 'LIKE', "%{$search_query}%")

@@ -76,8 +76,34 @@ class CitizenController extends Controller
     public function show($id)
     {
         $citizen = Citizen::find($id);
-        $files = CitizenFile::where('citizen_id', $id)->get();
+        
+        if (!$citizen) {
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ciudadano no encontrado'
+                ], 404);
+            }
+            abort(404, 'Ciudadano no encontrado');
+        }
 
+        // Si la petición es AJAX, devolver JSON
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'patient' => [
+                    'id' => $citizen->id,
+                    'name' => $citizen->name,
+                    'curp' => $citizen->curp,
+                    'phone' => $citizen->phone,
+                    'email' => $citizen->email,
+                    'address' => $citizen->address,
+                ]
+            ]);
+        }
+
+        // Si no es AJAX, devolver vista tradicional
+        $files = CitizenFile::where('citizen_id', $id)->get();
         $financial_supports = FinancialSupport::where('citizen_id', $id)->get();
 
         return view('citizens.show')
