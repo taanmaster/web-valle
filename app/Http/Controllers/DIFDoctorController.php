@@ -9,6 +9,8 @@ use Session;
 // Modelos
 use App\Models\DIFDoctor as Doctor;
 use App\Models\DIFSpecialty;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 use Illuminate\Http\Request;
 
@@ -43,8 +45,9 @@ class DIFDoctorController extends Controller
             'employee_num' => 'required|max:255|unique:d_i_f_doctors',
             'name' => 'required|max:255',
             'specialty_id' => 'required|integer',
-            'email' => 'nullable|email|max:255',
+            'email' => 'required|email|max:255|unique:users',
             'phone' => 'nullable|max:20',
+            'password' => 'required|min:8|confirmed',
         ));
 
         // Guardar datos en la base de datos
@@ -57,16 +60,15 @@ class DIFDoctorController extends Controller
             'phone' => $request->phone,
         ]);
 
-        $doctor_user = new User([
+        // Crear el usuario del doctor
+        $doctor_user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
     
-        $rol = Role::findByName($request->rol);
-
-        // Guardar primero el admin
-        $doctor_user->save();
+        // Buscar o crear el rol de doctor
+        $rol = Role::firstOrCreate(['name' => 'doctor_employee']);
 
         // Asignar el Rol
         $doctor_user->assignRole($rol->name);

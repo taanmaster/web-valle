@@ -60,7 +60,7 @@
 
             <li>
                 <a href="{{ route('dif.index') }}">
-                    <ion-icon name="library-outline"></ion-icon>
+                    <ion-icon name="medkit-outline"></ion-icon>
                     <span>DIF</span>
                 </a>
             </li>
