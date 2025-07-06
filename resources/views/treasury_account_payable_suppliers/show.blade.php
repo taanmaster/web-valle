@@ -129,6 +129,111 @@
                         </div>
                     </div>
                 </div>
+
+                @if ($supplier->logs->count() > 0)
+                    <div class="col-12 mt-5">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5>Historial</h5>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Nuevo Estado</th>
+                                                <th>Descripción</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($supplier->logs as $log)
+                                                <tr>
+                                                    <td>{{ $log->created_at->format('Y-m-d') }}</td>
+                                                    <td>
+                                                        @switch($log->status)
+                                                            @case('active')
+                                                                <span class="badge bg-success">Activo</span>
+                                                            @break
+
+                                                            @case('inactive')
+                                                                <span class="badge bg-danger">Inactivo</span>
+                                                            @break
+
+                                                            @case('payed')
+                                                                <span class="badge bg-warning">Pagado</span>
+                                                            @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td>{{ $log->description }}</td>
+
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <a href="javascript:void(0)"
+                                                                class="btn btn-sm btn-outline-secondary"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modalEditLog{{ $log->id }}">
+                                                                <i class="bx bx-edit"></i> Editar comentario
+                                                            </a>
+                                                            <form action="{{ route('suppliers_logs.destroy', $log->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="btn btn-sm btn-outline-danger">
+                                                                    <i class="bx bx-trash-alt"></i> Eliminar
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+
+                                                <!-- Modal para editar el log -->
+                                                <div class="modal fade" id="modalEditLog{{ $log->id }}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="modalEditLogLabel{{ $log->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-dark">
+                                                                <h5 class="modal-title text-white"
+                                                                    id="modalEditLogLabel{{ $log->id }}">Editar
+                                                                    Comentario
+                                                                </h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <form method="POST"
+                                                                action="{{ route('suppliers_logs.update', $log->id) }}">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="modal-body">
+                                                                    <div class="mb-3">
+                                                                        <label for="description"
+                                                                            class="form-label">Descripción</label>
+                                                                        <textarea class="form-control" id="description" name="description" rows="3" required>{{ $log->description }}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Cancelar</button>
+                                                                    <button type="submit" class="btn btn-primary">Guardar
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

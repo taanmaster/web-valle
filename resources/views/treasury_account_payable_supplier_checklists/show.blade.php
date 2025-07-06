@@ -12,7 +12,7 @@
             Tesorería
         @endslot
         @slot('title')
-            Detalle del Checklist
+            Detalle del Checklist: {{ $checklist->folio ?? 'N/A' }}
         @endslot
     @endcomponent
 
@@ -20,18 +20,17 @@
         <div class="main-content">
             <div class="row">
                 <!-- Información del checklist -->
-                <div class="col-md-12 text-end mb-5">
-                    <form method="POST" action="{{ route('supplier_checklists.download', [$supplier->id, $checklist->id]) }}"
-                        enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-primary"><i class="bx bx-download"></i> Descargar
-                            Checklist</button>
-                    </form>
-                </div>
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5>Detalle del Checklist</h5>
+                            <h5>Detalle del Checklist: {{ $checklist->folio ?? 'N/A' }}</h5>
+                            <form method="POST"
+                                action="{{ route('supplier_checklists.download', [$supplier->id, $checklist->id]) }}"
+                                enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <button type="submit" class="btn btn-primary"><i class="bx bx-download"></i> Descargar
+                                    Checklist</button>
+                            </form>
                         </div>
                         <div class="card-body">
                             <p><strong>Folio:</strong> {{ $checklist->folio ?? 'N/A' }}</p>
@@ -78,8 +77,8 @@
                 <div class="col-12 mt-5">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5>Autorizaciones</h5>
-                            <button class="btn btn-sm btn-primary" style="min-width: 140px" data-bs-toggle="modal"
+                            <h5>Cartas de Autorización</h5>
+                            <button class="btn btn-sm btn-primary" style="max-width: 140px" data-bs-toggle="modal"
                                 data-bs-target="#newAuthorizationModal">
                                 <i class="bx bx-plus"></i> Nueva autorización
                             </button>
@@ -90,10 +89,13 @@
                                     <table class="table table-striped table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Número</th>
-                                                <th>Título</th>
+                                                <th>Folio</th>
+                                                <th>Concepto de pago</th>
+                                                <th>Cantidad</th>
                                                 <th>Tipo</th>
+                                                <th>Estatus de pago</th>
                                                 <th>Acciones</th>
+                                                <th>Notas</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -101,9 +103,29 @@
                                                 <tr>
                                                     <td>{{ $authorization->folio ?? 'N/A' }}</td>
                                                     <td>{{ $authorization->title }}</td>
+                                                    <td>{{ $authorization->amount }}</td>
                                                     <td>{{ $authorization->type }}</td>
                                                     <td>
+                                                        @switch($authorization->status)
+                                                            @case('programado')
+                                                                <span class="badge bg-warning">Programado</span>
+                                                            @break
+
+                                                            @case('vencido')
+                                                                <span class="badge bg-danger">Vencido</span>
+                                                            @break
+
+                                                            @case('active' || 'pagado')
+                                                                <span class="badge bg-success">Pagado</span>
+                                                            @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td>
                                                         <div class="btn-group" role="group">
+                                                            <a href="{{ route('supplier_checklist_authorizations.show', $authorization->id) }}"
+                                                                class="btn btn-sm btn-outline-secondary">
+                                                                <i class="bx bx-edit"></i> Ver
+                                                            </a>
                                                             <a href="{{ route('supplier_checklist_authorizations.edit', $authorization->id) }}"
                                                                 class="btn btn-sm btn-outline-secondary">
                                                                 <i class="bx bx-edit"></i> Editar
@@ -119,6 +141,9 @@
                                                                 </button>
                                                             </form>
                                                         </div>
+                                                    </td>
+                                                    <td>
+
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -168,7 +193,8 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="sender_bank_name" class="form-label">Banco Emisor</label>
-                                <input type="text" class="form-control" id="sender_bank_name" name="sender_bank_name">
+                                <input type="text" class="form-control" id="sender_bank_name"
+                                    name="sender_bank_name">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="sender_account_number" class="form-label">Número de Cuenta Emisor</label>
@@ -208,6 +234,20 @@
                             <div class="col-md-6 mb-3">
                                 <label for="redacted_by" class="form-label">Redactado por</label>
                                 <input type="text" class="form-control" id="redacted_by" name="redacted_by">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="payment_status" class="form-label">Estatus de pago</label>
+                                <select name="payment_status" id="payment_status" class="form-select">
+                                    <option value="programado"
+                                        {{ $authorization->payment_status == 'programado' ? 'selected' : '' }}>Programado
+                                    </option>
+                                    <option value="pagado"
+                                        {{ $authorization->payment_status == 'pagado' ? 'selected' : '' }}>Pagado
+                                    </option>
+                                    <option value="vencido"
+                                        {{ $authorization->payment_status == 'vencido' ? 'selected' : '' }}>Vencido
+                                    </option>
+                                </select>
                             </div>
                         </div>
                         <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">

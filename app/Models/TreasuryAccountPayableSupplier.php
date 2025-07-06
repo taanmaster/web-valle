@@ -21,4 +21,9 @@ class TreasuryAccountPayableSupplier extends Model
     {
         return $this->hasMany(TreasuryAccountPayableSupplierChecklistAutorization::class, 'supplier_id');
     }
+
+    public function logs()
+    {
+        return $this->hasMany(TapSupplierLog::class, 'supplier_id');
+    }
 }

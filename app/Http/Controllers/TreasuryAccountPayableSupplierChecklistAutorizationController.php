@@ -44,6 +44,7 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
             'folio' => 'nullable|max:255',
             'title' => 'required|max:255',
             'type' => 'required|max:255',
+            'amount' => 'nullable|numeric|min:0',
             'sender_bank_name' => 'nullable|max:255',
             'sender_account_number' => 'nullable|max:255',
             'financing_fund' => 'nullable|max:255',
@@ -53,7 +54,8 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
             'transaction_by' => 'nullable|max:255',
             'authorized_by' => 'nullable|max:255',
             'reviewed_by' => 'nullable|max:255',
-            'redacted_by' => 'nullable|max:255'
+            'redacted_by' => 'nullable|max:255',
+            'payment_status' => 'nullable|max:255',
         ]);
 
         // Guardar datos en la base de datos
@@ -63,6 +65,7 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
             'folio' => $request->folio,
             'title' => $request->title,
             'type' => $request->type,
+            'amount' => $request->amount,
             'sender_bank_name' => $request->sender_bank_name,
             'sender_account_number' => $request->sender_account_number,
             'financing_fund' => $request->financing_fund,
@@ -73,6 +76,7 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
             'authorized_by' => $request->authorized_by,
             'reviewed_by' => $request->reviewed_by,
             'redacted_by' => $request->redacted_by,
+            'status' => $request->payment_status ?? 'active',
         ]);
 
         // Mensaje de sesión
@@ -89,7 +93,7 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
     {
         $authorization = TreasuryAccountPayableSupplierChecklistAutorization::find($id);
 
-        return view('supplier_checklist_authorizations.show')->with('authorization', $authorization);
+        return view('tap_checklist_authorizations.show')->with('authorization', $authorization);
     }
 
     /**
@@ -99,7 +103,7 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
     {
         $authorization = TreasuryAccountPayableSupplierChecklistAutorization::find($id);
 
-        return view('supplier_checklist_authorizations.edit')->with('authorization', $authorization);
+        return view('tap_checklist_authorizations.edit')->with('authorization', $authorization);
     }
 
     /**
@@ -109,11 +113,10 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
     {
         // Validar
         $this->validate($request, [
-            'supplier_id' => 'required|exists:treasury_account_payable_suppliers,id',
-            'supplier_checklist_id' => 'required|exists:treasury_account_payable_supplier_checklists,id',
             'folio' => 'nullable|max:255',
             'title' => 'required|max:255',
             'type' => 'required|max:255',
+            'amount' => 'nullable|numeric|min:0',
             'sender_bank_name' => 'nullable|max:255',
             'sender_account_number' => 'nullable|max:255',
             'financing_fund' => 'nullable|max:255',
@@ -123,18 +126,18 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
             'transaction_by' => 'nullable|max:255',
             'authorized_by' => 'nullable|max:255',
             'reviewed_by' => 'nullable|max:255',
-            'redacted_by' => 'nullable|max:255'
+            'redacted_by' => 'nullable|max:255',
+            'payment_status' => 'nullable|max:255',
         ]);
 
         $authorization = TreasuryAccountPayableSupplierChecklistAutorization::find($id);
 
         // Actualizar datos
         $authorization->update([
-            'supplier_id' => $request->supplier_id,
-            'supplier_checklist_id' => $request->supplier_checklist_id,
             'folio' => $request->folio,
             'title' => $request->title,
             'type' => $request->type,
+            'amount' => $request->amount,
             'sender_bank_name' => $request->sender_bank_name,
             'sender_account_number' => $request->sender_account_number,
             'financing_fund' => $request->financing_fund,
@@ -144,14 +147,15 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
             'transaction_by' => $request->transaction_by,
             'authorized_by' => $request->authorized_by,
             'reviewed_by' => $request->reviewed_by,
-            'redacted_by' => $request->redacted_by
+            'redacted_by' => $request->redacted_by,
+            'status' => $request->payment_status ?? 'active',
         ]);
 
         // Mensaje de sesión
         Session::flash('success', 'Autorización actualizada correctamente.');
 
         // Redirigir a la vista de detalle del checklist
-        return redirect()->route('supplier_checklists.show', [$request->supplier_id, $request->supplier_checklist_id]);
+        return redirect()->route('supplier_checklists.show', [$authorization->supplier_id, $authorization->supplier_checklist_id]);
     }
 
     /**
@@ -161,12 +165,15 @@ class TreasuryAccountPayableSupplierChecklistAutorizationController extends Cont
     {
         $authorization = TreasuryAccountPayableSupplierChecklistAutorization::find($id);
 
+        $supplier = $authorization->supplier_id;
+        $checklist = $authorization->supplier_checklist_id;
+
         // Eliminar autorización
         $authorization->delete();
 
         // Mensaje de sesión
         Session::flash('success', 'Autorización eliminada correctamente.');
 
-        return redirect()->back();
+        return redirect()->route('supplier_checklists.show', [$supplier, $checklist]);
     }
 }
