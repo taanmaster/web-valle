@@ -15,6 +15,7 @@ use App\Http\Controllers\DIFPrescriptionFileController;
 use App\Http\Controllers\CitizenMedicalProfileController;
 use App\Http\Controllers\TapChecklistAuthorizationNoteController;
 use App\Http\Controllers\TapSupplierLogController;
+use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
 use Illuminate\Support\Facades\Route;
@@ -609,6 +610,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'edit' => 'supplier_checklists.edit',
                 'update' => 'supplier_checklists.update',
                 'destroy' => 'supplier_checklists.destroy',
+            ]);
+
+            Route::resource('account_payable', TreasuryAccountPayableController::class)->names([
+                'index' => 'account_payable.index',
             ]);
 
             /* Cuentas por Cobrar */

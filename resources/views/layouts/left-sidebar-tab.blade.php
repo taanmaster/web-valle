@@ -207,6 +207,9 @@
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('account_payable.index') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link"
                                 href="{{ route('treasury_account_payable_suppliers.index') }}">Proveedores</a>
                         </li>
@@ -346,8 +349,7 @@
             @endif
 
             @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('all'))
-                <div id="valleDIF" class="main-icon-menu-pane tab-pane" role="tabpanel"
-                    aria-labelledby="dif-tab">
+                <div id="valleDIF" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dif-tab">
                     <div class="title-box">
                         <h6 class="menu-title">Perfiles</h6>
                     </div>
@@ -365,7 +367,8 @@
                             <a class="nav-link" href="{{ route('dif.services.index') }}">Servicios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dif.payment_concepts.index') }}">Conceptos de Cobro</a>
+                            <a class="nav-link" href="{{ route('dif.payment_concepts.index') }}">Conceptos de
+                                Cobro</a>
                         </li>
                     </ul>
 
