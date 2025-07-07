@@ -101,67 +101,12 @@
             </div>
         </div>
 
-        @if (count($fav_posts) > 0)
-            <div class="row wow fadeInUp">
-                <div class="d-flex align-items-center justify-content-between w-100 mb-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div
-                            class="card-icon card-icon-static bg-primary text-white d-flex align-items-center justify-content-center">
-                            <ion-icon name="documents-outline"></ion-icon>
-                        </div>
-                        <h3 class="mb-0">Artículos Destacados</h3>
-                    </div>
-                    <a href="{{ route('blog.list-filter', $category) }}" class="btn btn-link p-0">
-                        Ver más artículos
-                        <ion-icon name="arrow-forward"></ion-icon>
-                    </a>
-                </div>
-            </div>
-
-
-            <div class="row wow fadeInUp">
-                @foreach ($fav_posts->take(3) as $index => $fav_post)
-                    @if ($index === 0)
-                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-12 mb-3">
-                            <div class="card card-image card-image-banner wow fadeInUp">
-                                <img class="card-img-top" src="{{ asset('images/blog/' . $fav_post->hero_img) }}"
-                                    alt="">
-                                <div class="overlay"></div>
-                                <div class="card-content w-100">
-                                    <div class="d-flex aling-items-center justify-content-between w-100">
-                                        <h1 class="mb-0">{{ $fav_post->title }}</h1>
-                                        <p class="mb-0">{{ $fav_post->writer }}</p>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </a>
-                    @else
-                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-6 mb-4">
-                            <div class="card card-image justify-content-end wow fadeInUp" style="height: 400px">
-                                <img class="card-img-top" src="{{ asset('images/blog/' . $fav_post->hero_img) }}"
-                                    alt="">
-                                <div class="overlay"></div>
-                                <div class="card-content w-100">
-                                    <div class="d-flex aling-items-center justify-content-between w-100">
-                                        <h3 class="mb-0">{{ $fav_post->title }}</h3>
-                                        <p class="mb-0 truncate-text">{{ $fav_post->writer }}</p>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </a>
-                    @endif
-                @endforeach
-            </div>
-        @endif
-
         <div class="mb-3">
             <div class="row">
                 <div class="col-md-6">
                     <div class="card card-normal wow fadeInUp h-100">
                         <div class="card-content">
-                            <h4>Valores</h4>
+                            <h2>Valores</h2>
                             <ol>
                                 <li>
                                     Respeto
@@ -191,7 +136,7 @@
                 <div class="col-md-6">
                     <div class="card card-normal wow fadeInUp h-100">
                         <div class="card-content">
-                            <h4>Objetivo</h4>
+                            <h2>Objetivo</h2>
 
                             <p>
                                 Optimizar los recursos, fortalecer y promover la atención de los grupos vulnerables, atender
@@ -275,6 +220,61 @@
 
             </div>
         </div>
+
+        @if (count($fav_posts) > 0)
+            <div class="row wow fadeInUp">
+                <div class="d-flex align-items-center justify-content-between w-100 mb-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div
+                            class="card-icon card-icon-static bg-primary text-white d-flex align-items-center justify-content-center">
+                            <ion-icon name="documents-outline"></ion-icon>
+                        </div>
+                        <h3 class="mb-0">Artículos Destacados</h3>
+                    </div>
+                    <a href="{{ route('blog.list-filter', $category) }}" class="btn btn-link p-0">
+                        Ver más artículos
+                        <ion-icon name="arrow-forward"></ion-icon>
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="row wow fadeInUp">
+                @foreach ($fav_posts->take(3) as $index => $fav_post)
+                    @if ($index === 0)
+                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-12 mb-3">
+                            <div class="card card-image card-image-banner wow fadeInUp">
+                                <img class="card-img-top" src="{{ asset('images/blog/' . $fav_post->hero_img) }}"
+                                    alt="">
+                                <div class="overlay"></div>
+                                <div class="card-content w-100">
+                                    <div class="d-flex aling-items-center justify-content-between w-100">
+                                        <h1 class="mb-0">{{ $fav_post->title }}</h1>
+                                        <p class="mb-0">{{ $fav_post->writer }}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    @else
+                        <a href="{{ route('blog.detail', $fav_post->slug) }}" class="col-md-6 mb-4">
+                            <div class="card card-image justify-content-end wow fadeInUp" style="height: 400px">
+                                <img class="card-img-top" src="{{ asset('images/blog/' . $fav_post->hero_img) }}"
+                                    alt="">
+                                <div class="overlay"></div>
+                                <div class="card-content w-100">
+                                    <div class="d-flex aling-items-center justify-content-between w-100">
+                                        <h3 class="mb-0">{{ $fav_post->title }}</h3>
+                                        <p class="mb-0 truncate-text">{{ $fav_post->writer }}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    @endif
+                @endforeach
+            </div>
+        @endif
     </div>
 @endsection
 

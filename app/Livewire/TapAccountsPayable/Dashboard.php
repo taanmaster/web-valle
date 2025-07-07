@@ -23,7 +23,6 @@ class Dashboard extends Component
     public function mount()
     {
         $inicio = Carbon::now()->startOfWeek();
-
         $this->start_date = $inicio->format('Y-m-d');
 
         $this->end_date = Carbon::now()->format('Y-m-d');

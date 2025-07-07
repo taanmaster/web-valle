@@ -356,8 +356,16 @@ class FrontController extends Controller
     // Pantallas Blog/Noticias
     public function blog()
     {
-        $fav_posts = Blog::where('is_fav', true)->orderBy('updated_at', 'desc')->limit(3)->get();
-        $posts = Blog::orderBy('updated_at', 'desc')->take(6)->get();
+        $fav_posts = Blog::where('is_fav', true)
+            ->where('category', '!=', 'DIF')
+            ->orderBy('updated_at', 'desc')
+            ->limit(3)
+            ->get();
+
+        $posts = Blog::where('category', '!=', 'DIF')
+            ->orderBy('updated_at', 'desc')
+            ->take(6)
+            ->get();
 
         $mode = 1;
 
