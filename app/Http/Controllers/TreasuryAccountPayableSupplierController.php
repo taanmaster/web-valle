@@ -57,14 +57,18 @@ class TreasuryAccountPayableSupplierController extends Controller
     {
         $supplier = TreasuryAccountPayableSupplier::find($id);
 
-        return view('treasury_account_payable_suppliers.show')->with('supplier', $supplier);
+        $mode = 1;
+
+        return view('treasury_account_payable_suppliers.show')->with('supplier', $supplier)->with('mode', $mode);
     }
 
     public function edit($id)
     {
         $supplier = TreasuryAccountPayableSupplier::find($id);
 
-        return view('treasury_account_payable_suppliers.edit')->with('supplier', $supplier);
+        $mode = 2;
+
+        return view('treasury_account_payable_suppliers.edit')->with('supplier', $supplier)->with('mode', $mode);
     }
 
     public function update(Request $request, $id)

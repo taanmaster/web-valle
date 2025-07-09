@@ -10,7 +10,9 @@ class TreasuryAccountPayableSupplier extends Model
     use HasFactory;
 
     protected $table = 'treasury_account_payable_suppliers';
-    protected $guarded = [];
+    protected $guarded = [
+        'status'
+    ];
 
     public function checklists()
     {
@@ -25,5 +27,17 @@ class TreasuryAccountPayableSupplier extends Model
     public function logs()
     {
         return $this->hasMany(TapSupplierLog::class, 'supplier_id');
+    }
+
+    // Relación many-to-many con programas
+    public function dependencies()
+    {
+        return $this->belongsToMany(TransparencyDependency::class, 'tap_supplier_dependencies', 'supplier_id', 'dependency_id');
+    }
+
+    // Relación con la tabla pivot
+    public function supplierDependencies()
+    {
+        return $this->hasMany(TapSupplierDependency::class, 'supplier_id');
     }
 }

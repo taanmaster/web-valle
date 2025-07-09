@@ -21,6 +21,10 @@
             <div class="row">
                 <div class="col-8">
                     <div class="card card-body">
+
+                        <livewire:tap-supplier.crud :mode="$mode" :supplier="$supplier" />
+
+                        {{--
                         <form method="POST" action="{{ route('treasury_account_payable_suppliers.update', $supplier->id) }}"
                             enctype="multipart/form-data">
                             {{ csrf_field() }}
@@ -97,6 +101,7 @@
                             <a href="{{ route('treasury_account_payable_suppliers.index') }}"
                                 class="btn btn-secondary btn-sm">Cancelar</a>
                         </form>
+                         --}}
                     </div>
                 </div>
             </div>
