@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 // Ayudantes
+
+use App\Models\TapSupplierLog;
 use Str;
 use Auth;
 use Session;
@@ -38,7 +40,7 @@ class TreasuryAccountPayableSupplierController extends Controller
             'account_number' => 'nullable|max:20',
             'bank_name' => 'nullable|max:255',
             'dependency_id' => 'nullable|integer',
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive,payed',
         ]);
 
         // Guardar datos en la base de datos
@@ -55,14 +57,18 @@ class TreasuryAccountPayableSupplierController extends Controller
     {
         $supplier = TreasuryAccountPayableSupplier::find($id);
 
-        return view('treasury_account_payable_suppliers.show')->with('supplier', $supplier);
+        $mode = 1;
+
+        return view('treasury_account_payable_suppliers.show')->with('supplier', $supplier)->with('mode', $mode);
     }
 
     public function edit($id)
     {
         $supplier = TreasuryAccountPayableSupplier::find($id);
 
-        return view('treasury_account_payable_suppliers.edit')->with('supplier', $supplier);
+        $mode = 2;
+
+        return view('treasury_account_payable_suppliers.edit')->with('supplier', $supplier)->with('mode', $mode);
     }
 
     public function update(Request $request, $id)
@@ -77,19 +83,38 @@ class TreasuryAccountPayableSupplierController extends Controller
             'account_number' => 'nullable|max:20',
             'bank_name' => 'nullable|max:255',
             'dependency_id' => 'nullable|integer',
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive,payed',
         ]);
 
         $supplier = TreasuryAccountPayableSupplier::find($id);
 
+        if ($supplier->status !== $request->status) {
+
+            $statusTranslations = [
+                'active' => 'activo',
+                'inactive' => 'inactivo',
+                'payed' => 'pagado'
+            ];
+
+            $oldStatus = $statusTranslations[$supplier->status] ?? $supplier->status;
+            $newStatus = $statusTranslations[$request->status] ?? $request->status;
+
+            $log = new TapSupplierLog();
+            $log->supplier_id = $supplier->id;
+            $log->status = $request->status;
+            $log->description = 'El estado del proveedor ha cambiado de ' . $oldStatus . ' a ' . $newStatus;
+            $log->save();
+        }
+
         // Actualizar datos
         $supplier->update($request->all());
+
 
         // Mensaje de sesión
         Session::flash('success', 'Proveedor actualizado correctamente.');
 
         // Redirigir
-        return redirect()->route('treasury_account_payable_suppliers.index');
+        return redirect()->route('treasury_account_payable_suppliers.show', $supplier->id);
     }
 
     public function destroy($id)

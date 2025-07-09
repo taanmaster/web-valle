@@ -341,6 +341,13 @@ class FrontController extends Controller
         return view('front.sare');
     }
 
+    // Pantalla Casa de la Mujer
+    public function casaMujer()
+    {
+        return view('front.casa_mujer');
+    }
+
+
     // Pantallas DIF
     public function dif()
     {
@@ -356,8 +363,16 @@ class FrontController extends Controller
     // Pantallas Blog/Noticias
     public function blog()
     {
-        $fav_posts = Blog::where('is_fav', true)->orderBy('updated_at', 'desc')->limit(3)->get();
-        $posts = Blog::orderBy('updated_at', 'desc')->take(6)->get();
+        $fav_posts = Blog::where('is_fav', true)
+            ->where('category', '!=', 'DIF')
+            ->orderBy('updated_at', 'desc')
+            ->limit(3)
+            ->get();
+
+        $posts = Blog::where('category', '!=', 'DIF')
+            ->orderBy('updated_at', 'desc')
+            ->take(6)
+            ->get();
 
         $mode = 1;
 

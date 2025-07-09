@@ -13,7 +13,9 @@ use App\Http\Controllers\DIFDoctorConsultController;
 use App\Http\Controllers\DIFPrescriptionController;
 use App\Http\Controllers\DIFPrescriptionFileController;
 use App\Http\Controllers\CitizenMedicalProfileController;
-
+use App\Http\Controllers\TapChecklistAuthorizationNoteController;
+use App\Http\Controllers\TapSupplierLogController;
+use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +30,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     /*SARE*/
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
+
+    /*CASA DE LA MUJER*/
+    Route::get('/casa_de_la_mujer', 'FrontController@casaMujer')->name('casa_mujer.index');
 
     /*DIF*/
     Route::get('/dependencia-dif', 'FrontController@dif')->name('dif.index');
@@ -610,6 +615,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'supplier_checklists.destroy',
             ]);
 
+            Route::resource('account_payable', TreasuryAccountPayableController::class)->names([
+                'index' => 'account_payable.index',
+            ]);
+
             /* Cuentas por Cobrar */
             Route::group(['prefix' => 'account_due'], function () {
                 Route::get('dashboard', [
@@ -743,7 +752,18 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::resource('supplier_checklist_authorizations', TreasuryAccountPayableSupplierChecklistAutorizationController::class)->names([
                 'store' => 'supplier_checklist_authorizations.store',
                 'update' => 'supplier_checklist_authorizations.update',
+                'edit' => 'supplier_checklist_authorizations.edit',
+                'show' => 'supplier_checklist_authorizations.show',
                 'destroy' => 'supplier_checklist_authorizations.destroy',
+            ]);
+
+            Route::resource('checklist_authorizations_notes', TapChecklistAuthorizationNoteController::class)->names([
+                'store' => 'supplier_checklist_authorizations_notes.store',
+            ]);
+
+            Route::resource('suppliers_logs', TapSupplierLogController::class)->names([
+                'update' => 'suppliers_logs.update',
+                'destroy' => 'suppliers_logs.destroy',
             ]);
 
             /* ------------------- */

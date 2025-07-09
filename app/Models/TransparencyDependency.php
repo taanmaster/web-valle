@@ -39,4 +39,10 @@ class TransparencyDependency extends Model
     {
         return $this->hasMany(TransparencyObligation::class, 'dependency_id');
     }
+
+    // Relación many-to-many con proveedores
+    public function suppliers()
+    {
+        return $this->belongsToMany(TreasuryAccountPayableSupplier::class, 'tap_supplier_dependencies', 'dependency_id', 'supplier_id');
+    }
 }
