@@ -31,6 +31,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /*SARE*/
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
 
+    /*CASA DE LA MUJER*/
+    Route::get('/casa_de_la_mujer', 'FrontController@casaMujer')->name('casa_mujer.index');
+
     /*DIF*/
     Route::get('/dependencia-dif', 'FrontController@dif')->name('dif.index');
 

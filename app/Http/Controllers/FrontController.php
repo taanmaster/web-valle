@@ -341,6 +341,13 @@ class FrontController extends Controller
         return view('front.sare');
     }
 
+    // Pantalla Casa de la Mujer
+    public function casaMujer()
+    {
+        return view('front.casa_mujer');
+    }
+
+
     // Pantallas DIF
     public function dif()
     {

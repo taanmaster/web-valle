@@ -42,8 +42,10 @@
                         @foreach ($banners as $banner)
                             <div class="item main-banner banner-{{ $banner->id }} h-100">
                                 <div class="card card-image card-image-banner wow fadeInUp h-100">
-                                    <img class="card-img-top desktop-banner" src="{{ asset('front/img/banners/' . $banner->image ) }}" alt="">
-						            <img class="card-img-top responsive-banner" src="{{ asset('front/img/banners/' . $banner->image_responsive ) }}" alt="">
+                                    <img class="card-img-top desktop-banner"
+                                        src="{{ asset('front/img/banners/' . $banner->image) }}" alt="">
+                                    <img class="card-img-top responsive-banner"
+                                        src="{{ asset('front/img/banners/' . $banner->image_responsive) }}" alt="">
 
                                     <div class="overlay"></div>
                                     <div class="card-content">
@@ -154,7 +156,9 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('gazette.list', 'all') }}" class="btn btn-secondary d-flex align-items-center gap-2">Acceder a todo el archivo <ion-icon name="caret-forward-outline"></ion-icon></a>
+                    <a href="{{ route('gazette.list', 'all') }}"
+                        class="btn btn-secondary d-flex align-items-center gap-2">Acceder a todo el archivo <ion-icon
+                            name="caret-forward-outline"></ion-icon></a>
                 </div>
             </div>
         </div>
@@ -164,34 +168,41 @@
         <div class="row">
             <div class="col-md-6 mb-4">
                 @php
-                    $transparency_dependency = App\Models\TransparencyDependency::where('slug', 'unidad-de-transparencia-y-acceso-a-la-informacion')->first();
+                    $transparency_dependency = App\Models\TransparencyDependency::where(
+                        'slug',
+                        'unidad-de-transparencia-y-acceso-a-la-informacion',
+                    )->first();
                 @endphp
-                
-                @if($transparency_dependency->image_cover != NULL)
-                <a href="{{ route('transparency.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
-                    <img src="{{ asset('images/dependencies/' . $transparency_dependency->image_cover) }}" class="card-img-top" alt="Portada de {{ $transparency_dependency->name }}">
-                    <div class="overlay"></div>
-                    
-                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
-                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
-                    </div>
 
-                    <div class="card-content">
-                        <img src="{{ asset('images/dependencies/' . $transparency_dependency->logo) }}" class="card-logo mb-3" alt="Logotipo de {{ $transparency_dependency->name }}" style="height: 80px;">
-                        <h4>{{ $transparency_dependency->name }}</h4>
-                        <p class="mb-0">{{ $transparency_dependency->description }}</p>
-                    </div>
-                </a>
+                @if ($transparency_dependency->image_cover != null)
+                    <a href="{{ route('transparency.index') }}"
+                        class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                        <img src="{{ asset('images/dependencies/' . $transparency_dependency->image_cover) }}"
+                            class="card-img-top" alt="Portada de {{ $transparency_dependency->name }}">
+                        <div class="overlay"></div>
+
+                        <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                            <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                        </div>
+
+                        <div class="card-content">
+                            <img src="{{ asset('images/dependencies/' . $transparency_dependency->logo) }}"
+                                class="card-logo mb-3" alt="Logotipo de {{ $transparency_dependency->name }}"
+                                style="height: 80px;">
+                            <h4>{{ $transparency_dependency->name }}</h4>
+                            <p class="mb-0">{{ $transparency_dependency->description }}</p>
+                        </div>
+                    </a>
                 @endif
             </div>
-            
+
             @foreach ($dependencies as $dependency)
                 <div class="col-md-6" style="margin-bottom: 30px;">
                     @if ($dependency->image_cover != null)
                         <a href="{{ route('dependency.detail', $dependency->slug) }}"
                             class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
-                            <img src="{{ asset('images/dependencies/' . $dependency->image_cover) }}" class="card-img-top"
-                                alt="Portada de {{ $dependency->name }}">
+                            <img src="{{ asset('images/dependencies/' . $dependency->image_cover) }}"
+                                class="card-img-top" alt="Portada de {{ $dependency->name }}">
                             <div class="overlay"></div>
 
                             <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
@@ -249,6 +260,31 @@
                 </div>
             </div>
         @endif
+
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card card-normal wow fadeInUp h-100">
+                    <div class="card-content">
+                        <h2>Casa de la Mujer</h2>
+                        <p>
+                            Un espacio donde nos reconocemos unas a otras y ejercemos un poder transformador que da
+                            testimonio de nuestra ciudadanía en la reivindicación de nuestros derechos, para que ninguna se
+                            quede atrás.
+                        </p>
+
+                        <a href="{{ route('casa_mujer.index') }}" class="btn btn-primary btn-sm">
+                            Ir a página
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-image wow fadeInUp h-100">
+                    <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -348,7 +384,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/lang/es.js"></script>
 
     <script>
-        !function() {
+        ! function() {
             // Configurar Moment.js para usar español
             moment.lang('es');
             var today = moment();
@@ -360,7 +396,7 @@
                 this.isAnimating = false; // Añadimos esta propiedad para controlar el estado de la animación
                 this.draw();
                 var current = document.querySelector('.today');
-                if(current) {
+                if (current) {
                     var self = this;
                     window.setTimeout(function() {
                         self.openDay(current);
@@ -378,24 +414,28 @@
 
             Calendar.prototype.drawHeader = function() {
                 var self = this;
-                if(!this.header) {
-                //Crear los elementos de la cabecera
-                this.header = createElement('div', 'cal-header');
-                this.header.className = 'cal-header';
+                if (!this.header) {
+                    //Crear los elementos de la cabecera
+                    this.header = createElement('div', 'cal-header');
+                    this.header.className = 'cal-header';
 
-                this.title = createElement('h1');
+                    this.title = createElement('h1');
 
-                var right = createElement('div', 'right');
-                right.addEventListener('click', function() { self.nextMonth(); });
+                    var right = createElement('div', 'right');
+                    right.addEventListener('click', function() {
+                        self.nextMonth();
+                    });
 
-                var left = createElement('div', 'left');
-                left.addEventListener('click', function() { self.prevMonth(); });
+                    var left = createElement('div', 'left');
+                    left.addEventListener('click', function() {
+                        self.prevMonth();
+                    });
 
-                //Adendo de los elementos
-                this.header.appendChild(this.title); 
-                this.header.appendChild(right);
-                this.header.appendChild(left);
-                this.el.appendChild(this.header);
+                    //Adendo de los elementos
+                    this.header.appendChild(this.title);
+                    this.header.appendChild(right);
+                    this.header.appendChild(left);
+                    this.el.appendChild(this.header);
                 }
 
                 this.title.innerHTML = this.current.format('MMMM YYYY');
@@ -403,43 +443,51 @@
 
             Calendar.prototype.drawMonth = function() {
                 var self = this;
-                
-                if(this.month) {
+
+                if (this.month) {
                     this.oldMonth = this.month;
                     this.oldMonth.className = 'month out ' + (self.next ? 'next' : 'prev');
-                    
+
                     // Bandera de estatus para controlar la ejecución única de handleAnimationEnd
                     var animationEndExecuted = false;
-                    
+
                     var handleAnimationEnd = function() {
                         // Evitar ejecuciones múltiples
                         if (animationEndExecuted) return;
                         animationEndExecuted = true;
-                        
+
                         // Verificar si oldMonth y su parentNode todavía existen
                         if (self.oldMonth && self.oldMonth.parentNode) {
                             self.oldMonth.parentNode.removeChild(self.oldMonth);
                         }
-                        
+
                         // Crear nuevo mes y configurar su contenido
                         self.month = createElement('div', 'month');
                         self.el.appendChild(self.month);
                         self.backFill();
                         self.currentMonth();
                         self.fowardFill();
-                        
+
                         // Aplicar la clase después de un pequeño retraso para asegurar que el DOM se haya actualizado
                         requestAnimationFrame(function() {
                             self.month.className = 'month in ' + (self.next ? 'next' : 'prev');
                         });
                     };
-                    
+
                     // Agregar listeners de eventos para diferentes navegadores
-                    this.oldMonth.addEventListener('webkitAnimationEnd', handleAnimationEnd, { once: true });
-                    this.oldMonth.addEventListener('oanimationend', handleAnimationEnd, { once: true });
-                    this.oldMonth.addEventListener('msAnimationEnd', handleAnimationEnd, { once: true });
-                    this.oldMonth.addEventListener('animationend', handleAnimationEnd, { once: true });
-                    
+                    this.oldMonth.addEventListener('webkitAnimationEnd', handleAnimationEnd, {
+                        once: true
+                    });
+                    this.oldMonth.addEventListener('oanimationend', handleAnimationEnd, {
+                        once: true
+                    });
+                    this.oldMonth.addEventListener('msAnimationEnd', handleAnimationEnd, {
+                        once: true
+                    });
+                    this.oldMonth.addEventListener('animationend', handleAnimationEnd, {
+                        once: true
+                    });
+
                     // Fallback por si la animación no se ejecuta correctamente
                     // Usamos un tiempo más largo para dar tiempo a que las animaciones terminen naturalmente
                     setTimeout(handleAnimationEnd, 600);
@@ -450,7 +498,7 @@
                     this.backFill();
                     this.currentMonth();
                     this.fowardFill();
-                    
+
                     // Aplicar la clase new para la animación inicial
                     requestAnimationFrame(function() {
                         self.month.className = 'month new';
@@ -462,12 +510,14 @@
                 var clone = this.current.clone();
                 var dayOfWeek = clone.day();
 
-                if(!dayOfWeek) { return; }
+                if (!dayOfWeek) {
+                    return;
+                }
 
-                clone.subtract('days', dayOfWeek+1);
+                clone.subtract('days', dayOfWeek + 1);
 
-                for(var i = dayOfWeek; i > 0 ; i--) {
-                this.drawDay(clone.add('days', 1));
+                for (var i = dayOfWeek; i > 0; i--) {
+                    this.drawDay(clone.add('days', 1));
                 }
             }
 
@@ -475,26 +525,28 @@
                 var clone = this.current.clone().add('months', 1).subtract('days', 1);
                 var dayOfWeek = clone.day();
 
-                if(dayOfWeek === 6) { return; }
+                if (dayOfWeek === 6) {
+                    return;
+                }
 
-                for(var i = dayOfWeek; i < 6 ; i++) {
-                this.drawDay(clone.add('days', 1));
+                for (var i = dayOfWeek; i < 6; i++) {
+                    this.drawDay(clone.add('days', 1));
                 }
             }
 
             Calendar.prototype.currentMonth = function() {
                 var clone = this.current.clone();
 
-                while(clone.month() === this.current.month()) {
-                this.drawDay(clone);
-                clone.add('days', 1);
+                while (clone.month() === this.current.month()) {
+                    this.drawDay(clone);
+                    clone.add('days', 1);
                 }
             }
 
             Calendar.prototype.getWeek = function(day) {
-                if(!this.week || day.day() === 0) {
-                this.week = createElement('div', 'week');
-                this.month.appendChild(this.week);
+                if (!this.week || day.day() === 0) {
+                    this.week = createElement('div', 'week');
+                    this.month.appendChild(this.week);
                 }
             }
 
@@ -505,7 +557,7 @@
                 //Outer Day
                 var outer = createElement('div', this.getDayClass(day));
                 outer.addEventListener('click', function() {
-                self.openDay(this);
+                    self.openDay(this);
                 });
 
                 //Day Name
@@ -526,19 +578,19 @@
             }
 
             Calendar.prototype.drawEvents = function(day, element) {
-                if(day.month() === this.current.month()) {
+                if (day.month() === this.current.month()) {
                     if (!this.events || !Array.isArray(this.events)) {
                         console.error('Lista de eventos no válida en drawEvents');
                         return;
                     }
-                    
+
                     var todaysEvents = this.events.reduce(function(memo, ev) {
-                        if(ev.date && ev.date.isSame && ev.date.isSame(day, 'day')) {
+                        if (ev.date && ev.date.isSame && ev.date.isSame(day, 'day')) {
                             memo.push(ev);
                         }
                         return memo;
                     }, []);
-                    
+
                     // Agregar clase 'has-events' al día si hay eventos
                     if (todaysEvents.length > 0) {
                         element.classList.add('has-events');
@@ -546,16 +598,17 @@
 
                     // Limitar a máximo 3 indicadores visuales para no sobrecargar el UI
                     var maxIndicators = Math.min(todaysEvents.length, 3);
-                    
+
                     for (var i = 0; i < maxIndicators; i++) {
                         var ev = todaysEvents[i];
                         var evSpan = createElement('span', 'event-indicator ' + (ev.color || 'primary'));
                         element.appendChild(evSpan);
                     }
-                    
+
                     // Si hay más eventos de los que mostramos, agregar indicador "+"
                     if (todaysEvents.length > maxIndicators) {
-                        var moreEventsSpan = createElement('span', 'more-events', '+' + (todaysEvents.length - maxIndicators));
+                        var moreEventsSpan = createElement('span', 'more-events', '+' + (todaysEvents.length -
+                            maxIndicators));
                         element.appendChild(moreEventsSpan);
                     }
                 }
@@ -563,10 +616,10 @@
 
             Calendar.prototype.getDayClass = function(day) {
                 classes = ['day'];
-                if(day.month() !== this.current.month()) {
-                classes.push('other');
+                if (day.month() !== this.current.month()) {
+                    classes.push('other');
                 } else if (today.isSame(day, 'day')) {
-                classes.push('today');
+                    classes.push('today');
                 }
                 return classes.join(' ');
             }
@@ -576,25 +629,25 @@
                     console.error('El elemento del día no es válido');
                     return;
                 }
-                
+
                 var details, arrow;
                 var dayNumberElement = el.querySelector('.day-number');
-                
+
                 if (!dayNumberElement) {
                     console.error('No se encontró el elemento número de día');
                     return;
                 }
-                
+
                 var dayNumber = +dayNumberElement.innerText || +dayNumberElement.textContent;
                 if (!dayNumber) {
                     console.error('No se pudo determinar el número del día');
                     return;
                 }
-                
+
                 var day = this.current.clone().date(dayNumber);
                 var weekRow = el.parentNode;
                 var calendar = document.getElementById('calendar');
-                
+
                 if (!calendar) {
                     console.error('No se encontró el elemento calendario');
                     return;
@@ -603,21 +656,21 @@
                 var currentOpened = document.querySelector('.details');
 
                 // Remover cualquier panel de detalles existente
-                if(currentOpened) {
+                if (currentOpened) {
                     var removeCurrentOpened = function() {
                         if (currentOpened && currentOpened.parentNode) {
                             currentOpened.parentNode.removeChild(currentOpened);
                         }
                     };
-                    
+
                     currentOpened.addEventListener('webkitAnimationEnd', removeCurrentOpened);
                     currentOpened.addEventListener('oanimationend', removeCurrentOpened);
                     currentOpened.addEventListener('msAnimationEnd', removeCurrentOpened);
                     currentOpened.addEventListener('animationend', removeCurrentOpened);
-                    
+
                     // Si la animación no se activa por alguna razón, eliminamos después de 500ms
                     setTimeout(removeCurrentOpened, 500);
-                    
+
                     currentOpened.className = 'details out';
                 }
 
@@ -629,7 +682,7 @@
 
                 //Create the event wrapper
                 details.appendChild(arrow);
-                
+
                 // Insertar el detalle en el lugar correcto
                 if (weekRow && weekRow.parentNode) {
                     // Primero, aseguremos que el weekRow es un nodo dentro del calendario
@@ -653,7 +706,7 @@
                 }
 
                 var todaysEvents = this.events.reduce(function(memo, ev) {
-                    if(ev.date.isSame(day, 'day')) {
+                    if (ev.date.isSame(day, 'day')) {
                         memo.push(ev);
                     }
                     return memo;
@@ -666,7 +719,7 @@
                     var dayWidth = el.offsetWidth;
                     var dayLeft = el.getBoundingClientRect().left - calendar.getBoundingClientRect().left;
                     var arrowPosition = dayLeft + (dayWidth / 2);
-                    
+
                     // Posicionar la flecha centrada en el día seleccionado
                     arrow.style.left = arrowPosition + 'px';
                 }
@@ -677,7 +730,7 @@
                     console.error('Elemento contenedor de eventos no válido');
                     return;
                 }
-                
+
                 //Remove any events in the current details element
                 var currentWrapper = ele.querySelector('.events');
                 var wrapper = createElement('div', 'events in' + (currentWrapper ? ' new' : ''));
@@ -686,25 +739,25 @@
                     console.error('Lista de eventos no válida');
                     events = [];
                 }
-                
+
                 events.forEach(function(ev) {
                     var div = createElement('div', 'event');
                     var square = createElement('div', 'event-category ' + ev.color);
                     var eventContent = createElement('div', 'event-content');
-                    
+
                     // Nombre del evento
                     var eventName = createElement('div', 'event-name', ev.eventName || 'Sin nombre');
-                    
+
                     // Hora del evento
                     var eventTime = createElement('div', 'event-time', ev.eventDateTime || '');
-                    
+
                     // Ubicación
                     var eventLocation = createElement('div', 'event-location', ev.eventLocation || '');
-                    
+
                     eventContent.appendChild(eventName);
                     eventContent.appendChild(eventTime);
                     eventContent.appendChild(eventLocation);
-                    
+
                     // URL del blog (al final para mejor organización visual)
                     if (ev.eventUrl) {
                         var eventUrl = createElement('a', 'event-url');
@@ -713,13 +766,13 @@
                         eventUrl.textContent = 'Conoce más';
                         eventContent.appendChild(eventUrl);
                     }
-                    
+
                     div.appendChild(square);
                     div.appendChild(eventContent);
                     wrapper.appendChild(div);
                 });
 
-                if(!events.length) {
+                if (!events.length) {
                     var div = createElement('div', 'event empty');
                     var span = createElement('span', '', 'No hay eventos');
 
@@ -734,9 +787,9 @@
                     }
                 };
 
-                if(currentWrapper) {
+                if (currentWrapper) {
                     currentWrapper.className = 'events out';
-                    
+
                     // Función unificada para eliminar el wrapper anterior
                     var handleAnimationEnd = function() {
                         if (currentWrapper && currentWrapper.parentNode) {
@@ -749,7 +802,7 @@
                     currentWrapper.addEventListener('oanimationend', handleAnimationEnd);
                     currentWrapper.addEventListener('msAnimationEnd', handleAnimationEnd);
                     currentWrapper.addEventListener('animationend', handleAnimationEnd);
-                    
+
                     // Fallback por si la animación no se ejecuta
                     setTimeout(handleAnimationEnd, 500);
                 } else {
@@ -761,16 +814,16 @@
                 // Evita múltiples clics rápidos durante la animación
                 if (this.isAnimating) return;
                 this.isAnimating = true;
-                
+
                 var self = this;
                 this.current.add('months', 1);
                 this.next = true;
-                
+
                 // Aplicar una clase al contenedor principal durante la animación
                 if (this.el) this.el.classList.add('calendar-animating');
-                
+
                 this.draw();
-                
+
                 // Restablecer el estado después de un tiempo suficiente para la animación
                 setTimeout(function() {
                     self.isAnimating = false;
@@ -782,16 +835,16 @@
                 // Evita múltiples clics rápidos durante la animación
                 if (this.isAnimating) return;
                 this.isAnimating = true;
-                
+
                 var self = this;
                 this.current.subtract('months', 1);
                 this.next = false;
-                
+
                 // Aplicar una clase al contenedor principal durante la animación
                 if (this.el) this.el.classList.add('calendar-animating');
-                
+
                 this.draw();
-                
+
                 // Restablecer el estado después de un tiempo suficiente para la animación
                 setTimeout(function() {
                     self.isAnimating = false;
@@ -803,39 +856,42 @@
 
             function createElement(tagName, className, innerText) {
                 var ele = document.createElement(tagName);
-                if(className) {
-                ele.className = className;
+                if (className) {
+                    ele.className = className;
                 }
-                if(innerText) {
-                ele.innerText = ele.textContent = innerText;
+                if (innerText) {
+                    ele.innerText = ele.textContent = innerText;
                 }
                 return ele;
             }
         }();
 
-        !function() {
+        ! function() {
             // Asegurarse de que los datos sean válidos
             var data = [
-                @foreach($events as $event)
-                { 
-                    eventName: '{!! addslashes($event->name) !!}', 
-                    eventDateTime: '{{ \Carbon\Carbon::parse($event->date_start)->format('H:i') }}',
-                    eventLocation: '{!! addslashes($event->location) !!}',
-                    @if($event->blog_url)
-                    eventUrl: '{!! addslashes($event->blog_url) !!}',
-                    @else
-                    eventUrl: null,
+                @foreach ($events as $event)
+                    {
+                        eventName: '{!! addslashes($event->name) !!}',
+                        eventDateTime: '{{ \Carbon\Carbon::parse($event->date_start)->format('H:i') }}',
+                        eventLocation: '{!! addslashes($event->location) !!}',
+                        @if ($event->blog_url)
+                            eventUrl: '{!! addslashes($event->blog_url) !!}',
+                        @else
+                            eventUrl: null,
+                        @endif
+                        date: moment('{{ $event->date_start }}'),
+                        color: 'primary'
+                    }
+                    @if (!$loop->last)
+                        ,
                     @endif
-                    date: moment('{{ $event->date_start }}'),
-                    color: 'primary'
-                }@if(!$loop->last),@endif
                 @endforeach
             ];
 
             // Validar que Moment.js esté disponible
             if (typeof moment !== 'function') {
                 console.error('Moment.js no está disponible. El calendario no funcionará correctamente.');
-                document.getElementById('calendar').innerHTML = 
+                document.getElementById('calendar').innerHTML =
                     '<div class="alert alert-danger">Error: Moment.js no está disponible. Por favor, recarga la página.</div>';
                 return;
             }
@@ -860,7 +916,7 @@
             } catch (error) {
                 console.error('Error al inicializar el calendario:', error);
                 // Mostrar mensaje de error al usuario
-                document.getElementById('calendar').innerHTML = 
+                document.getElementById('calendar').innerHTML =
                     '<div class="alert alert-danger">Error al cargar el calendario. Por favor, recarga la página o contacta al administrador.</div>';
             }
         }();
