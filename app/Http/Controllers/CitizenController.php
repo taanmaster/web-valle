@@ -31,7 +31,7 @@ class CitizenController extends Controller
     public function store(Request $request)
     {
         //Validar
-        $this -> validate($request, array(
+        $this->validate($request, array(
             'name' => 'required|max:255',
         ));
 
@@ -43,6 +43,9 @@ class CitizenController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'curp' => $request->curp,
+            'ine_number' => $request->ine_number,
+            'ine_section' => $request->ine_section,
+            'address' => $request->address,
         ]);
 
         // Guardar archivo
@@ -76,7 +79,7 @@ class CitizenController extends Controller
     public function show($id)
     {
         $citizen = Citizen::find($id);
-        
+
         if (!$citizen) {
             if (request()->ajax() || request()->wantsJson()) {
                 return response()->json([
@@ -98,6 +101,9 @@ class CitizenController extends Controller
                     'phone' => $citizen->phone,
                     'email' => $citizen->email,
                     'address' => $citizen->address,
+                    'ine_number' => $citizen->ine_number,
+                    'ine_section' => $citizen->ine_section,
+                    'address' => $citizen->address,
                 ]
             ]);
         }
@@ -107,9 +113,9 @@ class CitizenController extends Controller
         $financial_supports = FinancialSupport::where('citizen_id', $id)->get();
 
         return view('citizens.show')
-        ->with('citizen', $citizen)
-        ->with('files', $files)
-        ->with('financial_supports', $financial_supports);
+            ->with('citizen', $citizen)
+            ->with('files', $files)
+            ->with('financial_supports', $financial_supports);
     }
 
     public function edit($id)
@@ -122,7 +128,7 @@ class CitizenController extends Controller
     public function update(Request $request, $id)
     {
         //Validar
-        $this -> validate($request, array(
+        $this->validate($request, array(
             'name' => 'required|max:255',
         ));
 
@@ -135,6 +141,9 @@ class CitizenController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'curp' => $request->curp,
+            'ine_number' => $request->ine_number,
+            'ine_section' => $request->ine_section,
+            'address' => $request->address,
         ]);
 
         // Mensaje de session
