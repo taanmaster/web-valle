@@ -118,6 +118,24 @@ class Crud extends Component
 
             $supplier = TreasuryAccountPayableSupplier::findOrFail($this->supplier->id);
 
+            if ($supplier->status !== $this->status) {
+
+                $statusTranslations = [
+                    'active' => 'activo',
+                    'inactive' => 'inactivo',
+                    'payed' => 'pagado'
+                ];
+
+                $oldStatus = $statusTranslations[$supplier->status] ?? $supplier->status;
+                $newStatus = $statusTranslations[$request->status] ?? $request->status;
+
+                $log = new TapSupplierLog();
+                $log->supplier_id = $supplier->id;
+                $log->status = $request->status;
+                $log->description = 'El estado del proveedor ha cambiado de ' . $oldStatus . ' a ' . $newStatus;
+                $log->save();
+            }
+
             $supplier->name = $this->name;
             $supplier->rfc = $this->rfc;
             $supplier->email = $this->email;

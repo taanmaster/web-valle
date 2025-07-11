@@ -135,7 +135,13 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+
+            @if ($mode == 2)
+                <button type="button" class="btn btn-secondary btn-sm"
+                    {{ route('treasury_account_payable_suppliers.show', $supplier->id) }}>Cancelar</button>
+            @else
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+            @endif
             <button type="submit" class="btn btn-dark btn-sm">Guardar datos</button>
         </div>
     </form>
