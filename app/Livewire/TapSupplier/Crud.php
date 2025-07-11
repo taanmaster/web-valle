@@ -16,6 +16,7 @@ use Livewire\Attributes\On;
 use App\Models\TapSupplierDependency;
 use App\Models\TreasuryAccountPayableSupplier;
 use App\Models\TransparencyDependency;
+use App\Models\TapSupplierLog;
 
 class Crud extends Component
 {
