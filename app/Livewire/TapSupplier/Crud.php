@@ -127,11 +127,11 @@ class Crud extends Component
                 ];
 
                 $oldStatus = $statusTranslations[$supplier->status] ?? $supplier->status;
-                $newStatus = $statusTranslations[$request->status] ?? $request->status;
+                $newStatus = $statusTranslations[$this->status] ?? $this->status;
 
                 $log = new TapSupplierLog();
                 $log->supplier_id = $supplier->id;
-                $log->status = $request->status;
+                $log->status = $this->status;
                 $log->description = 'El estado del proveedor ha cambiado de ' . $oldStatus . ' a ' . $newStatus;
                 $log->save();
             }
