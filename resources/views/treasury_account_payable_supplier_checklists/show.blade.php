@@ -84,7 +84,7 @@
                             </button>
                         </div>
                         <div class="card-body">
-                            @if (!empty($checklist->authorizations))
+                            @if ($checklist->authorizations->count() > 0)
                                 <div class="table-responsive">
                                     <table class="table table-striped table-hover">
                                         <thead>
