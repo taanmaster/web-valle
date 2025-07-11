@@ -238,14 +238,11 @@
                             <div class="col-md-6 mb-3">
                                 <label for="payment_status" class="form-label">Estatus de pago</label>
                                 <select name="payment_status" id="payment_status" class="form-select">
-                                    <option value="programado"
-                                        {{ $authorization->payment_status == 'programado' ? 'selected' : '' }}>Programado
+                                    <option value="programado">Programado
                                     </option>
-                                    <option value="pagado"
-                                        {{ $authorization->payment_status == 'pagado' ? 'selected' : '' }}>Pagado
+                                    <option value="pagado">Pagado
                                     </option>
-                                    <option value="vencido"
-                                        {{ $authorization->payment_status == 'vencido' ? 'selected' : '' }}>Vencido
+                                    <option value="vencido">Vencido
                                     </option>
                                 </select>
                             </div>
