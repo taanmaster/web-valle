@@ -92,9 +92,9 @@
                                     <label for="status" class="form-label">Estado <span
                                             class="text-danger tx-12">*</span></label>
                                     <select class="form-control" id="status" name="status" required>
-                                        <option value="active">Activo</option>
-                                        <option value="inactive">Inactivo</option>
+                                        <option value="active">Activa</option>
                                         <option value="overdue">Vencida</option>
+                                        <option value="payed">Pagada</option>
                                     </select>
                                 </div>
                             </div>
