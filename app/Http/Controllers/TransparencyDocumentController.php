@@ -93,7 +93,7 @@ class TransparencyDocumentController extends Controller
     {
         $transparency_document = TransparencyDocument::find($id);
 
-        $transparency_obligation = TransparencyObligation::find($id);
+        $transparency_obligation = TransparencyObligation::find($transparency_document->obligation_id);
 
         return view('transparency_documents.edit')->with('transparency_document', $transparency_document)->with('transparency_obligation', $transparency_obligation);
     }
@@ -208,6 +208,7 @@ class TransparencyDocumentController extends Controller
             'description' => 'nullable|string',
             'period' => 'required|string',
             'year' => 'required|digits:4',
+            'document_id' => 'nullable|exists:transparency_documents,id', // Para actualizaciones
         ]);
 
         // Validar extensión de archivo
@@ -240,7 +241,8 @@ class TransparencyDocumentController extends Controller
                 'description' => $request->description,
                 'period' => $request->period,
                 'year' => $request->year,
-            ]
+            ],
+            'document_id' => $request->document_id, // Para actualizaciones
         ];
 
         // Guardar en cache (1 hora)
@@ -353,24 +355,56 @@ class TransparencyDocumentController extends Controller
             }
             cache()->forget('chunk_upload_transparency_document_' . $request->upload_id);
 
-            // Crear registro en base de datos
+            // Crear o actualizar registro en base de datos
             $data = $uploadSession['document_data'];
-            $transparency_document = TransparencyDocument::create([
-                'obligation_id' => $data['obligation_id'],
-                'name' => $data['name'],
-                'description' => $data['description'],
-                'period' => $data['period'],
-                'year' => $data['year'],
-                'filename' => $uploadSession['filename'],
-                's3_asset_url' => Storage::disk('s3')->url($uploadSession['filepath']),
-                'filesize' => $uploadSession['total_size'],
-                'file_extension' => pathinfo($uploadSession['filename'], PATHINFO_EXTENSION),
-                'uploaded_by' => Auth::id(),
-            ]);
+            
+            if ($uploadSession['document_id']) {
+                // Actualizar documento existente
+                $transparency_document = TransparencyDocument::find($uploadSession['document_id']);
+                
+                // Eliminar archivo anterior de S3
+                if ($transparency_document->filename && $transparency_document->filename !== 'empty') {
+                    $oldPath = 'transparency/documents/' . $transparency_document->filename;
+                    if (Storage::disk('s3')->exists($oldPath)) {
+                        Storage::disk('s3')->delete($oldPath);
+                    }
+                }
+                
+                // Actualizar datos
+                $transparency_document->update([
+                    'name' => $data['name'],
+                    'description' => $data['description'],
+                    'period' => $data['period'],
+                    'year' => $data['year'],
+                    'filename' => $uploadSession['filename'],
+                    's3_asset_url' => Storage::disk('s3')->url($uploadSession['filepath']),
+                    'filesize' => $uploadSession['total_size'],
+                    'file_extension' => pathinfo($uploadSession['filename'], PATHINFO_EXTENSION),
+                    'uploaded_by' => Auth::id(),
+                ]);
+                
+                $message = 'Documento actualizado correctamente';
+            } else {
+                // Crear nuevo documento
+                $transparency_document = TransparencyDocument::create([
+                    'obligation_id' => $data['obligation_id'],
+                    'name' => $data['name'],
+                    'description' => $data['description'],
+                    'period' => $data['period'],
+                    'year' => $data['year'],
+                    'filename' => $uploadSession['filename'],
+                    's3_asset_url' => Storage::disk('s3')->url($uploadSession['filepath']),
+                    'filesize' => $uploadSession['total_size'],
+                    'file_extension' => pathinfo($uploadSession['filename'], PATHINFO_EXTENSION),
+                    'uploaded_by' => Auth::id(),
+                ]);
+                
+                $message = 'Documento creado correctamente';
+            }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Documento subido correctamente',
+                'message' => $message,
                 'document_id' => $transparency_document->id,
             ]);
 

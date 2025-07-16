@@ -183,7 +183,7 @@
         </div>
 
         <div class="d-flex align-items-center justify-content-center">
-            {{ $regulations->links() }}
+            {{ $regulations->links('pagination::bootstrap-5') }}
         </div>
     @endif
 
