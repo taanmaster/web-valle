@@ -836,3 +836,48 @@ small {
     margin-top: 30px;
     padding: 40px 0px;
 }
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1600px) {
+
+}
+
+@media only screen and (min-width : 1400px) {    
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+	h2{
+        font-size: 28px;
+        letter-spacing: -2.16px;
+    }
+
+    .card-image .card-content{
+        width: 100%;
+    }
+
+    .main-banner .card-image{
+        padding: 60px 30px;
+        padding-top: 200px !important;
+    }
+
+    .card-normal{
+        padding: 40px 30px;
+    }
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (max-width : 480px) {
+    
+}
+
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 320px) {
+
+}
