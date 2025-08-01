@@ -256,7 +256,10 @@ class FrontController extends Controller
         Carbon::setLocale('es');
 
         $obligation = TransparencyObligation::where('dependency_id', $dependency)->where('slug', '=', $slug)->first();
-        $documents = TransparencyDocument::where('obligation_id', $obligation->id)->orderBy('year', 'desc')->get();
+        $documents = TransparencyDocument::where('obligation_id', $obligation->id)
+            ->orderBy('year', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $dates = $documents->pluck('year')->unique()->map(function ($year) {
             return Carbon::createFromDate($year, 1, 15)->format('Y');
@@ -275,9 +278,16 @@ class FrontController extends Controller
         Carbon::setLocale('es');
 
         $obligation = TransparencyObligation::where('dependency_id', $dependency)->where('slug', '=', $slug)->first();
-        $documents = TransparencyDocument::where('obligation_id', $obligation->id)->where('year', '=', $date)->orderBy('year', 'desc')->get();
+        $documents = TransparencyDocument::where('obligation_id', $obligation->id)
+        ->where('year', '=', $date)
+        ->orderBy('year', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        $all_documents = TransparencyDocument::where('obligation_id', $obligation->id)->orderBy('year', 'desc')->get();
+        $all_documents = TransparencyDocument::where('obligation_id', $obligation->id)
+        ->orderBy('year', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         $dates = $all_documents->pluck('year')->unique()->map(function ($year) {
             return Carbon::createFromDate($year, 1, 15)->format('Y');
