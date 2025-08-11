@@ -884,4 +884,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'citizen_complain.index',
         ]);
     });
+
+    // Rutas del Perfil Ciudadano (Front-End)
+    Route::group(['prefix' => 'ciudadanos', 'middleware' => ['auth', 'role:citizen'], 'namespace' => 'Front'], function () {
+        Route::get('/perfil', 'CitizenProfileController@index')->name('citizen.profile.index');
+        Route::get('/perfil/editar', 'CitizenProfileController@edit')->name('citizen.profile.edit');
+        Route::put('/perfil/actualizar', 'CitizenProfileController@update')->name('citizen.profile.update');
+        Route::get('/perfil/solicitudes', 'CitizenProfileController@requests')->name('citizen.profile.requests');
+        Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
+        Route::put('/perfil/notificaciones', 'CitizenProfileController@updateNotifications')->name('citizen.profile.notifications');
+    });
 });
