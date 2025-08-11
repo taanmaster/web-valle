@@ -3,11 +3,16 @@
 @section('content')
 <div class="container py-5">
     <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card card-image card-alignment-bottom wow fadeInUp h-100">
+                <img class="card-img-top" src="{{ asset('front/img/placeholder-3.jpg') }}" alt="">
+            </div>
+        </div>
         <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white text-center">
+            <div class="card shadow wow fadeInUp mb-0">
+                <div class="card-body bg-secondary text-white">
                     <h4 class="mb-0">
-                        <i class="bx bx-user-plus"></i> Registro de Ciudadano
+                        <ion-icon name="person-outline"></ion-icon> Registro de Ciudadano
                     </h4>
                     <p class="mb-0 small">Crea tu cuenta para acceder a los servicios ciudadanos</p>
                 </div>
@@ -30,9 +35,9 @@
                         <input type="hidden" name="user_type" value="citizen">
 
                         <div class="row">
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-4">
                                 <label for="name" class="form-label">
-                                    <i class="bx bx-user"></i> Nombre Completo *
+                                    <ion-icon name="person-outline"></ion-icon> Nombre Completo <span class="text-danger text-sm">*</span>
                                 </label>
                                 <input id="name" type="text" 
                                        class="form-control @error('name') is-invalid @enderror" 
@@ -49,9 +54,9 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-4">
                                 <label for="email" class="form-label">
-                                    <i class="bx bx-envelope"></i> Correo Electrónico *
+                                    <ion-icon name="mail-outline"></ion-icon> Correo Electrónico <span class="text-danger">*</span>
                                 </label>
                                 <input id="email" type="email" 
                                        class="form-control @error('email') is-invalid @enderror" 
@@ -67,9 +72,9 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="password" class="form-label">
-                                    <i class="bx bx-lock-alt"></i> Contraseña *
+                                    <ion-icon name="lock-closed-outline"></ion-icon> Contraseña <span class="text-danger">*</span>
                                 </label>
                                 <input id="password" type="password" 
                                        class="form-control @error('password') is-invalid @enderror" 
@@ -84,9 +89,9 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="password_confirmation" class="form-label">
-                                    <i class="bx bx-lock-alt"></i> Confirmar Contraseña *
+                                    <ion-icon name="lock-closed-outline"></ion-icon> Confirmar Contraseña <span class="text-danger">*</span>
                                 </label>
                                 <input id="password_confirmation" type="password" 
                                        class="form-control" 
@@ -101,15 +106,15 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
                                 <label class="form-check-label" for="terms">
-                                    Acepto los <a href="#" target="_blank">términos y condiciones</a> y la 
-                                    <a href="#" target="_blank">política de privacidad</a> *
+                                    Al crear una cuenta ciudadana acepto los términos y condiciones y el 
+                                    aviso de privacidad <span class="text-danger">*</span>
                                 </label>
                             </div>
                         </div>
 
                         <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="bx bx-user-plus"></i> Crear Cuenta Ciudadana
+                            <button type="submit" class="btn btn-primary btn-lg py-3 d-flex align-items-center justify-content-center gap-2">
+                                <ion-icon name="person-add-outline"></ion-icon> Crear Cuenta Ciudadana
                             </button>
                         </div>
 
@@ -122,12 +127,14 @@
                     </form>
                 </div>
             </div>
+        </div>
 
-            <div class="text-center mt-4">
+        <div class="col-md-10">
+            <div class="text-center mt-4 wow fadeInUp">
                 <div class="alert alert-info">
                     <i class="bx bx-info-circle"></i>
                     <strong>¿Necesitas ayuda?</strong><br>
-                    Contacta a soporte ciudadano: <a href="mailto:soporte@municipio.gob.mx">soporte@municipio.gob.mx</a>
+                    Contacta a soporte ciudadano: <a href="mailto:comunicacion.social@valledesantiago.gob.mx">comunicacion.social@valledesantiago.gob.mx</a>
                 </div>
             </div>
         </div>
