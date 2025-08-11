@@ -408,6 +408,12 @@
                                 <a class="nav-link" href="{{ route('legals.index') }}">Textos Legales</a>
                             </li>
                         @endif
+
+                        @if (auth()->user()->hasRole('all'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('roles.index') }}">Roles y Permisos</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             @endif
