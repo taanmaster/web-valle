@@ -156,6 +156,18 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Usuarios */
         Route::resource('users', UserController::class);
+        
+        // Rutas adicionales para usuarios ciudadanos
+        Route::post('users/citizens', 'UserController@storeCitizen')->name('users.store-citizen');
+        Route::put('users/citizens/{id}', 'UserController@updateCitizen')->name('users.update-citizen');
+        Route::delete('users/citizens/{id}', 'UserController@destroyCitizen')->name('users.destroy-citizen');
+        
+        Route::resource('roles', RoleController::class);
+        
+        // Rutas adicionales para permisos
+        Route::post('roles/permissions', 'RoleController@storePermission')->name('roles.store-permission');
+        Route::put('roles/permissions/{id}', 'RoleController@updatePermission')->name('roles.update-permission');
+        Route::delete('roles/permissions/{id}', 'RoleController@destroyPermission')->name('roles.destroy-permission');
 
         Route::get('profile', [
             'uses' => 'DashboardController@adminProfile',
