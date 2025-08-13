@@ -894,4 +894,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
         Route::put('/perfil/notificaciones', 'CitizenProfileController@updateNotifications')->name('citizen.profile.notifications');
     });
+    
+    Route::get('/reload-captcha',[
+        'uses' => 'FrontController@reloadCaptcha',
+        'as' => 'reload.captcha',
+    ]);
 });
+

@@ -462,4 +462,9 @@ class FrontController extends Controller
     {
         return view('front.citizen_complain.index');
     }
+
+    public function reloadCaptcha()
+    {
+        return response()->json(['captcha' => captcha_img('flat')], 200);
+    }
 }

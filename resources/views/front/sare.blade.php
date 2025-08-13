@@ -5,7 +5,7 @@
         <div class="row justify-content-center mb-4">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner wow fadeInUp">
-                    <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('front/img/placeholder-3.jpg') }}" alt="">
                     <div class="overlay"></div>
                     <div class="card-content">
                         <p>Bienvenido al</p>
@@ -73,7 +73,7 @@
 
             <div class="col-md-4">
                 <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('front/img/placeholder-2.jpg') }}" alt="">
                     <div class="overlay"></div>
                 </div>
             </div>

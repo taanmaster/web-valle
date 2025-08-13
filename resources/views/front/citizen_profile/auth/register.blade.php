@@ -103,6 +103,27 @@
                         </div>
 
                         <div class="mb-4">
+                            <div class="form-group mb-2">
+                                <label for="rfc_name">Captcha <span class="text-danger">*</span></label>
+
+                                <div class="captcha">
+                                    <span class="me-2">{!! captcha_img('flat') !!}</span>
+                                    <button type="button" class="btn btn-danger btn-sm reload" id="reload">&#x21bb; Cambiar captcha</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <input type="text" class="form-control custom-form-control @error('captcha') is-invalid @enderror" placeholder="Caracteres del captcha" name="captcha" required>
+
+                                @error('captcha')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
                                 <label class="form-check-label" for="terms">
@@ -142,7 +163,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     // Validación adicional en el frontend
     document.addEventListener('DOMContentLoaded', function() {
@@ -162,4 +183,22 @@
         confirmPassword.addEventListener('keyup', validatePassword);
     });
 </script>
-@endsection
+
+<!-- Captcha Reload -->
+<script>
+    $('.reload').on('click', function(){
+        event.preventDefault();            
+        $.ajax({
+            type: 'GET',
+            url: "{{ route('reload.captcha') }}",
+            success: function(response){
+                console.log(response);
+                $('.captcha span').html(response.captcha);
+            },
+            error: function(response){
+                $('#registerBtn').attr('disabled', true);
+            }
+        });
+    });
+</script>
+@endpush
