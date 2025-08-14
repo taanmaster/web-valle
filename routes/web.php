@@ -893,8 +893,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil/solicitudes', 'CitizenProfileController@requests')->name('citizen.profile.requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
         Route::put('/perfil/notificaciones', 'CitizenProfileController@updateNotifications')->name('citizen.profile.notifications');
+        
+        // Rutas SARE para ciudadanos
+        Route::get('/sare/crear', 'CitizenProfileController@createSareRequest')->name('citizen.sare.create');
+        Route::post('/sare/guardar', 'CitizenProfileController@storeSareRequest')->name('citizen.sare.store');
+        Route::get('/sare/{sareRequest}', 'CitizenProfileController@showSareRequest')->name('citizen.sare.show');
+        Route::get('/sare/{sareRequest}/editar', 'CitizenProfileController@editSareRequest')->name('citizen.sare.edit');
+        Route::put('/sare/{sareRequest}/actualizar', 'CitizenProfileController@updateSareRequest')->name('citizen.sare.update');
+        Route::delete('/sare/{sareRequest}/eliminar', 'CitizenProfileController@destroySareRequest')->name('citizen.sare.destroy');
     });
-    
+
     Route::get('/reload-captcha',[
         'uses' => 'FrontController@reloadCaptcha',
         'as' => 'reload.captcha',
