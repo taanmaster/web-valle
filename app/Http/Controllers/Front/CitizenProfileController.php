@@ -6,10 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Citizen;
 use App\Models\UserInfo;
+use App\Models\SareRequest;
+use App\Models\SareRequestFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class CitizenProfileController extends Controller
@@ -76,12 +81,27 @@ class CitizenProfileController extends Controller
         return redirect()->route('citizen.profile.edit');
     }
 
-    public function requests()
+    public function requests(Request $request)
     {
-        // Aquí podrías cargar las solicitudes del ciudadano
-        // $requests = Request::where('user_id', Auth::id())->get();
+        // Cargar las solicitudes SARE del ciudadano autenticado
+        $sareRequests = \App\Models\SareRequest::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         
-        return view('front.citizen_profile.requests');
+        // Si es una petición AJAX, devolver solo los datos
+        if ($request->ajax() || $request->get('ajax')) {
+            return response()->json([
+                'requests' => $sareRequests->map(function ($req) {
+                    return [
+                        'id' => $req->id,
+                        'status_color' => $req->status_color,
+                        'status_label' => $req->status_label,
+                    ];
+                })
+            ]);
+        }
+        
+        return view('front.citizen_profile.requests', compact('sareRequests'));
     }
 
     public function settings()
@@ -150,5 +170,526 @@ class CitizenProfileController extends Controller
         }
         
         return $userInfo;
+    }
+
+    // =============== MÉTODOS SARE PARA CIUDADANOS ===============
+
+    /**
+     * Mostrar formulario para crear nueva solicitud SARE
+     */
+    public function createSareRequest()
+    {
+        return view('front.citizen_profile.sare_create');
+    }
+
+    /**
+     * Almacenar nueva solicitud SARE
+     */
+    public function storeSareRequest(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'request_num' => 'required|string|max:255',
+            'request_date' => 'required|date',
+            'catastral_num' => 'required|string|max:255',
+            'request_type' => 'required|string|max:255',
+            'rfc_name' => 'required|string|max:255',
+            'rfc_num' => 'required|string|max:13',
+            'property_owner' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'office_phone' => 'required|string|max:15',
+            'mobile_phone' => 'required|string|max:15',
+            'legal_representative_name' => 'required|string|max:255',
+            'legal_representative_father_last_name' => 'required|string|max:255',
+            'legal_representative_mother_last_name' => 'required|string|max:255',
+            'legal_representative_office_phone' => 'required|string|max:15',
+            'legal_representative_mobile_phone' => 'required|string|max:15',
+            'legal_representative_personal_phone' => 'required|string|max:15',
+            'legal_representative_email' => 'required|email|max:255',
+            'legal_representative_ownership_document' => 'required|string|max:255',
+            'establishment_legal_cause' => 'required|string|max:255',
+            'establishment_good_faith_clause' => 'required|string|max:255',
+            'establishment_address_street' => 'required|string|max:255',
+            'establishment_address_number' => 'required|string|max:10',
+            'establishment_address_neighborhood' => 'required|string|max:255',
+            'establishment_address_municipality' => 'required|string|max:255',
+            'establishment_address_state' => 'required|string|max:255',
+            'establishment_address_postal_code' => 'required|string|max:5',
+            'commercial_name' => 'required|string|max:255',
+            'aprox_investment' => 'required|string|max:255',
+            'jobs_to_generate' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $sareRequest = SareRequest::create([
+                'user_id' => Auth::id(),
+                'status' => 'new',
+                'request_type' => $request->request_type,
+                'description' => $request->description,
+                'request_num' => $request->request_num,
+                'request_date' => $request->request_date,
+                'catastral_num' => $request->catastral_num,
+                'rfc_name' => $request->rfc_name,
+                'rfc_num' => $request->rfc_num,
+                'property_owner' => $request->property_owner,
+                'office_phone' => $request->office_phone,
+                'mobile_phone' => $request->mobile_phone,
+                'email' => $request->email,
+                'legal_representative_name' => $request->legal_representative_name,
+                'legal_representative_father_last_name' => $request->legal_representative_father_last_name,
+                'legal_representative_mother_last_name' => $request->legal_representative_mother_last_name,
+                'legal_representative_office_phone' => $request->legal_representative_office_phone,
+                'legal_representative_mobile_phone' => $request->legal_representative_mobile_phone,
+                'legal_representative_personal_phone' => $request->legal_representative_personal_phone,
+                'legal_representative_email' => $request->legal_representative_email,
+                'legal_representative_ownership_document' => $request->legal_representative_ownership_document,
+                'establishment_legal_cause' => $request->establishment_legal_cause,
+                'establishment_legal_cause_addon' => $request->establishment_legal_cause_addon,
+                'establishment_good_faith_clause' => $request->establishment_good_faith_clause,
+                'establishment_address_street' => $request->establishment_address_street,
+                'establishment_address_number' => $request->establishment_address_number,
+                'establishment_address_neighborhood' => $request->establishment_address_neighborhood,
+                'establishment_address_municipality' => $request->establishment_address_municipality,
+                'establishment_address_state' => $request->establishment_address_state,
+                'establishment_address_postal_code' => $request->establishment_address_postal_code,
+                'establishment_use' => $request->establishment_use,
+                'commercial_name' => $request->commercial_name,
+                'aprox_investment' => $request->aprox_investment,
+                'jobs_to_generate' => $request->jobs_to_generate,
+                'operation_start_date' => $request->operation_start_date,
+                'business_hours' => $request->business_hours,
+                'is_location_in_operation' => $request->has('is_location_in_operation'),
+                'zoning_front' => $request->zoning_front,
+                'zoning_rear' => $request->zoning_rear,
+                'zoning_left' => $request->zoning_left,
+                'zoning_right' => $request->zoning_right,
+            ]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Solicitud SARE enviada correctamente.',
+                    'redirect' => route('citizen.sare.show', $sareRequest)
+                ]);
+            }
+
+            Session::flash('success', 'Tu solicitud SARE se ha enviado correctamente.');
+            return redirect()->route('citizen.sare.show', $sareRequest);
+
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al procesar la solicitud: ' . $e->getMessage()
+                ], 500);
+            }
+
+            Session::flash('error', 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.');
+            return back()->withInput();
+        }
+    }
+
+    /**
+     * Mostrar detalles de una solicitud SARE
+     */
+    public function showSareRequest($id)
+    {
+        $sareRequest = SareRequest::findOrFail($id);
+
+        // Verificar que la solicitud pertenece al usuario autenticado
+        if ($sareRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        return view('front.citizen_profile.sare_show', compact('sareRequest'));
+    }
+
+    /**
+     * Mostrar formulario para editar solicitud SARE
+     */
+    public function editSareRequest($id)
+    {
+        $sareRequest = SareRequest::findOrFail($id);
+
+        // Verificar que la solicitud pertenece al usuario autenticado
+        if ($sareRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        return view('front.citizen_profile.sare_edit', compact('sareRequest'));
+    }
+
+    /**
+     * Actualizar solicitud SARE
+     */
+    public function updateSareRequest(Request $request, $id)
+    {
+        $sareRequest = SareRequest::findOrFail($id);
+
+        // Verificar que la solicitud pertenece al usuario autenticado
+        if ($sareRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        // Solo permitir edición si está en estado nuevo
+        if ($sareRequest->status !== 'new') {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Solo puedes editar solicitudes en estado "Nuevo".'
+                ], 403);
+            }
+            
+            Session::flash('error', 'Solo puedes editar solicitudes en estado "Nuevo".');
+            return redirect()->route('citizen.sare.show', $sareRequest);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'request_num' => 'required|string|max:255',
+            'request_date' => 'required|date',
+            'catastral_num' => 'required|string|max:255',
+            'request_type' => 'required|string|max:255',
+            'rfc_name' => 'required|string|max:255',
+            'rfc_num' => 'required|string|max:13',
+            'property_owner' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'office_phone' => 'required|string|max:15',
+            'mobile_phone' => 'required|string|max:15',
+            'legal_representative_name' => 'required|string|max:255',
+            'legal_representative_father_last_name' => 'required|string|max:255',
+            'legal_representative_mother_last_name' => 'required|string|max:255',
+            'legal_representative_office_phone' => 'required|string|max:15',
+            'legal_representative_mobile_phone' => 'required|string|max:15',
+            'legal_representative_personal_phone' => 'required|string|max:15',
+            'legal_representative_email' => 'required|email|max:255',
+            'legal_representative_ownership_document' => 'required|string|max:255',
+            'establishment_legal_cause' => 'required|string|max:255',
+            'establishment_good_faith_clause' => 'required|string|max:255',
+            'establishment_address_street' => 'required|string|max:255',
+            'establishment_address_number' => 'required|string|max:10',
+            'establishment_address_neighborhood' => 'required|string|max:255',
+            'establishment_address_municipality' => 'required|string|max:255',
+            'establishment_address_state' => 'required|string|max:255',
+            'establishment_address_postal_code' => 'required|string|max:5',
+            'commercial_name' => 'required|string|max:255',
+            'aprox_investment' => 'required|string|max:255',
+            'jobs_to_generate' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $sareRequest->update([
+                'request_type' => $request->request_type,
+                'description' => $request->description,
+                'request_num' => $request->request_num,
+                'request_date' => $request->request_date,
+                'catastral_num' => $request->catastral_num,
+                'rfc_name' => $request->rfc_name,
+                'rfc_num' => $request->rfc_num,
+                'property_owner' => $request->property_owner,
+                'office_phone' => $request->office_phone,
+                'mobile_phone' => $request->mobile_phone,
+                'email' => $request->email,
+                'legal_representative_name' => $request->legal_representative_name,
+                'legal_representative_father_last_name' => $request->legal_representative_father_last_name,
+                'legal_representative_mother_last_name' => $request->legal_representative_mother_last_name,
+                'legal_representative_office_phone' => $request->legal_representative_office_phone,
+                'legal_representative_mobile_phone' => $request->legal_representative_mobile_phone,
+                'legal_representative_personal_phone' => $request->legal_representative_personal_phone,
+                'legal_representative_email' => $request->legal_representative_email,
+                'legal_representative_ownership_document' => $request->legal_representative_ownership_document,
+                'establishment_legal_cause' => $request->establishment_legal_cause,
+                'establishment_legal_cause_addon' => $request->establishment_legal_cause_addon,
+                'establishment_good_faith_clause' => $request->establishment_good_faith_clause,
+                'establishment_address_street' => $request->establishment_address_street,
+                'establishment_address_number' => $request->establishment_address_number,
+                'establishment_address_neighborhood' => $request->establishment_address_neighborhood,
+                'establishment_address_municipality' => $request->establishment_address_municipality,
+                'establishment_address_state' => $request->establishment_address_state,
+                'establishment_address_postal_code' => $request->establishment_address_postal_code,
+                'establishment_use' => $request->establishment_use,
+                'commercial_name' => $request->commercial_name,
+                'aprox_investment' => $request->aprox_investment,
+                'jobs_to_generate' => $request->jobs_to_generate,
+                'operation_start_date' => $request->operation_start_date,
+                'business_hours' => $request->business_hours,
+                'is_location_in_operation' => $request->has('is_location_in_operation'),
+                'zoning_front' => $request->zoning_front,
+                'zoning_rear' => $request->zoning_rear,
+                'zoning_left' => $request->zoning_left,
+                'zoning_right' => $request->zoning_right,
+            ]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Solicitud SARE actualizada correctamente.',
+                    'redirect' => route('citizen.sare.show', $sareRequest)
+                ]);
+            }
+
+            Session::flash('success', 'Tu solicitud SARE se ha actualizado correctamente.');
+            return redirect()->route('citizen.sare.show', $sareRequest);
+
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al actualizar la solicitud: ' . $e->getMessage()
+                ], 500);
+            }
+
+            Session::flash('error', 'Error al actualizar la solicitud. Por favor, inténtalo de nuevo.');
+            return back()->withInput();
+        }
+    }
+
+    /**
+     * Eliminar solicitud SARE
+     */
+    public function destroySareRequest(Request $request, $id)
+    {
+        // Verificar que la solicitud pertenece al usuario autenticado
+        if ($sareRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        // Solo permitir eliminación si está pendiente
+        if ($sareRequest->status !== 'pendiente') {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Solo puedes eliminar solicitudes pendientes.'
+                ], 403);
+            }
+            
+            Session::flash('error', 'Solo puedes eliminar solicitudes pendientes.');
+            return redirect()->route('citizen.profile.requests');
+        }
+
+        try {
+            // Eliminar archivos asociados
+            foreach ($sareRequest->files as $file) {
+                Storage::delete($file->file_path);
+                $file->delete();
+            }
+
+            // Eliminar la solicitud
+            $sareRequest->delete();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Solicitud eliminada correctamente.',
+                    'redirect' => route('citizen.profile.requests')
+                ]);
+            }
+
+            Session::flash('success', 'Tu solicitud SARE se ha eliminado correctamente.');
+            return redirect()->route('citizen.profile.requests');
+
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al eliminar la solicitud: ' . $e->getMessage()
+                ], 500);
+            }
+
+            Session::flash('error', 'Error al eliminar la solicitud. Por favor, inténtalo de nuevo.');
+            return back();
+        }
+    }
+
+    // =============== MÉTODOS DE UPLOAD DE ARCHIVOS ===============
+
+    /**
+     * Upload files via dropzone
+     */
+    public function uploadSareFile(Request $request)
+    {
+        try {
+            $file = $request->file('file');
+            $sareRequestId = $request->get('sare_request_id');
+
+            if (!$file || !$file->isValid()) {
+                return response()->json(['error' => 'Archivo no válido'], 400);
+            }
+
+            // Validar tamaño (máximo 10MB)
+            if ($file->getSize() > 10485760) {
+                return response()->json(['error' => 'El archivo es demasiado grande. Máximo 10MB.'], 400);
+            }
+
+            // Validar extensión
+            $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx'];
+            $extension = strtolower($file->getClientOriginalExtension());
+            
+            if (!in_array($extension, $allowedExtensions)) {
+                return response()->json(['error' => 'Tipo de archivo no permitido.'], 400);
+            }
+
+            // Generar nombre único
+            $fileName = time() . '_' . Str::random(10) . '.' . $extension;
+            $filePath = 'sare_files/' . $fileName;
+
+            // Guardar archivo
+            Storage::putFileAs('public/sare_files', $file, $fileName);
+
+            // Crear registro en base de datos si se proporciona sare_request_id
+            $sareFile = null;
+            if ($sareRequestId) {
+                $sareFile = SareRequestFile::create([
+                    'sare_request_id' => $sareRequestId,
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_path' => 'public/' . $filePath,
+                    'file_size' => $file->getSize(),
+                    'file_type' => $file->getMimeType(),
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'file_id' => $sareFile ? $sareFile->id : null,
+                'file_name' => $file->getClientOriginalName(),
+                'file_path' => $filePath,
+                'file_size' => $file->getSize(),
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al subir archivo: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Initialize chunk upload for large files
+     */
+    public function initChunkUpload(Request $request)
+    {
+        $filename = $request->filename;
+        $filesize = $request->filesize;
+        $chunkSize = $request->chunk_size;
+
+        $totalChunks = ceil($filesize / $chunkSize);
+        $uploadId = Str::random(32);
+
+        // Crear directorio temporal para chunks
+        $tempDir = public_path('temp/chunks/' . $uploadId);
+        if (!file_exists($tempDir)) {
+            mkdir($tempDir, 0755, true);
+        }
+
+        return response()->json([
+            'upload_id' => $uploadId,
+            'total_chunks' => $totalChunks
+        ]);
+    }
+
+    /**
+     * Upload chunk for large files
+     */
+    public function uploadChunk(Request $request)
+    {
+        try {
+            $uploadId = $request->upload_id;
+            $chunkIndex = $request->chunk_index;
+            $chunk = $request->file('chunk');
+
+            if (!$chunk || !$chunk->isValid()) {
+                return response()->json(['error' => 'Chunk no válido'], 400);
+            }
+
+            $tempDir = public_path('temp/chunks/' . $uploadId);
+            $chunkPath = $tempDir . '/chunk_' . $chunkIndex;
+
+            // Guardar chunk
+            $chunk->move($tempDir, 'chunk_' . $chunkIndex);
+
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al subir chunk: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Finalize chunk upload and combine chunks
+     */
+    public function finalizeChunkUpload(Request $request)
+    {
+        try {
+            $uploadId = $request->upload_id;
+            $filename = $request->filename;
+            $totalChunks = $request->total_chunks;
+            $sareRequestId = $request->sare_request_id;
+
+            $tempDir = public_path('temp/chunks/' . $uploadId);
+            
+            // Validar que todos los chunks estén presentes
+            for ($i = 0; $i < $totalChunks; $i++) {
+                $chunkPath = $tempDir . '/chunk_' . $i;
+                if (!file_exists($chunkPath)) {
+                    return response()->json(['error' => 'Chunk faltante: ' . $i], 400);
+                }
+            }
+
+            // Combinar chunks
+            $extension = pathinfo($filename, PATHINFO_EXTENSION);
+            $finalFileName = time() . '_' . Str::random(10) . '.' . $extension;
+            $finalPath = public_path('storage/sare_files/' . $finalFileName);
+
+            // Crear directorio si no existe
+            $directory = dirname($finalPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+
+            $finalFile = fopen($finalPath, 'wb');
+            
+            for ($i = 0; $i < $totalChunks; $i++) {
+                $chunkPath = $tempDir . '/chunk_' . $i;
+                $chunkData = file_get_contents($chunkPath);
+                fwrite($finalFile, $chunkData);
+                unlink($chunkPath); // Eliminar chunk temporal
+            }
+            
+            fclose($finalFile);
+            rmdir($tempDir); // Eliminar directorio temporal
+
+            // Crear registro en base de datos
+            $sareFile = null;
+            if ($sareRequestId) {
+                $sareFile = SareRequestFile::create([
+                    'sare_request_id' => $sareRequestId,
+                    'file_name' => $filename,
+                    'file_path' => 'public/sare_files/' . $finalFileName,
+                    'file_size' => filesize($finalPath),
+                    'file_type' => mime_content_type($finalPath),
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'file_id' => $sareFile ? $sareFile->id : null,
+                'file_name' => $filename,
+                'file_path' => 'sare_files/' . $finalFileName,
+                'file_size' => filesize($finalPath),
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al finalizar upload: ' . $e->getMessage()], 500);
+        }
     }
 }
