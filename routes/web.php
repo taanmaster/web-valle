@@ -28,13 +28,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
 
-    /*SARE*/
+    // SARE 
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
 
-    /*CASA DE LA MUJER*/
+    // DESARROLLO URBANO 
+    Route::get('/desarrollo_urbano', 'FrontController@urbanDev')->name('urban_dev.index');
+    Route::get('/desarrollo_urbano/{tramite}', 'FrontController@urbanDevDetail')->name('urban_dev.show');
+
+    // CASA DE LA MUJER
     Route::get('/casa_de_la_mujer', 'FrontController@casaMujer')->name('casa_mujer.index');
 
-    /*DIF*/
+    // DIF
     Route::get('/dependencia-dif', 'FrontController@dif')->name('dif.index');
 
 
@@ -262,6 +266,72 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'transparency_documents.deleteFile',
         ]);
 
+        /* SARE */
+        Route::group(['prefix' => 'sare'], function () {
+            Route::resource('requests', SareRequestController::class)->names([
+                'index' => 'sare.request.index',
+                'create' => 'sare.request.create',
+                'store' => 'sare.request.store',
+                'show' => 'sare.request.show',
+                'edit' => 'sare.request.edit',
+                'update' => 'sare.request.update',
+                'destroy' => 'sare.request.destroy',
+            ]);
+
+            Route::resource('request_notes', SareRequestNoteController::class)->names([
+                'index' => 'sare.request_notes.index',
+                'create' => 'sare.request_notes.create',
+                'store' => 'sare.request_notes.store',
+                'show' => 'sare.request_notes.show',
+                'edit' => 'sare.request_notes.edit',
+                'update' => 'sare.request_notes.update',
+                'destroy' => 'sare.request_notes.destroy',
+            ]);
+
+            Route::resource('request_files', SareRequestFileController::class)->names([
+                'index' => 'sare.request_files.index',
+                'create' => 'sare.request_files.create',
+                'store' => 'sare.request_files.store',
+                'show' => 'sare.request_files.show',
+                'edit' => 'sare.request_files.edit',
+                'update' => 'sare.request_files.update',
+                'destroy' => 'sare.request_files.destroy',
+            ]);
+        });
+
+        /* Desarrollo Urbano */
+        Route::group(['prefix' => 'urban_dev'], function () {
+            Route::resource('requests', UrbanDevRequestController::class)->names([
+                'index' => 'urban_dev.requests.index',
+                'create' => 'urban_dev.requests.create',
+                'store' => 'urban_dev.requests.store',
+                'show' => 'urban_dev.requests.show',
+                'edit' => 'urban_dev.requests.edit',
+                'update' => 'urban_dev.requests.update',
+                'destroy' => 'urban_dev.requests.destroy',
+            ]);
+
+            Route::resource('request_notes', UrbanDevRequestNoteController::class)->names([
+                'index' => 'urban_dev.request_notes.index',
+                'create' => 'urban_dev.request_notes.create',
+                'store' => 'urban_dev.request_notes.store',
+                'show' => 'urban_dev.request_notes.show',
+                'edit' => 'urban_dev.request_notes.edit',
+                'update' => 'urban_dev.request_notes.update',
+                'destroy' => 'urban_dev.request_notes.destroy',
+            ]);
+
+            Route::resource('request_files', UrbanDevRequestFileController::class)->names([
+                'index' => 'urban_dev.request_files.index',
+                'create' => 'urban_dev.request_files.create',
+                'store' => 'urban_dev.request_files.store',
+                'show' => 'urban_dev.request_files.show',
+                'edit' => 'urban_dev.request_files.edit',
+                'update' => 'urban_dev.request_files.update',
+                'destroy' => 'urban_dev.request_files.destroy',
+            ]);
+        });
+        
         /* DIF */
         Route::group(['prefix' => 'dif'], function () {
             Route::resource('doctors', DIFDoctorController::class)->names([
@@ -407,6 +477,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'dif.prescription-files.destroy',
             ]);
             Route::get('prescription-files/{prescriptionFile}/download', [DIFPrescriptionFileController::class, 'download'])->name('dif.prescription-files.download');
+        
+            Route::resource('banners', DifBannerController::class)->names([
+                'index' => 'dif.banners.index',
+                'create' => 'dif.banners.create',
+                'store' => 'dif.banners.store',
+                'show' => 'dif.banners.show',
+                'edit' => 'dif.banners.edit',
+                'update' => 'dif.banners.update',
+                'destroy' => 'dif.banners.destroy',
+            ]);
+            Route::post('/banners/status/{id}', [
+                'uses' => 'DifBannerController@status',
+                'as' => 'dif.banners.status',
+            ]);
         });
 
         /* Transparencia */
@@ -714,30 +798,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 ]);
             });
 
-            /* DIF */
-            Route::group(['prefix' => 'dif'], function () {
-                Route::resource('banners', DifBannerController::class)->names([
-                    'index' => 'dif.banners.index',
-                    'create' => 'dif.banners.create',
-                    'store' => 'dif.banners.store',
-                    'show' => 'dif.banners.show',
-                    'edit' => 'dif.banners.edit',
-                    'update' => 'dif.banners.update',
-                    'destroy' => 'dif.banners.destroy',
-                ]);
-                Route::post('/banners/status/{id}', [
-                    'uses' => 'DifBannerController@status',
-                    'as' => 'dif.banners.status',
-                ]);
-            });
-
             /*Generador de Cajas para Tesorería*/
             Route::resource('cashiers', TsrCashierController::class)->names([
                 'store' => 'tsr_cashiers.store',
                 'update' => 'tsr_cashiers.update',
                 'destroy' => 'tsr_cashiers.destroy',
             ]);
-
 
             /* Generador de Documentación */
             Route::post('/supplier_checklists/{id}/download-Checklist', [

@@ -71,6 +71,24 @@
                         </li>
                     @endif
 
+                    @if (auth()->user()->hasRole('sare') || auth()->user()->hasRole('all'))
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="SARE"
+                            data-bs-trigger="hover">
+                            <a href="#valleSARE" id="sare-tab" class="nav-link">
+                                <i class="ti ti-bulb menu-icon"></i>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (auth()->user()->hasRole('urban_dev') || auth()->user()->hasRole('all'))
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Desarrollo Urbano"
+                            data-bs-trigger="hover">
+                            <a href="#valleUrbanDev" id="urban-dev-tab" class="nav-link">
+                                <i class="ti ti-map-pin menu-icon"></i>
+                            </a>
+                        </li>
+                    @endif
+
                     @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="DIF"
                             data-bs-trigger="hover">
@@ -343,6 +361,32 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('regulatory_agenda.index') }}">Agenda
                                 Regulatoria</a>
+                        </li>
+                    </ul>
+                </div>
+            @endif
+
+            @if (auth()->user()->hasRole('sare') || auth()->user()->hasRole('all'))
+                <div id="valleSARE" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="sare-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Solicitudes</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('sare.request.index') }}">Solicitudes</a>
+                        </li>
+                    </ul>
+                </div>
+            @endif
+
+            @if (auth()->user()->hasRole('urban_dev') || auth()->user()->hasRole('all'))
+                <div id="valleUrbanDev" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="urban-dev-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Trámites</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.requests.index') }}">Expedientes</a>
                         </li>
                     </ul>
                 </div>
