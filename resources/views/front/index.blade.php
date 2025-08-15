@@ -238,7 +238,7 @@
 
         <!--Agenda Regulatoria -->
         @if ($regulation_dependencies->count() >= 1)
-            <div class="row align-items-center">
+            <div class="row align-items-center mb-4">
                 <div class="col-md-6">
                     <div class="pe-4">
                         <h2>Agenda Regulatoria</h2>
@@ -261,6 +261,20 @@
             </div>
         @endif
 
+        <a href="{{ route('urban_dev.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+            <img src="{{ asset('front/img/placeholder-5.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+            <div class="overlay"></div>
+
+            <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+            </div>
+
+            <div class="card-content">
+                <h2>Desarrollo Urbano</h2>
+                <p class="mb-0">Conoce los trámites que impulsan el desarrollo urbano en nuestro municipio.</p>
+            </div>
+        </a>
+        
         <div class="row mb-4">
             <div class="col-md-8">
                 <div class="card card-normal wow fadeInUp h-100">
@@ -285,7 +299,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     @if (!empty($popup))
@@ -299,13 +312,13 @@
                         @if ($popup->image == null)
                         @else
                             <div class="valle-modal-image">
-                                <img class="img-fluid" src="{{ asset('front/img/popups/' . $popup->image) }}"
-                                    alt="">
+                                <img class="img-fluid" src="{{ asset('front/img/popups/' . $popup->image) }}" alt="">
                             </div>
                         @endif
 
                         <div class="valle-info-wrap">
                             <h3>{{ $popup->title }}</h3>
+                            
                             @if ($popup->subtitle != null)
                                 <h5>{{ $popup->subtitle }}</h5>
                             @endif

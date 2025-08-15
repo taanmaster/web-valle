@@ -351,6 +351,17 @@ class FrontController extends Controller
         return view('front.sare');
     }
 
+    // Pantallas Desarrollo Urbano
+    public function urbanDev()
+    {
+        return view('front.urban_dev.index');
+    }
+
+    public function urbanDevDetail($tramite)
+    {
+        return view('front.urban_dev.show')->with('tramite', $tramite);
+    }
+
     // Pantalla Casa de la Mujer
     public function casaMujer()
     {

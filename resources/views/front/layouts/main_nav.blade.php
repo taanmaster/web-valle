@@ -37,6 +37,15 @@
             </li>
             --}}
 
+            {{--  
+            <li>
+                <a href="{{ route('urban_dev.index') }}">
+                    <ion-icon name="business-outline"></ion-icon>
+                    <span>Desarrollo Urbano</span>
+                </a>
+            </li>
+            --}}
+
             <li>
                 <a href="{{ route('sare.index') }}">
                     <ion-icon name="layers-outline"></ion-icon>
