@@ -104,6 +104,29 @@ class CitizenProfileController extends Controller
         return view('front.citizen_profile.requests', compact('sareRequests'));
     }
 
+    public function urbanDevRequests(Request $request)
+    {
+        // Cargar las solicitudes de Desarrollo Urbano del ciudadano autenticado
+        $urbanDevRequests = \App\Models\UrbanDevRequest::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        // Si es una petición AJAX, devolver solo los datos
+        if ($request->ajax() || $request->get('ajax')) {
+            return response()->json([
+                'requests' => $urbanDevRequests->map(function ($req) {
+                    return [
+                        'id' => $req->id,
+                        'status_color' => $req->status_color,
+                        'status_label' => $req->status_label,
+                    ];
+                })
+            ]);
+        }
+
+        return view('front.citizen_profile.urban_dev_requests', compact('urbanDevRequests'));
+    }
+
     public function settings()
     {
         $user = Auth::user();
@@ -461,6 +484,8 @@ class CitizenProfileController extends Controller
      */
     public function destroySareRequest(Request $request, $id)
     {
+        $sareRequest = SareRequest::findOrFail($id);
+        
         // Verificar que la solicitud pertenece al usuario autenticado
         if ($sareRequest->user_id !== Auth::id()) {
             abort(403, 'No tienes acceso a esta solicitud.');
@@ -480,9 +505,10 @@ class CitizenProfileController extends Controller
         }
 
         try {
-            // Eliminar archivos asociados
+            // Eliminar archivos asociados de S3
             foreach ($sareRequest->files as $file) {
-                Storage::delete($file->file_path);
+                $filepath = 'sare/' . $file->filename;
+                Storage::disk('s3')->delete($filepath);
                 $file->delete();
             }
 
@@ -513,6 +539,374 @@ class CitizenProfileController extends Controller
         }
     }
 
+    // =============== MÉTODOS DESARROLLO URBANO PARA CIUDADANOS ===============
+
+    /**
+     * Mostrar formulario para crear nueva solicitud de Desarrollo Urbano
+     */
+    public function createUrbanDevRequest()
+    {
+        return view('front.citizen_profile.urban_dev_create');
+    }
+
+    /**
+     * Almacenar nueva solicitud de Desarrollo Urbano
+     */
+    public function storeUrbanDevRequest(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'request_type' => 'required|string|in:uso-de-suelo,constancia-de-factibilidad,permiso-de-anuncios,certificacion-numero-oficial,permiso-de-division,uso-de-via-publica,licencia-de-construccion,permiso-construccion-panteones',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $urbanDevRequest = \App\Models\UrbanDevRequest::create([
+                'user_id' => Auth::id(),
+                'request_type' => $request->request_type,
+                'description' => $request->description,
+                'status' => 'new'
+            ]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Solicitud de Desarrollo Urbano creada exitosamente.',
+                    'redirect' => route('citizen.urban_dev.show', $urbanDevRequest)
+                ]);
+            }
+
+            Session::flash('success', 'Tu solicitud de Desarrollo Urbano se ha creado correctamente.');
+            return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
+
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.'
+                ], 500);
+            }
+
+            Session::flash('error', 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.');
+            return back()->withInput();
+        }
+    }
+
+    /**
+     * Mostrar detalles de una solicitud de Desarrollo Urbano
+     */
+    public function showUrbanDevRequest($id)
+    {
+        $urbanDevRequest = \App\Models\UrbanDevRequest::with('files')->findOrFail($id);
+
+        // Verificar que la solicitud pertenece al usuario autenticado
+        if ($urbanDevRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        return view('front.citizen_profile.urban_dev_show', compact('urbanDevRequest'));
+    }
+
+    /**
+     * Mostrar formulario para editar solicitud de Desarrollo Urbano
+     */
+    public function editUrbanDevRequest($id)
+    {
+        $urbanDevRequest = \App\Models\UrbanDevRequest::findOrFail($id);
+
+        // Verificar que la solicitud pertenece al usuario autenticado
+        if ($urbanDevRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        // Solo permitir edición si está en estado nuevo
+        if ($urbanDevRequest->status !== 'new') {
+            Session::flash('error', 'Solo puedes editar solicitudes en estado "Nuevo".');
+            return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
+        }
+
+        return view('front.citizen_profile.urban_dev_edit', compact('urbanDevRequest'));
+    }
+
+    /**
+     * Actualizar solicitud de Desarrollo Urbano
+     */
+    public function updateUrbanDevRequest(Request $request, $id)
+    {
+        $urbanDevRequest = \App\Models\UrbanDevRequest::findOrFail($id);
+
+        // Verificar que la solicitud pertenece al usuario autenticado
+        if ($urbanDevRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        // Solo permitir edición si está en estado nuevo
+        if ($urbanDevRequest->status !== 'new') {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Solo puedes editar solicitudes en estado "Nuevo".'
+                ], 403);
+            }
+            
+            Session::flash('error', 'Solo puedes editar solicitudes en estado "Nuevo".');
+            return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'request_type' => 'required|string|in:uso-de-suelo,constancia-de-factibilidad,permiso-de-anuncios,certificacion-numero-oficial,permiso-de-division,uso-de-via-publica,licencia-de-construccion,permiso-construccion-panteones',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $urbanDevRequest->update([
+                'request_type' => $request->request_type,
+                'description' => $request->description
+            ]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Solicitud actualizada exitosamente.'
+                ]);
+            }
+
+            Session::flash('success', 'Tu solicitud se actualizó correctamente.');
+            return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
+
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al actualizar la solicitud.'
+                ], 500);
+            }
+
+            Session::flash('error', 'Error al actualizar la solicitud. Por favor, inténtalo de nuevo.');
+            return back()->withInput();
+        }
+    }
+
+    /**
+     * Eliminar solicitud de Desarrollo Urbano
+     */
+    public function destroyUrbanDevRequest(Request $request, $id)
+    {
+        $urbanDevRequest = \App\Models\UrbanDevRequest::findOrFail($id);
+
+        // Verificar que la solicitud pertenece al usuario autenticado
+        if ($urbanDevRequest->user_id !== Auth::id()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes acceso a esta solicitud.'
+                ], 403);
+            }
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        // Solo permitir eliminación si está en estado nuevo
+        if ($urbanDevRequest->status !== 'new') {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Solo puedes eliminar solicitudes en estado "Nuevo".'
+                ], 403);
+            }
+            
+            Session::flash('error', 'Solo puedes eliminar solicitudes en estado "Nuevo".');
+            return redirect()->route('citizen.profile.urban_dev_requests');
+        }
+
+        try {
+            // Eliminar archivos asociados de S3
+            foreach ($urbanDevRequest->files as $file) {
+                $filepath = 'desarrollo_urbano/' . $file->filename;
+                Storage::disk('s3')->delete($filepath);
+                $file->delete();
+            }
+
+            $urbanDevRequest->delete();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Solicitud eliminada exitosamente.'
+                ]);
+            }
+
+            Session::flash('success', 'Tu solicitud se eliminó correctamente.');
+            return redirect()->route('citizen.profile.urban_dev_requests');
+
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al eliminar la solicitud.'
+                ], 500);
+            }
+
+            Session::flash('error', 'Error al eliminar la solicitud. Por favor, inténtalo de nuevo.');
+            return back();
+        }
+    }
+
+    /**
+     * Upload files via dropzone for Urban Dev requests
+     */
+    public function uploadUrbanDevFile(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png',
+                'urban_dev_request_id' => 'required|exists:urban_dev_requests,id',
+                'document_type' => 'required|string|max:255'
+            ]);
+
+            $urbanDevRequest = \App\Models\UrbanDevRequest::findOrFail($request->urban_dev_request_id);
+            
+            // Verificar que la solicitud pertenece al usuario autenticado
+            if ($urbanDevRequest->user_id !== Auth::id()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes acceso a esta solicitud.'
+                ], 403);
+            }
+
+            $file = $request->file('file');
+            $originalName = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $fileName = 'desarrollo_urbano_' . time() . '_' . Str::random(10) . '.' . $extension;
+            
+            // Guardar archivo en S3
+            $filepath = 'desarrollo_urbano/' . $fileName;
+            Storage::disk('s3')->put($filepath, file_get_contents($file));
+            $s3Url = Storage::disk('s3')->url($filepath);
+            
+            // Crear registro en base de datos
+            $urbanDevFile = \App\Models\UrbanDevRequestFile::create([
+                'user_id' => Auth::id(),
+                'urban_dev_request_id' => $urbanDevRequest->id,
+                'name' => $request->document_type,
+                'slug' => Str::slug($request->document_type),
+                'filename' => $fileName,
+                'file_extension' => $extension,
+                'filesize' => $file->getSize(),
+                's3_asset_url' => $s3Url
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Archivo subido exitosamente.',
+                'file' => [
+                    'id' => $urbanDevFile->id,
+                    'name' => $urbanDevFile->name,
+                    'filename' => $urbanDevFile->filename,
+                    'size' => $file->getSize(),
+                    'url' => $s3Url
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al subir el archivo: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete SARE file
+     */
+    public function deleteSareFile(Request $request, $fileId)
+    {
+        try {
+            $file = SareRequestFile::findOrFail($fileId);
+            
+            // Verificar que el archivo pertenece al usuario autenticado
+            $sareRequest = $file->sareRequest;
+            if ($sareRequest->user_id !== Auth::id()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes acceso a este archivo.'
+                ], 403);
+            }
+
+            // Eliminar archivo de S3
+            $filepath = 'sare/' . $file->filename;
+            Storage::disk('s3')->delete($filepath);
+
+            // Eliminar registro de la base de datos
+            $file->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Archivo eliminado exitosamente.'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar el archivo.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete urban dev file
+     */
+    public function deleteUrbanDevFile(Request $request, $fileId)
+    {
+        try {
+            $file = \App\Models\UrbanDevRequestFile::findOrFail($fileId);
+            
+            // Verificar que el archivo pertenece al usuario autenticado
+            if ($file->user_id !== Auth::id()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes acceso a este archivo.'
+                ], 403);
+            }
+
+            // Eliminar archivo de S3
+            $filepath = 'desarrollo_urbano/' . $file->filename;
+            Storage::disk('s3')->delete($filepath);
+
+            // Eliminar registro de la base de datos
+            $file->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Archivo eliminado exitosamente.'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar el archivo.'
+            ], 500);
+        }
+    }
+
     // =============== MÉTODOS DE UPLOAD DE ARCHIVOS ===============
 
     /**
@@ -521,16 +915,18 @@ class CitizenProfileController extends Controller
     public function uploadSareFile(Request $request)
     {
         try {
+            $request->validate([
+                'file' => 'required|file|max:10240', // 10MB max
+                'sare_request_id' => 'required|exists:sare_requests,id',
+                'document_type' => 'required|string|max:255'
+            ]);
+
             $file = $request->file('file');
             $sareRequestId = $request->get('sare_request_id');
+            $documentType = $request->get('document_type');
 
             if (!$file || !$file->isValid()) {
                 return response()->json(['error' => 'Archivo no válido'], 400);
-            }
-
-            // Validar tamaño (máximo 10MB)
-            if ($file->getSize() > 10485760) {
-                return response()->json(['error' => 'El archivo es demasiado grande. Máximo 10MB.'], 400);
             }
 
             // Validar extensión
@@ -541,31 +937,40 @@ class CitizenProfileController extends Controller
                 return response()->json(['error' => 'Tipo de archivo no permitido.'], 400);
             }
 
-            // Generar nombre único
-            $fileName = time() . '_' . Str::random(10) . '.' . $extension;
-            $filePath = 'sare_files/' . $fileName;
+            // Generar nombre único con el tipo de documento
+            $fileName = 'sare_' . $documentType . '_' . time() . '_' . Str::random(10) . '.' . $extension;
+            
+            // Guardar archivo en S3
+            $filepath = 'sare/' . $fileName;
+            Storage::disk('s3')->put($filepath, file_get_contents($file));
+            $s3Url = Storage::disk('s3')->url($filepath);
 
-            // Guardar archivo
-            Storage::putFileAs('public/sare_files', $file, $fileName);
-
-            // Crear registro en base de datos si se proporciona sare_request_id
-            $sareFile = null;
-            if ($sareRequestId) {
-                $sareFile = SareRequestFile::create([
-                    'sare_request_id' => $sareRequestId,
-                    'file_name' => $file->getClientOriginalName(),
-                    'file_path' => 'public/' . $filePath,
-                    'file_size' => $file->getSize(),
-                    'file_type' => $file->getMimeType(),
-                ]);
-            }
+            // Crear registro en base de datos
+            $sareFile = SareRequestFile::create([
+                'sare_request_id' => $sareRequestId,
+                'name' => $documentType,
+                'slug' => Str::slug($documentType),
+                'file_name' => $file->getClientOriginalName(),
+                'filename' => $fileName,
+                'file_size' => $file->getSize(),
+                'file_type' => $file->getMimeType(),
+                'file_extension' => $extension,
+                's3_asset_url' => $s3Url
+            ]);
 
             return response()->json([
                 'success' => true,
-                'file_id' => $sareFile ? $sareFile->id : null,
-                'file_name' => $file->getClientOriginalName(),
-                'file_path' => $filePath,
-                'file_size' => $file->getSize(),
+                'file' => [
+                    'id' => $sareFile->id,
+                    'name' => $sareFile->file_name,
+                    'filename' => $sareFile->filename,
+                    'file_name' => $sareFile->file_name,
+                    'file_size' => $sareFile->file_size,
+                    'formatted_size' => $sareFile->formatted_size,
+                    'file_type' => $sareFile->file_type,
+                    'document_type' => $documentType,
+                    'url' => $s3Url
+                ]
             ]);
 
         } catch (\Exception $e) {

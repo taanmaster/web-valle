@@ -89,6 +89,15 @@ class UrbanDevRequest extends Model
     public function getRequestTypeLabelAttribute()
     {
         $types = [
+            'uso-de-suelo' => 'Licencia de Uso de Suelo',
+            'constancia-de-factibilidad' => 'Constancia de Factibilidad',
+            'permiso-de-anuncios' => 'Permiso de Anuncios y Toldos',
+            'certificacion-numero-oficial' => 'Certificación de Número Oficial',
+            'permiso-de-division' => 'Permiso de División',
+            'uso-de-via-publica' => 'Uso de Vía Pública',
+            'licencia-de-construccion' => 'Licencia de Construcción',
+            'permiso-construccion-panteones' => 'Permiso de Construcción en Panteones',
+            // Valores legacy
             'uso_suelo' => 'Uso de Suelo',
             'constancia_factibilidad' => 'Constancia de Factibilidad',
             'permiso_anuncios' => 'Permiso de Anuncios',
