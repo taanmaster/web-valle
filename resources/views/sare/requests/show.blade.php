@@ -395,24 +395,246 @@
                 <!-- Archivos Adjuntos -->
                 @if($sareRequest->files->count() > 0)
                 <div class="card mt-3">
-                    <div class="card-header">
-                        <h6 class="mb-0">Archivos Adjuntos ({{ $sareRequest->files->count() }})</h6>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                            <i class="fas fa-folder-open"></i> 
+                            Documentos Adjuntos ({{ $sareRequest->files->count() }})
+                        </h6>
+                        <small class="text-muted">
+                            Total: {{ $sareRequest->files->sum('file_size') > 0 ? number_format($sareRequest->files->sum('file_size') / 1024 / 1024, 2) . ' MB' : 'N/A' }}
+                        </small>
                     </div>
-                    <div class="card-body">
-                        @foreach($sareRequest->files as $file)
-                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 border rounded">
-                            <div>
-                                <div class="fw-bold">{{ $file->name }}</div>
-                                <small class="text-muted">{{ $file->filename }}</small>
-                            </div>
-                            <a href="#" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-download"></i>
-                            </a>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 30%;">Tipo de Documento</th>
+                                        <th style="width: 30%;">Nombre del Archivo</th>
+                                        <th style="width: 15%;">Tamaño</th>
+                                        <th style="width: 15%;">Fecha</th>
+                                        <th style="width: 10%;" class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($sareRequest->files as $file)
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                @php
+                                                    $iconMap = [
+                                                        'pdf' => 'pdf',
+                                                        'doc' => 'word', 
+                                                        'docx' => 'word',
+                                                        'jpg' => 'image',
+                                                        'jpeg' => 'image', 
+                                                        'png' => 'image',
+                                                        'gif' => 'image',
+                                                        'zip' => 'archive',
+                                                        'rar' => 'archive'
+                                                    ];
+                                                    $icon = $iconMap[strtolower($file->file_extension)] ?? 'alt';
+                                                @endphp
+                                                <i class="fas fa-file-{{ $icon }} text-primary me-2"></i>
+                                                <div>
+                                                    <div class="fw-medium">
+                                                        {{ $file->name ?: 'Documento' }}
+                                                    </div>
+                                                    @if($file->slug)
+                                                    <small class="text-muted">{{ ucfirst(str_replace('-', ' ', $file->slug)) }}</small>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="fw-medium">{{ $file->file_name ?: $file->filename }}</div>
+                                            <small class="text-muted">{{ $file->filename }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark">
+                                                {{ $file->formatted_size }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">
+                                                {{ $file->created_at->format('d/m/Y') }}<br>
+                                                {{ $file->created_at->format('H:i') }}
+                                            </small>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group" role="group">
+                                                @if($file->s3_asset_url)
+                                                <a href="{{ $file->s3_asset_url }}" 
+                                                   target="_blank" 
+                                                   class="btn btn-sm btn-outline-primary" 
+                                                   title="Ver archivo"
+                                                   data-bs-toggle="tooltip">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{{ $file->s3_asset_url }}" 
+                                                   download="{{ $file->file_name ?: $file->filename }}"
+                                                   class="btn btn-sm btn-outline-success" 
+                                                   title="Descargar archivo"
+                                                   data-bs-toggle="tooltip">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                                <button type="button" 
+                                                        class="btn btn-sm btn-outline-info" 
+                                                        onclick="copyFileUrl('{{ $file->s3_asset_url }}', '{{ $file->file_name ?: $file->filename }}')"
+                                                        title="Copiar URL"
+                                                        data-bs-toggle="tooltip">
+                                                    <i class="fas fa-copy"></i>
+                                                </button>
+                                                @else
+                                                <span class="badge bg-warning">
+                                                    <i class="fas fa-exclamation-triangle"></i> Sin URL
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                        @endforeach
+                    </div>
+                    <div class="card-footer">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i> 
+                                    Los archivos se almacenan de forma segura en Amazon S3
+                                </small>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="downloadAllFiles()">
+                                    <i class="fas fa-download"></i> Descargar Todos
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @else
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-folder-open"></i> 
+                            Documentos Adjuntos
+                        </h6>
+                    </div>
+                    <div class="card-body text-center text-muted py-4">
+                        <i class="fas fa-file-circle-exclamation fa-2x mb-3"></i>
+                        <p class="mb-0">No se han subido documentos para esta solicitud</p>
+                        <small>Los documentos aparecerán aquí una vez que el solicitante los suba</small>
                     </div>
                 </div>
                 @endif
+
+                <!-- Lista de Verificación de Documentos -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-check-circle"></i> 
+                            Lista de Verificación de Documentos
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        @php
+                            $requiredDocs = [
+                                'documento-propiedad' => 'Documento que acredite propiedad del inmueble',
+                                'id-solicitante' => 'Identificación oficial del solicitante',
+                                'id-propietario' => 'Identificación oficial del propietario',
+                                'comprobante-domicilio' => 'Comprobante de domicilio (no mayor a 2 meses)',
+                                'pago-predial' => 'Pago predial del presente año'
+                            ];
+                            
+                            $moralDocs = [
+                                'acta-constitutiva' => 'Acta constitutiva de la Empresa',
+                                'poder-representante' => 'Poder simple o notariado del representante legal'
+                            ];
+                            
+                            // Crear mapa de archivos subidos
+                            $uploadedFilesByType = [];
+                            foreach($sareRequest->files as $file) {
+                                if ($file->slug) {
+                                    $uploadedFilesByType[$file->slug] = $file;
+                                }
+                            }
+                        @endphp
+                        
+                        <div class="mb-4">
+                            <h6 class="text-primary mb-3">Documentos Requeridos:</h6>
+                            @foreach($requiredDocs as $slug => $title)
+                                @php $isUploaded = isset($uploadedFilesByType[$slug]); @endphp
+                                <div class="d-flex align-items-center mb-2 p-2 border rounded {{ $isUploaded ? 'border-success bg-success bg-opacity-10' : 'border-warning bg-warning bg-opacity-10' }}">
+                                    <i class="fas fa-{{ $isUploaded ? 'check-circle text-success' : 'clock text-warning' }} me-2"></i>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-medium">{{ $title }}</div>
+                                        <small class="text-muted">
+                                            {{ $isUploaded ? 'Documento subido' : 'Pendiente de subir' }}
+                                            @if($isUploaded)
+                                                • {{ $uploadedFilesByType[$slug]->created_at->format('d/m/Y H:i') }}
+                                            @endif
+                                        </small>
+                                    </div>
+                                    @if($isUploaded)
+                                        <a href="{{ $uploadedFilesByType[$slug]->s3_asset_url }}" 
+                                           target="_blank" 
+                                           class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6 class="text-warning mb-3">Documentos para Persona Moral (Opcionales):</h6>
+                            @foreach($moralDocs as $slug => $title)
+                                @php $isUploaded = isset($uploadedFilesByType[$slug]); @endphp
+                                <div class="d-flex align-items-center mb-2 p-2 border rounded {{ $isUploaded ? 'border-success bg-success bg-opacity-10' : 'border-light' }}">
+                                    <i class="fas fa-{{ $isUploaded ? 'check-circle text-success' : 'circle text-muted' }} me-2"></i>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-medium">{{ $title }}</div>
+                                        <small class="text-muted">
+                                            {{ $isUploaded ? 'Documento subido' : 'Opcional' }}
+                                            @if($isUploaded)
+                                                • {{ $uploadedFilesByType[$slug]->created_at->format('d/m/Y H:i') }}
+                                            @endif
+                                        </small>
+                                    </div>
+                                    @if($isUploaded)
+                                        <a href="{{ $uploadedFilesByType[$slug]->s3_asset_url }}" 
+                                           target="_blank" 
+                                           class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                        
+                        @php
+                            $totalRequired = count($requiredDocs);
+                            $totalUploaded = count(array_intersect_key($uploadedFilesByType, $requiredDocs));
+                            $completionPercentage = $totalRequired > 0 ? round(($totalUploaded / $totalRequired) * 100) : 0;
+                        @endphp
+                        
+                        <div class="progress mb-2" style="height: 20px;">
+                            <div class="progress-bar bg-{{ $completionPercentage == 100 ? 'success' : ($completionPercentage >= 50 ? 'warning' : 'danger') }}" 
+                                 role="progressbar" 
+                                 style="width: {{ $completionPercentage }}%">
+                                {{ $completionPercentage }}% Completo
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <small class="text-muted">
+                                {{ $totalUploaded }} de {{ $totalRequired }} documentos requeridos subidos
+                            </small>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Información de Usuario -->
                 <div class="card mt-3">
@@ -441,12 +663,88 @@
 
 @section('scripts')
 <script>
+// Función para obtener el icono del archivo según su extensión
+function getFileIcon(extension) {
+    const iconMap = {
+        'pdf': 'pdf',
+        'doc': 'word',
+        'docx': 'word',
+        'jpg': 'image',
+        'jpeg': 'image',
+        'png': 'image',
+        'gif': 'image',
+        'zip': 'archive',
+        'rar': 'archive'
+    };
+    
+    return iconMap[extension?.toLowerCase()] || 'alt';
+}
+
+// Función para descargar todos los archivos
+function downloadAllFiles() {
+    const files = @json($sareRequest->files->pluck('s3_asset_url', 'file_name'));
+    
+    if (Object.keys(files).length === 0) {
+        alert('No hay archivos disponibles para descargar');
+        return;
+    }
+    
+    // Confirmar descarga múltiple
+    if (!confirm(`¿Desea descargar ${Object.keys(files).length} archivo(s)?`)) {
+        return;
+    }
+    
+    // Crear elementos de descarga temporal
+    Object.entries(files).forEach(([fileName, url], index) => {
+        if (url) {
+            setTimeout(() => {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = fileName || `archivo_${index + 1}`;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, index * 500); // Retrasar cada descarga 500ms
+        }
+    });
+}
+
+// Función para copiar URL de archivo al portapapeles
+function copyFileUrl(url, fileName) {
+    navigator.clipboard.writeText(url).then(() => {
+        // Mostrar mensaje temporal
+        const toast = document.createElement('div');
+        toast.className = 'position-fixed top-0 end-0 m-3 alert alert-success alert-dismissible fade show';
+        toast.innerHTML = `
+            <strong>¡Copiado!</strong> URL de "${fileName}" copiada al portapapeles.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(toast);
+        
+        // Auto eliminar después de 3 segundos
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 3000);
+    }).catch(() => {
+        alert('No se pudo copiar la URL al portapapeles');
+    });
+}
+
 // Estilo de impresión
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar tooltips de Bootstrap
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
     const style = document.createElement('style');
     style.innerHTML = `
         @media print {
-            .btn, .card-header, .breadcrumb-item a {
+            .btn, .card-header, .breadcrumb-item a, .card-footer {
                 display: none !important;
             }
             .card {
@@ -462,6 +760,28 @@ document.addEventListener('DOMContentLoaded', function() {
             .col-md-8 {
                 width: 100% !important;
             }
+            .table {
+                font-size: 12px !important;
+            }
+        }
+        
+        /* Estilos adicionales para la tabla de archivos */
+        .table td {
+            vertical-align: middle;
+        }
+        
+        .btn-group .btn {
+            border-radius: 0.25rem !important;
+        }
+        
+        .file-icon {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Hover effect para las filas de archivos */
+        .table tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.05);
         }
     `;
     document.head.appendChild(style);

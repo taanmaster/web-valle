@@ -957,6 +957,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil/editar', 'CitizenProfileController@edit')->name('citizen.profile.edit');
         Route::put('/perfil/actualizar', 'CitizenProfileController@update')->name('citizen.profile.update');
         Route::get('/perfil/solicitudes', 'CitizenProfileController@requests')->name('citizen.profile.requests');
+        Route::get('/perfil/tramites', 'CitizenProfileController@urbanDevRequests')->name('citizen.profile.urban_dev_requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
         Route::put('/perfil/notificaciones', 'CitizenProfileController@updateNotifications')->name('citizen.profile.notifications');
         
@@ -967,6 +968,22 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/sare/{sareRequest}/editar', 'CitizenProfileController@editSareRequest')->name('citizen.sare.edit');
         Route::put('/sare/{sareRequest}/actualizar', 'CitizenProfileController@updateSareRequest')->name('citizen.sare.update');
         Route::delete('/sare/{sareRequest}/eliminar', 'CitizenProfileController@destroySareRequest')->name('citizen.sare.destroy');
+        
+        // Rutas para archivos de SARE
+        Route::post('/sare/archivo/subir', 'CitizenProfileController@uploadSareFile')->name('citizen.sare.file.upload');
+        Route::delete('/sare/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteSareFile')->name('citizen.sare.file.delete');
+
+        // Rutas Desarrollo Urbano para ciudadanos
+        Route::get('/desarrollo-urbano/crear', 'CitizenProfileController@createUrbanDevRequest')->name('citizen.urban_dev.create');
+        Route::post('/desarrollo-urbano/guardar', 'CitizenProfileController@storeUrbanDevRequest')->name('citizen.urban_dev.store');
+        Route::get('/desarrollo-urbano/{urbanDevRequest}', 'CitizenProfileController@showUrbanDevRequest')->name('citizen.urban_dev.show');
+        Route::get('/desarrollo-urbano/{urbanDevRequest}/editar', 'CitizenProfileController@editUrbanDevRequest')->name('citizen.urban_dev.edit');
+        Route::put('/desarrollo-urbano/{urbanDevRequest}/actualizar', 'CitizenProfileController@updateUrbanDevRequest')->name('citizen.urban_dev.update');
+        Route::delete('/desarrollo-urbano/{urbanDevRequest}/eliminar', 'CitizenProfileController@destroyUrbanDevRequest')->name('citizen.urban_dev.destroy');
+        
+        // Rutas para archivos de desarrollo urbano
+        Route::post('/desarrollo-urbano/archivo/subir', 'CitizenProfileController@uploadUrbanDevFile')->name('citizen.urban_dev.file.upload');
+        Route::delete('/desarrollo-urbano/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteUrbanDevFile')->name('citizen.urban_dev.file.delete');
     });
 
     Route::get('/reload-captcha',[

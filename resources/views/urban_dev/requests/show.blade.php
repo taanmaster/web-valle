@@ -19,22 +19,25 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <h4 class="mb-1">{{ $urbanDevRequest->request_type_label }}</h4>
+                                <h4 class="mb-1">
+                                    <ion-icon name="document-text-outline"></ion-icon>
+                                    {{ $urbanDevRequest->getRequestTypeLabelAttribute() }}
+                                </h4>
                                 <p class="text-muted mb-0">
                                     Solicitud #{{ $urbanDevRequest->id }} • 
                                     Solicitado por: <strong>{{ $urbanDevRequest->user->name }}</strong>
                                 </p>
                                 <small class="text-muted">
-                                    Creado: {{ $urbanDevRequest->created_at->format('d/m/Y H:i') }}
+                                    <ion-icon name="calendar-outline"></ion-icon> Creado: {{ $urbanDevRequest->created_at->format('d/m/Y H:i') }}
                                 </small>
                             </div>
                             <div class="col-md-4 text-end">
-                                <span class="badge bg-{{ $urbanDevRequest->status_color }} fs-6 px-3 py-2">
-                                    {{ $urbanDevRequest->status_label }}
+                                <span class="badge bg-{{ $urbanDevRequest->getStatusColorAttribute() }} fs-6 px-3 py-2">
+                                    {{ $urbanDevRequest->getStatusLabelAttribute() }}
                                 </span>
                                 <br>
                                 <small class="text-muted mt-2 d-block">
-                                    Actualizado: {{ $urbanDevRequest->updated_at->format('d/m/Y H:i') }}
+                                    <ion-icon name="time-outline"></ion-icon> Actualizado: {{ $urbanDevRequest->updated_at->format('d/m/Y H:i') }}
                                 </small>
                             </div>
                         </div>
@@ -44,58 +47,28 @@
         </div>
 
         <div class="row">
-            <!-- Información Principal -->
+            <!-- Información Principal y Documentos -->
             <div class="col-md-8">
-                <div class="card">
+                <!-- Información del Solicitante -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">
+                            <ion-icon name="person-outline"></ion-icon>
+                            Información del Solicitante
+                        </h6>
+                    </div>
                     <div class="card-body">
-                        <!-- Información General -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h5 class="border-bottom pb-2 mb-3">Información General</h5>
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <small class="text-muted">Número de Solicitud:</small>
-                                <p class="mb-0"><strong>#{{ $urbanDevRequest->id }}</strong></p>
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <small class="text-muted">Fecha de Solicitud:</small>
-                                <p class="mb-0">{{ $urbanDevRequest->created_at->format('d/m/Y H:i') }}</p>
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <small class="text-muted">Tipo de Solicitud:</small>
-                                <p class="mb-0">{{ $urbanDevRequest->request_type_label }}</p>
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <small class="text-muted">Estado Actual:</small>
-                                <span class="badge bg-{{ $urbanDevRequest->status_color }}">{{ $urbanDevRequest->status_label }}</span>
-                            </div>
-                            
-                            @if($urbanDevRequest->description)
-                            <div class="col-12 mb-3">
-                                <small class="text-muted">Descripción:</small>
-                                <p class="mb-0">{{ $urbanDevRequest->description }}</p>
-                            </div>
-                            @endif
-                        </div>
-
-                        <!-- Datos del Solicitante -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h5 class="border-bottom pb-2 mb-3">Datos del Solicitante</h5>
-                            </div>
-                            
+                        <div class="row">
                             <div class="col-md-6 mb-3">
                                 <small class="text-muted">Nombre Completo:</small>
-                                <p class="mb-0">{{ $urbanDevRequest->user->name }}</p>
+                                <p class="mb-0 fw-bold">{{ $urbanDevRequest->user->name }}</p>
                             </div>
                             
                             <div class="col-md-6 mb-3">
-                                <small class="text-muted">Email:</small>
-                                <p class="mb-0">{{ $urbanDevRequest->user->email }}</p>
+                                <small class="text-muted">Correo Electrónico:</small>
+                                <p class="mb-0">
+                                    <a href="mailto:{{ $urbanDevRequest->user->email }}">{{ $urbanDevRequest->user->email }}</a>
+                                </p>
                             </div>
                             
                             <div class="col-md-6 mb-3">
@@ -104,91 +77,201 @@
                             </div>
                         </div>
 
-                        <!-- Detalles del Tipo de Solicitud -->
-                        <div class="row mb-4">
+                        @if($urbanDevRequest->description)
+                        <div class="row">
                             <div class="col-12">
-                                <h5 class="border-bottom pb-2 mb-3">Detalles de la Solicitud</h5>
-                            </div>
-                            
-                            <div class="col-12 mb-3">
-                                <div class="alert alert-info">
-                                    <h6 class="mb-2"><i class="fas fa-info-circle"></i> {{ $urbanDevRequest->request_type_label }}</h6>
-                                    <p class="mb-0">
-                                        @switch($urbanDevRequest->request_type)
-                                            @case('uso_suelo')
-                                                Solicitud para determinar el uso de suelo permitido en un predio específico.
-                                                @break
-                                            @case('constancia_factibilidad')
-                                                Constancia que certifica la viabilidad de un proyecto de desarrollo urbano.
-                                                @break
-                                            @case('permiso_anuncios')
-                                                Permiso para la instalación y operación de anuncios publicitarios.
-                                                @break
-                                            @case('certificacion_numero_oficial')
-                                                Certificación del número oficial asignado a un predio.
-                                                @break
-                                            @case('permiso_division')
-                                                Permiso para dividir un predio en fracciones menores.
-                                                @break
-                                            @case('uso_via_publica')
-                                                Permiso para uso temporal o permanente de vía pública.
-                                                @break
-                                            @case('licencia_construccion')
-                                                Licencia para realizar obras de construcción.
-                                                @break
-                                            @case('permiso_construccion_panteones')
-                                                Permiso especial para construcciones en panteones.
-                                                @break
-                                            @default
-                                                Solicitud general de desarrollo urbano.
-                                        @endswitch
-                                    </p>
+                                <small class="text-muted">Descripción del Proyecto:</small>
+                                <div class="alert alert-light mt-1">
+                                    {{ $urbanDevRequest->description }}
                                 </div>
                             </div>
                         </div>
+                        @endif
+                    </div>
+                </div>
 
-                        <!-- Historial de Estados -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h5 class="border-bottom pb-2 mb-3">Historial</h5>
-                            </div>
+                <!-- Lista de Verificación de Documentos -->
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0">
+                            <ion-icon name="checkmark-circle-outline"></ion-icon>
+                            Lista de Verificación de Documentos
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="documents-checklist">
+                            <!-- Los documentos se cargarán dinámicamente -->
+                        </div>
+                        
+                        @php
+                            $documentsConfig = [
+                                'uso-de-suelo' => [
+                                    'Solicitud por escrito dirigida al Director',
+                                    'Copia de identificación oficial vigente',
+                                    'Escritura pública o documento de propiedad',
+                                    'Último recibo de pago del impuesto predial',
+                                    'Plano de localización del predio (escala 1:1000)',
+                                    'Croquis de ubicación con referencias y medidas'
+                                ],
+                                'constancia-de-factibilidad' => [
+                                    'Solicitud detallada del proyecto',
+                                    'Proyecto arquitectónico o memoria descriptiva',
+                                    'Escritura pública de propiedad',
+                                    'Plano topográfico actualizado',
+                                    'Estudio de factibilidad de servicios públicos',
+                                    'Dictamen de uso de suelo vigente'
+                                ],
+                                'permiso-de-anuncios' => [
+                                    'Solicitud especificando tipo y características',
+                                    'Diseño gráfico y especificaciones técnicas',
+                                    'Documento de propiedad o autorización',
+                                    'Memoria de cálculo estructural (si aplica)',
+                                    'Plano de localización y ubicación exacta',
+                                    'Fotografías del lugar de instalación'
+                                ],
+                                'certificacion-numero-oficial' => [
+                                    'Solicitud dirigida al Director',
+                                    'Escritura pública o documento de propiedad',
+                                    'Constancia de alineamiento vigente',
+                                    'Plano de localización con medidas exactas',
+                                    'Identificación oficial del propietario',
+                                    'Último recibo de impuesto predial'
+                                ],
+                                'permiso-de-division' => [
+                                    'Solicitud con proyecto de división',
+                                    'Escritura pública de propiedad',
+                                    'Levantamiento topográfico certificado',
+                                    'Proyecto de lotificación completo',
+                                    'Dictamen de factibilidad de servicios',
+                                    'Estudio de impacto urbano y vial'
+                                ],
+                                'uso-de-via-publica' => [
+                                    'Solicitud especificando uso y tiempo',
+                                    'Croquis del área a ocupar',
+                                    'Programa de actividades y horarios',
+                                    'Medidas de seguridad propuestas',
+                                    'Póliza de seguro de responsabilidad civil',
+                                    'Autorización de vecinos (si aplica)'
+                                ],
+                                'licencia-de-construccion' => [
+                                    'Solicitud con proyecto arquitectónico',
+                                    'Planos estructurales firmados por DRO',
+                                    'Memoria de cálculo y especificaciones',
+                                    'Dictamen de uso de suelo compatible',
+                                    'Factibilidades de servicios públicos',
+                                    'Estudio de mecánica de suelos (si aplica)'
+                                ],
+                                'permiso-construccion-panteones' => [
+                                    'Solicitud dirigida a Administración del Panteón',
+                                    'Proyecto de construcción funeraria',
+                                    'Documento de propiedad o concesión del lote',
+                                    'Especificaciones de materiales y acabados',
+                                    'Plano de ubicación dentro del cementerio',
+                                    'Autorización de familiares o herederos'
+                                ]
+                            ];
                             
-                            <div class="col-12">
-                                <div class="timeline">
-                                    <div class="timeline-item">
-                                        <div class="timeline-marker bg-primary"></div>
-                                        <div class="timeline-content">
-                                            <h6 class="mb-1">Solicitud Creada</h6>
-                                            <p class="text-muted mb-0">{{ $urbanDevRequest->created_at->format('d/m/Y H:i') }}</p>
-                                        </div>
+                            $requiredDocuments = $documentsConfig[$urbanDevRequest->request_type] ?? [];
+                            $uploadedFiles = $urbanDevRequest->files;
+                            $uploadedFileTypes = $uploadedFiles->pluck('slug')->toArray();
+                        @endphp
+
+                        @if(count($requiredDocuments) > 0)
+                            @foreach($requiredDocuments as $index => $document)
+                                @php
+                                    $docSlug = Str::slug($document);
+                                    $uploadedFile = $uploadedFiles->where('slug', $docSlug)->first();
+                                    $isUploaded = $uploadedFile !== null;
+                                @endphp
+                                
+                                <div class="d-flex align-items-center mb-3 p-3 border rounded {{ $isUploaded ? 'border-success bg-light' : 'border-warning' }}">
+                                    <div class="me-3">
+                                        @if($isUploaded)
+                                            <ion-icon name="checkmark-circle" style="font-size: 24px; color: #28a745;"></ion-icon>
+                                        @else
+                                            <ion-icon name="ellipse-outline" style="font-size: 24px; color: #6c757d;"></ion-icon>
+                                        @endif
                                     </div>
-                                    
-                                    @if($urbanDevRequest->updated_at != $urbanDevRequest->created_at)
-                                    <div class="timeline-item">
-                                        <div class="timeline-marker bg-{{ $urbanDevRequest->status_color }}"></div>
-                                        <div class="timeline-content">
-                                            <h6 class="mb-1">Estado Actualizado a: {{ $urbanDevRequest->status_label }}</h6>
-                                            <p class="text-muted mb-0">{{ $urbanDevRequest->updated_at->format('d/m/Y H:i') }}</p>
-                                        </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1 {{ $isUploaded ? 'text-success' : '' }}">{{ $document }}</h6>
+                                        <small class="text-muted">
+                                            @if($isUploaded)
+                                                <ion-icon name="document-outline"></ion-icon> Documento subido - {{ $uploadedFile->filename }}
+                                                <br>
+                                                <ion-icon name="calendar-outline"></ion-icon> {{ $uploadedFile->created_at->format('d/m/Y H:i') }}
+                                                @if($uploadedFile->filesize)
+                                                    <br>
+                                                    <ion-icon name="resize-outline"></ion-icon> {{ $uploadedFile->getFormattedSizeAttribute() }}
+                                                @endif
+                                            @else
+                                                <ion-icon name="alert-circle-outline"></ion-icon> Pendiente de subir
+                                            @endif
+                                        </small>
                                     </div>
+                                    @if($isUploaded)
+                                        <div class="ms-3">
+                                            <a href="{{ $uploadedFile->getUrlAttribute() }}" 
+                                               target="_blank" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <ion-icon name="download-outline"></ion-icon> Descargar
+                                            </a>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+
+                            <!-- Resumen de progreso -->
+                            @php
+                                $totalDocuments = count($requiredDocuments);
+                                $uploadedCount = $uploadedFiles->count();
+                                $progressPercentage = $totalDocuments > 0 ? round(($uploadedCount / $totalDocuments) * 100) : 0;
+                                
+                                $progressColor = 'danger';
+                                if ($progressPercentage >= 80) {
+                                    $progressColor = 'success';
+                                } elseif ($progressPercentage >= 50) {
+                                    $progressColor = 'warning';
+                                } elseif ($progressPercentage >= 25) {
+                                    $progressColor = 'info';
+                                }
+                            @endphp
+
+                            <div class="bg-{{ $progressColor == 'danger' ? 'light' : $progressColor }}-subtle border border-{{ $progressColor }} rounded p-3 mt-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">
+                                        <ion-icon name="bar-chart-outline"></ion-icon>
+                                        Progreso de Documentación
+                                    </h6>
+                                    <span class="badge bg-{{ $progressColor }}">{{ $uploadedCount }}/{{ $totalDocuments }}</span>
+                                </div>
+                                
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-{{ $progressColor }}" 
+                                         role="progressbar" 
+                                         style="width: {{ $progressPercentage }}%"
+                                         aria-valuenow="{{ $progressPercentage }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mt-2">
+                                    <small class="text-{{ $progressColor }}">
+                                        <ion-icon name="checkmark-outline"></ion-icon> {{ $uploadedCount }} documentos subidos
+                                    </small>
+                                    @if($totalDocuments - $uploadedCount > 0)
+                                        <small class="text-muted">
+                                            <ion-icon name="time-outline"></ion-icon> {{ $totalDocuments - $uploadedCount }} pendientes
+                                        </small>
                                     @endif
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Botones de Acción -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="d-flex gap-2">
-                                    <a href="{{ route('urban_dev.requests.index') }}" class="btn btn-secondary">
-                                        <i class="fas fa-arrow-left"></i> Volver al Listado
-                                    </a>
-                                    <button type="button" class="btn btn-primary" onclick="window.print()">
-                                        <i class="fas fa-print"></i> Imprimir
-                                    </button>
-                                </div>
+                        @else
+                            <div class="text-center text-muted py-4">
+                                <ion-icon name="document-outline" style="font-size: 48px;"></ion-icon>
+                                <p class="mt-3">No hay documentos requeridos configurados para este tipo de trámite.</p>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -197,8 +280,11 @@
             <div class="col-md-4">
                 <!-- Cambio de Estatus -->
                 <div class="card">
-                    <div class="card-header">
-                        <h6 class="mb-0">Gestión de Estatus</h6>
+                    <div class="card-header bg-warning text-dark">
+                        <h6 class="mb-0">
+                            <ion-icon name="settings-outline"></ion-icon>
+                            Gestión de Estatus
+                        </h6>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('urban_dev.requests.update', $urbanDevRequest) }}">
@@ -220,81 +306,123 @@
                             </div>
                             
                             <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-save"></i> Actualizar Estatus
+                                <ion-icon name="save-outline"></ion-icon> Actualizar Estatus
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <!-- Archivos Adjuntos -->
-                @if($urbanDevRequest->files->count() > 0)
+                <!-- Información de la Solicitud -->
                 <div class="card mt-3">
-                    <div class="card-header">
-                        <h6 class="mb-0">Archivos Adjuntos ({{ $urbanDevRequest->files->count() }})</h6>
-                    </div>
-                    <div class="card-body">
-                        @foreach($urbanDevRequest->files as $file)
-                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 border rounded">
-                            <div>
-                                <div class="fw-bold">{{ $file->name ?? $file->filename }}</div>
-                                <small class="text-muted">{{ $file->filename }}</small>
-                            </div>
-                            <a href="#" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-download"></i>
-                            </a>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @else
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h6 class="mb-0">Archivos Adjuntos</h6>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted mb-0">No hay archivos adjuntos en esta solicitud.</p>
-                    </div>
-                </div>
-                @endif
-
-                <!-- Información de Usuario -->
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h6 class="mb-0">Información del Usuario</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-2">
-                            <small class="text-muted">Nombre:</small>
-                            <p class="mb-1">{{ $urbanDevRequest->user->name }}</p>
-                        </div>
-                        <div class="mb-2">
-                            <small class="text-muted">Email:</small>
-                            <p class="mb-1">{{ $urbanDevRequest->user->email }}</p>
-                        </div>
-                        <div class="mb-2">
-                            <small class="text-muted">Fecha de Registro:</small>
-                            <p class="mb-0">{{ $urbanDevRequest->user->created_at->format('d/m/Y') }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Información Técnica -->
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h6 class="mb-0">Información Técnica</h6>
+                    <div class="card-header bg-info text-white">
+                        <h6 class="mb-0">
+                            <ion-icon name="information-circle-outline"></ion-icon>
+                            Detalles de la Solicitud
+                        </h6>
                     </div>
                     <div class="card-body">
                         <div class="mb-2">
                             <small class="text-muted">ID de Solicitud:</small>
-                            <p class="mb-1">#{{ $urbanDevRequest->id }}</p>
+                            <p class="mb-1 fw-bold">#{{ $urbanDevRequest->id }}</p>
                         </div>
                         <div class="mb-2">
-                            <small class="text-muted">Tipo de Solicitud:</small>
-                            <p class="mb-1">{{ $urbanDevRequest->request_type }}</p>
+                            <small class="text-muted">Tipo de Trámite:</small>
+                            <p class="mb-1">{{ $urbanDevRequest->getRequestTypeLabelAttribute() }}</p>
                         </div>
                         <div class="mb-2">
-                            <small class="text-muted">Estado Actual:</small>
-                            <p class="mb-0">{{ $urbanDevRequest->status }}</p>
+                            <small class="text-muted">Estado Técnico:</small>
+                            <code class="small">{{ $urbanDevRequest->status }}</code>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Fecha de Creación:</small>
+                            <p class="mb-1">{{ $urbanDevRequest->created_at->format('d/m/Y H:i:s') }}</p>
+                        </div>
+                        <div class="mb-0">
+                            <small class="text-muted">Última Actualización:</small>
+                            <p class="mb-0">{{ $urbanDevRequest->updated_at->format('d/m/Y H:i:s') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen de Archivos -->
+                <div class="card mt-3">
+                    <div class="card-header bg-secondary text-white">
+                        <h6 class="mb-0">
+                            <ion-icon name="folder-outline"></ion-icon>
+                            Resumen de Archivos
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        @if($urbanDevRequest->files->count() > 0)
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">Total de archivos:</span>
+                                    <span class="badge bg-primary">{{ $urbanDevRequest->files->count() }}</span>
+                                </div>
+                            </div>
+                            
+                            @php
+                                $totalSize = $urbanDevRequest->files->sum('filesize');
+                                $formattedSize = 'N/A';
+                                if ($totalSize) {
+                                    if ($totalSize >= 1073741824) {
+                                        $formattedSize = number_format($totalSize / 1073741824, 2) . ' GB';
+                                    } elseif ($totalSize >= 1048576) {
+                                        $formattedSize = number_format($totalSize / 1048576, 2) . ' MB';
+                                    } elseif ($totalSize >= 1024) {
+                                        $formattedSize = number_format($totalSize / 1024, 2) . ' KB';
+                                    } else {
+                                        $formattedSize = $totalSize . ' bytes';
+                                    }
+                                }
+                            @endphp
+                            
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Tamaño total:</span>
+                                    <span class="text-muted">{{ $formattedSize }}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6 class="small fw-bold">Archivos por tipo:</h6>
+                                @php
+                                    $fileTypes = $urbanDevRequest->files->groupBy('file_extension');
+                                @endphp
+                                @foreach($fileTypes as $extension => $files)
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="small">{{ strtoupper($extension) }}</span>
+                                        <span class="badge bg-outline-secondary">{{ $files->count() }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-center text-muted py-3">
+                                <ion-icon name="document-outline" style="font-size: 36px;"></ion-icon>
+                                <p class="mt-2 mb-0">No hay archivos adjuntos</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Acciones Administrativas -->
+                <div class="card mt-3">
+                    <div class="card-header bg-dark text-white">
+                        <h6 class="mb-0">
+                            <ion-icon name="cog-outline"></ion-icon>
+                            Acciones Administrativas
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="{{ route('urban_dev.requests.index') }}" class="btn btn-secondary btn-sm">
+                                <ion-icon name="arrow-back-outline"></ion-icon> Volver al Listado
+                            </a>
+
+                            <a href="mailto:{{ $urbanDevRequest->user->email }}?subject=Solicitud de Desarrollo Urbano #{{ $urbanDevRequest->id }}" 
+                               class="btn btn-warning btn-sm">
+                                <ion-icon name="mail-outline"></ion-icon> Contactar Solicitante
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -303,70 +431,42 @@
     </div>
 </div>
 
-@section('styles')
-<style>
-.timeline {
-    position: relative;
-    padding-left: 20px;
-}
-
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: #dee2e6;
-}
-
-.timeline-item {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.timeline-marker {
-    position: absolute;
-    left: -12px;
-    top: 4px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 2px #dee2e6;
-}
-
-.timeline-content {
-    margin-left: 20px;
-}
-
-/* Estilo de impresión */
-@media print {
-    .btn, .card-header, .breadcrumb-item a {
-        display: none !important;
-    }
-    .card {
-        border: none !important;
-        box-shadow: none !important;
-    }
-    .container-fluid {
-        padding: 0 !important;
-    }
-    .col-md-4:last-child {
-        display: none !important;
-    }
-    .col-md-8 {
-        width: 100% !important;
-    }
-}
-</style>
-@endsection
-
 @section('scripts')
 <script>
-// Funcionalidad adicional si es necesaria
 document.addEventListener('DOMContentLoaded', function() {
-    // Aquí se pueden agregar funcionalidades adicionales
+    // Funcionalidad de descarga masiva
+    window.downloadAllFiles = function() {
+        const files = @json($urbanDevRequest->files->map(function($file) {
+            return [
+                'name' => $file->name,
+                'url' => $file->getUrlAttribute()
+            ];
+        }));
+        
+        if (files.length === 0) {
+            alert('No hay archivos para descargar');
+            return;
+        }
+        
+        // Descargar archivos uno por uno
+        files.forEach(function(file, index) {
+            setTimeout(function() {
+                const link = document.createElement('a');
+                link.href = file.url;
+                link.download = file.name;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, index * 1000); // Retrasar 1 segundo entre descargas
+        });
+    };
+    
+    // Funcionalidad de exportar PDF (placeholder)
+    window.exportToPDF = function() {
+        // Esta función se puede implementar con una librería como jsPDF
+        alert('Funcionalidad de exportar PDF en desarrollo');
+    };
 });
 </script>
 @endsection

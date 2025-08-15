@@ -352,12 +352,14 @@
                     <div class="card-body py-5">
                         <h4 class="mb-3">¿Listo para iniciar tu trámite?</h4>
                         <p class="mb-4">Una vez que tengas todos los documentos listos, puedes iniciar el proceso en línea.</p>
-                        
-                        <button class="btn btn-{{ $tramite_actual['color'] }} btn-lg px-5 py-3">
+
+                        <a href="{{ route('citizen.urban_dev.create') }}" class="btn btn-{{ $tramite_actual['color'] }} btn-lg px-5 py-3">
                             <ion-icon name="documents-outline" class="me-2"></ion-icon>
                             Iniciar Trámite
-                        </button>
-                        
+                        </a>
+
+                        <p class="mt-2"><small>Para los trámites debes Iniciar Sesión y tener una cuenta en nuestro sistema. Registrate <a href="{{ route('register') }}">aquí</a></small></p>
+
                         <div class="mt-3">
                             <a href="{{ route('urban_dev.index') }}" class="btn btn-outline-secondary">
                                 <ion-icon name="arrow-back-outline" class="me-2"></ion-icon>
