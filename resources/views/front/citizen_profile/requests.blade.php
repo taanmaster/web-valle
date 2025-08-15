@@ -25,7 +25,13 @@
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" href="{{ route('citizen.profile.requests') }}" 
                                id="solicitudes-tab" role="tab">
-                                <ion-icon name="file-tray-full-outline"></ion-icon> Solicitudes
+                                <ion-icon name="file-tray-full-outline"></ion-icon> Solicitudes S.A.R.E
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" href="{{ route('citizen.profile.urban_dev_requests') }}" 
+                               id="solicitudes-tab" role="tab">
+                                <ion-icon name="file-tray-full-outline"></ion-icon> Trámites Desarrollo Urbano
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
