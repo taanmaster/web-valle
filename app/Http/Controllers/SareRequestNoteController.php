@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SareRequestFile;
+// Ayudantes
+use Str;
+use Auth;
+use Session;
+
+// Modelos
+use App\Models\SareRequestNote;
+
 use Illuminate\Http\Request;
 
-class SareRequestFileController extends Controller
+class SareRequestNoteController extends Controller
 {
     public function index()
     {

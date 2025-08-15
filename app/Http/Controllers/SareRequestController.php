@@ -17,29 +17,20 @@ use Illuminate\Http\Request;
 
 class SareRequestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $sare_requests = SareRequest::where('user_id', Auth::id())
+        $sare_requests = SareRequest::with(['user', 'files'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('front.citizen_profile.requests')->with('sare_requests', $sare_requests);
+        return view('sare.requests.index')->with('sare_requests', $sare_requests);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('sare_requests.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // Validar
@@ -127,27 +118,20 @@ class SareRequestController extends Controller
         return redirect()->route('citizen.profile.requests');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(SareRequest $sareRequest)
+    public function show($id)
     {
-        // Verificar que el usuario sea propietario de la solicitud o tenga permisos
-        if ($sareRequest->user_id !== Auth::id() && !Auth::user()->can('view-all-sare-requests')) {
-            abort(403, 'No tienes permisos para ver esta solicitud.');
-        }
+        $sareRequest = SareRequest::findOrFail($id);
 
         // Cargar archivos relacionados
-        $sareRequest->load('files');
+        $sareRequest->load(['files', 'user']);
 
-        return view('sare_requests.show', compact('sareRequest'));
+        return view('sare.requests.show', compact('sareRequest'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SareRequest $sareRequest)
+    public function edit($id)
     {
+        $sareRequest = SareRequest::findOrFail($id);
+
         // Verificar que el usuario sea propietario de la solicitud
         if ($sareRequest->user_id !== Auth::id()) {
             abort(403, 'No tienes permisos para editar esta solicitud.');
@@ -156,47 +140,53 @@ class SareRequestController extends Controller
         return view('sare_requests.edit')->with('sare_request', $sareRequest);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, SareRequest $sareRequest)
+    public function update(Request $request, $id)
     {
-        // Verificar que el usuario sea propietario de la solicitud
-        if ($sareRequest->user_id !== Auth::id()) {
-            abort(403, 'No tienes permisos para editar esta solicitud.');
-        }
+        $sareRequest = SareRequest::findOrFail($id);
 
         // Validar
         $this->validate($request, [
-            'request_num' => 'required|max:255',
-            'request_date' => 'required|date',
-            'catastral_num' => 'required|max:255',
-            'request_type' => 'required|in:general,nuevo,renovacion,anuncio',
-            'rfc_name' => 'required|max:255',
-            'rfc_num' => 'required|max:255',
-            'property_owner' => 'required|max:255',
-            'office_phone' => 'required|max:255',
-            'mobile_phone' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            'commercial_name' => 'required|max:255',
-            'aprox_investment' => 'required|max:255',
-            'jobs_to_generate' => 'required|integer|min:0',
+            'status' => 'required|in:new,initial_review,requirement_validation,requires_correction,payment_pending,authorization_process,authorized,rejected',
         ]);
 
-        // Actualizar datos en la base de datos
-        $sareRequest->update($request->all());
+        // Actualizar estatus usando switch para futuras funcionalidades
+        switch ($request->status) {
+            case 'initial_review':
+                $sareRequest->status = 'initial_review';
+                break;
+            case 'requirement_validation':
+                $sareRequest->status = 'requirement_validation';
+                break;
+            case 'requires_correction':
+                $sareRequest->status = 'requires_correction';
+                break;
+            case 'payment_pending':
+                $sareRequest->status = 'payment_pending';
+                break;
+            case 'authorization_process':
+                $sareRequest->status = 'authorization_process';
+                break;
+            case 'authorized':
+                $sareRequest->status = 'authorized';
+                break;
+            case 'rejected':
+                $sareRequest->status = 'rejected';
+                break;
+            default:
+                $sareRequest->status = 'new';
+                break;
+        }
+
+        $sareRequest->save();
 
         // Mensaje de session
-        Session::flash('success', 'Solicitud SARE actualizada exitosamente.');
+        Session::flash('success', 'Estatus de solicitud SARE actualizado exitosamente.');
 
         // Enviar a vista
-        return redirect()->route('citizen.profile.requests');
+        return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SareRequest $sareRequest)
+    public function destroy($id)
     {
         // Verificar que el usuario sea propietario de la solicitud o tenga permisos
         if ($sareRequest->user_id !== Auth::id() && !Auth::user()->can('delete-sare-requests')) {
@@ -219,9 +209,6 @@ class SareRequestController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Upload files via dropzone
-     */
     public function upload(Request $request)
     {
         if ($request->hasFile('file')) {
@@ -254,9 +241,6 @@ class SareRequestController extends Controller
         return response()->json(['error' => 'No se pudo subir el archivo'], 400);
     }
 
-    /**
-     * Fetch uploaded files
-     */
     public function fetch($sareRequestId)
     {
         $files = SareRequestFile::where('sare_request_id', $sareRequestId)->get();
@@ -286,9 +270,6 @@ class SareRequestController extends Controller
         return $output;
     }
 
-    /**
-     * Delete uploaded file
-     */
     public function delete(Request $request, $sareRequestId)
     {
         $filename = $request->name;
@@ -311,9 +292,6 @@ class SareRequestController extends Controller
         return response()->json(['error' => 'Archivo no encontrado'], 404);
     }
 
-    /**
-     * Initialize chunk upload for large files
-     */
     public function initChunkUpload(Request $request)
     {
         $filename = $request->filename;
@@ -336,9 +314,6 @@ class SareRequestController extends Controller
         ]);
     }
 
-    /**
-     * Upload chunk for large files
-     */
     public function uploadChunk(Request $request)
     {
         $uploadId = $request->upload_id;
@@ -356,9 +331,6 @@ class SareRequestController extends Controller
         ]);
     }
 
-    /**
-     * Finalize chunk upload for large files
-     */
     public function finalizeChunkUpload(Request $request)
     {
         $uploadId = $request->upload_id;

@@ -70,7 +70,7 @@ class SareRequest extends Model
      */
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     /**
@@ -88,11 +88,16 @@ class SareRequest extends Model
     {
         $statuses = [
             'new' => 'Nuevo',
+            'initial_review' => 'Revisión Inicial',
+            'requirement_validation' => 'Validación de Requisitos',
+            'requires_correction' => 'Requiere Corrección',
+            'payment_pending' => 'Espera de Pago',
+            'authorization_process' => 'Proceso de Autorización',
+            'authorized' => 'Autorizada',
+            'rejected' => 'Rechazada',
+            // Estados legacy
             'in_progress' => 'En Progreso',
             'cancelled' => 'Cancelado',
-            'payment_pending' => 'Pago Pendiente',
-            'authorized' => 'Autorizado',
-            'rejected' => 'Rechazado',
             'validation' => 'Validación'
         ];
 
@@ -106,11 +111,16 @@ class SareRequest extends Model
     {
         $colors = [
             'new' => 'primary',
-            'in_progress' => 'warning',
-            'cancelled' => 'secondary',
-            'payment_pending' => 'info',
+            'initial_review' => 'info',
+            'requirement_validation' => 'warning',
+            'requires_correction' => 'danger',
+            'payment_pending' => 'warning',
+            'authorization_process' => 'info',
             'authorized' => 'success',
             'rejected' => 'danger',
+            // Estados legacy
+            'in_progress' => 'warning',
+            'cancelled' => 'secondary',
             'validation' => 'dark'
         ];
 
