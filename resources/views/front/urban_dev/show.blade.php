@@ -12,20 +12,19 @@
                 'color' => 'info',
                 'legal_base' => 'Artículos 256, 257, 258, 259, 261, 262 y 264 del Código Territorial para el Estado y los Municipios de Guanajuato',
                 'costs' => [
-                    ['description' => 'Uso habitacional, por vivienda', 'price' => '$771.00'],
-                    ['description' => 'Uso comercial, por local comercial', 'price' => '$900.00'],
-                    ['description' => 'Uso industrial, por predio', 'price' => '$2,100.00']
+                    ['description' => 'Uso habitacional, por vivienda', 'price' => '$771.84'],
+                    ['description' => 'Uso comercial, por local comercial', 'price' => '$984.24'],
+                    ['description' => 'Uso industrial, por predio', 'price' => '$2,111.57']
                 ],
                 'steps' => [
-                    'Presentar solicitud por escrito dirigida al Director de Desarrollo Urbano',
-                    'Anexar copia de identificación oficial vigente del propietario o representante legal',
-                    'Presentar escritura pública o documento que acredite la propiedad del inmueble',
-                    'Entregar copia del último recibo de pago del impuesto predial',
-                    'Proporcionar plano de localización del predio (escala 1:1000)',
-                    'Incluir croquis de ubicación con referencias y medidas del terreno',
-                    'Realizar pago de derechos correspondientes en Tesorería Municipal',
-                    'Programar inspección técnica del predio por parte del personal municipal',
-                    'Esperar resolución y entrega de la licencia (15 días hábiles)'
+                    'Formato de solicitud para licencia de Uso de Suelo',
+                    'Dicho formato deberá estar firmado por el propietario del predio, representante legal o el arrendador, según sea el caso.',
+                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio.',
+                    'En el caso de arrendar el inmueble anexar contrato de arrendamiento simple. Si el contrato de arrendamiento es notariado omitimos el punto anterior.',
+                    'Las personas morales deberán presentar copia del acta constitutiva asi como copia del instrumento notariado mediante el cual se acredite la personalidad de los solicitantes (poder legal).',
+                    'Copia del último pago del predial.',
+                    'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso.',
+                    'Croquis de ubicación del inmueble'
                 ]
             ],
             'constancia-de-factibilidad' => [
@@ -35,20 +34,17 @@
                 'color' => 'warning',
                 'legal_base' => 'Artículos 253, 254 y 255 del Código Territorial para el Estado y los Municipios de Guanajuato',
                 'costs' => [
-                    ['description' => 'Por metro cuadrado de construcción proyectada', 'price' => '$12.50'],
-                    ['description' => 'Revisión de proyecto arquitectónico', 'price' => '$1,250.00'],
-                    ['description' => 'Inspección técnica especializada', 'price' => '$850.00']
+                    ['description' => 'a) Constancias expedidas por la dependencia', 'price' => '$87.05']
                 ],
                 'steps' => [
-                    'Presentar solicitud detallada del proyecto a desarrollar',
-                    'Adjuntar proyecto arquitectónico o memoria descriptiva de la obra',
-                    'Entregar escritura pública que acredite la propiedad del inmueble',
-                    'Incluir plano topográfico actualizado del terreno',
-                    'Presentar estudio de factibilidad de servicios públicos',
-                    'Anexar dictamen de uso de suelo vigente',
-                    'Realizar pago de derechos en Tesorería Municipal',
-                    'Someterse a revisión técnica por parte de la Dirección de Obras Públicas',
-                    'Obtener resolución favorable y entrega del documento (20 días hábiles)'
+                    'Formato de solicitud para Constancia de Factibilidad',
+                    'Dicho formato deberá estar firmado por el propietario del predio, representante legal o el arrendador, según sea el caso.',
+                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio.',
+                    'En el caso de arrendar el inmueble anexar contrato de arrendamiento simple. Si el contrato de arrendamiento es notariado omitimos el punto anterior.',
+                    'Las personas morales deberán presentar copia del acta constitutiva asi como copia del instrumento notariado mediante el cual se acredite la personalidad de los solicitantes (poder legal).',
+                    'Copia del último pago del predial.',
+                    'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso.',
+                    'Croquis de ubicación del inmueble'
                 ]
             ],
             'permiso-de-anuncios' => [
@@ -58,20 +54,20 @@
                 'color' => 'primary',
                 'legal_base' => 'Artículos 168-183 del Reglamento de Construcción de Valle de Santiago, Gto.',
                 'costs' => [
-                    ['description' => 'Anuncio menor a 4 m² (por año)', 'price' => '$450.00'],
-                    ['description' => 'Anuncio de 4 a 20 m² (por año)', 'price' => '$890.00'],
-                    ['description' => 'Anuncio mayor a 20 m² (por año)', 'price' => '$1,780.00']
+                    ['description' => 'Adosado', 'price' => '$692.31 x m2'],
+                    ['description' => 'Autosoportado', 'price' => '$100 x m2'],
+                    ['description' => 'Pinta de barda', 'price' => '$92.31 x m2'],
+                    ['description' => 'Toldos y carpas', 'price' => '$978.81']
                 ],
                 'steps' => [
-                    'Presentar solicitud especificando tipo y características del anuncio',
-                    'Adjuntar diseño gráfico y especificaciones técnicas del anuncio',
-                    'Entregar documento que acredite la propiedad o autorización del inmueble',
-                    'Incluir memoria de cálculo estructural (anuncios mayores a 4 m²)',
-                    'Presentar plano de localización y ubicación exacta del anuncio',
-                    'Anexar fotografías del lugar donde se instalará',
-                    'Realizar pago de derechos correspondientes',
-                    'Programar inspección para verificar cumplimiento de normativas',
-                    'Recibir permiso y cumplir con renovación anual'
+                    'Formato de solicitud para Licencia de Uso Suelo',
+                    'Dicho formato deberá estar firmado por el propietario del predio, representante legal o el arrendador, según sea el caso.',
+                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio.',
+                    'En el caso de arrendar el inmueble anexar contrato de arrendamiento simple. Si el contrato de arrendamiento es notariado omitimos el punto anterior.',
+                    'Las personas morales deberán presentar copia del acta constitutiva asi como copia del instrumento notariado mediante el cual se acredite la personalidad de los solicitantes (poder legal).',
+                    'Copia del último pago del predial.',
+                    'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso.',
+                    'Croquis de ubicación del inmueble'
                 ]
             ],
             'certificacion-numero-oficial' => [
@@ -81,18 +77,18 @@
                 'color' => 'dark',
                 'legal_base' => 'Artículos 68 y 72 del Reglamento de Construcción y Fisionomía para el Municipio de Valle de Santiago',
                 'costs' => [
-                    ['description' => 'Certificación de número oficial', 'price' => '$385.00']
+                    ['description' => 'Certificación de número oficial', 'price' => '$130.58'],
+                    ['description' => 'Constancia de Alineamiento', 'price' => '$41.07 x m2']
                 ],
                 'steps' => [
-                    'Presentar solicitud dirigida al Director de Desarrollo Urbano',
-                    'Entregar escritura pública o documento de propiedad del inmueble',
-                    'Adjuntar constancia de alineamiento y número oficial vigente',
-                    'Incluir plano de localización del predio con medidas exactas',
-                    'Presentar identificación oficial del propietario o representante',
-                    'Anexar último recibo de pago del impuesto predial',
-                    'Realizar pago de derechos en Tesorería Municipal',
-                    'Permitir inspección técnica para verificación de ubicación',
-                    'Recibir certificación oficial (10 días hábiles)'
+                    'Formato de solicitud para Licencia de Uso Suelo',
+                    'Dicho formato deberá estar firmado por el propietario del predio, representante legal o el arrendador, según sea el caso.',
+                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio.',
+                    'En el caso de arrendar el inmueble anexar contrato de arrendamiento simple. Si el contrato de arrendamiento es notariado omitimos el punto anterior.',
+                    'Las personas morales deberán presentar copia del acta constitutiva asi como copia del instrumento notariado mediante el cual se acredite la personalidad de los solicitantes (poder legal).',
+                    'Copia del último pago del predial.',
+                    'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso.',
+                    'Croquis de ubicación del inmueble'
                 ]
             ],
             'permiso-de-division' => [
@@ -102,19 +98,14 @@
                 'color' => 'success',
                 'legal_base' => 'Artículos 395, 397 y 398 del Código Territorial para el Estado y sus Municipios de Guanajuato',
                 'costs' => [
-                    ['description' => 'División simple (hasta 5 lotes)', 'price' => '$2,850.00'],
-                    ['description' => 'División compleja (más de 5 lotes)', 'price' => '$4,200.00']
+                    ['description' => 'Costo', 'price' => '$387.87']
                 ],
                 'steps' => [
-                    'Presentar solicitud con proyecto de división del predio',
-                    'Entregar escritura pública que acredite la propiedad del terreno',
-                    'Adjuntar levantamiento topográfico certificado por perito autorizado',
-                    'Incluir proyecto de lotificación con vialidades y servicios',
-                    'Presentar dictamen de factibilidad de servicios públicos',
-                    'Anexar estudio de impacto urbano y vial',
-                    'Realizar pago de derechos y contribuciones correspondientes',
-                    'Cumplir con obras de urbanización requeridas',
-                    'Obtener autorización final e inscripción en Registro Público'
+                    'Solicitud por escrito donde se describa el proyecto de división, medidas, colindancias y superficie de la totalidad de predio así como de la fracción que se pretende dividir.',
+                    'Croquis del predio indicando el proyecto de división que incluya medidas, colidancias y superficies de la totalidad del predio asi como de la fracción que se pretende dividir, indicando colindantes o las calles circundantes. Garantizando la servidumbre de paso a los predios resultantes de una división de predios urbanos.',
+                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio.',
+                    'Copia del último pago del predial.',
+                    'Copia de identificación de la persona que acredita la propiedad'
                 ]
             ],
             'uso-de-via-publica' => [
@@ -124,20 +115,14 @@
                 'color' => 'info',
                 'legal_base' => 'Artículos 53, 54, 55 y 56 del Reglamento de Construcción de Valle de Santiago',
                 'costs' => [
-                    ['description' => 'Por metro cuadrado por día', 'price' => '$15.50'],
-                    ['description' => 'Permiso mensual (hasta 50 m²)', 'price' => '$650.00'],
-                    ['description' => 'Por metro cuadrado excedente a 50 m²', 'price' => '$8.36']
+                    ['description' => 'Costo', 'price' => '$4.69']
                 ],
                 'steps' => [
-                    'Presentar solicitud especificando el uso y tiempo requerido',
-                    'Adjuntar croquis del área a ocupar con medidas exactas',
-                    'Entregar programa de actividades y horarios de ocupación',
-                    'Incluir medidas de seguridad y señalización propuestas',
-                    'Presentar póliza de seguro de responsabilidad civil',
-                    'Anexar autorización de vecinos afectados (si aplica)',
-                    'Realizar pago de derechos por ocupación de vía pública',
-                    'Cumplir con supervisión continua durante el período autorizado',
-                    'Restituir las condiciones originales al término del permiso'
+                    'Formato de solicitud para Licencia de Uso Suelo',
+                    'Dicho formato deberá estar firmado por el propietario del predio, representante legal o el arrendador, según sea el caso.',
+                    'Copia del último pago del predial.',
+                    'Copia de identificación de la persona que acredita la propiedad.',
+                    'Croquis de ubicación del inmueble'
                 ]
             ],
             'licencia-de-construccion' => [
@@ -147,20 +132,17 @@
                 'color' => 'danger',
                 'legal_base' => 'Artículo 24 fracciones I inc. a2a y a2b del Reglamento de Construcción de Valle de Santiago',
                 'costs' => [
-                    ['description' => 'Construcción habitacional (por m²)', 'price' => '$18.75'],
-                    ['description' => 'Construcción comercial (por m²)', 'price' => '$24.50'],
-                    ['description' => 'Construcción industrial (por m²)', 'price' => '$32.80']
+                    ['description' => 'Hasta 40m2', 'price' => '$378.86'],
+                    ['description' => 'Por metro cuadrado excedente a 40m2', 'price' => '$8.36'],
+                    ['description' => 'Residencial y departamentos por m2', 'price' => '$14.61']
                 ],
                 'steps' => [
-                    'Presentar solicitud con proyecto arquitectónico completo',
-                    'Entregar planos estructurales firmados por Director Responsable de Obra',
-                    'Adjuntar memoria de cálculo y especificaciones técnicas',
-                    'Incluir dictamen de uso de suelo compatible con el proyecto',
-                    'Presentar factibilidades de servicios (agua, drenaje, electricidad)',
-                    'Anexar estudio de mecánica de suelos (construcciones mayores)',
-                    'Realizar pago de licencia y derechos de supervisión',
-                    'Programar inspecciones durante el proceso constructivo',
-                    'Obtener visto bueno final y recepción de obra'
+                    'Formato de solicitud para Licencia de Uso Suelo Dicho formato deberá estar firmado por el propietario del predio, representante legal o el arrendador, según sea el caso.',
+                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio.',
+                    'Copia del último pago del predial.',
+                    'Copia de identificación de la persona que acredita la propiedad.',
+                    'Croquis de ubicación del inmueble',
+                    'Si el proyecto es mayor a 40m2, se debe presentar proyecto arquitectonico, en dos tantos físicos. Con escala 1:100 O 1:50 elaborados, avaldaos y firmados por DRO'
                 ]
             ],
             'permiso-construccion-panteones' => [
@@ -170,18 +152,16 @@
                 'color' => 'primary',
                 'legal_base' => 'Artículos 13, 46, 50, 56 y 57 del Reglamento de Panteones y Cementerios del Municipio',
                 'costs' => [
-                    ['description' => 'Por metro cuadrado excedente a 40 m²', 'price' => '$8.36']
+                    ['description' => 'Construcción de gaveta', 'price' => '$250'],
+                    ['description' => 'Remodelación de gaveta', 'price' => '$289'],
+                    ['description' => 'Instalación de barandal metálico', 'price' => '$188'],
+                    ['description' => 'Instalación de techo metálico', 'price' => '$188'],
+                    ['description' => 'Recubrimiento de gaveta con aplanado, azulejo ó mármol', 'price' => '$63']
                 ],
                 'steps' => [
-                    'Presentar solicitud dirigida a la Administración del Panteón',
-                    'Adjuntar proyecto de la construcción funeraria propuesta',
-                    'Entregar documento que acredite la propiedad o concesión del lote',
-                    'Incluir especificaciones de materiales y acabados a utilizar',
-                    'Presentar plano de ubicación dentro del cementerio',
-                    'Anexar autorización de familiares o herederos legales',
-                    'Realizar pago de derechos de construcción en panteón',
-                    'Cumplir con horarios y normativas especiales del cementerio',
-                    'Recibir inspección final y autorización de uso'
+                    'Formato de solicitud para Licencia de Uso Suelo',
+                    'Copia de identificación del propietario.',
+                    'Copia del documento de perpetuidad.'
                 ]
             ]
         ];
