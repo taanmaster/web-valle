@@ -286,6 +286,17 @@
             </div>
         </div>
 
+        <div class="row mb-4">
+            <a href="{{ route('desarrollo_institucional.index') }}"
+                class="card card-image card-image-banner wow fadeInUp h-100">
+                <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
+                <div class="overlay"></div>
+                <div class="card-content">
+                    <h2>Desarrollo Institucional</h2>
+                </div>
+            </a>
+        </div>
+
     </div>
 
     @if (!empty($popup))

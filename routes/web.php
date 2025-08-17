@@ -13,9 +13,11 @@ use App\Http\Controllers\DIFDoctorConsultController;
 use App\Http\Controllers\DIFPrescriptionController;
 use App\Http\Controllers\DIFPrescriptionFileController;
 use App\Http\Controllers\CitizenMedicalProfileController;
+use App\Http\Controllers\InstitucionalDevelopmentBannerController;
 use App\Http\Controllers\TapChecklistAuthorizationNoteController;
 use App\Http\Controllers\TapSupplierLogController;
 use App\Http\Controllers\TreasuryAccountPayableController;
+use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +29,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/en-construccion', 'FrontController@building')->name('building');
 
     //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
+
+    Route::get('/desarrollo_institucional', 'FrontController@desarrolloInstitucional')->name('desarrollo_institucional.index');
+
+    Route::get('/registro_municipal_de_regulaciones', 'FrontController@registroMunicipalDeRegulaciones')->name('regulaciones_municipales.index');
+
+    Route::get('/registro_municipal_de_regulaciones/{id}', 'FrontController@showRegulacion')->name('regulaciones_municipales.show');
+
+    Route::get('/tramites_y_servicios', 'FrontController@tramitesYServicios')->name('tramites_y_servicios.index');
+
+    Route::get('/tramites_y_servicios/{id}', 'FrontController@showTramite')->name('tramites_y_servicios.show');
 
     /*SARE*/
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
@@ -871,5 +883,38 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'uses' => 'CitizenComplainController@index',
             'as' => 'citizen_complain.index',
         ]);
+
+        Route::group(['prefix' => 'institucional_development'], function () {
+            Route::resource('regulations', MunicipalRegulationController::class)->names([
+                'index' => 'institucional_development.regulations.index',
+                'show' => 'institucional_development.regulations.show',
+                'edit' => 'institucional_development.regulations.edit',
+                'create' => 'institucional_development.regulations.create',
+                'destroy' => 'institucional_development.regulations.destroy',
+            ]);
+
+            Route::resource('banners', InstitucionalDevelopmentBannerController::class)->names([
+                'index' => 'institucional_development.banners.index',
+                'create' => 'institucional_development.banners.create',
+                'store' => 'institucional_development.banners.store',
+                'show' => 'institucional_development.banners.show',
+                'edit' => 'institucional_development.banners.edit',
+                'update' => 'institucional_development.banners.update',
+                'destroy' => 'institucional_development.banners.destroy',
+            ]);
+
+            Route::post('/banners/status/{id}', [
+                'uses' => 'InstitucionalDevelopmentBannerController@status',
+                'as' => 'institucional_development.banners.status',
+            ]);
+
+            Route::resource('requests', ServiceRequestController::class)->names([
+                'index' => 'institucional_development.requests.index',
+                'show' => 'institucional_development.requests.show',
+                'edit' => 'institucional_development.requests.edit',
+                'create' => 'institucional_development.requests.create',
+                'destroy' => 'institucional_development.requests.destroy',
+            ]);
+        });
     });
 });

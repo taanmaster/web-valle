@@ -30,6 +30,10 @@ use App\Models\RegulatoryAgendaDependency;
 use App\Models\RegulatoryAgendaRegulation;
 use Illuminate\Http\Request;
 
+//Modelos Mejora Regulatoria
+use App\Models\InstitucionalDevelopmentBanner;
+
+
 // Modelos Blog
 use App\Models\Blog;
 
@@ -39,6 +43,8 @@ use App\Models\CitizenComplaintFile;
 
 // Modelo Eventos
 use App\Models\Event;
+use App\Models\MunicipalRegulation;
+use App\Models\ServiceRequest;
 
 class FrontController extends Controller
 {
@@ -451,5 +457,37 @@ class FrontController extends Controller
     public function denunciaNet()
     {
         return view('front.citizen_complain.index');
+    }
+
+    public function desarrolloInstitucional()
+    {
+
+        $banners = InstitucionalDevelopmentBanner::where('is_active', true)->orderBy('priority', 'asc')->get();
+
+        return view('front.institutional_development')->with('banners', $banners);
+    }
+
+    public function registroMunicipalDeRegulaciones()
+    {
+        return view('front.regulaciones_municipales');
+    }
+
+    public function showRegulacion($id)
+    {
+        $regulation = MunicipalRegulation::findOrFail($id);
+
+        return view('front.regulaciones_municipales.show')->with('regulation', $regulation);
+    }
+
+    public function tramitesYServicios()
+    {
+        return view('front.tramites_y_servicios');
+    }
+
+    public function showTramite($id)
+    {
+        $request = ServiceRequest::findOrFail($id);
+
+        return view('front.tramites_y_servicios.show')->with('request', $request);
     }
 }
