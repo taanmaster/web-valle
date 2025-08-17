@@ -28,7 +28,11 @@
                         {{ $financial_support->citizen->name }} {{ $financial_support->citizen->first_name }} {{ $financial_support->citizen->last_name }}
                     </a>
                     --}}
+                    @if($financial_support->citizen == null)
+                        <p class="text-danger text-bold mb-0"><strong>Información de Beneficiario Eliminada por Administración.</strong></p>
+                    @else
                     {{ $financial_support->citizen->name }} {{ $financial_support->citizen->first_name }} {{ $financial_support->citizen->last_name }}
+                    @endif
                 </td>
                 <td>${{ number_format($financial_support->qty,2) }}</td>
                 <td>{{ $financial_support->receipt_num }}</td>
