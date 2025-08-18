@@ -238,31 +238,20 @@
 
         <!--Agenda Regulatoria -->
         @if ($regulation_dependencies->count() >= 1)
-            <div class="row align-items-center mb-4">
-                <div class="col-md-6">
-                    <div class="pe-4">
-                        <h2>Agenda Regulatoria</h2>
-                        <p>Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
-                        <a href="{{ route('regulatory-agenda.index') }}"
-                            class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0"
-                            style="width: fit-content">Acceder a
-                            directorio
-                            de
-                            Dependencias
-                            <ion-icon name="caret-forward-outline"></ion-icon></a>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card card-image card-image-banner wow fadeInUp">
-                        <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
-                        <div class="overlay"></div>
-                    </div>
+            <div href="{{ route('urban_dev.index') }}" class="card card-image card-alignment-bottom wow fadeInUp h-100 d-block">
+                <img src="{{ asset('front/img/placeholder-3.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+                <div class="overlay"></div>
+
+                <div class="card-content">
+                    <h2 style="padding-top: 120px;">Agenda Regulatoria</h2>
+                    <p class="mb-4">Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
+                    <a href="{{ route('regulatory-agenda.index') }}" class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0" style="width: fit-content">Acceder a directorio de Dependencias <ion-icon name="caret-forward-outline"></ion-icon></a>
                 </div>
             </div>
         @endif
 
         <a href="{{ route('urban_dev.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
-            <img src="{{ asset('front/img/placeholder-5.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+            <img src="{{ asset('front/img/placeholder-6.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
             <div class="overlay"></div>
 
             <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
@@ -270,49 +259,43 @@
             </div>
 
             <div class="card-content">
-                <h2>Desarrollo Urbano</h2>
+                <h2 style="padding-top: 120px;">Desarrollo Urbano</h2>
                 <p class="mb-0">Conoce los trámites que impulsan el desarrollo urbano en nuestro municipio.</p>
             </div>
         </a>
-        
-        <div class="row mb-4">
-            <div class="col-md-8">
-                <div class="card card-normal wow fadeInUp h-100">
+
+        <div class="row">
+            <div class="col-md-6">
+                <a href="{{ route('casa_mujer.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                    <img src="{{ asset('front/img/mujer-placeholder.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+                    <div class="overlay"></div>
+
+                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                    </div>
+
                     <div class="card-content">
                         <h2>Casa de la Mujer</h2>
-                        <p>
-                            Un espacio donde nos reconocemos unas a otras y ejercemos un poder transformador que da
-                            testimonio de nuestra ciudadanía en la reivindicación de nuestros derechos, para que ninguna se
-                            quede atrás.
-                        </p>
-
-                        <a href="{{ route('casa_mujer.index') }}" class="btn btn-primary btn-sm">
-                            Ir a página
-                        </a>
+                        <p class="mb-0">Un espacio donde nos reconocemos unas a otras y ejercemos un poder transformador que da testimonio de nuestra ciudadanía en la reivindicación de nuestros derechos, para que ninguna se quede atrás.</p>
                     </div>
-                </div>
+                </a>
             </div>
-            <div class="col-md-4">
-                <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
+            <div class="col-md-6">
+                <a href="{{ route('desarrollo_institucional.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                    <img src="{{ asset('front/img/placeholder.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
                     <div class="overlay"></div>
-                </div>
+
+                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                    </div>
+
+                    <div class="card-content">
+                        <h2>Desarrollo Institucional</h2>
+                        <p class="mb-0">Valle de Santiago busca modernizar la administración pública municipal, hacerla más eficiente y transparente, y generar un entorno favorable para el desarrollo económico y el bienestar de sus habitantes.</p>
+                    </div>
+                </a>
             </div>
         </div>
-
-        <a href="{{ route('desarrollo_institucional.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
-            <img src="{{ asset('front/img/placeholder.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
-            <div class="overlay"></div>
-
-            <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
-                <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
-            </div>
-
-            <div class="card-content">
-                <h2>Desarrollo Institucional</h2>
-                <p class="mb-0">Valle de Santiago busca modernizar la administración pública municipal, hacerla más eficiente y transparente, y generar un entorno favorable para el desarrollo económico y el bienestar de sus habitantes.</p>
-            </div>
-        </a>
     </div>
 
     @if (!empty($popup))
@@ -384,7 +367,6 @@
             @endif
         @endpush
     @endif
-
 @endsection
 
 @push('styles')
