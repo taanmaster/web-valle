@@ -45,7 +45,8 @@ class CitizenController extends Controller
             'curp' => $request->curp,
             'ine_number' => $request->ine_number,
             'ine_section' => $request->ine_section,
-            'address' => $request->address,
+            'street' => $request->address,
+            'colony' => $request->colony,
         ]);
 
         // Guardar archivo
@@ -143,7 +144,8 @@ class CitizenController extends Controller
             'curp' => $request->curp,
             'ine_number' => $request->ine_number,
             'ine_section' => $request->ine_section,
-            'address' => $request->address,
+            'street' => $request->street,
+            'colony' => $request->colony,
         ]);
 
         // Mensaje de session

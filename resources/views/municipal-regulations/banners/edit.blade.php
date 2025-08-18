@@ -18,7 +18,8 @@
 
     <div class="row layout-spacing">
         <div class="main-content">
-            <form method="POST" action="{{ route('dif.banners.update', $banner->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('institucional_development.banners.update', $banner->id) }}"
+                enctype="multipart/form-data">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
                 <div class="row">
@@ -160,7 +161,8 @@
                         <div class="text-right mt-4 mb-5">
                             <button type="submit" class="btn btn-primary btn-lg d-block w-100">Guardar Cambios</button>
                             <hr>
-                            <a href="{{ route('dif.banners.index') }}" class="btn btn-secondary d-block">Cancelar</a>
+                            <a href="{{ route('institucional_development.banners.index') }}"
+                                class="btn btn-secondary d-block">Cancelar</a>
                         </div>
                     </div>
                 </div>

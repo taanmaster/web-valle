@@ -51,10 +51,17 @@
                             <input type="text" class="form-control" id="ine_section" name="ine_section" required>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="address" class="form-label">Domicilio <span
+                            <label for="address" class="form-label">Calle y número <span
                                     class="text-danger tx-12">*</span></label>
                             <input type="text" class="form-control" id="address" name="address" required>
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="address" class="form-label">Colonia <span
+                                    class="text-danger tx-12">*</span></label>
+                            <input type="text" class="form-control" id="colony" name="colony" required>
+                        </div>
+
                         {{--
                         <div class="col-md-12 mb-3">
                             <label for="description" class="form-label">Descripción <span
@@ -65,7 +72,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-de-secondary btn-sm"
+                        data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-de-dark btn-sm">Guardar datos</button>
                 </div>
             </form>

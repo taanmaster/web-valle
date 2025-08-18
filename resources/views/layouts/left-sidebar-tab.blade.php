@@ -17,6 +17,13 @@
                         </li>
                     @endif
 
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Mejora regulatoria"
+                        data-bs-trigger="hover">
+                        <a href="#valleComunicacion" id="comunicacion-tab" class="nav-link">
+                            <i class="ti ti-messages menu-icon"></i>
+                        </a>
+                    </li>
+
                     @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
                             title="Comunicación Social" data-bs-trigger="hover">
@@ -144,6 +151,26 @@
                 </div>
             @endif
 
+            <div id="valleComunicacion" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="comunicacion-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Mejora regulatoria</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="{{ route('institucional_development.regulations.index') }}">Normativa
+                            Municipal</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('institucional_development.requests.index') }}">Trámites
+                            y Servicios</a>
+                    </li>
+                </ul>
+            </div>
+
             @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
                 <div id="valleComunicacion" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="comunicacion-tab">
@@ -180,6 +207,16 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dif.banners.index') }}">Banners</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box mt-4">
+                        <h6 class="menu-title">Mejora regulatoria</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('institucional_development.banners.index') }}">Banners</a>
                         </li>
                     </ul>
                 </div>

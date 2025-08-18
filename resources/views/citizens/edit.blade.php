@@ -52,9 +52,9 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="email" class="form-label">Correo Electrónico <span
-                                            class="text-danger tx-12">*</span></label>
+                                            class="text-info tx-12">(Opcional)</span></label>
                                     <input type="email" class="form-control" id="email" name="email"
-                                        value="{{ $citizen->email }}" required>
+                                        value="{{ $citizen->email }}">
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label for="curp" class="form-label">CURP <span
@@ -75,10 +75,17 @@
                                         value="{{ $citizen->ine_section }}" required>
                                 </div>
                                 <div class="col-md-12 mb-3">
-                                    <label for="address" class="form-label">Domicilio <span
+                                    <label for="street" class="form-label">Calle y número <span
                                             class="text-danger tx-12">*</span></label>
                                     <input type="text" class="form-control" id="address" name="address"
-                                        value="{{ $citizen->address }}" required>
+                                        value="{{ $citizen->street }}" required>
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label for="street" class="form-label">Colonia <span
+                                            class="text-danger tx-12">*</span></label>
+                                    <input type="text" class="form-control" id="colony" name="colony"
+                                        value="{{ $citizen->colony }}" required>
                                 </div>
                                 {{--
                                 <div class="col-md-12 mb-3">

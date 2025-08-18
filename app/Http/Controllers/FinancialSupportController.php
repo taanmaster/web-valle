@@ -33,12 +33,12 @@ class FinancialSupportController extends Controller
         $nextFolio = $lastSupport ? $lastSupport->int_num + 1 : 1;
 
         return view('financial_supports.index')
-        ->with('nextFolio', $nextFolio)
-        ->with('financial_supports', $financial_supports)
-        ->with('citizens', $citizens)
-        ->with('support_types', $support_types);
+            ->with('nextFolio', $nextFolio)
+            ->with('financial_supports', $financial_supports)
+            ->with('citizens', $citizens)
+            ->with('support_types', $support_types);
     }
-    
+
     public function todayQuery(Request $request)
     {
         /* Defining Dates */
@@ -49,7 +49,7 @@ class FinancialSupportController extends Controller
         $end_of_day = Carbon::parse($date_start)->endOfDay();
 
         $financial_supports = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->orderBy('receipt_num', 'asc')->get();
-        
+
         $citizens = Citizen::all();
         $support_types = FinancialSupportType::all();
 
@@ -57,10 +57,10 @@ class FinancialSupportController extends Controller
         $nextFolio = $lastSupport ? $lastSupport->int_num + 1 : 1;
 
         return view('financial_supports.day_query')
-        ->with('nextFolio', $nextFolio)
-        ->with('financial_supports', $financial_supports)
-        ->with('citizens', $citizens)
-        ->with('support_types', $support_types);
+            ->with('nextFolio', $nextFolio)
+            ->with('financial_supports', $financial_supports)
+            ->with('citizens', $citizens)
+            ->with('support_types', $support_types);
     }
 
     public function reportQuery(Request $request)
@@ -79,10 +79,10 @@ class FinancialSupportController extends Controller
         $cantidad_particulares_apoyados = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->distinct('citizen_id')->count('citizen_id');
 
         return view('financial_supports.report')
-        ->with('num_apoyos_mes', $num_apoyos_mes)
-        ->with('cantidad_invertida_apoyos', $cantidad_invertida_apoyos)
-        ->with('cantidad_particulares_nuevos', $cantidad_particulares_nuevos)
-        ->with('cantidad_particulares_apoyados', $cantidad_particulares_apoyados);
+            ->with('num_apoyos_mes', $num_apoyos_mes)
+            ->with('cantidad_invertida_apoyos', $cantidad_invertida_apoyos)
+            ->with('cantidad_particulares_nuevos', $cantidad_particulares_nuevos)
+            ->with('cantidad_particulares_apoyados', $cantidad_particulares_apoyados);
     }
 
     public function create()
@@ -93,11 +93,13 @@ class FinancialSupportController extends Controller
     public function store(Request $request)
     {
         //Validar
-        $this -> validate($request, array(
+        $this->validate($request, array(
             'citizen_id' => 'required|max:255',
         ));
 
         $citizen = Citizen::find($request->citizen_id);
+
+        $cost = FinancialSupportType::find($request->type_id)->limit_per_citizen;
 
         // Guardar datos en la base de datos
         $financial_support = FinancialSupport::create([
@@ -106,7 +108,7 @@ class FinancialSupportController extends Controller
             'name' => $citizen->name,
             'first_name' => $citizen->first_name,
             'last_name' => $citizen->last_name,
-            'qty' => $request->qty,
+            'qty' => $cost,
             'receipt_num' => $request->receipt_num,
             'type_id' => $request->type_id,
             'phone' => $citizen->phone
@@ -123,7 +125,7 @@ class FinancialSupportController extends Controller
     {
         $financial_support = FinancialSupport::find($id);
 
-        return view('financial_supports.show')->with('financial_support', $financial_support);
+        return view('financial_supports.edit')->with('financial_support', $financial_support);
     }
 
     public function edit($id)
@@ -136,7 +138,7 @@ class FinancialSupportController extends Controller
     public function update(Request $request, $id)
     {
         //Validar
-        $this -> validate($request, array(
+        $this->validate($request, array(
             'name' => 'required|max:255',
         ));
 
@@ -177,13 +179,13 @@ class FinancialSupportController extends Controller
     public function downloadGratefulness($id, Request $request)
     {
         $financial_support = FinancialSupport::find($id);
-       
+
         $filename = "agradecimiento_" . Str::slug($financial_support->id) . ".pdf";
-        
+
         $pdf = PDF::loadView('_files._gratefulness_format', [
             'financial_support' => $financial_support
         ]);
-        
+
         $pdf->save(public_path('financial_support/files/' . $filename));
         /* Finalización de proceso */
 
@@ -197,13 +199,13 @@ class FinancialSupportController extends Controller
     public function downloadRequest($id, Request $request)
     {
         $financial_support = FinancialSupport::find($id);
-       
+
         $filename = "peticion_" . Str::slug($financial_support->id) . ".pdf";
-        
+
         $pdf = PDF::loadView('_files._request_format', [
             'financial_support' => $financial_support
         ]);
-        
+
         $pdf->save(public_path('financial_support/files/' . $filename));
         /* Finalización de proceso */
 
@@ -217,13 +219,13 @@ class FinancialSupportController extends Controller
     public function downloadSupportReceipt($id, Request $request)
     {
         $financial_support = FinancialSupport::find($id);
-       
+
         $filename = "recibo_de_apoyo_" . Str::slug($financial_support->id) . ".pdf";
-        
+
         $pdf = PDF::loadView('_files._support_receipt_format', [
             'financial_support' => $financial_support
         ]);
-        
+
         $pdf->save(public_path('financial_support/files/' . $filename));
         /* Finalización de proceso */
 
@@ -237,13 +239,13 @@ class FinancialSupportController extends Controller
     public function downloadUnderOath($id, Request $request)
     {
         $financial_support = FinancialSupport::find($id);
-       
+
         $filename = "bajo_protesta_" . Str::slug($financial_support->id) . ".pdf";
-        
+
         $pdf = PDF::loadView('_files._under_oath_format', [
             'financial_support' => $financial_support
         ]);
-        
+
         $pdf->save(public_path('financial_support/files/' . $filename));
         /* Finalización de proceso */
 
@@ -257,13 +259,13 @@ class FinancialSupportController extends Controller
     public function downloadReceived($id, Request $request)
     {
         $financial_support = FinancialSupport::find($id);
-       
+
         $filename = "recibi_" . Str::slug($financial_support->id) . ".pdf";
-        
+
         $pdf = PDF::loadView('_files._received_format', [
             'financial_support' => $financial_support
         ]);
-        
+
         $pdf->save(public_path('financial_support/files/' . $filename));
         /* Finalización de proceso */
 
@@ -285,11 +287,11 @@ class FinancialSupportController extends Controller
         $financial_supports = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->orderBy('receipt_num', 'asc')->get();
 
         $filename = "corte_" . $start_of_day . ".pdf";
-        
+
         $pdf = PDF::loadView('_files._cash_cut', [
             'financial_supports' => $financial_supports
         ]);
-        
+
         $pdf->save(public_path('financial_support/files/' . $filename));
         /* Finalización de proceso */
 

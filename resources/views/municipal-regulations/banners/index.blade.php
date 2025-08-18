@@ -3,22 +3,29 @@
     Intranet
 @endsection
 @section('content')
-    <!-- Breadcrumbs -->
+    <!-- this is breadcrumbs -->
     @component('components.breadcrumb')
         @slot('li_1')
             Intranet
         @endslot
         @slot('li_2')
-            Comunicación social
+            Banners
         @endslot
         @slot('title')
-            Denuncias ciudadanas
+            Banners Mejora regulatoria
         @endslot
     @endcomponent
 
     <div class="row layout-spacing">
         <div class="main-content">
-            @if ($complains->count() == 0)
+            <div class="row align-items-center mb-4">
+                <div class="col text-start">
+                    <a href="{{ route('institucional_development.banners.create') }}" class="btn btn-primary">Agregar
+                        Elemento</a>
+                </div>
+            </div>
+
+            @if ($banners->count() == 0)
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box">
@@ -26,7 +33,11 @@
                                 <div class="text-center" style="padding:80px 0px 100px 0px;">
                                     <img src="{{ asset('assets/images/empty.svg') }}" class="ml-auto mr-auto"
                                         style="width:30%; margin-bottom: 40px;">
-                                    <h4>¡No hay denuncias guardadas en la base de datos!</h4>
+                                    <h4>¡No hay elementos guardados en la base de datos!</h4>
+                                    <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
+                                    <a href="{{ route('institucional_development.banners.create') }}"
+                                        class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Agregar
+                                        Elemento</a>
                                 </div>
                             </div>
                         </div>
@@ -34,11 +45,11 @@
                 </div>
             @else
                 <div class="row">
-                    <livewire:complains.table />
+                    @include('municipal-regulations.banners.utilities._table')
                 </div>
 
                 <div class="align-items-center mt-4">
-                    {{ $complains->links('pagination::bootstrap-5') }}
+                    {{ $banners->links('pagination::bootstrap-5') }}
                 </div>
             @endif
         </div>

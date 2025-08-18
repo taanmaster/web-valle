@@ -299,6 +299,20 @@
                 </div>
             </div>
         </div>
+
+        <a href="{{ route('desarrollo_institucional.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+            <img src="{{ asset('front/img/placeholder.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+            <div class="overlay"></div>
+
+            <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+            </div>
+
+            <div class="card-content">
+                <h2>Desarrollo Institucional</h2>
+                <p class="mb-0">Valle de Santiago busca modernizar la administración pública municipal, hacerla más eficiente y transparente, y generar un entorno favorable para el desarrollo económico y el bienestar de sus habitantes.</p>
+            </div>
+        </a>
     </div>
 
     @if (!empty($popup))
