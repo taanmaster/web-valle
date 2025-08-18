@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('citizens', function (Blueprint $table) {
 
             // agregar columnas nuevas
-            $table->string('street')->nullable()->unique()->after('address');
+            $table->string('street')->nullable()->after('address');
             $table->string('colony')->nullable()->after('street');
 
             // agregar restricciones únicas
