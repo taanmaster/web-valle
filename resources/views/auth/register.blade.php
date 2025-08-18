@@ -76,7 +76,7 @@
 </div>
 @endsection --}}
 
-
+{{--  
 @extends('layouts.master-without-nav')
 @section('title')Metrica @endsection
 @section('content')
@@ -188,3 +188,4 @@
     <!--end container-->
 
     @endsection
+--}}

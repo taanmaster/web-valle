@@ -64,7 +64,9 @@ class GazetteFileController extends Controller
     {
         $file = GazetteFile::findOrFail($id);
 
-        unlink(public_path() .  '/files/gazettes/' . $file->filename);
+        // Eliminar archivo de S3
+        $filepath = 'gazettes/' . $file->filename;
+        Storage::disk('s3')->delete($filepath);
         
         $file->delete();
 

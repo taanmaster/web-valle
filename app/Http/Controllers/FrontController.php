@@ -357,6 +357,17 @@ class FrontController extends Controller
         return view('front.sare');
     }
 
+    // Pantallas Desarrollo Urbano
+    public function urbanDev()
+    {
+        return view('front.urban_dev.index');
+    }
+
+    public function urbanDevDetail($tramite)
+    {
+        return view('front.urban_dev.show')->with('tramite', $tramite);
+    }
+
     // Pantalla Casa de la Mujer
     public function casaMujer()
     {
@@ -469,6 +480,11 @@ class FrontController extends Controller
         return view('front.citizen_complain.index');
     }
 
+    public function reloadCaptcha()
+    {
+        return response()->json(['captcha' => captcha_img('flat')], 200);
+    }
+    
     public function desarrolloInstitucional()
     {
 

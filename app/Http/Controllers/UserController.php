@@ -18,23 +18,26 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $users = User::whereDoesntHave('roles', function ($query) {
+        // Usuarios administrativos (sin rol citizen)
+        $adminUsers = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'citizen');
+        })->get();
+
+        // Usuarios ciudadanos (con rol citizen)
+        $citizenUsers = User::whereHas('roles', function ($query) {
             $query->where('name', 'citizen');
         })->get();
 
         $roles = Role::where('name', '!=', 'citizen')->get();
 
-        return view('users.index')->with('users', $users)->with('roles', $roles);
+        return view('users.index')
+            ->with('adminUsers', $adminUsers)
+            ->with('citizenUsers', $citizenUsers)
+            ->with('roles', $roles);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('users.create');
@@ -65,9 +68,6 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $user = User::find($id);
@@ -75,17 +75,11 @@ class UserController extends Controller
         return view('users.show')->with('user', $user);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         return view('users.edit', compact('id'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
@@ -113,9 +107,6 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $user = User::find($id);
@@ -136,5 +127,73 @@ class UserController extends Controller
     public function config()
     {
         return view('users.config');
+    }
+
+    // Métodos específicos para ciudadanos
+    public function storeCitizen(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'email|required|unique:users',
+            'password' => 'required|min:4',
+        ]);
+
+        $citizen = new User([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+
+        // Guardar el ciudadano
+        $citizen->save();
+
+        // Asignar el rol citizen
+        $citizen->assignRole('citizen');
+
+        Session::flash('success', 'El usuario ciudadano se creó exitosamente.');
+
+        return redirect()->route('users.index') . '#citizens';
+    }
+
+    public function updateCitizen(Request $request, string $id)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'email|required',
+            'password' => 'nullable|min:4',
+        ]);
+
+        $user = User::find($id);
+
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+
+        $user->save();
+
+        // Mantener rol citizen
+        $user->syncRoles(['citizen']);
+
+        Session::flash('success', 'El usuario ciudadano se actualizó exitosamente.');
+
+        return redirect()->route('users.index') . '#citizens';
+    }
+
+    public function destroyCitizen(string $id)
+    {
+        $user = User::find($id);
+
+        if($user->id == Auth::user()->id){
+            Session::flash('error', 'No puedes borrar el usuario que está actualmente conectado.');
+            return redirect()->back();
+        }
+
+        $user->delete();
+
+        Session::flash('success', 'El usuario ciudadano se eliminó exitosamente.');
+
+        return redirect()->back();
     }
 }
