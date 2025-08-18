@@ -6,6 +6,7 @@ namespace App\Livewire\ServiceRequests;
 use Str;
 use Auth;
 use Session;
+use Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Attributes\On;
 
@@ -14,6 +15,10 @@ use Livewire\WithFileUploads;
 
 use App\Models\ServiceRequest;
 use App\Models\TransparencyDependency;
+
+
+/* Este componente maneja la creación y edición de solicitudes de Desarrollo Institucional */
+/* Consume datos de Dependencias de Transparencia */
 
 class Crud extends Component
 {
@@ -76,8 +81,11 @@ class Crud extends Component
             // Mensaje de sesión
             Session::flash('success', 'Dependencia actualizada correctamente.');
 
-            return redirect()->route('institucional_development.requests.show', $this->regulation->id);
+            return redirect()->route('institucional_development.requests.show', $this->request->id);
         } else {
+
+            $steps_filename_url = null;
+            $procedure_filename_url = null;
 
             if ($this->steps_filename) {
                 $document = $this->steps_filename;
@@ -87,11 +95,19 @@ class Crud extends Component
 
                 // Reemplazar espacios y caracteres no válidos
                 $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+                $filename = $cleanName . '.' . $extension;
 
-                $filename_one = $cleanName . '.' . $extension;
-
-                // Guardar en storage/app/public/requests/
-                $path = $document->storeAs('requests', $filename_one, 'public');
+                // Crear ruta S3 bajo institutional_development/requests
+                $filepath = 'institutional_development/requests/' . $filename;
+                
+                // Usar streaming para subir a S3
+                $stream = fopen($document->getRealPath(), 'r+');
+                Storage::disk('s3')->put($filepath, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+                
+                $steps_filename_url = Storage::disk('s3')->url($filepath);
             }
 
             if ($this->procedure_filename) {
@@ -102,11 +118,19 @@ class Crud extends Component
 
                 // Reemplazar espacios y caracteres no válidos
                 $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+                $filename = $cleanName . '.' . $extension;
 
-                $filename_two = $cleanName . '.' . $extension;
-
-                // Guardar en storage/app/public/requests/
-                $path = $document->storeAs('requests', $filename_two, 'public');
+                // Crear ruta S3 bajo institutional_development/requests
+                $filepath = 'institutional_development/requests/' . $filename;
+                
+                // Usar streaming para subir a S3
+                $stream = fopen($document->getRealPath(), 'r+');
+                Storage::disk('s3')->put($filepath, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+                
+                $procedure_filename_url = Storage::disk('s3')->url($filepath);
             }
 
             $this->request = ServiceRequest::create([
@@ -115,13 +139,13 @@ class Crud extends Component
                 'description' => $this->description,
                 'requirements' => $this->requirements,
                 'cost' => $this->cost,
-                'steps_filename' => $filename_one ?? null,
-                'procedure_filename' => $filename_two ?? null,
+                'steps_filename' => $steps_filename_url,
+                'procedure_filename' => $procedure_filename_url,
             ]);
 
 
             // Mensaje de sesión
-            Session::flash('success', 'Dependencia creada correctamente.');
+            Session::flash('success', 'Registro de Trámite creada correctamente.');
 
             return redirect()->route('institucional_development.requests.show', $this->request->id);
         }

@@ -6,6 +6,7 @@ namespace App\Livewire\MunicipalRegulations;
 use Str;
 use Auth;
 use Session;
+use Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Attributes\On;
 
@@ -71,6 +72,10 @@ class Crud extends Component
             return redirect()->route('institucional_development.regulations.show', $this->regulation->id);
         } else {
 
+            $file_url = null;
+            $pdf_file_url = null;
+            $word_file_url = null;
+
             if ($this->file) {
                 $document = $this->file;
 
@@ -79,11 +84,19 @@ class Crud extends Component
 
                 // Reemplazar espacios y caracteres no válidos
                 $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+                $filename = $cleanName . '.' . $extension;
 
-                $filename_one = $cleanName . '.' . $extension;
-
-                // Guardar en storage/app/public/requests/
-                $path = $document->storeAs('regulations', $filename_one, 'public');
+                // Crear ruta S3 bajo institutional_development
+                $filepath = 'institutional_development/regulations/' . $filename;
+                
+                // Usar streaming para subir a S3
+                $stream = fopen($document->getRealPath(), 'r+');
+                Storage::disk('s3')->put($filepath, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+                
+                $file_url = Storage::disk('s3')->url($filepath);
             }
 
             if ($this->pdf_file) {
@@ -94,11 +107,19 @@ class Crud extends Component
 
                 // Reemplazar espacios y caracteres no válidos
                 $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+                $filename = $cleanName . '.' . $extension;
 
-                $filename_two = $cleanName . '.' . $extension;
-
-                // Guardar en storage/app/public/regulations/
-                $path = $document->storeAs('regulations', $filename_two, 'public');
+                // Crear ruta S3 bajo institutional_development
+                $filepath = 'institutional_development/regulations/' . $filename;
+                
+                // Usar streaming para subir a S3
+                $stream = fopen($document->getRealPath(), 'r+');
+                Storage::disk('s3')->put($filepath, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+                
+                $pdf_file_url = Storage::disk('s3')->url($filepath);
             }
 
             if ($this->word_file) {
@@ -109,11 +130,19 @@ class Crud extends Component
 
                 // Reemplazar espacios y caracteres no válidos
                 $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+                $filename = $cleanName . '.' . $extension;
 
-                $filename_three = $cleanName . '.' . $extension;
-
-                // Guardar en storage/app/public/regulations/
-                $path = $document->storeAs('regulations', $filename_three, 'public');
+                // Crear ruta S3 bajo institutional_development
+                $filepath = 'institutional_development/regulations/' . $filename;
+                
+                // Usar streaming para subir a S3
+                $stream = fopen($document->getRealPath(), 'r+');
+                Storage::disk('s3')->put($filepath, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+                
+                $word_file_url = Storage::disk('s3')->url($filepath);
             }
 
             $this->regulation = MunicipalRegulation::create([
@@ -121,13 +150,13 @@ class Crud extends Component
                 'regulation_type' => $this->regulation_type,
                 'publication_type' => $this->publication_type,
                 'publication_date' => $this->publication_date,
-                'file' => $filename_one,
-                'pdf_file' => $filename_two,
-                'word_file' => $filename_three,
+                'file' => $file_url,
+                'pdf_file' => $pdf_file_url,
+                'word_file' => $word_file_url,
             ]);
 
             // Mensaje de sesión
-            Session::flash('success', 'Dependencia creada correctamente.');
+            Session::flash('success', 'Regulación creada correctamente.');
 
             // Mensaje de sesión
             return redirect()->route('institucional_development.regulations.show', $this->regulation->id);

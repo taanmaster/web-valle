@@ -1,4 +1,27 @@
 <div>
+    <style>
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .table td {
+            vertical-align: middle;
+        }
+        .table-responsive {
+            border-radius: 0.375rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        @media (max-width: 768px) {
+            .table td {
+                font-size: 0.875rem;
+            }
+            .btn-sm {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+
     <div class="row mb-3 align-items-center">
         <div class="col-md-4">
             <label for="">Buscar un trámite o servicio</label>
@@ -34,6 +57,10 @@
                 <tr>
                     <th>Título</th>
                     <th>Dependencia</th>
+                    <th>Descripción</th>
+                    <th>Requisitos</th>
+                    <th>Costo</th>
+                    <th>Archivos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -42,6 +69,44 @@
                     <tr>
                         <td>{{ $request->name }}</td>
                         <td>{{ $request->dependency_name }}</td>
+                        <td>
+                            @if($request->description)
+                                {{ Str::limit($request->description, 100) }}
+                            @else
+                                <span class="text-muted">Sin descripción</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($request->requirements)
+                                {{ Str::limit($request->requirements, 80) }}
+                            @else
+                                <span class="text-muted">Sin requisitos</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($request->cost)
+                                ${{ number_format($request->cost, 2) }}
+                            @else
+                                <span class="text-muted">Sin costo</span>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column gap-1">
+                                @if($request->steps_filename)
+                                    <a href="{{ $request->steps_filename }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-file-alt"></i> Pasos
+                                    </a>
+                                @endif
+                                @if($request->procedure_filename)
+                                    <a href="{{ $request->procedure_filename }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-file-pdf"></i> Procedimiento
+                                    </a>
+                                @endif
+                                @if(!$request->steps_filename && !$request->procedure_filename)
+                                    <span class="text-muted small">Sin archivos</span>
+                                @endif
+                            </div>
+                        </td>
 
                         @if ($mode == 0)
                             <td>
