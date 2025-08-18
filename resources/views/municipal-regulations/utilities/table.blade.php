@@ -32,7 +32,6 @@
         </div>
 
         <div class="col-md-2 text-end">
-
             @if ($title !== '' || $regulation_type !== '' || $publication_type !== '')
                 <button class="btn btn-secondary btn-sm" wire:click="resetFilters">Limpiar Filtros</button>
             @endif
@@ -52,7 +51,7 @@
                     <th>Título</th>
                     <th>Tipo de Regulación</th>
                     <th>Tipo de Publicación</th>
-                    <th>Ficha (PDF)</th>
+                    <th>Ficha</th>
                     <th>PDF</th>
                     <th>Word</th>
                 </tr>
@@ -70,8 +69,8 @@
                         <td>{{ $regulation->regulation_type }}</td>
                         <td>{{ $regulation->publication_type }}</td>
                         <td>
-                            @if ($regulation->ficha)
-                                <a href="{{ asset('regulations/' . $regulation->file) }}" target="_blank"
+                            @if ($regulation->file)
+                                <a href="{{ $regulation->file }}" target="_blank"
                                     class="btn btn-secondary">Ver Ficha</a>
                             @else
                                 N/A
@@ -79,7 +78,7 @@
                         </td>
                         <td>
                             @if ($regulation->pdf_file)
-                                <a href="{{ asset('regulations/' . $regulation->pdf_file) }}" target="_blank"
+                                <a href="{{ $regulation->pdf_file }}" target="_blank"
                                     class="btn btn-secondary">Ver PDF</a>
                             @else
                                 N/A
@@ -87,7 +86,7 @@
                         </td>
                         <td>
                             @if ($regulation->word_file)
-                                <a href="{{ asset('regulations/' . $regulation->word_file) }}" target="_blank"
+                                <a href="{{ $regulation->word_file }}" target="_blank"
                                     class="btn btn-secondary">Ver Word</a>
                             @else
                                 N/A
