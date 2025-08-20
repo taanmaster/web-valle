@@ -9,6 +9,8 @@ class DIFService extends Model
 {
     use HasFactory;
 
+    protected $table = 'd_i_f_services';
+
     protected $fillable = [
         'name',
         'description',

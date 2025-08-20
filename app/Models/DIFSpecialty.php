@@ -9,6 +9,8 @@ class DIFSpecialty extends Model
 {
     use HasFactory;
 
+    protected $table = 'd_i_f_specialties';
+
     protected $fillable = [
         'name',
         'description',

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class DIFPrescriptionFile extends Model
 {
     use HasFactory;
+
+    protected $table = 'd_i_f_prescription_files';
 }

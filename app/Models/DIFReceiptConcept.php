@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class DIFReceiptConcept extends Model
 {
     use HasFactory;
-    
+
+    protected $table = 'd_i_f_receipt_concepts';
+
     protected $fillable = [
         'receipt_id',
         'concept_id',

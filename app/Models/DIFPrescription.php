@@ -9,6 +9,8 @@ class DIFPrescription extends Model
 {
     use HasFactory;
 
+    protected $table = 'd_i_f_prescriptions';
+
     protected $fillable = [
         'prescription_num',
         'doctor_id',

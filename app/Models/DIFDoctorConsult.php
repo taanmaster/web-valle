@@ -9,6 +9,8 @@ class DIFDoctorConsult extends Model
 {
     use HasFactory;
 
+    protected $table = 'd_i_f_doctor_consults';
+
     protected $fillable = [
         'doctor_id',
         'patient_id',
