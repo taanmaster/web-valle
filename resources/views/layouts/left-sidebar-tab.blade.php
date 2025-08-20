@@ -19,7 +19,7 @@
 
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Mejora regulatoria"
                         data-bs-trigger="hover">
-                        <a href="#valleComunicacion" id="comunicacion-tab" class="nav-link">
+                        <a href="#valleRegulatoria" id="regulatoria-tab" class="nav-link">
                             <i class="ti ti-messages menu-icon"></i>
                         </a>
                     </li>
@@ -133,8 +133,8 @@
                 </div>
             @endif
 
-            <div id="valleComunicacion" class="main-icon-menu-pane tab-pane" role="tabpanel"
-                aria-labelledby="comunicacion-tab">
+            <div id="valleRegulatoria" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="regulatoria-tab">
                 <div class="title-box">
                     <h6 class="menu-title">Mejora regulatoria</h6>
                 </div>
