@@ -104,15 +104,14 @@
         <tr>
             <td class="label">ASUNTO</td>
             <td colspan="3">
-                <textarea name="subject" id="" cols="30" rows="10">{{ $complain->subject }}</textarea>
+                <p>{{ $complain->subject }}</p>
+            </td>
         </tr>
 
         <tr>
             <td class="label">DESCRIPCIÓN</td>
-            <td colspan="3">
-                <textarea>
-                    {{ $complain->message }}
-                </textarea>
+            <td colspan="6">
+                <p>{{ $complain->message }}</p>
             </td>
         </tr>
 
