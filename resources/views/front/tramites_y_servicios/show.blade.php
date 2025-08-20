@@ -27,10 +27,10 @@
                         <p>$ {{ $request->cost }}</p>
                     </div>
 
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center justify-content-center" style="gap: 12px">
                         @if ($request->steps_filename)
                             <a href="{{ asset('requests/' . $request->steps_filename) }}" target="_blank"
-                                class="btn btn-sm btn-secondary" style="max-width: 120px">Pasos para realizar el trámite en
+                                class="btn btn-sm btn-secondary">Pasos para realizar el trámite en
                                 línea</a>
                         @else
                             Sin Documento
@@ -38,7 +38,7 @@
 
                         @if ($request->procedure_filename)
                             <a href="{{ asset('requests/' . $request->procedure_filename) }}" target="_blank"
-                                class="btn btn-sm btn-secondary" style="max-width: 120px">Descargar Ficha del trámite</a>
+                                class="btn btn-sm btn-secondary">Descargar Ficha del trámite</a>
                         @else
                             Sin Ficha del trámite
                         @endif
