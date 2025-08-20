@@ -99,14 +99,14 @@ class Crud extends Component
 
                 // Crear ruta S3 bajo institutional_development/requests
                 $filepath = 'institutional_development/requests/' . $filename;
-                
+
                 // Usar streaming para subir a S3
                 $stream = fopen($document->getRealPath(), 'r+');
                 Storage::disk('s3')->put($filepath, $stream);
                 if (is_resource($stream)) {
                     fclose($stream);
                 }
-                
+
                 $steps_filename_url = Storage::disk('s3')->url($filepath);
             }
 
@@ -122,14 +122,14 @@ class Crud extends Component
 
                 // Crear ruta S3 bajo institutional_development/requests
                 $filepath = 'institutional_development/requests/' . $filename;
-                
+
                 // Usar streaming para subir a S3
                 $stream = fopen($document->getRealPath(), 'r+');
                 Storage::disk('s3')->put($filepath, $stream);
                 if (is_resource($stream)) {
                     fclose($stream);
                 }
-                
+
                 $procedure_filename_url = Storage::disk('s3')->url($filepath);
             }
 
@@ -153,6 +153,6 @@ class Crud extends Component
 
     public function render()
     {
-        return view('service-requests.utilities.crud');
+        return view('service_requests.utilities.crud');
     }
 }

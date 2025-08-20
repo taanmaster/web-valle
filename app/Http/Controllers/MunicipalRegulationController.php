@@ -14,7 +14,7 @@ class MunicipalRegulationController extends Controller
     {
         $mode = 0; // List mode
 
-        return view('municipal-regulations.index')->with('mode', $mode);
+        return view('municipal_regulations.index')->with('mode', $mode);
     }
 
     /**
@@ -23,7 +23,7 @@ class MunicipalRegulationController extends Controller
     public function create()
     {
         $mode = 0; // Create mode
-        return view('municipal-regulations.create')->with('mode', $mode);
+        return view('municipal_regulations.create')->with('mode', $mode);
     }
 
     /**
@@ -41,7 +41,7 @@ class MunicipalRegulationController extends Controller
     {
         $regulation = MunicipalRegulation::findOrFail($id);
         $mode = 1; // Show mode
-        return view('municipal-regulations.show')->with([
+        return view('municipal_regulations.show')->with([
             'regulation' => $regulation,
             'mode' => $mode
         ]);
@@ -54,7 +54,7 @@ class MunicipalRegulationController extends Controller
     {
         $regulation = MunicipalRegulation::findOrFail($id);
         $mode = 2; // Edit mode
-        return view('municipal-regulations.edit')->with([
+        return view('municipal_regulations.edit')->with([
             'regulation' => $regulation,
             'mode' => $mode
         ]);

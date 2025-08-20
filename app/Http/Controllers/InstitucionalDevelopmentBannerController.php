@@ -16,7 +16,7 @@ class InstitucionalDevelopmentBannerController extends Controller
     {
         $banners = InstitucionalDevelopmentBanner::orderBy('priority', 'asc')->paginate(5);
 
-        return view('municipal-regulations.banners.index', compact('banners'));
+        return view('municipal_regulations.banners.index', compact('banners'));
     }
 
     /**
@@ -24,7 +24,7 @@ class InstitucionalDevelopmentBannerController extends Controller
      */
     public function create()
     {
-        return view('municipal-regulations.banners.create');
+        return view('municipal_regulations.banners.create');
     }
 
     public function store(Request $request)
@@ -102,14 +102,14 @@ class InstitucionalDevelopmentBannerController extends Controller
     {
         $banner = InstitucionalDevelopmentBanner::find($id);
 
-        return view('municipal-regulations.banners.show')->with('banner', $banner);
+        return view('municipal_regulations.banners.show')->with('banner', $banner);
     }
 
     public function edit($id)
     {
         $banner = InstitucionalDevelopmentBanner::find($id);
 
-        return view('municipal-regulations.banners.edit')->with('banner', $banner);
+        return view('municipal_regulations.banners.edit')->with('banner', $banner);
     }
 
     public function update(Request $request, $id)

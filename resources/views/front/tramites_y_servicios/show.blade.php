@@ -27,18 +27,18 @@
                         <p>$ {{ $request->cost }}</p>
                     </div>
 
-                    <div class="d-flex align-items-center">
-                        @if ($regulation->steps_filename)
-                            <a href="{{ asset('requests/' . $regulation->steps_filename) }}" target="_blank"
-                                class="btn btn-sm btn-secondary" style="max-width: 120px">Pasos para realizar el trámite en
+                    <div class="d-flex align-items-center justify-content-center" style="gap: 12px">
+                        @if ($request->steps_filename)
+                            <a href="{{ asset('requests/' . $request->steps_filename) }}" target="_blank"
+                                class="btn btn-sm btn-secondary">Pasos para realizar el trámite en
                                 línea</a>
                         @else
                             Sin Documento
                         @endif
 
-                        @if ($regulation->procedure_filename)
-                            <a href="{{ asset('requests/' . $regulation->procedure_filename) }}" target="_blank"
-                                class="btn btn-sm btn-secondary" style="max-width: 120px">Descargar Ficha del trámite</a>
+                        @if ($request->procedure_filename)
+                            <a href="{{ asset('requests/' . $request->procedure_filename) }}" target="_blank"
+                                class="btn btn-sm btn-secondary">Descargar Ficha del trámite</a>
                         @else
                             Sin Ficha del trámite
                         @endif

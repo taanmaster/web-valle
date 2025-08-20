@@ -106,68 +106,65 @@
                         @php
                             $documentsConfig = [
                                 'uso-de-suelo' => [
-                                    'Solicitud por escrito dirigida al Director',
-                                    'Copia de identificación oficial vigente',
-                                    'Escritura pública o documento de propiedad',
-                                    'Último recibo de pago del impuesto predial',
-                                    'Plano de localización del predio (escala 1:1000)',
-                                    'Croquis de ubicación con referencias y medidas'
+                                    'Formato de solicitud para licencia de Uso de Suelo (FDDUEM-01)',
+                                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
+                                    'Contrato de arrendamiento simple.',
+                                    'Copia del último pago del predial.',
+                                    'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso',
+                                    'Croquis de ubicación del inmueble'
                                 ],
                                 'constancia-de-factibilidad' => [
-                                    'Solicitud detallada del proyecto',
-                                    'Proyecto arquitectónico o memoria descriptiva',
-                                    'Escritura pública de propiedad',
-                                    'Plano topográfico actualizado',
-                                    'Estudio de factibilidad de servicios públicos',
-                                    'Dictamen de uso de suelo vigente'
+                                    'Formato de solicitud para licencia de Uso de Suelo (FDDUEM-01)',
+                                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
+                                    'Contrato de arrendamiento simple',
+                                    'Poder Legal',
+                                    'Copia del último pago del predial.',
+                                    'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso',
+                                    'Croquis de ubicación del inmueble'
                                 ],
                                 'permiso-de-anuncios' => [
-                                    'Solicitud especificando tipo y características',
-                                    'Diseño gráfico y especificaciones técnicas',
-                                    'Documento de propiedad o autorización',
-                                    'Memoria de cálculo estructural (si aplica)',
-                                    'Plano de localización y ubicación exacta',
-                                    'Fotografías del lugar de instalación'
+                                    'Formato de solicitud para Licencia de Uso Suelo (FDDUEM-01)',
+                                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
+                                    'Contrato de arrendamiento simple',
+                                    'Poder Legal',
+                                    'Copia del último pago del predial',
+                                    'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso',
+                                    'Croquis de ubicación del inmueble'
                                 ],
                                 'certificacion-numero-oficial' => [
-                                    'Solicitud dirigida al Director',
-                                    'Escritura pública o documento de propiedad',
-                                    'Constancia de alineamiento vigente',
-                                    'Plano de localización con medidas exactas',
-                                    'Identificación oficial del propietario',
-                                    'Último recibo de impuesto predial'
+                                    'Formato de solicitud para Licencia de Uso Suelo (FDDUEM-01)',
+                                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
+                                    'Contrato de arrendamiento simple',
+                                    'Poder Legal',
+                                    'Copia del último pago del predial',
+                                    'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso',
+                                    'Croquis de ubicación del inmueble'
                                 ],
                                 'permiso-de-division' => [
-                                    'Solicitud con proyecto de división',
-                                    'Escritura pública de propiedad',
-                                    'Levantamiento topográfico certificado',
-                                    'Proyecto de lotificación completo',
-                                    'Dictamen de factibilidad de servicios',
-                                    'Estudio de impacto urbano y vial'
+                                    'Solicitud por escrito con proyecto de división',
+                                    'Croquis del predio',
+                                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
+                                    'Copia del último pago del predial',
+                                    'Copia de identificación de la persona que acredita la propiedad'
                                 ],
                                 'uso-de-via-publica' => [
-                                    'Solicitud especificando uso y tiempo',
-                                    'Croquis del área a ocupar',
-                                    'Programa de actividades y horarios',
-                                    'Medidas de seguridad propuestas',
-                                    'Póliza de seguro de responsabilidad civil',
-                                    'Autorización de vecinos (si aplica)'
+                                    'Formato de solicitud para Licencia de Uso Suelo (FDDUEM-01)',
+                                    'Copia del último pago del predial',
+                                    'Copia de identificación de la persona que acredita la propiedad',
+                                    'Croquis de ubicación del inmueble'
                                 ],
                                 'licencia-de-construccion' => [
-                                    'Solicitud con proyecto arquitectónico',
-                                    'Planos estructurales firmados por DRO',
-                                    'Memoria de cálculo y especificaciones',
-                                    'Dictamen de uso de suelo compatible',
-                                    'Factibilidades de servicios públicos',
-                                    'Estudio de mecánica de suelos (si aplica)'
+                                    'Formato de solicitud para Licencia de Uso Suelo (FDDUEM-01)',
+                                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
+                                    'Copia del último pago del predial',
+                                    'Copia de identificación de la persona que acredita la propiedad',
+                                    'Croquis de ubicación del inmueble',
+                                    'Proyecto arquitectonico, en dos tantos físicos. Con escala 1:100 O 1:50 elaborados, avaldaos y firmados por DRO'
                                 ],
                                 'permiso-construccion-panteones' => [
-                                    'Solicitud dirigida a Administración del Panteón',
-                                    'Proyecto de construcción funeraria',
-                                    'Documento de propiedad o concesión del lote',
-                                    'Especificaciones de materiales y acabados',
-                                    'Plano de ubicación dentro del cementerio',
-                                    'Autorización de familiares o herederos'
+                                    'Formato de solicitud para Licencia de Uso Suelo',
+                                    'Copia de identificación del propietario',
+                                    'Copia del documento de perpetuidad'
                                 ]
                             ];
                             
