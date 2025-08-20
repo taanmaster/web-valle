@@ -57,7 +57,7 @@ class Table extends Component
             $query->where('dependency_name', $this->dependency_name);
         }
 
-        return view('service-requests.utilities.table', [
+        return view('service_requests.utilities.table', [
             'requests' => $query->paginate(10)
         ]);
     }

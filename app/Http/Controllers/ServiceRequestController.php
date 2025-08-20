@@ -14,7 +14,7 @@ class ServiceRequestController extends Controller
     {
         $mode = 0;
 
-        return view('service-requests.index')->with('mode', $mode);
+        return view('service_requests.index')->with('mode', $mode);
     }
 
     /**
@@ -24,7 +24,7 @@ class ServiceRequestController extends Controller
     {
         $mode = 0;
 
-        return view('service-requests.create')->with('mode', $mode);
+        return view('service_requests.create')->with('mode', $mode);
     }
 
     /**
@@ -42,7 +42,7 @@ class ServiceRequestController extends Controller
     {
         $request = ServiceRequest::findOrFail($id);
         $mode = 1; // Show mode
-        return view('service-requests.show')->with([
+        return view('service_requests.show')->with([
             'request' => $request,
             'mode' => $mode
         ]);
@@ -56,7 +56,7 @@ class ServiceRequestController extends Controller
     {
         $request = ServiceRequest::findOrFail($id);
         $mode = 2; // Edit mode
-        return view('service-requests.edit')->with([
+        return view('service_requests.edit')->with([
             'request' => $request,
             'mode' => $mode
         ]);
