@@ -5,7 +5,7 @@
         <div class="row justify-content-center mb-4">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner wow fadeInUp">
-                    <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('front/img/placeholder-3.jpg') }}" alt="">
                     <div class="overlay"></div>
                     <div class="card-content">
                         <p>Bienvenido al</p>
@@ -63,9 +63,9 @@
                 <div class="card card-normal wow fadeInUp h-100">
                     <div class="card-content">
                         <h2>Requisitos:</h2>
-                        <p>Se deberá completar el expediente de solicitud con el
-                            <a href="{{ asset('files/sare/Permiso_de_Suelo.pdf') }}" target="_blank">Formato Único SARE</a>
-                            y copia simple de la siguiente documentación:
+                        <p>Se deberá completar el expediente de solicitud desde la sección <strong>Solicitudes S.A.R.E</strong> en tu <strong>Perfil Ciudadano Digital</strong>. 
+                            Puedes iniciar sesión <a href="{{ route('login') }}">aquí</a> o, si no tienes un perfil creado, puedes registrarte <a href="{{ route('register') }}">aquí.</a>
+                            El formulario en linea te guiará en tu proceso.
                         </p>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
 
             <div class="col-md-4">
                 <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/placeholder.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('front/img/placeholder-2.jpg') }}" alt="">
                     <div class="overlay"></div>
                 </div>
             </div>

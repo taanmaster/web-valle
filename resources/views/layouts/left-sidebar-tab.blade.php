@@ -17,12 +17,26 @@
                         </li>
                     @endif
 
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Mejora regulatoria"
-                        data-bs-trigger="hover">
-                        <a href="#valleRegulatoria" id="regulatoria-tab" class="nav-link">
-                            <i class="ti ti-messages menu-icon"></i>
-                        </a>
-                    </li>
+                    @if (auth()->user()->hasRole('institutional_development') ||
+                            auth()->user()->hasRole('private_secretary') ||
+                            auth()->user()->hasRole('all'))
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
+                            title="Desarrollo Institucional" data-bs-trigger="hover">
+                            <a href="#valleInstitutionalDevelopment" id="institutional-development-tab"
+                                class="nav-link">
+                                <i class="ti ti-notebook menu-icon"></i>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (auth()->user()->hasRole('all') || auth()->user()->email == 'denunciascontraloria@valledesantiago.gob.mx')
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
+                            title="Denuncias Ciudadanas" data-bs-trigger="hover">
+                            <a href="#valleDenunciaNet" id="denuncianet-tab" class="nav-link">
+                                <i class="ti ti-forms menu-icon"></i>
+                            </a>
+                        </li>
+                    @endif
 
                     @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -60,20 +74,20 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->hasRole('gazette') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Gaceta Municipal"
+                    @if (auth()->user()->hasRole('sare') || auth()->user()->hasRole('all'))
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="SARE"
                             data-bs-trigger="hover">
-                            <a href="#valleDocuments" id="pages-tab" class="nav-link">
-                                <i class="ti ti-files menu-icon"></i>
+                            <a href="#valleSARE" id="sare-tab" class="nav-link">
+                                <i class="ti ti-bulb menu-icon"></i>
                             </a>
                         </li>
                     @endif
 
-                    @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
+                    @if (auth()->user()->hasRole('urban_dev') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Agenda Regulatoria" data-bs-trigger="hover">
-                            <a href="#valleDevelopment" id="pages-tab" class="nav-link">
-                                <i class="ti ti-notebook menu-icon"></i>
+                            title="Desarrollo Urbano" data-bs-trigger="hover">
+                            <a href="#valleUrbanDev" id="urban-dev-tab" class="nav-link">
+                                <i class="ti ti-map-pin menu-icon"></i>
                             </a>
                         </li>
                     @endif
@@ -88,8 +102,8 @@
                     @endif
 
                     @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Configuraciones"
-                            data-bs-trigger="hover">
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
+                            title="Configuraciones" data-bs-trigger="hover">
                             <a href="#valleConfiguration" id="authentication-tab" class="nav-link">
                                 <i class="ti ti-shield-lock menu-icon"></i>
                             </a>
@@ -133,25 +147,66 @@
                 </div>
             @endif
 
-            <div id="valleRegulatoria" class="main-icon-menu-pane tab-pane" role="tabpanel"
-                aria-labelledby="regulatoria-tab">
-                <div class="title-box">
-                    <h6 class="menu-title">Mejora regulatoria</h6>
+            @if (auth()->user()->hasRole('institutional_development') || auth()->user()->hasRole('all'))
+                <div id="valleInstitutionalDevelopment" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="institutional-development-tab">
+
+                    @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
+                        <div class="title-box">
+                            <h6 class="menu-title">Desarrollo Institucional</h6>
+                        </div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('regulatory_agenda.index') }}">Agenda
+                                    Regulatoria</a>
+                            </li>
+                        </ul>
+                    @endif
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Mejora Regulatoria</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('institucional_development.regulations.index') }}">Normativa
+                                Municipal</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('institucional_development.requests.index') }}">Trámites y
+                                Servicios</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Comunicación</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('institucional_development.banners.index') }}">Banners</a>
+                        </li>
+                    </ul>
                 </div>
+            @endif
 
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="{{ route('institucional_development.regulations.index') }}">Normativa
-                            Municipal</a>
-                    </li>
+            @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
+                <div id="valleDenunciaNet" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="denuncianet-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">DenunciaNET</h6>
+                    </div>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('institucional_development.requests.index') }}">Trámites
-                            y Servicios</a>
+                        <a class="nav-link" href="{{ route('citizen_complain.index') }}">Denuncias ciudadanas</a>
                     </li>
-                </ul>
-            </div>
+                    </ul>
+                </div>
+            @endif
 
             @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
                 <div id="valleComunicacion" class="main-icon-menu-pane tab-pane" role="tabpanel"
@@ -177,29 +232,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('events.index') }}">Eventos</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('citizen_complain.index') }}">Denuncia ciudadana</a>
-                        </li>
-                    </ul>
-
-                    <div class="title-box mt-4">
-                        <h6 class="menu-title">DIF</h6>
-                    </div>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dif.banners.index') }}">Banners</a>
-                        </li>
-                    </ul>
-
-                    <div class="title-box mt-4">
-                        <h6 class="menu-title">Mejora regulatoria</h6>
-                    </div>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('institucional_development.banners.index') }}">Banners</a>
-                        </li>
                     </ul>
                 </div>
             @endif
@@ -207,30 +239,35 @@
             @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                 <div id="valleTransparency" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="apps-tab">
-                    <div class="title-box">
-                        <h6 class="menu-title">Transparencia</h6>
-                    </div>
-                    <ul class="nav flex-column">
-                        @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
+                    @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
+                        <div class="title-box">
+                            <h6 class="menu-title">Transparencia</h6>
+                        </div>
+                        <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link"
                                     href="{{ route('transparency_dependencies.index') }}">Dependencias</a>
                             </li>
-                        @endif
 
-                        @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link"
                                     href="{{ route('transparency_obligations.index') }}">Obligaciones</a>
                             </li>
-                        @endif
 
-                        @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('transparency_files.index') }}">Repositorio de
                                     Archivos (Links)</a>
                             </li>
-                        @endif
+                        </ul>
+                    @endif
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Gaceta</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('gazettes.index') }}">Gaceta Municipal</a>
+                        </li>
                     </ul>
                 </div>
             @endif
@@ -354,32 +391,28 @@
                 </div>
             @endif
 
-            @if (auth()->user()->hasRole('gazette') || auth()->user()->hasRole('all'))
-                <div id="valleDocuments" class="main-icon-menu-pane tab-pane" role="tabpanel"
-                    aria-labelledby="pages-tab">
+            @if (auth()->user()->hasRole('sare') || auth()->user()->hasRole('all'))
+                <div id="valleSARE" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="sare-tab">
                     <div class="title-box">
-                        <h6 class="menu-title">Gaceta</h6>
+                        <h6 class="menu-title">Solicitudes</h6>
                     </div>
                     <ul class="nav flex-column">
-                        @if (auth()->user()->hasRole('gazette') || auth()->user()->hasRole('all'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('gazettes.index') }}">Gaceta Municipal</a>
-                            </li>
-                        @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('sare.request.index') }}">Solicitudes</a>
+                        </li>
                     </ul>
                 </div>
             @endif
 
-            @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
-                <div id="valleDevelopment" class="main-icon-menu-pane tab-pane" role="tabpanel"
-                    aria-labelledby="pages-tab">
+            @if (auth()->user()->hasRole('urban_dev') || auth()->user()->hasRole('all'))
+                <div id="valleUrbanDev" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="urban-dev-tab">
                     <div class="title-box">
-                        <h6 class="menu-title">Desarrollo institucional</h6>
+                        <h6 class="menu-title">Trámites</h6>
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('regulatory_agenda.index') }}">Agenda
-                                Regulatoria</a>
+                            <a class="nav-link" href="{{ route('urban_dev.requests.index') }}">Expedientes</a>
                         </li>
                     </ul>
                 </div>
@@ -424,6 +457,16 @@
                             <a class="nav-link" href="{{ route('dif.programs.index') }}">Programas</a>
                         </li>
                     </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Comunicación</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.banners.index') }}">Banners</a>
+                        </li>
+                    </ul>
                 </div>
             @endif
 
@@ -443,6 +486,12 @@
                         @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('legals.index') }}">Textos Legales</a>
+                            </li>
+                        @endif
+
+                        @if (auth()->user()->hasRole('all'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('roles.index') }}">Roles y Permisos</a>
                             </li>
                         @endif
                     </ul>

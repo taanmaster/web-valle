@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::table('citizens', function (Blueprint $table) {
 
             // agregar columnas nuevas
-            $table->string('street')->nullable()->unique()->after('address');
+            $table->string('street')->nullable()->after('address');
             $table->string('colony')->nullable()->after('street');
 
             // agregar restricciones únicas
-            $table->unique('phone');
             $table->unique('curp');
         });
     }
@@ -31,7 +30,6 @@ return new class extends Migration
         Schema::table('citizens', function (Blueprint $table) {
             $table->dropColumn('colony');
             $table->dropColumn('street');
-            $table->dropUnique('citizens_phone_unique');
             $table->dropUnique('citizens_curp_unique');
         });
     }

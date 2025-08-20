@@ -5,45 +5,118 @@
 @component('components.breadcrumb')
 @slot('li_1') Intranet @endslot
 @slot('li_2') Usuarios @endslot
-@slot('title') Listado @endslot
+@slot('title') Gestión de Usuarios @endslot
 @endcomponent
+
+<style>
+    .avatar{
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .avatar-initial{
+        width: 30px;
+        height: 30px;
+        display: block;
+        text-align: center;
+        line-height: 30px;
+        font-size: 14px;
+    }
+</style>
 
 <div class="row">
     <div class="col">
-        <div class="row"> 
-            <div class="col md-2 d-flex mb-4">
-                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-primary btn-sm"><i class='bx bx-plus-circle mr-4'></i> Crear Nuevo Usuario</a>
-            </div>
-    
-            <div class="col-lg-12">
-                <div class="box">
-                    <div class="box-body"> 
-                        @if($users->count() == 0)
-                        <div class="text-center" style="padding:80px 0px 100px 0px;">
-                            <img src="{{ asset('img/illustration/group_13.svg') }}" class="ml-auto mr-auto" style="width:30%; margin-bottom: 40px;">
-                            <h4>¡No hay elementos guardados en la base de datos!</h4>
-                            <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
-                            <a href="{{ route('users.create') }}" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-sm btn-primary btn-uppercase d-flex align-items-center text-uppercase fs-7"><i class='bx bx-plus-circle mr-4'></i> Crear Nuevo Usuario</a>
+        <!-- Pestañas de navegación -->
+        <ul class="nav nav-tabs mb-4" id="usersTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="admin-users-tab" data-bs-toggle="tab" data-bs-target="#admin-users" type="button" role="tab">
+                    <i class='bx bx-user-check'></i> Usuarios Administrativos
+                    <span class="badge bg-primary ms-1">{{ $adminUsers->count() }}</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="citizens-tab" data-bs-toggle="tab" data-bs-target="#citizens" type="button" role="tab">
+                    <i class='bx bx-group'></i> Usuarios Ciudadanos
+                    <span class="badge bg-success ms-1">{{ $citizenUsers->count() }}</span>
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="usersTabContent">
+            <!-- TAB DE USUARIOS ADMINISTRATIVOS -->
+            <div class="tab-pane fade show active" id="admin-users" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-2 d-flex mb-4">
+                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreateAdmin" class="btn btn-primary btn-sm">
+                            <i class='bx bx-plus-circle mr-4'></i> Crear Usuario Admin
+                        </a>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="box">
+                            <div class="box-body">
+                                @if($adminUsers->count() == 0)
+                                <div class="text-center" style="padding:80px 0px 100px 0px;">
+                                    <img src="{{ asset('img/illustration/group_13.svg') }}" class="ml-auto mr-auto" style="width:30%; margin-bottom: 40px;">
+                                    <h4>¡No hay usuarios administrativos!</h4>
+                                    <p class="mb-4">Empieza a crear usuarios administrativos.</p>
+                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreateAdmin" class="btn btn-sm btn-primary btn-uppercase d-flex align-items-center text-uppercase fs-7">
+                                        <i class='bx bx-plus-circle mr-4'></i> Crear Usuario Admin
+                                    </a>
+                                </div>
+                                @else
+                                    @include('users.utilities._admin_table')
+                                @endif
+                            </div>
                         </div>
-                        @else
-                            @include('users.utilities._table')
-                        @endif 
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB DE USUARIOS CIUDADANOS -->
+            <div class="tab-pane fade" id="citizens" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-2 d-flex mb-4">
+                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreateCitizen" class="btn btn-success btn-sm">
+                            <i class='bx bx-plus-circle mr-4'></i> Crear Usuario Ciudadano
+                        </a>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="box">
+                            <div class="box-body">
+                                @if($citizenUsers->count() == 0)
+                                <div class="text-center" style="padding:80px 0px 100px 0px;">
+                                    <img src="{{ asset('img/illustration/group_13.svg') }}" class="ml-auto mr-auto" style="width:30%; margin-bottom: 40px;">
+                                    <h4>¡No hay usuarios ciudadanos!</h4>
+                                    <p class="mb-4">Empieza a crear usuarios ciudadanos.</p>
+                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreateCitizen" class="btn btn-sm btn-success btn-uppercase d-flex align-items-center text-uppercase fs-7">
+                                        <i class='bx bx-plus-circle mr-4'></i> Crear Usuario Ciudadano
+                                    </a>
+                                </div>
+                                @else
+                                    @include('users.utilities._citizens_table')
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    
-        <div id="modalCreate" class="modal fade">
+
+        <!-- MODALES PARA USUARIOS ADMINISTRATIVOS -->
+        <div id="modalCreateAdmin" class="modal fade">
             <div class="modal-dialog modal-dialog-vertical-center" role="document">
                 <div class="modal-content bd-0 tx-14">
                     <div class="modal-header">
-                        <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Agregar Usuario</h6>
+                        <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Agregar Usuario Administrativo</h6>
                         <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-    
-                    <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
+
+                    <form method="POST" action="{{ route('users.store') }}">
                     {{ csrf_field() }}
                         <div class="modal-body pd-25">
                             <div class="row">
@@ -51,32 +124,30 @@
                                     <label for="name">Nombre Completo</label>
                                     <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                                 </div>
-            
+
                                 <div class="col-md-12 mb-3">
                                     <label for="email">Correo Electrónico</label>
                                     <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autocomplete="email">
                                 </div>
-            
+
                                 <div class="col-md-6 mb-3">
                                     <label for="password">Contraseña</label>
                                     <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
                                 </div>
-            
+
                                 <div class="col-md-6 mb-3">
                                     <label for="password-confirm">Confirmar Contraseña</label>
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                 </div>
-            
-                                <h6 class="mt-4">Definir Roles</h6>
+
+                                <h6 class="mt-4">Definir Rol Administrativo</h6>
                                 <hr>
-            
+
                                 <div class="col-md-12 mb-3">
-                                    <select class="form-control" name="rol">
-                                        <option value="0">Selecciona un Rol de Usuario</option>
+                                    <select class="form-control" name="rol" required>
+                                        <option value="">Selecciona un Rol</option>
                                         @foreach($roles as $rol)
-                                            <option value="{{ $rol->name }}">
-                                                {{ $rol->name }}
-                                            </option>
+                                            <option value="{{ $rol->name }}">{{ $rol->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -84,40 +155,40 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Crear Nuevo Usuario</button>
+                            <button type="submit" class="btn btn-primary">Crear Usuario Admin</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- Modal para Editar Usuario -->
-        <div id="modalEdit" class="modal fade" tabindex="-1" role="dialog">
+        <!-- Modal para Editar Usuario Admin -->
+        <div id="modalEditAdmin" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Editar Usuario</h5>
+                        <h5 class="modal-title">Editar Usuario Administrativo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="editUserForm" method="POST" action="">
+                    <form id="editAdminForm" method="POST" action="">
                         {{ csrf_field() }}
                         {{ method_field('PUT') }}
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="editName" class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" id="editName" name="name" required>
+                                <label for="editAdminName" class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="editAdminName" name="name" required>
                             </div>
                             <div class="mb-3">
-                                <label for="editEmail" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" id="editEmail" name="email" required>
+                                <label for="editAdminEmail" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="editAdminEmail" name="email" required>
                             </div>
                             <div class="mb-3">
-                                <label for="editPassword" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="editPassword" name="password">
+                                <label for="editAdminPassword" class="form-label">Contraseña (Dejar vacío para mantener)</label>
+                                <input type="password" class="form-control" id="editAdminPassword" name="password">
                             </div>
                             <div class="mb-3">
-                                <label for="editRole" class="form-label">Rol</label>
-                                <select class="form-control" id="editRole" name="rol">
+                                <label for="editAdminRole" class="form-label">Rol</label>
+                                <select class="form-control" id="editAdminRole" name="rol" required>
                                     @foreach($roles as $rol)
                                         <option value="{{ $rol->name }}">{{ $rol->name }}</option>
                                     @endforeach
@@ -133,15 +204,121 @@
             </div>
         </div>
 
+        <!-- MODALES PARA USUARIOS CIUDADANOS -->
+        <div id="modalCreateCitizen" class="modal fade">
+            <div class="modal-dialog modal-dialog-vertical-center" role="document">
+                <div class="modal-content bd-0 tx-14">
+                    <div class="modal-header">
+                        <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Agregar Usuario Ciudadano</h6>
+                        <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form method="POST" action="{{ route('users.store-citizen') }}">
+                    {{ csrf_field() }}
+                        <div class="modal-body pd-25">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="citizen_name">Nombre Completo</label>
+                                    <input id="citizen_name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label for="citizen_email">Correo Electrónico</label>
+                                    <input id="citizen_email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="citizen_password">Contraseña</label>
+                                    <input id="citizen_password" type="password" class="form-control" name="password" required autocomplete="new-password">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="citizen_password_confirm">Confirmar Contraseña</label>
+                                    <input id="citizen_password_confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="alert alert-info">
+                                        <i class="bx bx-info-circle"></i>
+                                        <strong>Nota:</strong> Este usuario será creado con rol de "Ciudadano" automáticamente.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Crear Usuario Ciudadano</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Editar Usuario Ciudadano -->
+        <div id="modalEditCitizen" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Usuario Ciudadano</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="editCitizenForm" method="POST" action="">
+                        {{ csrf_field() }}
+                        {{ method_field('PUT') }}
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="editCitizenName" class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="editCitizenName" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editCitizenEmail" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="editCitizenEmail" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editCitizenPassword" class="form-label">Contraseña (Dejar vacío para mantener)</label>
+                                <input type="password" class="form-control" id="editCitizenPassword" name="password">
+                            </div>
+                            <div class="alert alert-info">
+                                <i class="bx bx-info-circle"></i>
+                                <strong>Nota:</strong> Este usuario mantendrá su rol de "Ciudadano".
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <script>
-            function openEditModal(user) {
-                const form = document.getElementById('editUserForm');
+            function openEditAdminModal(user) {
+                const form = document.getElementById('editAdminForm');
                 form.action = `{{ route('users.update', '') }}/${user.id}`;
-                document.getElementById('editName').value = user.name;
-                document.getElementById('editEmail').value = user.email;
-                document.getElementById('editRole').value = user.role;
-                new bootstrap.Modal(document.getElementById('modalEdit')).show();
+                document.getElementById('editAdminName').value = user.name;
+                document.getElementById('editAdminEmail').value = user.email;
+                document.getElementById('editAdminRole').value = user.role;
+                new bootstrap.Modal(document.getElementById('modalEditAdmin')).show();
             }
+
+            function openEditCitizenModal(user) {
+                const form = document.getElementById('editCitizenForm');
+                form.action = `{{ route('users.update-citizen', '') }}/${user.id}`;
+                document.getElementById('editCitizenName').value = user.name;
+                document.getElementById('editCitizenEmail').value = user.email;
+                new bootstrap.Modal(document.getElementById('modalEditCitizen')).show();
+            }
+
+            // Activar pestaña de ciudadanos si viene de un redirect
+            document.addEventListener('DOMContentLoaded', function() {
+                if (window.location.hash === '#citizens') {
+                    const citizensTab = new bootstrap.Tab(document.getElementById('citizens-tab'));
+                    citizensTab.show();
+                }
+            });
         </script>
     </div>
 </div>
