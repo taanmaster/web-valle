@@ -110,7 +110,7 @@
 
         <tr>
             <td class="label">DESCRIPCIÓN</td>
-            <td colspan="6">
+            <td colspan="3">
                 <p>{{ $complain->message }}</p>
             </td>
         </tr>
