@@ -164,6 +164,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     // Back-End Views
     Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin_access']], function () {
         Route::get('/', 'DashboardController@index')->name('dashboard');
+        Route::post('/notification-manual', 'DashboardController@createNote')->name('create.manual.notification');
 
         /* Usuarios */
         Route::resource('users', UserController::class);
@@ -360,6 +361,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'dif.specialties.update',
                 'destroy' => 'dif.specialties.destroy',
             ]);
+            
             Route::resource('consult_types', DIFConsultTypeController::class)->names([
                 'index' => 'dif.consult_types.index',
                 'create' => 'dif.consult_types.create',
@@ -369,6 +371,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'dif.consult_types.update',
                 'destroy' => 'dif.consult_types.destroy',
             ]);
+
             Route::resource('services', DIFServiceController::class)->names([
                 'index' => 'dif.services.index',
                 'create' => 'dif.services.create',
@@ -377,6 +380,66 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'edit' => 'dif.services.edit',
                 'update' => 'dif.services.update',
                 'destroy' => 'dif.services.destroy',
+            ]);
+
+            Route::resource('locations', DIFLocationController::class)->names([
+                'index' => 'dif.locations.index',
+                'create' => 'dif.locations.create',
+                'store' => 'dif.locations.store',
+                'show' => 'dif.locations.show',
+                'edit' => 'dif.locations.edit',
+                'update' => 'dif.locations.update',
+                'destroy' => 'dif.locations.destroy',
+            ]);
+
+            Route::resource('location_assignments', DIFLocationAssignmentController::class)->names([
+                'index' => 'dif.location_assignments.index',
+                'create' => 'dif.location_assignments.create',
+                'store' => 'dif.location_assignments.store',
+                'show' => 'dif.location_assignments.show',
+                'edit' => 'dif.location_assignments.edit',
+                'update' => 'dif.location_assignments.update',
+                'destroy' => 'dif.location_assignments.destroy',
+            ]);
+
+            Route::resource('socio_economic_tests', DIFSocioEconomicTestController::class)->names([
+                'index' => 'dif.socio_economic_tests.index',
+                'create' => 'dif.socio_economic_tests.create',
+                'store' => 'dif.socio_economic_tests.store',
+                'show' => 'dif.socio_economic_tests.show',
+                'edit' => 'dif.socio_economic_tests.edit',
+                'update' => 'dif.socio_economic_tests.update',
+                'destroy' => 'dif.socio_economic_tests.destroy',
+            ]);
+
+            Route::resource('social_assistances', DIFSocialAssistanceController::class)->names([
+                'index' => 'dif.social_assistances.index',
+                'create' => 'dif.social_assistances.create',
+                'store' => 'dif.social_assistances.store',
+                'show' => 'dif.social_assistances.show',
+                'edit' => 'dif.social_assistances.edit',
+                'update' => 'dif.social_assistances.update',
+                'destroy' => 'dif.social_assistances.destroy',
+            ]);
+
+            Route::resource('medications', DIFMedicationController::class)->names([
+                'index' => 'dif.medications.index',
+                'create' => 'dif.medications.create',
+                'store' => 'dif.medications.store',
+                'show' => 'dif.medications.show',
+                'edit' => 'dif.medications.edit',
+                'update' => 'dif.medications.update',
+                'destroy' => 'dif.medications.destroy',
+            ]);
+
+            Route::resource('legal_processes', DIFLegalProcessController::class)->names([
+                'index' => 'dif.legal_processes.index',
+                'create' => 'dif.legal_processes.create',
+                'store' => 'dif.legal_processes.store',
+                'show' => 'dif.legal_processes.show',
+                'edit' => 'dif.legal_processes.edit',
+                'update' => 'dif.legal_processes.update',
+                'destroy' => 'dif.legal_processes.destroy',
             ]);
 
             // Ruta para búsqueda de conceptos de pago via Ajax (debe ir antes del resource)
@@ -485,7 +548,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ]);
             Route::get('prescription-files/{prescriptionFile}/download', [DIFPrescriptionFileController::class, 'download'])->name('dif.prescription-files.download');
         
-            Route::resource('banners', DifBannerController::class)->names([
+            Route::resource('banners', DIFBannerController::class)->names([
                 'index' => 'dif.banners.index',
                 'create' => 'dif.banners.create',
                 'store' => 'dif.banners.store',
@@ -494,8 +557,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'dif.banners.update',
                 'destroy' => 'dif.banners.destroy',
             ]);
+
             Route::post('/banners/status/{id}', [
-                'uses' => 'DifBannerController@status',
+                'uses' => 'DIFBannerController@status',
                 'as' => 'dif.banners.status',
             ]);
         });
@@ -1031,4 +1095,3 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'reload.captcha',
     ]);
 });
-
