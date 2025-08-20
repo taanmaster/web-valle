@@ -88,14 +88,14 @@ class Crud extends Component
 
                 // Crear ruta S3 bajo institutional_development
                 $filepath = 'institutional_development/regulations/' . $filename;
-                
+
                 // Usar streaming para subir a S3
                 $stream = fopen($document->getRealPath(), 'r+');
                 Storage::disk('s3')->put($filepath, $stream);
                 if (is_resource($stream)) {
                     fclose($stream);
                 }
-                
+
                 $file_url = Storage::disk('s3')->url($filepath);
             }
 
@@ -111,14 +111,14 @@ class Crud extends Component
 
                 // Crear ruta S3 bajo institutional_development
                 $filepath = 'institutional_development/regulations/' . $filename;
-                
+
                 // Usar streaming para subir a S3
                 $stream = fopen($document->getRealPath(), 'r+');
                 Storage::disk('s3')->put($filepath, $stream);
                 if (is_resource($stream)) {
                     fclose($stream);
                 }
-                
+
                 $pdf_file_url = Storage::disk('s3')->url($filepath);
             }
 
@@ -134,14 +134,14 @@ class Crud extends Component
 
                 // Crear ruta S3 bajo institutional_development
                 $filepath = 'institutional_development/regulations/' . $filename;
-                
+
                 // Usar streaming para subir a S3
                 $stream = fopen($document->getRealPath(), 'r+');
                 Storage::disk('s3')->put($filepath, $stream);
                 if (is_resource($stream)) {
                     fclose($stream);
                 }
-                
+
                 $word_file_url = Storage::disk('s3')->url($filepath);
             }
 
@@ -165,6 +165,6 @@ class Crud extends Component
 
     public function render()
     {
-        return view('municipal-regulations.utilities.crud');
+        return view('municipal_regulations.utilities.crud');
     }
 }

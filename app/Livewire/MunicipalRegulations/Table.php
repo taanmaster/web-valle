@@ -53,7 +53,7 @@ class Table extends Component
             $query->where('publication_type', $this->publication_type);
         }
 
-        return view('municipal-regulations.utilities.table', [
+        return view('municipal_regulations.utilities.table', [
             'regulations' => $query->paginate(10)
         ]);
     }
