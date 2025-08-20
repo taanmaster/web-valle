@@ -78,6 +78,6 @@ class ServiceRequestController extends Controller
         $request = ServiceRequest::findOrFail($id);
         $request->delete();
 
-        return redirect()->route('institucional_development.requests.index')->with('success', 'Service request deleted successfully.');
+        return redirect()->route('institucional_development.requests.index')->with('success', 'El trámite ha sido eliminado correctamente.');
     }
 }
