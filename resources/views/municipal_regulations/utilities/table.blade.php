@@ -54,6 +54,7 @@
                     <th>Ficha</th>
                     <th>PDF</th>
                     <th>Word</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,27 +71,41 @@
                         <td>{{ $regulation->publication_type }}</td>
                         <td>
                             @if ($regulation->file)
-                                <a href="{{ $regulation->file }}" target="_blank"
-                                    class="btn btn-secondary">Ver Ficha</a>
+                                <a href="{{ $regulation->file }}" target="_blank" class="btn btn-secondary">Ver
+                                    Ficha</a>
                             @else
                                 N/A
                             @endif
                         </td>
                         <td>
                             @if ($regulation->pdf_file)
-                                <a href="{{ $regulation->pdf_file }}" target="_blank"
-                                    class="btn btn-secondary">Ver PDF</a>
+                                <a href="{{ $regulation->pdf_file }}" target="_blank" class="btn btn-secondary">Ver
+                                    PDF</a>
                             @else
                                 N/A
                             @endif
                         </td>
                         <td>
                             @if ($regulation->word_file)
-                                <a href="{{ $regulation->word_file }}" target="_blank"
-                                    class="btn btn-secondary">Ver Word</a>
+                                <a href="{{ $regulation->word_file }}" target="_blank" class="btn btn-secondary">Ver
+                                    Word</a>
                             @else
                                 N/A
                             @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('institucional_development.regulations.edit', $regulation->id) }}"
+                                class="btn btn-link btn-sm">Editar</a>
+
+                            <form method="POST"
+                                action="{{ route('institucional_development.regulations.destroy', $regulation->id) }}"
+                                style="display: inline-block;">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class='bx bx-trash-alt text-danger'></i> Eliminar
+                                </button>
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
                         </td>
                     @endforeach
                 </tr>

@@ -73,6 +73,8 @@ class Crud extends Component
             $this->request->description = $this->description;
             $this->request->requirements = $this->requirements;
             $this->request->cost = $this->cost;
+
+
             $this->request->steps_filename = $this->steps_filename;
             $this->request->procedure_filename = $this->procedure_filename;
 
@@ -149,6 +151,12 @@ class Crud extends Component
 
             return redirect()->route('institucional_development.requests.show', $this->request->id);
         }
+    }
+
+    public function toggleFavorite()
+    {
+        $this->request->is_favorite = !$this->request->is_favorite;
+        $this->request->save();
     }
 
     public function render()

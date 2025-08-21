@@ -18,4 +18,9 @@ class MunicipalRegulation extends Model
         'pdf_file',
         'word_file',
     ];
+
+    public function logs()
+    {
+        return $this->hasMany(MunicipalRegulationLog::class, 'regulation_id');
+    }
 }
