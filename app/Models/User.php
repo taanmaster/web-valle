@@ -46,6 +46,11 @@ class User extends Authenticatable
 
     public function dependency()
     {
-    	return $this->belongsToMany(TransparencyDependency::class, 'transparency_dependency_users', 'user_id', 'dependency_id')->withPivot('id');
+        return $this->belongsToMany(TransparencyDependency::class, 'transparency_dependency_users', 'user_id', 'dependency_id')->withPivot('id');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(MunicipalRegulationLog::class, 'user_id');
     }
 }

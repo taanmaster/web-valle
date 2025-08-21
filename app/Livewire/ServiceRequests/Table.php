@@ -25,6 +25,7 @@ class Table extends Component
     public $dependency_name = '';
 
     public $dependencies = [];
+    public $popularRequests = [];
 
     public $mode = 0;
 
@@ -32,6 +33,15 @@ class Table extends Component
     public function mount()
     {
         $this->fetchDependencies();
+
+        if ($this->mode == 1) {
+            $this->fetchPopularRequests();
+        }
+    }
+
+    public function fetchPopularRequests()
+    {
+        $this->popularRequests = ServiceRequest::where('is_favorite', true)->get();
     }
 
     public function fetchDependencies()
@@ -45,12 +55,20 @@ class Table extends Component
         $this->dependency_name = '';
     }
 
+    public function toggleFavorite($id)
+    {
+        $request = ServiceRequest::findOrFail($id);
+
+        $request->is_favorite = !$request->is_favorite;
+        $request->save();
+    }
+
     public function render()
     {
         $query = ServiceRequest::query();
 
         if ($this->title !== '') {
-            $query->where('title', $this->title);
+            $query->where('name', $this->title);
         }
 
         if ($this->dependency_name !== '') {

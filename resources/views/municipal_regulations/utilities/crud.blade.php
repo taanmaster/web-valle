@@ -128,4 +128,32 @@
             </form>
         </div>
     </div>
+
+
+    @if ($regulation != null && $regulation->logs->count() > 0)
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Historial de cambios</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Acción</th>
+                            <th>Usuario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($regulation->logs as $log)
+                            <tr>
+                                <td>{{ $log->created_at->format('d/m/Y') }}</td>
+                                <td>{{ $log->action }}</td>
+                                <td>{{ $log->user ? $log->user->name : 'Desconocido' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    @endif
 </div>
