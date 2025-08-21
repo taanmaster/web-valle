@@ -40,7 +40,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-dark btn-sm">Guardar Servicio</button>
+                                <button type="submit" class="btn btn-dark btn-sm">Guardar Apoyo</button>
                                 <a href="{{ route('dif.services.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
                             </div>
                         </div>

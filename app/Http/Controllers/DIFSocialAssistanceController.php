@@ -5,14 +5,25 @@ namespace App\Http\Controllers;
 // Ayudantes
 use Session;
 use Str;
+use Auth;
 
 // Modelos
 use App\Models\DIFSocialAssistance as SocialAssistance;
+use App\Models\Notification;
+
+/* Notificaciones */
+use App\Services\NotificationService;
 
 use Illuminate\Http\Request;
 
 class DIFSocialAssistanceController extends Controller
 {
+    private $notification;
+
+    public function __construct()
+    {
+        $this->notification = new NotificationService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -57,6 +68,15 @@ class DIFSocialAssistanceController extends Controller
 
         $assistance = SocialAssistance::create($data);
 
+        // Notificación
+        $type = 'social_assistance';
+        $by = Auth::user();
+        $dataNotif = 'Creó un apoyo social en el sistema';
+        $model_action = 'create';
+        $model_id = $assistance->id;
+
+        $this->notification->send($type, $by, $dataNotif, $model_action, $model_id);
+
         Session::flash('success', 'Apoyo social creado correctamente.');
 
         return redirect()->route('dif.social_assistances.index');
@@ -68,7 +88,9 @@ class DIFSocialAssistanceController extends Controller
     public function show($id)
     {
         $assistance = SocialAssistance::findOrFail($id);
-        return view('dif.social_assistances.show', compact('assistance'));
+        $logs = Notification::where('type', 'social_assistance')->where('model_id', $id)->get();
+
+        return view('dif.social_assistances.show', compact('assistance', 'logs'));
     }
 
     /**
@@ -88,7 +110,7 @@ class DIFSocialAssistanceController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'description' => 'nullable',
-            'is_active' => 'nullable|boolean',
+            'is_active' => 'nullable',
             'value' => 'nullable|max:255'
         ]);
 
@@ -98,6 +120,15 @@ class DIFSocialAssistanceController extends Controller
         $data['is_active'] = $request->has('is_active');
 
         $assistance->update($data);
+
+        // Notificación
+        $type = 'social_assistance';
+        $by = Auth::user();
+        $dataNotif = 'Actualizó un apoyo social en el sistema';
+        $model_action = 'update';
+        $model_id = $assistance->id;
+
+        $this->notification->send($type, $by, $dataNotif, $model_action, $model_id);
 
         Session::flash('success', 'Apoyo social actualizado correctamente.');
 
@@ -110,6 +141,16 @@ class DIFSocialAssistanceController extends Controller
     public function destroy($id)
     {
         $assistance = SocialAssistance::findOrFail($id);
+
+        // Notificación
+        $type = 'social_assistance';
+        $by = Auth::user();
+        $dataNotif = 'Eliminó un apoyo social en el sistema';
+        $model_action = 'destroy';
+        $model_id = $assistance->id;
+
+        $this->notification->send($type, $by, $dataNotif, $model_action, $model_id);
+
         $assistance->delete();
 
         Session::flash('success', 'Apoyo social eliminado de manera exitosa.');
