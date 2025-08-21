@@ -58,8 +58,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    @foreach ($regulations as $regulation)
+                @foreach ($regulations as $regulation)
+                    <tr>
                         <td>
                             <a href="{{ route('institucional_development.regulations.show', $regulation->id) }}"
                                 class="btn btn-primary" data-toggle="tooltip" data-original-title="Ver Detalle">
@@ -107,8 +107,8 @@
                                 {{ method_field('DELETE') }}
                             </form>
                         </td>
-                    @endforeach
-                </tr>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
