@@ -135,23 +135,27 @@
                                         <label for="image">Imagen de banner escritorio</label>
                                         <input type="file" id="image" class="form-control" name="image"
                                             onchange="loadFile(event)" />
-                                        <small class="d-block mt-2">Escritorio = Computadoras y Monitores grandes</small>
-                                        @if ($banner->image)
-                                            <img class="img-fluid mt-2"
-                                                src="{{ asset('front/img/banners/' . $banner->image) }}"
-                                                alt="{{ $banner->title }}">
-                                        @endif
+
+                                            <small class="d-block mt-2">Escritorio = Computadoras y Monitores grandes.</small>
+                                            <small class="d-block mt-2">Tamaño recomendado = 1920 pixeles de ancho por 1080 pixeles de alto.</small>
+                                            @if ($banner->image)
+                                                <img class="img-fluid mt-2"
+                                                    src="{{ asset('front/img/banners/' . $banner->image) }}"
+                                                    alt="{{ $banner->title }}">
+                                            @endif
                                     </div>
                                     <div class="mb-3 col-md-12">
                                         <label for="image">Imagen de banner responsivo</label>
                                         <input type="file" id="image_responsive" class="form-control"
                                             name="image_responsive" onchange="loadFile(event)" />
-                                        <small class="d-block mt-2">Responsivo = Dispositivos móviles</small>
-                                        @if ($banner->image_responsive)
-                                            <img class="img-fluid mt-2"
-                                                src="{{ asset('front/img/banners/' . $banner->image_responsive) }}"
-                                                alt="{{ $banner->title }}">
-                                        @endif
+                                            
+                                            <small class="d-block mt-2">Responsivo = Dispositivos móviles.</small>
+                                            <small class="d-block mt-2">Tamaño recomendado = 720 pixeles de ancho por 1280 pixeles de alto.</small>
+                                            @if ($banner->image_responsive)
+                                                <img class="img-fluid mt-2"
+                                                    src="{{ asset('front/img/banners/' . $banner->image_responsive) }}"
+                                                    alt="{{ $banner->title }}">
+                                            @endif
                                     </div>
                                 </div>
                             </div>

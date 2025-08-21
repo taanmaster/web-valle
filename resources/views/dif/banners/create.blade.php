@@ -121,14 +121,16 @@
                                                 class="text-danger">*</span></label>
                                         <input type="file" id="image" class="form-control" name="image"
                                             onchange="loadFile(event)" required="" />
-                                        <small class="d-block mt-2">Escritorio = Computadoras y Monitores grandes</small>
+                                        <small class="d-block mt-2">Escritorio = Computadoras y Monitores grandes.</small>
+                                        <small class="d-block mt-2">Tamaño recomendado = 1920 pixeles de ancho por 1080 pixeles de alto.</small>
                                     </div>
                                     <div class="mb-3 col-md-12">
                                         <label for="image">Imagen de banner responsivo <span
                                                 class="text-danger">*</span></label>
                                         <input type="file" id="image_responsive" class="form-control"
                                             name="image_responsive" onchange="loadFile(event)" required="" />
-                                        <small class="d-block mt-2">Responsivo = Dispositivos móviles</small>
+                                        <small class="d-block mt-2">Responsivo = Dispositivos móviles.</small>
+                                        <small class="d-block mt-2">Tamaño recomendado = 720 pixeles de ancho por 1280 pixeles de alto.</small>
                                     </div>
                                 </div>
                             </div>
