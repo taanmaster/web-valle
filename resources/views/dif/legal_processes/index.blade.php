@@ -26,9 +26,9 @@
                         <div class="box-body"> 
                             <div class="text-center" style="padding:80px 0px 100px 0px;">
                                 <img src="{{ asset('assets/images/empty.svg') }}" class="ml-auto mr-auto" style="width:30%; margin-bottom: 40px;">
-                    <h4>¡No hay casos legales registrados!</h4>
-                    <p class="mb-4">Registra el primer caso usando el botón superior.</p>
-                    <a href="{{ route('dif.legal_processes.create') }}" class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo Caso</a>
+                                <h4>¡No hay casos legales registrados!</h4>
+                                <p class="mb-4">Registra el primer caso usando el botón superior.</p>
+                                <a href="{{ route('dif.legal_processes.create') }}" class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo Caso</a>
                             </div>       
                         </div>
                     </div>

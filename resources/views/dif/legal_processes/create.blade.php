@@ -12,13 +12,18 @@
     <div class="main-content">
         <div class="row">
             <div class="col-8">
-                <div class="card card-body">
+                    <div class="card card-body">
+                    @php
+                        // Calcular el siguiente folio: total registros + 1, formateado a 3 dígitos (001)
+                        $next = \App\Models\DIFLegalProcess::count() + 1;
+                        $caseNum = str_pad($next, 3, '0', STR_PAD_LEFT);
+                    @endphp
                     <form method="POST" action="{{ route('dif.legal_processes.store') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="case_num" class="form-label">Número de expediente <span class="text-danger tx-12">*</span></label>
-                                <input type="text" class="form-control" id="case_num" name="case_num" required>
+                                <input type="text" class="form-control disabled" id="case_num" name="case_num" value="{{ old('case_num', $caseNum) }}" readonly required>
                             </div>
 
                             <div class="col-md-6 mb-3">
@@ -111,14 +116,24 @@
                                 <input type="text" class="form-control" id="cost" name="cost">
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="socio_economic_test_id" class="form-label">ID Estudio socioeconómico</label>
-                                <input type="number" class="form-control" id="socio_economic_test_id" name="socio_economic_test_id">
+                                @php
+                                    // Cargar estudios socioeconómicos recientes para el selector
+                                    $socioTests = \App\Models\DIFSocioEconomicTest::orderBy('id', 'desc')->limit(500)->get();
+                                @endphp
+                                <label for="socio_economic_test_id" class="form-label">ID Estudio socioeconómico <span class="text-info tx-12">(Buscar y seleccionar)</span></label>
+                                <input list="socio_tests" class="form-control" id="socio_economic_test_id" name="socio_economic_test_id" value="{{ old('socio_economic_test_id') }}" placeholder="Buscar por ID o persona relacionada">
+                                <datalist id="socio_tests">
+                                    @foreach($socioTests as $test)
+                                        <option value="{{ $test->id }}">{{ $test->id }} - {{ $test->advised_person ?? $test->name ?? '—' }}</option>
+                                    @endforeach
+                                </datalist>
+                                <small class="form-text text-muted">Escribe para buscar y selecciona el ID del estudio para vincularlo al caso.</small>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-dark btn-sm">Guardar Servicio</button>
+                                <button type="submit" class="btn btn-dark btn-sm">Guardar Caso</button>
                                 <a href="{{ route('dif.services.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
                             </div>
                         </div>

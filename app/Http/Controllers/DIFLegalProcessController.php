@@ -5,14 +5,25 @@ namespace App\Http\Controllers;
 // Ayudantes
 use Session;
 use Carbon\Carbon;
+use Auth;
 
 // Modelos
 use App\Models\DIFLegalProcess as LegalProcess;
+use App\Models\Notification;
+
+/* Notificaciones */
+use App\Services\NotificationService;
 
 use Illuminate\Http\Request;
 
 class DIFLegalProcessController extends Controller
 {
+    private $notification;
+
+    public function __construct()
+    {
+        $this->notification = new NotificationService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -62,6 +73,15 @@ class DIFLegalProcessController extends Controller
 
         $process = LegalProcess::create($request->all());
 
+        // Notificación
+        $type = 'legal_process';
+        $by = Auth::user();
+        $data = 'Creó un caso legal en el sistema';
+        $model_action = 'create';
+        $model_id = $process->id;
+
+        $this->notification->send($type, $by, $data, $model_action, $model_id);
+
         Session::flash('success', 'Caso legal creado correctamente.');
 
         return redirect()->route('dif.legal_processes.show', $process->id);
@@ -92,6 +112,9 @@ class DIFLegalProcessController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Buscar el proceso primero para usar su id en la regla unique
+        $legal_process = LegalProcess::findOrFail($id);
+
         $this->validate($request, [
             'case_num' => 'required|max:255|unique:d_i_f_legal_processes,case_num,' . $legal_process->id,
             'advised_person' => 'required|max:255',
@@ -106,9 +129,17 @@ class DIFLegalProcessController extends Controller
             'socio_economic_test_id' => 'nullable|integer'
         ]);
 
-        $legal_process = LegalProcess::findOrFail($id);
-    
+        // Actualizar con los datos recibidos
         $legal_process->update($request->all());
+
+        // Notificación
+        $type = 'legal_process';
+        $by = Auth::user();
+        $data = 'Actualizó un caso legal en el sistema';
+        $model_action = 'update';
+        $model_id = $legal_process->id;
+
+        $this->notification->send($type, $by, $data, $model_action, $model_id);
 
         Session::flash('success', 'Caso legal actualizado correctamente.');
 
@@ -122,6 +153,15 @@ class DIFLegalProcessController extends Controller
     {
         $legal_process = LegalProcess::findOrFail($id);
         
+        // Notificación
+        $type = 'legal_process';
+        $by = Auth::user();
+        $data = 'Eliminó un caso legal en el sistema';
+        $model_action = 'destroy';
+        $model_id = $legal_process->id;
+
+        $this->notification->send($type, $by, $data, $model_action, $model_id);
+
         $legal_process->delete();
 
         Session::flash('success', 'Caso legal eliminado correctamente.');
