@@ -2,14 +2,28 @@
 
 namespace App\Http\Controllers;
 
-// Modelos
-use App\Models\DIFMedication as Medication;
-use Illuminate\Http\Request;
+// Ayudantes
 use Session;
 use Str;
+use Auth;
+
+// Modelos
+use App\Models\DIFMedication as Medication;
+use App\Models\Notification;
+
+/* Notificaciones */
+use App\Services\NotificationService;
+
+use Illuminate\Http\Request;
 
 class DIFMedicationController extends Controller
 {
+    private $notification;
+
+    public function __construct()
+    {
+        $this->notification = new NotificationService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -70,6 +84,15 @@ class DIFMedicationController extends Controller
             'is_active' => $request->has('is_active'),
         ]);
 
+        // Notificación
+        $type = 'medication';
+        $by = Auth::user();
+        $data = 'Creó un medicamento en el sistema';
+        $model_action = 'create';
+        $model_id = $med->id;
+
+        $this->notification->send($type, $by, $data, $model_action, $model_id);
+
         Session::flash('success', 'Medicamento guardado correctamente.');
 
         return redirect()->route('dif.medications.index');
@@ -80,8 +103,10 @@ class DIFMedicationController extends Controller
      */
     public function show($id)
     {
-    $medication = Medication::findOrFail($id);
-    return view('dif.medications.show', compact('medication'));
+        $medication = Medication::findOrFail($id);
+        $logs = Notification::where('type', 'medication')->where('model_id', $id)->get();
+
+        return view('dif.medications.show', compact('medication', 'logs'));
     }
 
     /**
@@ -89,8 +114,9 @@ class DIFMedicationController extends Controller
      */
     public function edit($id)
     {
-    $medication = Medication::findOrFail($id);
-    return view('dif.medications.edit', compact('medication'));
+        $medication = Medication::findOrFail($id);
+        
+        return view('dif.medications.edit', compact('medication'));
     }
 
     /**
@@ -126,6 +152,15 @@ class DIFMedicationController extends Controller
             'is_active' => $request->has('is_active'),
         ]);
 
+        // Notificación
+        $type = 'medication';
+        $by = Auth::user();
+        $data = 'Editó un medicamento en el sistema';
+        $model_action = 'update';
+        $model_id = $medication->id;
+
+        $this->notification->send($type, $by, $data, $model_action, $model_id);
+
         Session::flash('success', 'Medicamento editado exitosamente.');
 
         return redirect()->route('dif.medications.show', $medication->id);
@@ -136,10 +171,20 @@ class DIFMedicationController extends Controller
      */
     public function destroy($id)
     {
-    $medication = Medication::findOrFail($id);
-    $medication->delete();
+        $medication = Medication::findOrFail($id);
 
-    Session::flash('success', 'Medicamento eliminado de manera exitosa.');
-    return redirect()->route('dif.medications.index');
+        // Notificación
+        $type = 'medication';
+        $by = Auth::user();
+        $data = 'Eliminó un medicamento en el sistema';
+        $model_action = 'destroy';
+        $model_id = $medication->id;
+
+        $this->notification->send($type, $by, $data, $model_action, $model_id);
+
+        $medication->delete();
+
+        Session::flash('success', 'Medicamento eliminado de manera exitosa.');
+        return redirect()->route('dif.medications.index');
     }
 }
