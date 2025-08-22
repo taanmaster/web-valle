@@ -37,27 +37,34 @@
                         </div>
                         <div class="step">
                             <div class="step-number">2</div>
-                            <div class="step-title">Proveedor Económico</div>
+                            <div class="step-title">Economía y Dependientes</div>
                         </div>
                         <div class="step">
                             <div class="step-number">3</div>
-                            <div class="step-title">Estructura Familiar</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">4</div>
                             <div class="step-title">Estructura Económica</div>
                         </div>
                         <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-title">Salud</div>
+                        </div>
+                        <div class="step">
                             <div class="step-number">5</div>
-                            <div class="step-title">Salud y Vivienda</div>
+                            <div class="step-title">Vivienda y Entorno</div>
                         </div>
                     </div>
                 </div>
 
                 <form action="{{ route('dif.socio_economic_tests.store') }}" method="POST">
                     @csrf
-                    
+                        
                     <div class="row">
+                        <div class="col-md-12">
+                            <hr>
+                            <h6 class="text-white bg-dark p-2 text-uppercase mb-3">
+                                <i class="fas fa-check"></i> Datos Generales
+                            </h5>
+                        </div>
+                        
                         <!-- Información de responsabilidad -->
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -92,33 +99,82 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="date" class="form-label">Fecha</label>
+                                <input type="date" readonly disabled name="date" id="date" class="form-control" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" required maxlength="255">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="reference_phone" class="form-label">Teléfono de Referencia</label>
+                                <input type="tel" name="reference_phone" id="reference_phone" 
+                                       class="form-control @error('reference_phone') is-invalid @enderror"
+                                       value="{{ old('reference_phone') }}" maxlength="20"
+                                       placeholder="Teléfono de contacto alternativo">
+                                @error('reference_phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="support_type" class="form-label">Tipo de Apoyo Solicitado <span class="text-danger">*</span></label>
+                                <input type="text" name="support_type" id="support_type" 
+                                       class="form-control @error('support_type') is-invalid @enderror"
+                                       value="{{ old('support_type') }}" required maxlength="255"
+                                       placeholder="Ej: Apoyo económico, Despensa, Material de construcción">
+                                @error('support_type')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <hr class="my-4">
 
-                    <!-- Información del ciudadano -->
-                    <h5 class="mb-3">Información del Beneficiario</h5>
+                    <div class="col-md-12">
+                        <hr>
+                        <h6 class="text-white bg-dark p-2 text-uppercase mb-3">
+                            <i class="fas fa-check"></i> Información del Beneficiario
+                        </h6>
+                    </div>
                     
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="citizen_last_name" class="form-label">Apellido Paterno <span class="text-danger">*</span></label>
+                                <input type="text" name="citizen_last_name" id="citizen_last_name" 
+                                       class="form-control @error('citizen_last_name') is-invalid @enderror"
+                                       value="{{ old('citizen_last_name') }}" required maxlength="255">
+                                @error('citizen_last_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="citizen_last_name_mother" class="form-label">Apellido Materno <span class="text-danger">*</span></label>
+                                <input type="text" name="citizen_last_name_mother" id="citizen_last_name_mother" 
+                                       class="form-control @error('citizen_last_name_mother') is-invalid @enderror"
+                                       value="{{ old('citizen_last_name_mother') }}" required maxlength="255">
+                                @error('citizen_last_name_mother')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="citizen_name" class="form-label">Nombre(s) <span class="text-danger">*</span></label>
                                 <input type="text" name="citizen_name" id="citizen_name" 
                                        class="form-control @error('citizen_name') is-invalid @enderror"
                                        value="{{ old('citizen_name') }}" required maxlength="255">
                                 @error('citizen_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="citizen_last_name" class="form-label">Apellidos <span class="text-danger">*</span></label>
-                                <input type="text" name="citizen_last_name" id="citizen_last_name" 
-                                       class="form-control @error('citizen_last_name') is-invalid @enderror"
-                                       value="{{ old('citizen_last_name') }}" required maxlength="255">
-                                @error('citizen_last_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -153,7 +209,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="citizen_address" class="form-label">Dirección <span class="text-danger">*</span></label>
+                        <label for="citizen_address" class="form-label">Dirección Completa <span class="text-danger">*</span></label>
                         <textarea name="citizen_address" id="citizen_address" 
                                   class="form-control @error('citizen_address') is-invalid @enderror"
                                   rows="3" required>{{ old('citizen_address') }}</textarea>
@@ -162,38 +218,6 @@
                         @enderror
                     </div>
 
-                    <hr class="my-4">
-
-                    <!-- Información adicional -->
-                    <h5 class="mb-3">Información Adicional</h5>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="support_type" class="form-label">Tipo de Apoyo Solicitado <span class="text-danger">*</span></label>
-                                <input type="text" name="support_type" id="support_type" 
-                                       class="form-control @error('support_type') is-invalid @enderror"
-                                       value="{{ old('support_type') }}" required maxlength="255"
-                                       placeholder="Ej: Apoyo económico, Despensa, Material de construcción">
-                                @error('support_type')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="reference_phone" class="form-label">Teléfono de Referencia</label>
-                                <input type="tel" name="reference_phone" id="reference_phone" 
-                                       class="form-control @error('reference_phone') is-invalid @enderror"
-                                       value="{{ old('reference_phone') }}" maxlength="20"
-                                       placeholder="Teléfono de contacto alternativo">
-                                @error('reference_phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Botones de acción -->
                     <div class="row mt-4">
