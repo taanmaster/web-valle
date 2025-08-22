@@ -64,10 +64,26 @@ return new class extends Migration
             $table->string('income_level')->nullable();
             $table->string('expense_level')->nullable();
             
+            // Datos del Paso 4: Salud
+            $table->string('medical_center')->nullable();
+            
             // Datos del Paso 5: Salud y vivienda
             $table->string('health_problem')->nullable();
             $table->string('housing_problem')->nullable();
+            $table->string('water_problem')->nullable();
+            $table->string('energy_problem')->nullable();
+            $table->string('drainage_problem')->nullable();
+            $table->string('gas_problem')->nullable();
+            $table->string('roof_problem')->nullable();
+            $table->string('wall_problem')->nullable();
+            $table->string('floor_problem')->nullable();
+            $table->string('room_problem')->nullable();
             $table->text('final_observations')->nullable();
+            
+            // Nivel de vulnerabilidad y recomendaciones (calculados al completar el estudio)
+            $table->string('vulnerability_level')->nullable();
+            $table->string('recommended_support_type')->nullable();
+            $table->decimal('recommended_amount', 10, 2)->nullable();
             
             // Metadatos de aprobación
             $table->integer('created_by')->unsigned();

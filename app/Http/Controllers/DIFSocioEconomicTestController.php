@@ -102,7 +102,128 @@ class DIFSocioEconomicTestController extends Controller
         $test = SocioEconomicTest::with(['coordination', 'user', 'dependents', 'files', 'createdBy', 'approvedBy'])
                                  ->findOrFail($id);
 
-        return view('dif.socio_economic_tests.show', compact('test'));
+        // Los datos ya están decodificados automáticamente por los casts del modelo
+        $step1Answers = $test->step_1_answers ?? [];
+        $step2Answers = $test->step_2_answers ?? [];
+        $step3Answers = $test->step_3_answers ?? [];
+        $step4Answers = $test->step_4_answers ?? [];
+        $step5Answers = $test->step_5_answers ?? [];
+
+        // Crear función de traducción disponible para la vista
+        $translateField = function($field, $value) {
+            return $this->translateFieldValue($field, $value);
+        };
+
+        return view('dif.socio_economic_tests.show', compact(
+            'test', 'step1Answers', 'step2Answers', 'step3Answers', 'step4Answers', 'step5Answers', 'translateField'
+        ));
+    }
+
+    /**
+     * Traduce los valores de los campos a español legible
+     */
+    private function translateFieldValue($field, $value)
+    {
+        $translations = [
+            // Paso 2
+            'civil_status' => [
+                'single_mother_children' => 'Madre soltera con hijos / Viuda con hijos',
+                'single_mother' => 'Madre soltera / Viuda sin hijos',
+                'other' => 'Unión libre sin hijos / Divorciada sin hijos / Soltera sin hijos'
+            ],
+            'age_range' => [
+                '65_plus' => '65 años o más',
+                '38_64' => '38 a 64 años',
+                '17_37' => '17 a 37 años',
+                'under_17' => 'Menor a 17 años'
+            ],
+            'occupation' => [
+                'unemployed' => 'Desempleado',
+                'eventual' => 'Eventual',
+                'retired' => 'Jubilado/Pensionado',
+                'employed' => 'Empleado'
+            ],
+            'education' => [
+                'none' => 'Sin estudios',
+                'primary' => 'Primaria',
+                'secondary' => 'Secundaria',
+                'high_school' => 'Preparatoria',
+                'university' => 'Universidad'
+            ],
+            // Paso 3
+            'income_level' => [
+                '0_1' => '0 a 1 salario mínimo',
+                '2_3' => '2 a 3 salarios mínimos',
+                '4_5' => '4 a 5 salarios mínimos',
+                '6_plus' => '6 o más salarios mínimos'
+            ],
+            'expense_level' => [
+                'borrow' => 'Se endeudan para cubrir gastos',
+                'total' => 'Gastan todos sus ingresos',
+                'partial' => 'Gastan parte de sus ingresos'
+            ],
+            // Paso 4
+            'medical_center' => [
+                'secretaria_salud' => 'Secretaría de Salud',
+                'imss_issste' => 'IMSS/ISSSTE',
+                'private' => 'Servicio médico privado'
+            ],
+            'health_problem' => [
+                'serious_chronic' => 'Enfermedad grave y crónica',
+                'serious_treatable' => 'Enfermedad grave pero tratable',
+                'moderate' => 'Enfermedad moderada',
+                'minor' => 'Enfermedad menor'
+            ],
+            // Paso 5
+            'housing_problem' => [
+                'rent_pays' => 'Renta y paga',
+                'borrowed' => 'Prestada',
+                'irregular' => 'Irregular',
+                'owner' => 'Propia'
+            ],
+            'water_problem' => [
+                'no_service' => 'Sin servicio',
+                'irregular' => 'Irregular',
+                'with_service' => 'Con servicio'
+            ],
+            'energy_problem' => [
+                'no_service' => 'Sin servicio',
+                'irregular' => 'Irregular',
+                'with_service' => 'Con servicio'
+            ],
+            'drainage_problem' => [
+                'other' => 'Otro tipo',
+                'letrine' => 'Letrina',
+                'with_service' => 'Con servicio'
+            ],
+            'gas_problem' => [
+                'wood' => 'Leña',
+                'butane' => 'Gas butano',
+                'natural' => 'Gas natural'
+            ],
+            'roof_problem' => [
+                'other' => 'Otro material',
+                'metal' => 'Lámina',
+                'cement' => 'Cemento'
+            ],
+            'wall_problem' => [
+                'wood' => 'Madera',
+                'cardboard' => 'Cartón',
+                'cement' => 'Cemento'
+            ],
+            'floor_problem' => [
+                'dirt' => 'Tierra',
+                'cement' => 'Cemento',
+                'with_finish' => 'Con acabado'
+            ],
+            'room_problem' => [
+                'one_room' => 'Una habitación',
+                'two_three_rooms' => 'Dos a tres habitaciones',
+                'full_house' => 'Casa completa'
+            ]
+        ];
+
+        return $translations[$field][$value] ?? ucfirst(str_replace('_', ' ', $value));
     }
 
     /**
@@ -196,14 +317,15 @@ class DIFSocioEconomicTestController extends Controller
             'civil_status' => 'required|string',
             'age_range' => 'required|string',
             'occupation' => 'required|string',
-            'education' => 'required|string'
+            'education' => 'required|string',
+            'dependents_count' => 'required|string'
         ]);
 
         // Calcular puntaje del paso 2
         $score = $this->calculateStep2Score($request);
 
         $test->update([
-            'step_2_answers' => $request->only(['civil_status', 'age_range', 'occupation', 'education']),
+            'step_2_answers' => $request->only(['civil_status', 'age_range', 'occupation', 'education', 'dependents_count']),
             'step_2_score' => $score,
             'current_step' => 3
         ]);
@@ -229,14 +351,18 @@ class DIFSocioEconomicTestController extends Controller
         $test = SocioEconomicTest::findOrFail($id);
         
         $this->validate($request, [
-            'dependents_count' => 'required|integer|min:0'
+            'monthly_expenses' => 'nullable|numeric',
+            'monthly_debt' => 'nullable|numeric',
+            'monthly_savings' => 'nullable|numeric',
+            'income_level' => 'required|string',
+            'expense_level' => 'required|string'
         ]);
 
         // Calcular puntaje del paso 3
-        $score = $this->calculateStep3Score($request->dependents_count);
+        $score = $this->calculateStep3Score($request);
 
         $test->update([
-            'step_3_answers' => ['dependents_count' => $request->dependents_count],
+            'step_3_answers' => $request->only(['monthly_expenses', 'monthly_debt', 'monthly_savings', 'income_level', 'expense_level']),
             'step_3_score' => $score,
             'current_step' => 4
         ]);
@@ -262,11 +388,8 @@ class DIFSocioEconomicTestController extends Controller
         $test = SocioEconomicTest::findOrFail($id);
         
         $this->validate($request, [
-            'monthly_expenses' => 'nullable|numeric',
-            'monthly_debt' => 'nullable|numeric',
-            'monthly_savings' => 'nullable|numeric',
-            'income_level' => 'required|string',
-            'expense_level' => 'required|string'
+            'medical_center' => 'required|string',
+            'health_problem' => 'required|string'
         ]);
 
         // Calcular puntaje del paso 4
@@ -274,14 +397,11 @@ class DIFSocioEconomicTestController extends Controller
 
         $test->update([
             'step_4_answers' => $request->only([
-                'monthly_expenses', 'monthly_debt', 'monthly_savings', 
-                'income_level', 'expense_level'
+                'medical_center', 'health_problem'
             ]),
             'step_4_score' => $score,
             'current_step' => 5
-        ]);
-
-        Session::flash('success', "Paso 4 completado. Puntaje obtenido: {$score} puntos.");
+        ]);        Session::flash('success', "Paso 4 completado. Puntaje obtenido: {$score} puntos.");
         return redirect()->route('dif.socio_economic_tests.step5', $test->id);
     }
 
@@ -302,40 +422,47 @@ class DIFSocioEconomicTestController extends Controller
         $test = SocioEconomicTest::findOrFail($id);
         
         $this->validate($request, [
-            'medical_service' => 'required|string',
-            'chronic_illness' => 'required|string',
-            'housing_type' => 'required|string',
-            'water_service' => 'required|string',
-            'electricity_service' => 'required|string',
-            'drainage_service' => 'required|string',
-            'gas_service' => 'required|string',
-            'roof_type' => 'required|string',
-            'wall_type' => 'required|string',
-            'floor_type' => 'required|string',
-            'rooms_count' => 'required|string'
+            'housing_problem' => 'required|string',
+            'water_problem' => 'required|string',
+            'energy_problem' => 'required|string',
+            'drainage_problem' => 'required|string',
+            'gas_problem' => 'required|string',
+            'roof_problem' => 'required|string',
+            'wall_problem' => 'required|string',
+            'floor_problem' => 'required|string',
+            'room_problem' => 'required|string',
+            'final_observations' => 'nullable|string',
+            'approval_notes' => 'nullable|string'
         ]);
 
         // Calcular puntaje del paso 5
         $score = $this->calculateStep5Score($request);
 
-        // Calcular puntaje total y nivel de vulnerabilidad
+        // Calcular puntaje total
         $totalScore = ($test->step_1_score ?? 0) + ($test->step_2_score ?? 0) + 
                      ($test->step_3_score ?? 0) + ($test->step_4_score ?? 0) + $score;
 
-        $support = $test->getRecommendedSupport();
-
+        // Primero actualizar los puntajes
         $test->update([
             'step_5_answers' => $request->only([
-                'medical_service', 'chronic_illness', 'housing_type', 'water_service',
-                'electricity_service', 'drainage_service', 'gas_service', 'roof_type',
-                'wall_type', 'floor_type', 'rooms_count'
+                'housing_problem', 'water_problem', 'energy_problem', 'drainage_problem', 
+                'gas_problem', 'roof_problem', 'wall_problem', 'floor_problem', 'room_problem',
+                'final_observations', 'approval_notes'
             ]),
             'step_5_score' => $score,
             'total_score' => $totalScore,
-            'vulnerability_level' => $test->getVulnerabilityLevel(),
-            'recommended_support_type' => $support['type'],
-            'recommended_amount' => $support['amount'],
             'status' => 'completed'
+        ]);
+
+        // Después calcular el nivel de vulnerabilidad y el apoyo recomendado (con puntajes ya actualizados)
+        $vulnerabilityLevel = $test->getVulnerabilityLevel();
+        $support = $test->getRecommendedSupport();
+
+        // Actualizar nivel de vulnerabilidad y apoyo recomendado
+        $test->update([
+            'vulnerability_level' => $vulnerabilityLevel,
+            'recommended_support_type' => $support['type'],
+            'recommended_amount' => $support['amount']
         ]);
 
         Session::flash('success', "¡Estudio socioeconómico completado! Puntaje total: {$totalScore} puntos. Nivel: {$test->getVulnerabilityLevelText()}");
@@ -357,7 +484,7 @@ class DIFSocioEconomicTestController extends Controller
                 $score = $this->calculateStep2Score($request);
                 break;
             case 3:
-                $score = $this->calculateStep3Score($request->dependents_count);
+                $score = $this->calculateStep3Score($request);
                 break;
             case 4:
                 $score = $this->calculateStep4Score($request);
@@ -452,33 +579,37 @@ class DIFSocioEconomicTestController extends Controller
                 break;
         }
 
+        // Dependientes económicos
+        $dependentsCount = (int) $request->dependents_count;
+        if ($dependentsCount >= 10) {
+            $score += 5;
+        } elseif ($dependentsCount >= 6) {
+            $score += 3;
+        } elseif ($dependentsCount >= 3) {
+            $score += 2;
+        } else {
+            $score += 1;
+        }
+
         return $score;
     }
 
-    private function calculateStep3Score($dependentsCount)
-    {
-        if ($dependentsCount >= 10) return 5;
-        if ($dependentsCount >= 6) return 3;
-        if ($dependentsCount >= 3) return 2;
-        return 1;
-    }
-
-    private function calculateStep4Score($request)
+    private function calculateStep3Score($request)
     {
         $score = 0;
 
         // Ingreso mensual
         switch ($request->income_level) {
             case '0_1':
-                $score += 4;
+                $score += 5;
                 break;
             case '2_3':
-                $score += 3;
+                $score += 4;
                 break;
             case '4_5':
                 $score += 2;
                 break;
-            default:
+            case '6_plus':
                 $score += 1;
                 break;
         }
@@ -491,7 +622,43 @@ class DIFSocioEconomicTestController extends Controller
             case 'total':
                 $score += 3;
                 break;
-            default:
+            case 'partial':
+                $score += 1;
+                break;
+        }
+
+        return $score;
+    }
+
+    private function calculateStep4Score($request)
+    {
+        $score = 0;
+
+        // Centro médico
+        switch ($request->medical_center) {
+            case 'secretaria_salud':
+                $score += 3;
+                break;
+            case 'private':
+                $score += 1;
+                break;
+            case 'imss_issste':
+                $score += 2;
+                break;
+        }
+
+        // Problema de salud
+        switch ($request->health_problem) {
+            case 'serious_chronic':
+                $score += 5;
+                break;
+            case 'serious_treatable':
+                $score += 4;
+                break;
+            case 'moderate':
+                $score += 3;
+                break;
+            case 'minor':
                 $score += 1;
                 break;
         }
@@ -503,46 +670,17 @@ class DIFSocioEconomicTestController extends Controller
     {
         $score = 0;
 
-        // Servicio médico
-        switch ($request->medical_service) {
-            case 'public_health':
-                $score += 5;
-                break;
-            case 'private':
-                $score += 3;
-                break;
-            default:
-                $score += 1;
-                break;
-        }
-
-        // Enfermedad crónica
-        switch ($request->chronic_illness) {
-            case 'main_provider':
-                $score += 5;
-                break;
-            case 'dependent_provider':
-                $score += 4;
-                break;
-            case 'children':
-                $score += 3;
-                break;
-            case 'other_family':
-                $score += 2;
-                break;
-        }
-
-        // Condiciones de vivienda
+        // Condiciones de vivienda y servicios
         $housingFields = [
-            'housing_type' => ['rent' => 5, 'borrowed' => 4, 'irregular' => 3, 'owned' => 2],
-            'water_service' => ['none' => 5, 'irregular' => 3, 'service' => 1],
-            'electricity_service' => ['none' => 5, 'irregular' => 3, 'service' => 1],
-            'drainage_service' => ['other' => 5, 'latrine' => 3, 'service' => 1],
-            'gas_service' => ['wood' => 5, 'butane' => 3, 'natural' => 1],
-            'roof_type' => ['other' => 5, 'sheet' => 3, 'concrete' => 1],
-            'wall_type' => ['wood_other' => 5, 'cardboard' => 3, 'material' => 1],
-            'floor_type' => ['dirt' => 5, 'concrete' => 3, 'finished' => 1],
-            'rooms_count' => ['one' => 4, 'two_three' => 3, 'four_plus' => 1]
+            'housing_problem' => ['rent-pays' => 5, 'borrowed' => 4, 'irregular' => 3, 'owner' => 2],
+            'water_problem' => ['no_service' => 5, 'irregular' => 3, 'with_service' => 1],
+            'energy_problem' => ['no_service' => 5, 'irregular' => 3, 'with_service' => 1],
+            'drainage_problem' => ['other' => 5, 'letrine' => 3, 'with_service' => 1],
+            'gas_problem' => ['wood' => 5, 'butane' => 3, 'natural' => 1],
+            'roof_problem' => ['other' => 5, 'metal' => 3, 'cement' => 1],
+            'wall_problem' => ['wood' => 5, 'cardboard' => 3, 'cement' => 1],
+            'floor_problem' => ['dirt' => 5, 'cement' => 3, 'with_finish' => 1],
+            'room_problem' => ['one_room' => 4, 'two_three_rooms' => 3, 'full_house' => 1]
         ];
 
         foreach ($housingFields as $field => $values) {
