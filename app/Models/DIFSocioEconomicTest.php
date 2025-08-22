@@ -98,14 +98,16 @@ class DIFSocioEconomicTest extends Model
     {
         $total = $this->calculateTotalScore();
         
-        if ($total >= 25 && $total <= 30) {
-            return 'no_assistance';
-        } elseif ($total >= 31 && $total <= 47) {
-            return 'low_vulnerability';
+        if ($total >= 63) {
+            return 'high_vulnerability';
         } elseif ($total >= 48 && $total <= 62) {
             return 'medium_vulnerability';
+        } elseif ($total >= 31 && $total <= 47) {
+            return 'low_vulnerability';
+        } elseif ($total >= 25 && $total <= 30) {
+            return 'no_assistance';
         } else {
-            return 'high_vulnerability';
+            return 'unclassified';
         }
     }
 
@@ -114,14 +116,14 @@ class DIFSocioEconomicTest extends Model
         $level = $this->getVulnerabilityLevel();
         
         switch ($level) {
-            case 'no_assistance':
-                return 'No sujeto a asistencia social';
-            case 'low_vulnerability':
-                return 'Baja vulnerabilidad';
-            case 'medium_vulnerability':
-                return 'Media vulnerabilidad';
             case 'high_vulnerability':
-                return 'Alta vulnerabilidad';
+                return 'ALTA VULNERABILIDAD';
+            case 'medium_vulnerability':
+                return 'MEDIA VULNERABILIDAD';
+            case 'low_vulnerability':
+                return 'BAJA VULNERABILIDAD';
+            case 'no_assistance':
+                return 'NO SUJETO A ASISTENCIA SOCIAL';
             default:
                 return 'Sin clasificar';
         }

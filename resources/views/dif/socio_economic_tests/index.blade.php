@@ -119,21 +119,30 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if($test->vulnerability_level)
-                                        @switch($test->vulnerability_level)
-                                            @case('no_assistance')
-                                                <span class="badge bg-secondary">No sujeto</span>
-                                                @break
-                                            @case('low_vulnerability')
-                                                <span class="badge bg-success">Baja</span>
-                                                @break
-                                            @case('medium_vulnerability')
-                                                <span class="badge bg-warning">Media</span>
-                                                @break
-                                            @case('high_vulnerability')
-                                                <span class="badge bg-danger">Alta</span>
-                                                @break
-                                        @endswitch
+                                    @if($test->total_score)
+                                        @php
+                                            $vulnerabilityLevel = '';
+                                            $vulnerabilityClass = '';
+                                            $score = $test->total_score;
+                                            
+                                            if ($score >= 63) {
+                                                $vulnerabilityLevel = 'Alta';
+                                                $vulnerabilityClass = 'bg-danger';
+                                            } elseif ($score >= 48 && $score <= 62) {
+                                                $vulnerabilityLevel = 'Media';
+                                                $vulnerabilityClass = 'bg-warning';
+                                            } elseif ($score >= 31 && $score <= 47) {
+                                                $vulnerabilityLevel = 'Baja';
+                                                $vulnerabilityClass = 'bg-info';
+                                            } elseif ($score >= 25 && $score <= 30) {
+                                                $vulnerabilityLevel = 'No sujeto';
+                                                $vulnerabilityClass = 'bg-success';
+                                            } else {
+                                                $vulnerabilityLevel = 'Sin clasificar';
+                                                $vulnerabilityClass = 'bg-secondary';
+                                            }
+                                        @endphp
+                                        <span class="badge {{ $vulnerabilityClass }}">{{ $vulnerabilityLevel }}</span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif

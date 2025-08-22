@@ -600,19 +600,19 @@ $(document).ready(function() {
         let level, badge, support;
         
         if (totalScore >= 63) {
-            level = 'VULNERABILIDAD MUY ALTA';
+            level = 'ALTA VULNERABILIDAD';
             badge = 'bg-danger';
-        } else if (totalScore >= 50) {
-            level = 'VULNERABILIDAD ALTA';
+        } else if (totalScore >= 48 && totalScore <= 62) {
+            level = 'MEDIA VULNERABILIDAD';
             badge = 'bg-warning';
-        } else if (totalScore >= 37) {
-            level = 'VULNERABILIDAD MEDIA';
+        } else if (totalScore >= 31 && totalScore <= 47) {
+            level = 'BAJA VULNERABILIDAD';
             badge = 'bg-info';
-        } else if (totalScore >= 25) {
-            level = 'VULNERABILIDAD BAJA';
+        } else if (totalScore >= 25 && totalScore <= 30) {
+            level = 'NO SUJETO A ASISTENCIA SOCIAL';
             badge = 'bg-success';
         } else {
-            level = 'SIN VULNERABILIDAD';
+            level = 'SIN CLASIFICAR';
             badge = 'bg-secondary';
         }
         
