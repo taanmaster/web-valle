@@ -9,7 +9,7 @@ class DIFSocioEconomicTestDependent extends Model
 {
     use HasFactory;
 
-    protected $table = 'd_i_f_socio_economic_test_dependents';
+    protected $table = 'd_i_f_set_dependents';
 
     protected $fillable = [
         'socio_economic_test_id',

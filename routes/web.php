@@ -412,6 +412,68 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'dif.socio_economic_tests.destroy',
             ]);
 
+            // Rutas adicionales para los pasos del formulario de estudios socioeconómicos
+            Route::group(['prefix' => 'socio_economic_tests'], function () {
+                // Paso 2: Proveedor Económico
+                Route::get('{id}/paso-2', 'DIFSocioEconomicTestController@step2')->name('dif.socio_economic_tests.step2');
+                Route::post('{id}/paso-2', 'DIFSocioEconomicTestController@storeStep2')->name('dif.socio_economic_tests.step2.store');
+                
+                // Paso 3: Estructura Familiar
+                Route::get('{id}/paso-3', 'DIFSocioEconomicTestController@step3')->name('dif.socio_economic_tests.step3');
+                Route::post('{id}/paso-3', 'DIFSocioEconomicTestController@storeStep3')->name('dif.socio_economic_tests.step3.store');
+                
+                // Paso 4: Estructura Económica
+                Route::get('{id}/paso-4', 'DIFSocioEconomicTestController@step4')->name('dif.socio_economic_tests.step4');
+                Route::post('{id}/paso-4', 'DIFSocioEconomicTestController@storeStep4')->name('dif.socio_economic_tests.step4.store');
+                
+                // Paso 5: Salud y Vivienda
+                Route::get('{id}/paso-5', 'DIFSocioEconomicTestController@step5')->name('dif.socio_economic_tests.step5');
+                Route::post('{id}/paso-5', 'DIFSocioEconomicTestController@storeStep5')->name('dif.socio_economic_tests.step5.store');
+                
+                // Rutas AJAX para cálculo en tiempo real
+                Route::post('calcular-puntaje', 'DIFSocioEconomicTestController@updateScore')->name('dif.socio_economic_tests.update_score');
+                
+                // Rutas para gestión de dependientes
+                Route::post('{id}/dependientes', 'DIFSocioEconomicTestController@addDependent')->name('dif.socio_economic_tests.add_dependent');
+                Route::put('dependientes/{dependentId}', 'DIFSocioEconomicTestController@updateDependent')->name('dif.socio_economic_tests.update_dependent');
+                Route::delete('dependientes/{dependentId}', 'DIFSocioEconomicTestController@removeDependent')->name('dif.socio_economic_tests.remove_dependent');
+                
+                // Rutas para gestión de archivos
+                Route::post('{id}/archivos', 'DIFSocioEconomicTestController@uploadFile')->name('dif.socio_economic_tests.upload_file');
+                Route::delete('archivos/{fileId}', 'DIFSocioEconomicTestController@deleteFile')->name('dif.socio_economic_tests.delete_file');
+                Route::get('archivos/{fileId}/descargar', 'DIFSocioEconomicTestController@downloadFile')->name('dif.socio_economic_tests.download_file');
+                
+                // Rutas para aprobación/rechazo
+                Route::post('{id}/aprobar', 'DIFSocioEconomicTestController@approve')->name('dif.socio_economic_tests.approve');
+                Route::post('{id}/rechazar', 'DIFSocioEconomicTestController@reject')->name('dif.socio_economic_tests.reject');
+                
+                // Ruta para generar PDF del estudio
+                Route::get('{id}/pdf', 'DIFSocioEconomicTestController@generatePDF')->name('dif.socio_economic_tests.pdf');
+                
+                // Ruta para búsqueda de ciudadanos (AJAX)
+                Route::get('buscar-ciudadanos', 'DIFSocioEconomicTestController@searchCitizens')->name('dif.socio_economic_tests.search_citizens');
+            });
+
+            Route::resource('socio_economic_test_dependents', DIFSocioEconomicTestDependentController::class)->names([
+                'index' => 'dif.socio_economic_test_dependents.index',
+                'create' => 'dif.socio_economic_test_dependents.create',
+                'store' => 'dif.socio_economic_test_dependents.store',
+                'show' => 'dif.socio_economic_test_dependents.show',
+                'edit' => 'dif.socio_economic_test_dependents.edit',
+                'update' => 'dif.socio_economic_test_dependents.update',
+                'destroy' => 'dif.socio_economic_test_dependents.destroy',
+            ]);
+
+            Route::resource('socio_economic_test_files', DIFSocioEconomicTestFileController::class)->names([
+                'index' => 'dif.socio_economic_test_files.index',
+                'create' => 'dif.socio_economic_test_files.create',
+                'store' => 'dif.socio_economic_test_files.store',
+                'show' => 'dif.socio_economic_test_files.show',
+                'edit' => 'dif.socio_economic_test_files.edit',
+                'update' => 'dif.socio_economic_test_files.update',
+                'destroy' => 'dif.socio_economic_test_files.destroy',
+            ]);
+
             Route::resource('social_assistances', DIFSocialAssistanceController::class)->names([
                 'index' => 'dif.social_assistances.index',
                 'create' => 'dif.social_assistances.create',
