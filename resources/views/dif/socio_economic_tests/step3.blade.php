@@ -37,119 +37,157 @@
                         </div>
                         <div class="step completed">
                             <div class="step-number">✓</div>
-                            <div class="step-title">Proveedor Económico</div>
+                            <div class="step-title">Economía y Dependientes</div>
                         </div>
                         <div class="step active">
                             <div class="step-number">3</div>
-                            <div class="step-title">Estructura Familiar</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">4</div>
                             <div class="step-title">Estructura Económica</div>
                         </div>
                         <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-title">Salud</div>
+                        </div>
+                        <div class="step">
                             <div class="step-number">5</div>
-                            <div class="step-title">Salud y Vivienda</div>
+                            <div class="step-title">Vivienda y Entorno</div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Dependientes existentes -->
-                @if($test->dependents->count() > 0)
-                <div class="mb-4">
-                    <h5>Dependientes Registrados</h5>
-                    <div class="table-responsive">
-                        <table class="table table-sm table-bordered">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Edad</th>
-                                    <th>Parentesco</th>
-                                    <th>Escolaridad</th>
-                                    <th>Estado Civil</th>
-                                    <th>Ingresos</th>
-                                    <th>Ocupación</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($test->dependents as $dependent)
-                                <tr>
-                                    <td>{{ $dependent->name }}</td>
-                                    <td>{{ $dependent->age }}</td>
-                                    <td>{{ $dependent->relationship }}</td>
-                                    <td>{{ $dependent->schooling }}</td>
-                                    <td>{{ $dependent->marital_status }}</td>
-                                    <td>
-                                        @if($dependent->monthly_income)
-                                            ${{ number_format($dependent->monthly_income) }}/mes
-                                        @elseif($dependent->weekly_income)
-                                            ${{ number_format($dependent->weekly_income) }}/sem
-                                        @else
-                                            Sin ingresos
-                                        @endif
-                                    </td>
-                                    <td>{{ $dependent->occupation }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                @endif
 
                 <form action="{{ route('dif.socio_economic_tests.step3.store', $test->id) }}" method="POST" class="step-form" data-step="3">
                     @csrf
-                    
-                    <!-- Dependencia Económica -->
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">Dependencia Económica (Número total de personas que dependen económicamente)</label>
-                        <div class="mt-3">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="dependents_count" value="10" 
-                                       data-points="5" id="dep1" {{ old('dependents_count') == '10' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="dep1">
-                                    10 o más personas <span class="badge bg-danger ms-2">5 pts</span>
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="dependents_count" value="9" 
-                                       data-points="3" id="dep2" {{ old('dependents_count') == '9' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="dep2">
-                                    6 a 9 personas <span class="badge bg-warning ms-2">3 pts</span>
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="dependents_count" value="5" 
-                                       data-points="2" id="dep3" {{ old('dependents_count') == '5' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="dep3">
-                                    3 a 5 personas <span class="badge bg-info ms-2">2 pts</span>
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="dependents_count" value="2" 
-                                       data-points="1" id="dep4" {{ old('dependents_count') == '2' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="dep4">
-                                    1 a 2 personas <span class="badge bg-success ms-2">1 pt</span>
-                                </label>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="text-white bg-dark p-2 text-uppercase mb-3">
+                                <i class="fas fa-check"></i> Estructura Económica
+                            </h6>
+                        </div>
+                        
+                        <!-- Información económica libre -->
+                        <div class="mb-4">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="monthly_expenses" class="form-label">¿Cuánto dinero se gasta al mes?</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="text" name="monthly_expenses" id="monthly_expenses" 
+                                                class="form-control @error('monthly_expenses') is-invalid @enderror"
+                                                value="{{ old('monthly_expenses') }}" min="0" step="0.01"
+                                                placeholder="0.00">
+                                        </div>
+                                        @error('monthly_expenses')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="monthly_debt" class="form-label">¿Cuánto dinero se debe al mes?</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="text" name="monthly_debt" id="monthly_debt" 
+                                                class="form-control @error('monthly_debt') is-invalid @enderror"
+                                                value="{{ old('monthly_debt') }}" min="0" step="0.01"
+                                                placeholder="0.00">
+                                        </div>
+                                        @error('monthly_debt')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="monthly_savings" class="form-label">¿Cuánto ahorra mensualmente?</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="text" name="monthly_savings" id="monthly_savings" 
+                                                class="form-control @error('monthly_savings') is-invalid @enderror"
+                                                value="{{ old('monthly_savings') }}" min="0" step="0.01"
+                                                placeholder="0.00">
+                                        </div>
+                                        @error('monthly_savings')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        @error('dependents_count')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
 
-                    <!-- Botón para agregar dependientes -->
-                    <div class="mb-4">
-                        <div class="alert alert-info">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-info-circle me-2"></i>
-                                <div class="flex-grow-1">
-                                    <strong>Información adicional de dependientes</strong><br>
-                                    Puede agregar información detallada de cada dependiente para un mejor análisis.
+                        <!-- Ingreso Mensual en Salarios Mínimos -->
+                        <!-- Ingreso Mensual en Salarios Mínimos -->
+                        <div class="col-md-12">
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Ingreso Mensual en Salarios Mínimos</label>
+                                <div class="px-2 d-flex justify-content-between flex-wrap gap-2">
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="income_level" value="0_1" 
+                                               data-points="4" id="income1" {{ old('income_level') == '0_1' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="income1">
+                                            0 a 1 salario mínimo <span class="badge bg-danger ms-2">4 pts</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="income_level" value="2_3" 
+                                               data-points="3" id="income2" {{ old('income_level') == '2_3' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="income2">
+                                            2 a 3 salarios mínimos <span class="badge bg-warning ms-2">3 pts</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="income_level" value="4_5" 
+                                               data-points="2" id="income3" {{ old('income_level') == '4_5' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="income3">
+                                            4 a 5 salarios mínimos <span class="badge bg-info ms-2">2 pts</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="income_level" value="6_plus" 
+                                               data-points="1" id="income4" {{ old('income_level') == '6_plus' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="income4">
+                                            6 o más salarios mínimos <span class="badge bg-success ms-2">1 pt</span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#dependentModal">
-                                    <i class="fas fa-plus"></i> Agregar Dependiente
-                                </button>
+                                @error('income_level')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Egresos con Respecto al Ingreso Total -->
+                        <div class="col-md-12">
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Egresos con Respecto al Ingreso Total</label>
+                                <div class="px-2 d-flex justify-content-between flex-wrap gap-2">
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="expense_level" value="borrow" 
+                                               data-points="5" id="expense1" {{ old('expense_level') == 'borrow' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="expense1">
+                                            Pedir prestado / Situación extraordinaria <span class="badge bg-danger ms-2">5 pts</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="expense_level" value="total" 
+                                               data-points="3" id="expense2" {{ old('expense_level') == 'total' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="expense2">
+                                            Gastos totales <span class="badge bg-warning ms-2">3 pts</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="expense_level" value="partial" 
+                                               data-points="1" id="expense3" {{ old('expense_level') == 'partial' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="expense3">
+                                            Gastos parciales <span class="badge bg-success ms-2">1 pt</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                @error('expense_level')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -182,124 +220,6 @@
         </div>
     </div>
 </div>
-
-<!-- Modal para agregar dependiente -->
-<div class="modal fade" id="dependentModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Agregar Dependiente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form action="{{ route('dif.socio_economic_test_dependents.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="socio_economic_test_id" value="{{ $test->id }}">
-                
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="dependent_name" class="form-label">Nombre completo</label>
-                                <input type="text" class="form-control" id="dependent_name" name="name" required>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="dependent_age" class="form-label">Edad</label>
-                                <input type="number" class="form-control" id="dependent_age" name="age" min="0" max="120">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="dependent_relationship" class="form-label">Parentesco</label>
-                                <select class="form-control" id="dependent_relationship" name="relationship">
-                                    <option value="">Seleccionar</option>
-                                    <option value="Hijo/a">Hijo/a</option>
-                                    <option value="Padre/Madre">Padre/Madre</option>
-                                    <option value="Hermano/a">Hermano/a</option>
-                                    <option value="Abuelo/a">Abuelo/a</option>
-                                    <option value="Nieto/a">Nieto/a</option>
-                                    <option value="Tío/a">Tío/a</option>
-                                    <option value="Primo/a">Primo/a</option>
-                                    <option value="Otro">Otro</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="dependent_schooling" class="form-label">Escolaridad</label>
-                                <select class="form-control" id="dependent_schooling" name="schooling">
-                                    <option value="">Seleccionar</option>
-                                    <option value="Sin estudios">Sin estudios</option>
-                                    <option value="Preescolar">Preescolar</option>
-                                    <option value="Primaria">Primaria</option>
-                                    <option value="Secundaria">Secundaria</option>
-                                    <option value="Preparatoria">Preparatoria</option>
-                                    <option value="Técnica">Técnica</option>
-                                    <option value="Universidad">Universidad</option>
-                                    <option value="Posgrado">Posgrado</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="dependent_marital_status" class="form-label">Estado civil</label>
-                                <select class="form-control" id="dependent_marital_status" name="marital_status">
-                                    <option value="">Seleccionar</option>
-                                    <option value="Soltero/a">Soltero/a</option>
-                                    <option value="Casado/a">Casado/a</option>
-                                    <option value="Unión libre">Unión libre</option>
-                                    <option value="Divorciado/a">Divorciado/a</option>
-                                    <option value="Viudo/a">Viudo/a</option>
-                                    <option value="Menor de edad">Menor de edad</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="dependent_occupation" class="form-label">Ocupación</label>
-                                <input type="text" class="form-control" id="dependent_occupation" name="occupation" 
-                                       placeholder="Estudiante, Empleado, Desempleado, etc.">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="dependent_weekly_income" class="form-label">Ingreso semanal</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control" id="dependent_weekly_income" 
-                                           name="weekly_income" min="0" step="0.01">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="dependent_monthly_income" class="form-label">Ingreso mensual</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control" id="dependent_monthly_income" 
-                                           name="monthly_income" min="0" step="0.01">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Dependiente</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @push('scripts')
@@ -308,6 +228,14 @@
             // Cálculo en tiempo real de puntajes
             $('input[type="radio"][data-points]').on('change', function() {
                 calculateStepScore();
+                updateCardStyles();
+            });
+
+            // Hacer que toda la tarjeta sea clickeable
+            $('.form-check').on('click', function(e) {
+                if (e.target.type !== 'radio') {
+                    $(this).find('input[type="radio"]').prop('checked', true).trigger('change');
+                }
             });
 
             function calculateStepScore() {
@@ -326,8 +254,33 @@
                 $('#total-score').text(totalScore);
             }
 
+            // Función para actualizar estilos de tarjetas (fallback para navegadores sin :has())
+            function updateCardStyles() {
+                // Remover todas las clases de selección
+                $('.form-check').removeClass('selected-danger selected-warning selected-info selected-success');
+                
+                // Aplicar estilos según la opción seleccionada
+                $('.form-check input[type="radio"]:checked').each(function() {
+                    const points = $(this).data('points');
+                    const card = $(this).closest('.form-check');
+                    
+                    if (points === 5) {
+                        card.addClass('selected-danger');
+                    } else if (points === 4) {
+                        card.addClass('selected-warning');
+                    } else if (points === 3) {
+                        card.addClass('selected-warning');
+                    } else if (points === 2) {
+                        card.addClass('selected-info');
+                    } else if (points === 1) {
+                        card.addClass('selected-success');
+                    }
+                });
+            }
+
             // Calcular puntaje inicial si hay valores seleccionados
             calculateStepScore();
+            updateCardStyles();
 
             // Mostrar modal si hay errores de validación de dependientes
             @if($errors->has('name') || $errors->has('age') || $errors->has('relationship'))
@@ -406,17 +359,109 @@
         }
 
         .form-check {
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.2s;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            position: relative;
         }
 
         .form-check:hover {
-            background-color: #f8f9fa;
+            border-color: #dee2e6;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
         }
 
-        .form-check-input:checked ~ .form-check-label {
+        .form-check-input {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transform: scale(1.2);
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            margin-bottom: 0;
+            padding-right: 30px;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Estilos para tarjetas seleccionadas según el color del badge */
+        .form-check:has(.form-check-input:checked) .badge.bg-danger,
+        .form-check:has(.form-check-input[data-points="5"]:checked) {
+            background-color: #dc3545 !important;
+        }
+
+        .form-check:has(.form-check-input[data-points="5"]:checked) {
+            border-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+        }
+
+        .form-check:has(.form-check-input[data-points="4"]:checked) {
+            border-color: #fd7e14;
+            background-color: rgba(253, 126, 20, 0.1);
+            color: #8d4700;
+        }
+
+        .form-check:has(.form-check-input[data-points="3"]:checked) {
+            border-color: #ffc107;
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #997404;
+        }
+
+        .form-check:has(.form-check-input[data-points="2"]:checked) {
+            border-color: #0dcaf0;
+            background-color: rgba(13, 202, 240, 0.1);
+            color: #055160;
+        }
+
+        .form-check:has(.form-check-input[data-points="1"]:checked) {
+            border-color: #198754;
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #0f5132;
+        }
+
+        .form-check:has(.form-check-input:checked) .form-check-label {
             font-weight: 600;
+        }
+
+        .form-check:has(.form-check-input:checked) .badge {
+            font-weight: 700;
+            font-size: 0.8em;
+        }
+
+        /* Fallback para navegadores que no soportan :has() */
+        .form-check.selected-danger {
+            border-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+        }
+
+        .form-check.selected-warning {
+            border-color: #ffc107;
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #997404;
+        }
+
+        .form-check.selected-info {
+            border-color: #0dcaf0;
+            background-color: rgba(13, 202, 240, 0.1);
+            color: #055160;
+        }
+
+        .form-check.selected-success {
+            border-color: #198754;
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #0f5132;
         }
 
         .subtotal-box {

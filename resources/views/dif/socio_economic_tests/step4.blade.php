@@ -37,19 +37,19 @@
                         </div>
                         <div class="step completed">
                             <div class="step-number">✓</div>
-                            <div class="step-title">Proveedor Económico</div>
+                            <div class="step-title">Economía y Dependientes</div>
                         </div>
                         <div class="step completed">
                             <div class="step-number">✓</div>
-                            <div class="step-title">Estructura Familiar</div>
+                            <div class="step-title">Estructura Económica</div>
                         </div>
                         <div class="step active">
                             <div class="step-number">4</div>
-                            <div class="step-title">Estructura Económica</div>
+                            <div class="step-title">Salud</div>
                         </div>
                         <div class="step">
                             <div class="step-number">5</div>
-                            <div class="step-title">Salud y Vivienda</div>
+                            <div class="step-title">Vivienda y Entorno</div>
                         </div>
                     </div>
                 </div>
@@ -57,147 +57,84 @@
                 <form action="{{ route('dif.socio_economic_tests.step4.store', $test->id) }}" method="POST" class="step-form" data-step="4">
                     @csrf
                     
-                    <!-- Información económica libre -->
-                    <div class="mb-4">
-                        <h5 class="mb-3">Información Económica General</h5>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="monthly_expenses" class="form-label">¿Cuánto dinero se gasta al mes?</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="text" name="monthly_expenses" id="monthly_expenses" 
-                                               class="form-control @error('monthly_expenses') is-invalid @enderror"
-                                               value="{{ old('monthly_expenses') }}" min="0" step="0.01"
-                                               placeholder="0.00">
-                                    </div>
-                                    @error('monthly_expenses')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="monthly_debt" class="form-label">¿Cuánto dinero se debe al mes?</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="text" name="monthly_debt" id="monthly_debt" 
-                                               class="form-control @error('monthly_debt') is-invalid @enderror"
-                                               value="{{ old('monthly_debt') }}" min="0" step="0.01"
-                                               placeholder="0.00">
-                                    </div>
-                                    @error('monthly_debt')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="monthly_savings" class="form-label">¿Cuánto ahorra mensualmente?</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="text" name="monthly_savings" id="monthly_savings" 
-                                               class="form-control @error('monthly_savings') is-invalid @enderror"
-                                               value="{{ old('monthly_savings') }}" min="0" step="0.01"
-                                               placeholder="0.00">
-                                    </div>
-                                    @error('monthly_savings')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr class="my-4">
-
-                    <!-- Parámetros de puntuación -->
-                    <h5 class="mb-3">Evaluación Económica</h5>
-                    
+                
                     <div class="row">
-                        <!-- Ingreso Mensual en Salarios Mínimos -->
-                        <div class="col-md-6">
+                        <div class="col-md-12">
+                            <h6 class="text-white bg-dark p-2 text-uppercase mb-3">
+                                <i class="fas fa-check"></i> Condiciones de Salud
+                            </h6>
+                        </div>
+                        
+                        <!-- Servicios Médicos -->
+                        <div class="col-md-12">
                             <div class="mb-4">
-                                <label class="form-label fw-bold">Ingreso Mensual en Salarios Mínimos</label>
-                                <div class="mt-2">
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="radio" name="income_level" value="0_1" 
-                                               data-points="4" id="income1" {{ old('income_level') == '0_1' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="income1">
-                                            0 a 1 salario mínimo <span class="badge bg-danger ms-2">4 pts</span>
+                                <label class="form-label fw-bold">¿Cuenta con algún servicio médico o acude a centros de salud?</label>
+                                <div class="px-2 d-flex justify-content-between flex-wrap gap-2">
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="medical_center" value="secretaria_salud" 
+                                               data-points="5" id="center1" {{ old('medical_center') == 'secretaria_salud' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="center1">
+                                            Secretaría de Salud Pública <span class="badge bg-danger ms-2">5 pts</span>
                                         </label>
                                     </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="radio" name="income_level" value="2_3" 
-                                               data-points="3" id="income2" {{ old('income_level') == '2_3' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="income2">
-                                            2 a 3 salarios mínimos <span class="badge bg-warning ms-2">3 pts</span>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="medical_center" value="private" 
+                                               data-points="3" id="center2" {{ old('medical_center') == 'private' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="center2">
+                                            Particular <span class="badge bg-warning ms-2">3 pts</span>
                                         </label>
                                     </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="radio" name="income_level" value="4_5" 
-                                               data-points="2" id="income3" {{ old('income_level') == '4_5' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="income3">
-                                            4 a 5 salarios mínimos <span class="badge bg-info ms-2">2 pts</span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="radio" name="income_level" value="6_plus" 
-                                               data-points="1" id="income4" {{ old('income_level') == '6_plus' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="income4">
-                                            6 o más salarios mínimos <span class="badge bg-success ms-2">1 pt</span>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="medical_center" value="imss_issste" 
+                                               data-points="1" id="center3" {{ old('medical_center') == 'imss_issste' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="center3">
+                                            IMSS o ISSSTE <span class="badge bg-success ms-2">1 pt</span>
                                         </label>
                                     </div>
                                 </div>
-                                @error('income_level')
+                                @error('medical_center')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
-                        <!-- Egresos con Respecto al Ingreso Total -->
-                        <div class="col-md-6">
+                        <!-- Enfermedades -->
+                        <div class="col-md-12">
                             <div class="mb-4">
-                                <label class="form-label fw-bold">Egresos con Respecto al Ingreso Total</label>
-                                <div class="mt-2">
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="radio" name="expense_level" value="borrow" 
-                                               data-points="5" id="expense1" {{ old('expense_level') == 'borrow' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="expense1">
-                                            Pedir prestado / Situación extraordinaria <span class="badge bg-danger ms-2">5 pts</span>
+                                <label class="form-label fw-bold">¿Padece algún miembro de su familia alguna enfermedad crónica y/o degenerativa grave?</label>
+                                <div class="px-2 d-flex justify-content-between flex-wrap gap-2">
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="health_problem" value="serious_chronic" 
+                                               data-points="5" id="health1" {{ old('health_problem') == 'serious_chronic' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="health1">
+                                            Tutor que aporta el ingreso mayor <span class="badge bg-danger ms-2">5 pts</span>
                                         </label>
                                     </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="radio" name="expense_level" value="total" 
-                                               data-points="3" id="expense2" {{ old('expense_level') == 'total' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="expense2">
-                                            Gastos totales <span class="badge bg-warning ms-2">3 pts</span>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="health_problem" value="serious_treatable" 
+                                               data-points="4" id="health2" {{ old('health_problem') == 'serious_treatable' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="health2">
+                                            Tutor dependiente <span class="badge bg-warning ms-2">4 pts</span>
                                         </label>
                                     </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="radio" name="expense_level" value="partial" 
-                                               data-points="1" id="expense3" {{ old('expense_level') == 'partial' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="expense3">
-                                            Gastos parciales <span class="badge bg-success ms-2">1 pt</span>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="health_problem" value="moderate" 
+                                               data-points="3" id="health3" {{ old('health_problem') == 'moderate' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="health3">
+                                            Hijos <span class="badge bg-warning ms-2">3 pts</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check flex-fill mb-2">
+                                        <input class="form-check-input" type="radio" name="health_problem" value="minor" 
+                                               data-points="2" id="health4" {{ old('health_problem') == 'minor' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="health4">
+                                            Familia segunda línea <span class="badge bg-info ms-2">2 pts</span>
                                         </label>
                                     </div>
                                 </div>
-                                @error('expense_level')
+                                @error('health_problem')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Información adicional -->
-                    <div class="alert alert-info">
-                        <div class="d-flex">
-                            <i class="fas fa-info-circle me-2 mt-1"></i>
-                            <div>
-                                <strong>Información sobre Salarios Mínimos</strong><br>
-                                <small>El salario mínimo vigente en México para 2025 es de aproximadamente $249.50 pesos diarios ($7,735 pesos mensuales).</small>
                             </div>
                         </div>
                     </div>
@@ -238,6 +175,14 @@
             // Cálculo en tiempo real de puntajes
             $('input[type="radio"][data-points]').on('change', function() {
                 calculateStepScore();
+                updateCardStyles();
+            });
+
+            // Hacer que toda la tarjeta sea clickeable
+            $('.form-check').on('click', function(e) {
+                if (e.target.type !== 'radio') {
+                    $(this).find('input[type="radio"]').prop('checked', true).trigger('change');
+                }
             });
 
             function calculateStepScore() {
@@ -256,42 +201,32 @@
                 $('#total-score').text(totalScore);
             }
 
+            function updateCardStyles() {
+                // Remover todas las clases de selección
+                $('.form-check').removeClass('selected-danger selected-warning selected-info selected-success');
+                
+                // Aplicar estilos según la opción seleccionada
+                $('.form-check input[type="radio"]:checked').each(function() {
+                    const points = $(this).data('points');
+                    const card = $(this).closest('.form-check');
+                    
+                    if (points === 5) {
+                        card.addClass('selected-danger');
+                    } else if (points === 4) {
+                        card.addClass('selected-warning');
+                    } else if (points === 3) {
+                        card.addClass('selected-warning');
+                    } else if (points === 2) {
+                        card.addClass('selected-info');
+                    } else if (points === 1) {
+                        card.addClass('selected-success');
+                    }
+                });
+            }
+
             // Calcular puntaje inicial si hay valores seleccionados
             calculateStepScore();
-
-            // Formatear números en los campos de entrada
-            $('input[type="number"]').on('input', function() {
-                const value = parseFloat(this.value);
-                if (!isNaN(value)) {
-                    this.value = value.toFixed(2);
-                }
-            });
-
-            // Calcular automáticamente algunos campos
-            $('#monthly_expenses, #monthly_debt').on('input', function() {
-                const expenses = parseFloat($('#monthly_expenses').val()) || 0;
-                const debt = parseFloat($('#monthly_debt').val()) || 0;
-                
-                // Mostrar indicadores visuales si hay datos
-                if (expenses > 0 || debt > 0) {
-                    updateFinancialIndicators(expenses, debt);
-                }
-            });
-
-            function updateFinancialIndicators(expenses, debt) {
-                // Esta función podría calcular indicadores financieros adicionales
-                // Por ejemplo, ratio de endeudamiento, etc.
-                const totalOutflow = expenses + debt;
-                
-                if (totalOutflow > 15000) {
-                    $('#expense_level_borrow').prop('checked', true);
-                } else if (totalOutflow > 7500) {
-                    $('#expense_level_total').prop('checked', true);
-                }
-                
-                // Recalcular puntaje
-                calculateStepScore();
-            }
+            updateCardStyles();
         });
     </script>
 
@@ -365,17 +300,109 @@
         }
 
         .form-check {
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.2s;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            position: relative;
         }
 
         .form-check:hover {
-            background-color: #f8f9fa;
+            border-color: #dee2e6;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
         }
 
-        .form-check-input:checked ~ .form-check-label {
+        .form-check-input {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transform: scale(1.2);
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            margin-bottom: 0;
+            padding-right: 30px;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Estilos para tarjetas seleccionadas según el color del badge */
+        .form-check:has(.form-check-input:checked) .badge.bg-danger,
+        .form-check:has(.form-check-input[data-points="5"]:checked) {
+            background-color: #dc3545 !important;
+        }
+
+        .form-check:has(.form-check-input[data-points="5"]:checked) {
+            border-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+        }
+
+        .form-check:has(.form-check-input[data-points="4"]:checked) {
+            border-color: #fd7e14;
+            background-color: rgba(253, 126, 20, 0.1);
+            color: #8d4700;
+        }
+
+        .form-check:has(.form-check-input[data-points="3"]:checked) {
+            border-color: #ffc107;
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #997404;
+        }
+
+        .form-check:has(.form-check-input[data-points="2"]:checked) {
+            border-color: #0dcaf0;
+            background-color: rgba(13, 202, 240, 0.1);
+            color: #055160;
+        }
+
+        .form-check:has(.form-check-input[data-points="1"]:checked) {
+            border-color: #198754;
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #0f5132;
+        }
+
+        .form-check:has(.form-check-input:checked) .form-check-label {
             font-weight: 600;
+        }
+
+        .form-check:has(.form-check-input:checked) .badge {
+            font-weight: 700;
+            font-size: 0.8em;
+        }
+
+        /* Fallback para navegadores que no soportan :has() */
+        .form-check.selected-danger {
+            border-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+        }
+
+        .form-check.selected-warning {
+            border-color: #ffc107;
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #997404;
+        }
+
+        .form-check.selected-info {
+            border-color: #0dcaf0;
+            background-color: rgba(13, 202, 240, 0.1);
+            color: #055160;
+        }
+
+        .form-check.selected-success {
+            border-color: #198754;
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #0f5132;
         }
 
         .subtotal-box {
