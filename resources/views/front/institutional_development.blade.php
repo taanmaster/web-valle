@@ -179,6 +179,7 @@
                         <p>
                             Planeación de las regulaciones, que pretendan ser emitidas, modificadas o eliminadas.
                         </p>
+                        <a href="{{ route('regulatory-agenda.index') }}" class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0" style="width: fit-content">Acceder a directorio de Dependencias <ion-icon name="caret-forward-outline"></ion-icon></a>
                     </div>
                 </div>
             </div>

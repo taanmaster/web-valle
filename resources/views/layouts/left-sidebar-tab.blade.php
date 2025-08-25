@@ -456,6 +456,28 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dif.programs.index') }}">Programas</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.socio_economic_tests.index') }}">Estudio Socioeconómmico</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Generales</h6>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.social_assistances.index') }}">Asistencia Social</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.medications.index') }}">Medicamentos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.legal_processes.index') }}">Procesos Jurídicos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.locations.index') }}">Locaciones</a>
+                        </li>
                     </ul>
 
                     <div class="title-box">

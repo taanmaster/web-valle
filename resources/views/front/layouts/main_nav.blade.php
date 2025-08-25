@@ -37,14 +37,12 @@
             </li>
             --}}
 
-            {{--  
             <li>
-                <a href="{{ route('urban_dev.index') }}">
+                <a href="{{ route('desarrollo_institucional.index') }}">
                     <ion-icon name="business-outline"></ion-icon>
-                    <span>Desarrollo Urbano</span>
+                    <span>Desarrollo Institucional</span>
                 </a>
             </li>
-            --}}
 
             <li>
                 <a href="{{ route('sare.index') }}">

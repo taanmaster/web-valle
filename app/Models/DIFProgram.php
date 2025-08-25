@@ -14,7 +14,10 @@ class DIFProgram extends Model
     protected $fillable = [
         'name',
         'description',
-        'full_address',
+    'full_address',
+    'manager',
+    'start_date',
+    'end_date',
         'is_active',
     ];
 

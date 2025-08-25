@@ -9,6 +9,8 @@ class DIFPaymentConcept extends Model
 {
     use HasFactory;
 
+    protected $table = 'd_i_f_payment_concepts';
+
     protected $fillable = [
         'name',
         'description',

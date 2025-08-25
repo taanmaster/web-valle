@@ -9,6 +9,8 @@ class DIFDoctor extends Model
 {
     use HasFactory;
 
+    protected $table = 'd_i_f_doctors';
+
     protected $fillable = [
         'employee_num',
         'name',

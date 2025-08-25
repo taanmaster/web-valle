@@ -6,6 +6,8 @@
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Dirección</th>
+                <th>Encargado</th>
+                <th>Vigencia</th>
                 <th>Estado</th>
                 <th scope="col">Acciones</th>
             </tr>
@@ -21,6 +23,18 @@
                 </td>
                 <td class="text-muted">
                     {{ $program->full_address ? Str::limit($program->full_address, 40) : 'Sin dirección' }}
+                </td>
+                <td class="text-muted">
+                    {{ $program->manager ? Str::limit($program->manager, 30) : '—' }}
+                </td>
+                <td class="text-muted">
+                    @if($program->start_date || $program->end_date)
+                        {{ $program->start_date ? \Carbon\Carbon::parse($program->start_date)->format('d-m-Y') : '—' }}
+                        —
+                        {{ $program->end_date ? \Carbon\Carbon::parse($program->end_date)->format('d-m-Y') : '—' }}
+                    @else
+                        <em>Sin vigencia</em>
+                    @endif
                 </td>
                 <td>
                     @if($program->is_active)

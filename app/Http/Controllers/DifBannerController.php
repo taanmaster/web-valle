@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
 use Str;
 use Auth;
 use Image;
 use Session;
 
-use App\Models\DifBanner;
+// Modelos
+use App\Models\DIFBanner as Banner;
+
 use Illuminate\Http\Request;
 
-class DifBannerController extends Controller
+class DIFBannerController extends Controller
 {
     public function index()
     {
-        $banners = DifBanner::orderBy('priority', 'asc')->paginate(5);
+        $banners = Banner::orderBy('priority', 'asc')->paginate(5);
 
         return view('dif.banners.index', compact('banners'));
     }
@@ -36,7 +39,7 @@ class DifBannerController extends Controller
         ]);
 
         // Guardar datos en la base de datos
-        $banner = new DifBanner;
+        $banner = new Banner;
 
         $banner->title = $request->title;
         $banner->subtitle = $request->subtitle;
@@ -100,14 +103,14 @@ class DifBannerController extends Controller
 
     public function show($id)
     {
-        $banner = DifBanner::find($id);
+        $banner = Banner::find($id);
 
         return view('dif.banners.show')->with('banner', $banner);
     }
 
     public function edit($id)
     {
-        $banner = DifBanner::find($id);
+        $banner = Banner::find($id);
 
         return view('dif.banners.edit')->with('banner', $banner);
     }
@@ -115,7 +118,7 @@ class DifBannerController extends Controller
     public function update(Request $request, $id)
     {
         // Guardar datos en la base de datos
-        $banner = DifBanner::find($id);
+        $banner = Banner::find($id);
 
         $banner->title = $request->title;
         $banner->subtitle = $request->subtitle;
@@ -180,7 +183,7 @@ class DifBannerController extends Controller
     public function status(Request $request)
     {
         // Guardar datos en la base de datos
-        $banner = DifBanner::find($request->id);
+        $banner = Banner::find($request->id);
 
         if ($banner->is_active == true) {
             $banner->is_active = false;
@@ -199,7 +202,7 @@ class DifBannerController extends Controller
 
     public function destroy($id)
     {
-        $banner = DifBanner::find($id);
+        $banner = Banner::find($id);
         $banner->delete();
 
         Session::flash('success', 'El banner se elimino correctamente.');

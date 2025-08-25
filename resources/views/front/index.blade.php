@@ -237,18 +237,16 @@
         </div>
 
         <!--Agenda Regulatoria -->
-        @if ($regulation_dependencies->count() >= 1)
-            <div href="{{ route('urban_dev.index') }}" class="card card-image card-alignment-bottom wow fadeInUp h-100 d-block">
-                <img src="{{ asset('front/img/placeholder-3.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
-                <div class="overlay"></div>
+        <div href="{{ route('urban_dev.index') }}" class="card card-image card-alignment-bottom wow fadeInUp h-100 d-block">
+            <img src="{{ asset('front/img/placeholder-3.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+            <div class="overlay"></div>
 
-                <div class="card-content">
-                    <h2 style="padding-top: 120px;">Agenda Regulatoria</h2>
-                    <p class="mb-4">Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
-                    <a href="{{ route('regulatory-agenda.index') }}" class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0" style="width: fit-content">Acceder a directorio de Dependencias <ion-icon name="caret-forward-outline"></ion-icon></a>
-                </div>
+            <div class="card-content">
+                <h2 style="padding-top: 120px;">Agenda Regulatoria</h2>
+                <p class="mb-4">Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
+                <a href="{{ route('regulatory-agenda.index') }}" class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0" style="width: fit-content">Acceder a directorio de Dependencias <ion-icon name="caret-forward-outline"></ion-icon></a>
             </div>
-        @endif
+        </div>
 
         <a href="{{ route('urban_dev.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
             <img src="{{ asset('front/img/placeholder-6.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">

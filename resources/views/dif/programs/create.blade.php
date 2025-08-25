@@ -29,6 +29,21 @@
                                 <textarea class="form-control" id="full_address" name="full_address" rows="3"></textarea>
                             </div>
                             <div class="col-md-12 mb-3">
+                                <label for="manager" class="form-label">Encargado <span class="text-info tx-12">(Opcional)</span></label>
+                                <input type="text" class="form-control" id="manager" name="manager">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Vigencia (Inicio - Fin) <span class="text-info tx-12">(Opcional)</span></label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="date" class="form-control" id="start_date" name="start_date">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="date" class="form-control" id="end_date" name="end_date">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="is_active" name="is_active" checked>
                                     <label class="form-check-label" for="is_active">
