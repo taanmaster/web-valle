@@ -414,6 +414,45 @@
                         </h6>
                     </div>
                     <div class="card-body">
+                        @php
+                            // Función para traducir las claves de los campos
+                            $translateKey = function($key) {
+                                $translations = [
+                                    // Paso 2
+                                    'civil_status' => 'Estado Civil',
+                                    'age_range' => 'Rango de Edad',
+                                    'occupation' => 'Ocupación',
+                                    'education' => 'Educación',
+                                    'dependents_count' => 'Número de Dependientes',
+                                    
+                                    // Paso 3
+                                    'income_level' => 'Nivel de Ingresos',
+                                    'expense_level' => 'Nivel de Gastos',
+                                    'monthly_expenses' => 'Gastos Mensuales',
+                                    'monthly_debt' => 'Deudas Mensuales',
+                                    'monthly_savings' => 'Ahorros Mensuales',
+                                    
+                                    // Paso 4
+                                    'medical_center' => 'Centro Médico',
+                                    'health_problem' => 'Problema de Salud',
+                                    
+                                    // Paso 5
+                                    'housing_problem' => 'Situación de Vivienda',
+                                    'water_problem' => 'Servicio de Agua',
+                                    'energy_problem' => 'Servicio de Energía',
+                                    'drainage_problem' => 'Servicio de Drenaje',
+                                    'gas_problem' => 'Tipo de Gas',
+                                    'roof_problem' => 'Material del Techo',
+                                    'wall_problem' => 'Material de Paredes',
+                                    'floor_problem' => 'Material del Piso',
+                                    'room_problem' => 'Espacios de la Vivienda',
+                                    'final_observations' => 'Observaciones Finales',
+                                    'approval_notes' => 'Notas de Aprobación'
+                                ];
+                                
+                                return $translations[$key] ?? ucfirst(str_replace('_', ' ', $key));
+                            };
+                        @endphp
                         <div class="row">
                             @if($step2Answers)
                             <div class="col-md-6 mb-3">
@@ -425,7 +464,7 @@
                                     <div class="small">
                                         @foreach($step2Answers as $key => $value)
                                             <div class="mb-1">
-                                                <strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> 
+                                                <strong>{{ $translateKey($key) }}:</strong> 
                                                 {{ $translateField($key, $value) }}
                                             </div>
                                         @endforeach
@@ -444,7 +483,7 @@
                                     <div class="small">
                                         @foreach($step3Answers as $key => $value)
                                             <div class="mb-1">
-                                                <strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> 
+                                                <strong>{{ $translateKey($key) }}:</strong> 
                                                 @if(is_numeric($value))
                                                     ${{ number_format($value, 2) }}
                                                 @else
@@ -467,7 +506,7 @@
                                     <div class="small">
                                         @foreach($step4Answers as $key => $value)
                                             <div class="mb-1">
-                                                <strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> 
+                                                <strong>{{ $translateKey($key) }}:</strong> 
                                                 {{ $translateField($key, $value) }}
                                             </div>
                                         @endforeach
@@ -487,7 +526,7 @@
                                         @foreach($step5Answers as $key => $value)
                                             @if($key !== 'final_observations' && $key !== 'approval_notes')
                                             <div class="mb-1">
-                                                <strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> 
+                                                <strong>{{ $translateKey($key) }}:</strong> 
                                                 {{ $translateField($key, $value) }}
                                             </div>
                                             @endif
