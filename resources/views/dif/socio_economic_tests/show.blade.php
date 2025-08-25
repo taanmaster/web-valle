@@ -569,6 +569,288 @@
                 </div>
                 @endif
 
+
+                <!-- Documentación de Soporte y Verificación -->
+                <div class="card" id="documentFiles">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-folder me-2"></i>
+                            Documentación de Soporte y Verificación
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Documentos del Beneficiario -->
+                        <div class="mb-4">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-user me-2"></i>
+                                Beneficiario
+                            </h6>
+                            <div class="row">
+                                <!-- Acta de Nacimiento -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="document-section">
+                                        <div class="text-center mb-2">
+                                            <i class="fas fa-file-pdf text-danger fs-2"></i>
+                                        </div>
+                                        <h6 class="text-center mb-2">Acta de Nacimiento</h6>
+                                        @php
+                                            $actaNacimiento = $test->files->where('name', 'acta_nacimiento_beneficiario')->first();
+                                        @endphp
+                                        @if($actaNacimiento)
+                                            <div class="text-center">
+                                                <a href="{{ $actaNacimiento->s3_asset_url }}" target="_blank" class="btn btn-success btn-sm mb-2">
+                                                    <i class="fas fa-eye"></i> Ver
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm mb-2 delete-file" data-file-id="{{ $actaNacimiento->id }}">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </button>
+                                            </div>
+                                        @else
+                                            <div class="upload-area text-center p-3 border border-dashed rounded" data-document-type="acta_nacimiento_beneficiario">
+                                                <p class="text-muted mb-2">Arrastra o sube archivos</p>
+                                                <input type="file" class="form-control d-none file-input" accept=".pdf" data-max-size="10">
+                                                <button type="button" class="btn btn-outline-primary btn-sm upload-btn">
+                                                    <i class="fas fa-upload"></i> Subir Archivo
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- CURP -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="document-section">
+                                        <div class="text-center mb-2">
+                                            <i class="fas fa-file-pdf text-danger fs-2"></i>
+                                        </div>
+                                        <h6 class="text-center mb-2">CURP</h6>
+                                        @php
+                                            $curp = $test->files->where('name', 'curp_beneficiario')->first();
+                                        @endphp
+                                        @if($curp)
+                                            <div class="text-center">
+                                                <a href="{{ $curp->s3_asset_url }}" target="_blank" class="btn btn-success btn-sm mb-2">
+                                                    <i class="fas fa-eye"></i> Ver
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm mb-2 delete-file" data-file-id="{{ $curp->id }}">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </button>
+                                            </div>
+                                        @else
+                                            <div class="upload-area text-center p-3 border border-dashed rounded" data-document-type="curp_beneficiario">
+                                                <p class="text-muted mb-2">Arrastra o sube archivos</p>
+                                                <input type="file" class="form-control d-none file-input" accept=".pdf" data-max-size="10">
+                                                <button type="button" class="btn btn-outline-primary btn-sm upload-btn">
+                                                    <i class="fas fa-upload"></i> Subir Archivo
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- INE -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="document-section">
+                                        <div class="text-center mb-2">
+                                            <i class="fas fa-file-pdf text-danger fs-2"></i>
+                                        </div>
+                                        <h6 class="text-center mb-2">INE</h6>
+                                        @php
+                                            $ine = $test->files->where('name', 'ine_beneficiario')->first();
+                                        @endphp
+                                        @if($ine)
+                                            <div class="text-center">
+                                                <a href="{{ $ine->s3_asset_url }}" target="_blank" class="btn btn-success btn-sm mb-2">
+                                                    <i class="fas fa-eye"></i> Ver
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm mb-2 delete-file" data-file-id="{{ $ine->id }}">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </button>
+                                            </div>
+                                        @else
+                                            <div class="upload-area text-center p-3 border border-dashed rounded" data-document-type="ine_beneficiario">
+                                                <p class="text-muted mb-2">Arrastra o sube archivos</p>
+                                                <input type="file" class="form-control d-none file-input" accept=".pdf" data-max-size="10">
+                                                <button type="button" class="btn btn-outline-primary btn-sm upload-btn">
+                                                    <i class="fas fa-upload"></i> Subir Archivo
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Comprobante de Domicilio -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="document-section">
+                                        <div class="text-center mb-2">
+                                            <i class="fas fa-file-pdf text-danger fs-2"></i>
+                                        </div>
+                                        <h6 class="text-center mb-2">Comprobante de Domicilio</h6>
+                                        @php
+                                            $comprobanteDomicilio = $test->files->where('name', 'comprobante_domicilio_beneficiario')->first();
+                                        @endphp
+                                        @if($comprobanteDomicilio)
+                                            <div class="text-center">
+                                                <a href="{{ $comprobanteDomicilio->s3_asset_url }}" target="_blank" class="btn btn-success btn-sm mb-2">
+                                                    <i class="fas fa-eye"></i> Ver
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm mb-2 delete-file" data-file-id="{{ $comprobanteDomicilio->id }}">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </button>
+                                            </div>
+                                        @else
+                                            <div class="upload-area text-center p-3 border border-dashed rounded" data-document-type="comprobante_domicilio_beneficiario">
+                                                <p class="text-muted mb-2">Arrastra o sube archivos</p>
+                                                <input type="file" class="form-control d-none file-input" accept=".pdf" data-max-size="10">
+                                                <button type="button" class="btn btn-outline-primary btn-sm upload-btn">
+                                                    <i class="fas fa-upload"></i> Subir Archivo
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Documentos de Dependientes -->
+                        @if($test->dependents->count() > 0)
+                        <div class="mb-4">
+                            <h6 class="text-info mb-3">
+                                <i class="fas fa-users me-2"></i>
+                                Dependientes
+                            </h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th class="text-center">Actas de Nacimiento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($test->dependents as $dependent)
+                                        <tr>
+                                            <td>
+                                                <strong>{{ $dependent->name }}</strong><br>
+                                                <small class="text-muted">{{ $dependent->relationship ?? 'Sin relación especificada' }}</small>
+                                            </td>
+                                            <td class="text-center">
+                                                @php
+                                                    $actaDependiente = $test->files->where('name', 'acta_nacimiento_dependiente_' . $dependent->id)->first();
+                                                @endphp
+                                                @if($actaDependiente)
+                                                    <div>
+                                                        <a href="{{ $actaDependiente->s3_asset_url }}" target="_blank" class="btn btn-success btn-sm me-2">
+                                                            <i class="fas fa-eye"></i> Ver
+                                                        </a>
+                                                        <button type="button" class="btn btn-danger btn-sm delete-file" data-file-id="{{ $actaDependiente->id }}">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                @else
+                                                    <div class="upload-area-inline" data-document-type="acta_nacimiento_dependiente_{{ $dependent->id }}">
+                                                        <input type="file" class="form-control d-none file-input" accept=".pdf" data-max-size="10">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm upload-btn">
+                                                            <i class="fas fa-upload"></i> Subir Acta
+                                                        </button>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @endif
+
+                        <!-- Evidencias Adicionales -->
+                        <div class="mb-4">
+                            <h6 class="text-warning mb-3">
+                                <i class="fas fa-paperclip me-2"></i>
+                                Evidencias
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- Área de subida para evidencias -->
+                                    <div class="upload-area-large text-center p-4 border border-dashed rounded mb-3" data-document-type="evidencia">
+                                        <i class="fas fa-cloud-upload-alt fs-2 text-muted mb-2"></i>
+                                        <p class="text-muted mb-2">Arrastra o sube archivos adicionales</p>
+                                        <small class="text-muted">Formatos permitidos: PDF, JPG, PNG, DOC, DOCX (Max: 10MB)</small>
+                                        <div class="mt-2">
+                                            <input type="file" class="form-control d-none file-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" data-max-size="10" multiple>
+                                            <button type="button" class="btn btn-outline-warning upload-btn">
+                                                <i class="fas fa-upload"></i> Subir Evidencias
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lista de evidencias existentes -->
+                                    <div class="evidencias-list">
+                                        @php
+                                            // Obtener todos los archivos que no sean documentos específicos del beneficiario o dependientes
+                                            $evidencias = $test->files->reject(function($file) {
+                                                return in_array($file->name, [
+                                                    'acta_nacimiento_beneficiario',
+                                                    'curp_beneficiario', 
+                                                    'ine_beneficiario',
+                                                    'comprobante_domicilio_beneficiario'
+                                                ]) || str_starts_with($file->name, 'acta_nacimiento_dependiente_');
+                                            })->sortByDesc('created_at');
+                                        @endphp
+                                        @if($evidencias->count() > 0)
+                                        <div class="row">
+                                            @foreach($evidencias as $evidencia)
+                                            <div class="col-md-4 mb-2">
+                                                <div class="card">
+                                                    <div class="card-body p-2">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="me-2">
+                                                                @if(str_contains($evidencia->file_type, 'pdf'))
+                                                                    <i class="fas fa-file-pdf text-danger"></i>
+                                                                @elseif(str_contains($evidencia->file_type, 'image'))
+                                                                    <i class="fas fa-file-image text-success"></i>
+                                                                @else
+                                                                    <i class="fas fa-file-alt text-primary"></i>
+                                                                @endif
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <small class="d-block">{{ $evidencia->file_name }}</small>
+                                                                <small class="text-muted">
+                                                                    {{ number_format($evidencia->file_size / 1024, 1) }} KB - 
+                                                                    {{ $evidencia->created_at->format('d/m/Y H:i') }}
+                                                                </small>
+                                                            </div>
+                                                            <div class="btn-group">
+                                                                <a href="{{ $evidencia->s3_asset_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
+                                                                <button type="button" class="btn btn-outline-danger btn-sm delete-file" data-file-id="{{ $evidencia->id }}">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mensaje informativo -->
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Nota:</strong> Los documentos del beneficiario deben estar en formato PDF. 
+                            Para las evidencias adicionales se permiten archivos PDF, imágenes (JPG, PNG) y documentos de Word.
+                            Tamaño máximo por archivo: 10 MB.
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Información del sistema -->
                 <div class="card bg-light">
                     <div class="card-body">
@@ -679,8 +961,46 @@
     color: #6c757d;
 }
 
+/* Estilos para subida de archivos */
+.document-section {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    height: 100%;
+    background: #f8f9fa;
+}
+
+.upload-area, .upload-area-large {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-area:hover, .upload-area-large:hover {
+    border-color: #007bff !important;
+    background-color: #f8f9ff;
+}
+
+.upload-area.dragover, .upload-area-large.dragover {
+    border-color: #007bff !important;
+    background-color: #e3f2fd;
+}
+
+.upload-area-inline {
+    display: inline-block;
+}
+
+.uploading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 @media print {
-    .btn-group, .alert, .card-header .btn-group {
+    .btn-group, .alert, .card-header .btn-group, #documentFiles {
         display: none !important;
     }
     
@@ -698,4 +1018,211 @@
     font-size: 0.875rem;
 }
 </style>
+
+<script>
+$(document).ready(function() {
+    // Token CSRF para las peticiones AJAX
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    // Función para mostrar notificaciones
+    function showNotification(message, type = 'success') {
+        let bgClass = type === 'success' ? 'bg-success' : 'bg-danger';
+        let notification = `
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+                <div class="toast show align-items-center text-white ${bgClass} border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('body').append(notification);
+        setTimeout(() => {
+            $('.toast').fadeOut(() => $('.toast').parent().remove());
+        }, 5000);
+    }
+
+    // Función para validar archivos
+    function validateFile(file, acceptedTypes, maxSize) {
+        // Validar tamaño (maxSize en MB)
+        if (file.size > maxSize * 1024 * 1024) {
+            showNotification(`El archivo ${file.name} es demasiado grande. Máximo ${maxSize}MB.`, 'error');
+            return false;
+        }
+
+        // Validar tipo
+        if (acceptedTypes && !acceptedTypes.includes(file.type)) {
+            showNotification(`Tipo de archivo no permitido: ${file.name}`, 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    // Manejar click en botones de subida
+    $(document).on('click', '.upload-btn', function() {
+        $(this).siblings('.file-input').click();
+    });
+
+    // Manejar selección de archivos
+    $(document).on('change', '.file-input', function() {
+        let files = this.files;
+        let uploadArea = $(this).closest('[data-document-type]');
+        let documentType = uploadArea.data('document-type');
+        let maxSize = $(this).data('max-size') || 10;
+        let accept = $(this).attr('accept');
+        
+        // Convertir accept a tipos MIME
+        let acceptedTypes = null;
+        if (accept) {
+            acceptedTypes = accept.split(',').map(type => {
+                if (type === '.pdf') return 'application/pdf';
+                if (type === '.jpg' || type === '.jpeg') return 'image/jpeg';
+                if (type === '.png') return 'image/png';
+                if (type === '.doc') return 'application/msword';
+                if (type === '.docx') return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                return type;
+            });
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            if (validateFile(file, acceptedTypes, maxSize)) {
+                uploadFile(file, documentType, uploadArea);
+            }
+        }
+
+        // Limpiar el input
+        $(this).val('');
+    });
+
+    // Función para subir archivo
+    function uploadFile(file, documentType, uploadArea) {
+        let formData = new FormData();
+        formData.append('file', file);
+        formData.append('socio_economic_test_id', {{ $test->id }});
+        formData.append('name', documentType);
+
+        // Mostrar estado de carga
+        uploadArea.addClass('uploading');
+        let originalHtml = uploadArea.html();
+        uploadArea.html(`
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Subiendo...</span>
+                </div>
+                <p class="mt-2 text-muted">Subiendo ${file.name}...</p>
+            </div>
+        `);
+
+        $.ajax({
+            url: '{{ route("dif.socio_economic_test_files.store") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    showNotification('Archivo subido correctamente');
+                    // Recargar la página para mostrar el archivo
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showNotification('Error al subir el archivo', 'error');
+                    uploadArea.removeClass('uploading');
+                    uploadArea.html(originalHtml);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', xhr.responseText);
+                let errorMessage = 'Error al subir el archivo';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+                showNotification(errorMessage, 'error');
+                uploadArea.removeClass('uploading');
+                uploadArea.html(originalHtml);
+            }
+        });
+    }
+
+    // Manejar eliminación de archivos
+    $(document).on('click', '.delete-file', function() {
+        let fileId = $(this).data('file-id');
+        let button = $(this);
+        
+        if (confirm('¿Está seguro de que desea eliminar este archivo?')) {
+            button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+            
+            $.ajax({
+                url: `/dif/socio-economic-test-files/${fileId}`,
+                type: 'DELETE',
+                success: function(response) {
+                    showNotification('Archivo eliminado correctamente');
+                    // Recargar la página para reflejar los cambios
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', xhr.responseText);
+                    showNotification('Error al eliminar el archivo', 'error');
+                    button.prop('disabled', false).html('<i class="fas fa-trash"></i>');
+                }
+            });
+        }
+    });
+
+    // Manejo de drag & drop
+    $(document).on('dragover', '.upload-area, .upload-area-large', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).addClass('dragover');
+    });
+
+    $(document).on('dragleave', '.upload-area, .upload-area-large', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).removeClass('dragover');
+    });
+
+    $(document).on('drop', '.upload-area, .upload-area-large', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).removeClass('dragover');
+        
+        let files = e.originalEvent.dataTransfer.files;
+        let documentType = $(this).data('document-type');
+        let fileInput = $(this).find('.file-input');
+        let maxSize = fileInput.data('max-size') || 10;
+        let accept = fileInput.attr('accept');
+        
+        // Convertir accept a tipos MIME
+        let acceptedTypes = null;
+        if (accept) {
+            acceptedTypes = accept.split(',').map(type => {
+                if (type === '.pdf') return 'application/pdf';
+                if (type === '.jpg' || type === '.jpeg') return 'image/jpeg';
+                if (type === '.png') return 'image/png';
+                if (type === '.doc') return 'application/msword';
+                if (type === '.docx') return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                return type;
+            });
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            if (validateFile(file, acceptedTypes, maxSize)) {
+                uploadFile(file, documentType, $(this));
+            }
+        }
+    });
+});
+</script>
 @endsection

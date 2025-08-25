@@ -160,7 +160,7 @@ class DIFSocioEconomicTestFileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $test_file = TestFile::findOrFail($id);
 
@@ -173,6 +173,11 @@ class DIFSocioEconomicTestFileController extends Controller
         }
 
         $test_file->delete();
+
+        // Response
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Archivo eliminado correctamente.']);
+        }
 
         Session::flash('success', 'Archivo eliminado correctamente.');
         return redirect()->route('dif.socio_economic_test_files.index');

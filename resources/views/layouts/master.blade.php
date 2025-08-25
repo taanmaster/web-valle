@@ -10,6 +10,9 @@
     <meta content="Valle" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
