@@ -14,7 +14,7 @@
                                 }
 
                                 .headerband {
-                                    padding: 10px 0;
+                                    padding: 15px 25px;
                                     width: 100%;
                                 }
 
