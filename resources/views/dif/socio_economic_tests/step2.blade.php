@@ -246,30 +246,37 @@
                             <label class="form-label fw-bold">Dependencia Económica (Número total de personas que dependen económicamente)</label>
                             <div class="px-2 d-flex justify-content-between flex-wrap gap-2">
                                 <div class="form-check flex-fill mb-2">
-                                    <input class="form-check-input" type="radio" name="dependents_count" value="10" 
-                                        data-points="5" id="dep1" {{ old('dependents_count') == '10' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="radio" name="dependents_count" value="16" 
+                                        data-points="5" id="dep1" {{ old('dependents_count') == '16' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="dep1">
-                                        10 o más personas <span class="badge bg-danger ms-2">5 pts</span>
+                                        16+ <span class="badge bg-danger ms-2">5 pts</span>
+                                    </label>
+                                </div>
+                                <div class="form-check flex-fill mb-2">
+                                    <input class="form-check-input" type="radio" name="dependents_count" value="15" 
+                                        data-points="3" id="dep2" {{ old('dependents_count') == '15' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dep2">
+                                        9 a 15 personas <span class="badge bg-warning ms-2">3 pts</span>
                                     </label>
                                 </div>
                                 <div class="form-check flex-fill mb-2">
                                     <input class="form-check-input" type="radio" name="dependents_count" value="9" 
-                                        data-points="3" id="dep2" {{ old('dependents_count') == '9' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="dep2">
-                                        6 a 9 personas <span class="badge bg-warning ms-2">3 pts</span>
+                                        data-points="2" id="dep3" {{ old('dependents_count') == '9' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dep3">
+                                        6 a 9 personas <span class="badge bg-warning ms-2">2 pts</span>
                                     </label>
                                 </div>
                                 <div class="form-check flex-fill mb-2">
                                     <input class="form-check-input" type="radio" name="dependents_count" value="5" 
-                                        data-points="2" id="dep3" {{ old('dependents_count') == '5' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="dep3">
-                                        3 a 5 personas <span class="badge bg-info ms-2">2 pts</span>
+                                        data-points="1" id="dep4" {{ old('dependents_count') == '5' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dep4">
+                                        3 a 5 personas <span class="badge bg-info ms-2">1 pt</span>
                                     </label>
                                 </div>
                                 <div class="form-check flex-fill mb-2">
                                     <input class="form-check-input" type="radio" name="dependents_count" value="2" 
-                                        data-points="1" id="dep4" {{ old('dependents_count') == '2' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="dep4">
+                                        data-points="1" id="dep5" {{ old('dependents_count') == '2' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dep5">
                                         1 a 2 personas <span class="badge bg-success ms-2">1 pt</span>
                                     </label>
                                 </div>
