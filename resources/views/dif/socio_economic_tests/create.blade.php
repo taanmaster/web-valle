@@ -85,12 +85,12 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="citizen_id" class="form-label">Usuario/Ciudadano <span class="text-danger">*</span></label>
+                                <label for="citizen_id" class="form-label">Usuario (Perfil Médico) <span class="text-danger">*</span></label>
                                 <select name="citizen_id" id="citizen_id" class="form-control @error('citizen_id') is-invalid @enderror" required>
                                     <option value="">Seleccione un usuario</option>
                                     @foreach($users as $user)
                                         <option value="{{ $user->id }}" {{ old('citizen_id') == $user->id ? 'selected' : '' }}>
-                                            {{ $user->name }} ({{ $user->email }})
+                                            {{ $user->citizen->name ?? 'N/A' }} {{ $user->citizen->last_name ?? '' }} ({{ $user->email }})
                                         </option>
                                     @endforeach
                                 </select>

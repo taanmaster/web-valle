@@ -10,7 +10,7 @@ use Str;
 // Modelos
 use App\Models\DIFSocioEconomicTest as SocioEconomicTest;
 use App\Models\DIFCoordination;
-use App\Models\User;
+use App\Models\CitizenMedicalProfile;
 
 use Illuminate\Http\Request;
 
@@ -48,7 +48,7 @@ class DIFSocioEconomicTestController extends Controller
     public function create()
     {
         $coordinations = DIFCoordination::where('is_active', true)->orderBy('name')->get();
-        $users = User::orderBy('name')->get();
+        $users = CitizenMedicalProfile::orderBy('medical_num')->get();
 
         return view('dif.socio_economic_tests.create', compact('coordinations', 'users'));
     }
@@ -240,7 +240,7 @@ class DIFSocioEconomicTestController extends Controller
         }
 
         $coordinations = DIFCoordination::where('is_active', true)->orderBy('name')->get();
-        $users = User::orderBy('name')->get();
+        $users = CitizenMedicalProfile::orderBy('medical_num')->get();
 
         return view('dif.socio_economic_tests.edit', compact('test', 'coordinations', 'users'));
     }

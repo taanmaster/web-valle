@@ -61,7 +61,7 @@ class DIFSocioEconomicTest extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'citizen_id');
+        return $this->belongsTo(CitizenMedicalProfile::class, 'citizen_id');
     }
 
     public function dependents()

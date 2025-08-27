@@ -229,7 +229,7 @@
                                     </div>
                                     <div class="col-sm-6 mt-2">
                                         <strong>Ciudadano:</strong><br>
-                                        {{ $test->user->name ?? 'No asignado' }}
+                                        {{ $test->user->citizen->name ?? 'No asignado' }} {{ $test->user->citizen->last_name }}
                                     </div>
                                     @if($test->citizen_age)
                                     <div class="col-sm-6 mt-2">
