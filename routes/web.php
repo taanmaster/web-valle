@@ -259,6 +259,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Ciudadanos */
         Route::resource('citizens', CitizenController::class);
+        
+        Route::post('/importacion-ciudadanos', [
+            'uses' => 'CitizenController@import',
+            'as' => 'citizens.import',
+        ]);
+
         Route::resource('citizen_files', CitizenFileController::class);
 
         Route::get('/citizens/funciones/busqueda', [

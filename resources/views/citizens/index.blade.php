@@ -17,6 +17,37 @@
             </div>
         </div>
 
+        @if(Auth::user()->email == 'webmaster@valle.com')
+        <a data-bs-toggle="modal" data-bs-target="#import" href="#" class="btn btn-outline-primary">Importar Excel</a>
+
+        <!-- Modal -->
+        <div class="modal fade" id="import" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Importar Excel de Asistencia</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('citizens.import') }}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Selecciona tu Archivo</label>
+                                <input class="form-control" type="file" name="import_file" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Procesar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
+
         @include('citizens.utilities._modal')
 
         @if($citizens->count() == 0)

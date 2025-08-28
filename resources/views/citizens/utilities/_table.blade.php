@@ -4,7 +4,9 @@
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
+                <th>CURP</th>
                 <th>Información</th>
+                <th>Dirección</th>
                 <th># de Apoyos</th>
                 <th scope="col">Acciones</th>
             </tr>
@@ -15,9 +17,16 @@
                 <tr>
                     <th scope="row">#{{ $citizen->id }}</th>
                     <td>{{ $citizen->name }} {{ $citizen->first_name }} {{ $citizen->last_name }}</td>
-                    <td class="text-muted">{{ $citizen->phone }} <br>
-                        {{ $citizen->email }} <br>
-                        {{ $citizen->curp }}
+                    <td>{{ $citizen->curp }}</td>
+
+                    <td class="text-muted">
+                        {{ $citizen->phone ?? 'Sin Registro' }} <br>
+                        {{ $citizen->email ?? 'Sin Registro' }} 
+                    </td>
+
+                    <td class="text-muted">
+                        {{ $citizen->address }} {{ $citizen->street }} <br>
+                        {{ $citizen->colony }}
                     </td>
 
                     <td>{{ $citizen->supports->count() ?? 0 }}</td>

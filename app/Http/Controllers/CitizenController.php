@@ -6,11 +6,16 @@ namespace App\Http\Controllers;
 use Str;
 use Auth;
 use Session;
+use Carbon\Carbon;
 
 // Modelos
 use App\Models\Citizen;
 use App\Models\CitizenFile;
 use App\Models\FinancialSupport;
+
+// Importaciones
+use App\Imports\CitizenImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Http\Request;
 
@@ -162,5 +167,32 @@ class CitizenController extends Controller
 
         Session::flash('success', 'Se eliminó la información de manera exitosa.');
         return redirect()->route('citizens.index');
+    }
+
+    public function import(Request $request)
+    {
+        $archivo = $request->file('import_file');
+        $filename_excel = 'excel_importado_' . Carbon::now()->format('d_m_y_H_m_s') . '.'. $archivo->getClientOriginalExtension();
+        $location = public_path('excel/');
+        $archivo->move($location, $filename_excel);
+
+        try {
+            Excel::import(new CitizenImport, public_path('excel/' . $filename_excel));
+
+            // Mensaje de session
+            Session::flash('exito', 'La información se importó a tu base de datos sin errores. Los registros repetidos fueron ignorados automáticamente.');
+
+            return redirect()->route('citizens.index');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+
+            foreach ($failures as $failure) {
+                $failure->row(); // row that went wrong
+                $failure->attribute(); // either heading key (if using heading row concern) or column index
+                $failure->errors(); // Actual error messages from Laravel validator
+
+                return redirect()->route('citizens.index')->with('errors', $errors);
+            }
+        }
     }
 }
