@@ -45,7 +45,7 @@
                 </div>
             @else
                 <div class="row">
-                    @include('municipal-regulations.banners.utilities._table')
+                    @include('municipal_regulations.banners.utilities._table')
                 </div>
 
                 <div class="align-items-center mt-4">
