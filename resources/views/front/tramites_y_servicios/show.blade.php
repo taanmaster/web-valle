@@ -29,7 +29,7 @@
 
                     <div class="d-flex align-items-center justify-content-center" style="gap: 12px">
                         @if ($request->steps_filename)
-                            <a href="{{ asset('requests/' . $request->steps_filename) }}" target="_blank"
+                            <a href="{{ route($request->steps_filename) }}" target="_blank"
                                 class="btn btn-sm btn-secondary">Pasos para realizar el trámite en
                                 línea</a>
                         @else
@@ -37,7 +37,7 @@
                         @endif
 
                         @if ($request->procedure_filename)
-                            <a href="{{ asset('requests/' . $request->procedure_filename) }}" target="_blank"
+                            <a href="{{ route($request->procedure_filename) }}" target="_blank"
                                 class="btn btn-sm btn-secondary">Descargar Ficha del trámite</a>
                         @else
                             Sin Ficha del trámite
