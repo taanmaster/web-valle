@@ -54,7 +54,7 @@
                     <th>Ficha</th>
                     <th>PDF</th>
                     <th>Word</th>
-                    @if ($mode === 1)
+                    @if ($mode === 0)
                         <th>Acciones</th>
                     @endif
                 </tr>
@@ -96,7 +96,7 @@
                             @endif
                         </td>
 
-                        @if ($mode === 1)
+                        @if ($mode === 0)
                             <td>
                                 <a href="{{ route('institucional_development.regulations.edit', $regulation->id) }}"
                                     class="btn btn-link btn-sm">Editar</a>
