@@ -54,7 +54,9 @@
                     <th>Ficha</th>
                     <th>PDF</th>
                     <th>Word</th>
-                    <th>Acciones</th>
+                    @if ($mode === 1)
+                        <th>Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -93,20 +95,23 @@
                                 N/A
                             @endif
                         </td>
-                        <td>
-                            <a href="{{ route('institucional_development.regulations.edit', $regulation->id) }}"
-                                class="btn btn-link btn-sm">Editar</a>
 
-                            <form method="POST"
-                                action="{{ route('institucional_development.regulations.destroy', $regulation->id) }}"
-                                style="display: inline-block;">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class='bx bx-trash-alt text-danger'></i> Eliminar
-                                </button>
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-                            </form>
-                        </td>
+                        @if ($mode === 1)
+                            <td>
+                                <a href="{{ route('institucional_development.regulations.edit', $regulation->id) }}"
+                                    class="btn btn-link btn-sm">Editar</a>
+
+                                <form method="POST"
+                                    action="{{ route('institucional_development.regulations.destroy', $regulation->id) }}"
+                                    style="display: inline-block;">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class='bx bx-trash-alt text-danger'></i> Eliminar
+                                    </button>
+                                    {{ csrf_field() }}
+                                    {{ method_field('DELETE') }}
+                                </form>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
