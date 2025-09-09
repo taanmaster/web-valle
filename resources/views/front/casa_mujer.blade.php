@@ -154,25 +154,6 @@
             </div>
 
         </div>
-        <div class="row mb-4">
-            <div class="col-md-8">
-                <div class="card card-normal wow fadeInUp h-100">
-                    <div class="card-content">
-                        <h2>Programas</h2>
-                        <ul>
-                            <li>De hombre a hombre</li>
-                            <li>Emprende Mujer</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
-                    <div class="overlay"></div>
-                </div>
-            </div>
-        </div>
 
         <div class="row mb-4">
             <h2 class="text-center">Normatividad</h2>
@@ -230,5 +211,233 @@
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+
+        <div class="row mb-4">
+            <h2 class="text-center">Programas</h2>
+
+            <div class="col-md-8">
+                <div class="card card-normal wow fadeInUp h-100">
+                    <div class="card-content">
+                        <h3>De hombre a hombre</h3>
+                        <ul>
+                            <li>
+                                Aprenderás el contexto de tus acciones y decisiones, además fomentarás el autocuidado
+                                (Dirigido a hombres)
+                            </li>
+                            <li>
+                                ¿Sientes que en cualquier momento puedes estallar?
+                            </li>
+                            <li>
+                                ¿Crees que acumulas mucho estrés?
+                            </li>
+                            <li>
+                                ¿Necesitas platicar tus problemas?
+                            </li>
+                            <li>
+                                ¿Deseas mejorar la relación con tu pareja?
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-image wow fadeInUp h-100">
+                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <div class="col-md-8">
+                <div class="card card-normal wow fadeInUp h-100">
+                    <div class="card-content">
+                        <h3>Emprende Mujer</h3>
+
+                        <ol>
+                            <li>
+                                Gestión de espacios para el emprendimiento
+                            </li>
+                            <li>
+                                Vinculaciones con la Dirección de Economía para los siguientes tramites:
+
+                                <ul>
+                                    <li>Obtención del Permiso de Uso de Suelo a través del Sistema de Apertura Rápida de
+                                        Empresas (S.A.R.E.)</li>
+                                    <li>Creación de logos</li>
+                                    <li>Vinculación Laboral</li>
+                                    <li>Estudio de mercado</li>
+                                    <li>Préstamos financieros</li>
+                                    <li>Apoyos para el Emprendimiento</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-image wow fadeInUp h-100">
+                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <h2 class="text-center">Nutrición femenina <br> "Comer Bien, Vivir Mejor"</h2>
+
+            <div class="col-md-8">
+                <div class="card card-normal wow fadeInUp h-100">
+                    <div class="card-content">
+                        <h3> Grupos de mujeres por la salud</h3>
+                        <ul>
+                            <li>Nutrición amigable y saludable a muy bajo costo</li>
+                            <li>Como leer las etiquetas de los envases de los alimentos</li>
+                            <li>Alimentos Transgénicos y su relación con el cáncer</li>
+                            <li>Importancia de la activación física y hábitos saludables en diferentes etapas de la vida
+                            </li>
+                        </ul>
+                        <br><br>
+                        <p>Sesiones semanales grupales</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-image wow fadeInUp h-100">
+                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <h4>
+                    Asesorías nutricionales personalizadas a mujeres en situación de vulnerabilidad y/o violencia
+                </h4>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <h2 class="text-center">Autonomía y Empoderamiento</h2>
+            <h3 class="text-center mb-4">Capacitaciones</h3>
+
+            <div class="col-md-8">
+                <div class="card card-normal wow fadeInUp h-100">
+                    <div class="card-content">
+                        <h3>Alimentos</h3>
+                        <ul>
+                            <li>Repostería</li>
+                            <li>Gelatina inyectada</li>
+                            <li>Gelatina encapsulada</li>
+                            <li>Gelatina pintada</li>
+                            <li>Panadería</li>
+                            <li>Pastelería</li>
+                            <li>Mesa de postres</li>
+                            <li>Mesa de bocadillos</li>
+                            <li>Donas y churros</li>
+                            <li>Cócteles y bebidas</li>
+                            <li>Pastas y ensaladas</li>
+                            <li>Pizzas y baguettes</li>
+                            <li>Elaboración de productos lácteos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-image wow fadeInUp h-100">
+                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <div class="col-md-8">
+                <div class="card card-normal wow fadeInUp h-100">
+                    <div class="card-content">
+                        <h3>Servicios de Belleza</h3>
+                        <ul>
+                            <li>Colorimetría</li>
+                            <li>Aplicación de uñas</li>
+                            <li>Maquillaje</li>
+                            <li>Maquillaje artístico</li>
+                            <li>Pestañas mink</li>
+                            <li>Efectos de pestañas</li>
+                            <li>Corte de cabello</li>
+                            <li>Peluquería y barbería</li>
+                            <li>Peinado</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-image wow fadeInUp h-100">
+                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <div class="col-md-8">
+                <div class="card card-normal wow fadeInUp h-100">
+                    <div class="card-content">
+                        <h3>Manualidades y Artesanías</h3>
+                        <ul>
+                            <li>Elaboración de piñatas</li>
+                            <li>Elaboración de bolsas tejidas</li>
+                            <li>Elaboración de velas</li>
+                            <li>Elaboración de jabones exfoliantes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-image wow fadeInUp h-100">
+                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <div class="col-md-8">
+                <div class="card card-normal wow fadeInUp h-100">
+                    <div class="card-content">
+                        <h3>Salud</h3>
+                        <ul>
+                            <li>Primeros auxilios básicos</li>
+                            <li>Primeros auxilios avanzados</li>
+                            <li>Atención y cuidado al paciente</li>
+                            <li>Cuidados geriátricos</li>
+                        </ul>
+
+                        <br><br>
+                        <p>Sujetos a cupo y disponibilidad</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-image wow fadeInUp h-100">
+                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-content p-4">
+                        <h3>Servicios</h3>
+                        <ul>
+                            <li>Asesoría Jurídica a mujeres víctimas de violencia de género</li>
+                            <li>Atención psicológica presencial a mujeres víctimas de violencia de género</li>
+                            <li>Atención psicológica virtual mujeres víctimas de violencia de género</li>
+                            <li>Promoción de los Derechos de la Mujeres</li>
+                            <li>Prevención de la violencia de Género</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endsection
