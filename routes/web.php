@@ -30,7 +30,19 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
 
-    // SARE 
+    //Instituto Municipal de Planeación
+
+    Route::group(['prefix' => '/instituto-municipal-de-planeacion'], function () {
+        Route::get('/', 'FrontController@implan')->name('implan.index');
+        Route::get('/quienes-somos', 'FrontController@implanWhoWeAre')->name('implan.who_we_are');
+        Route::get('/blog', 'FrontController@implanBlog')->name('implan.blog');
+        Route::get('/blog/{slug}', 'FrontController@implanBlogDetail')->name('implan.blog.detail');
+        Route::get('/proyectos', 'FrontController@implanProjects')->name('implan.projects');
+        Route::get('/proyectos/{slug}', 'FrontController@implanProjectDetail')->name('implan.project.detail');
+        Route::get('/logros', 'FrontController@implanAchievements')->name('implan.achievements');
+    });
+
+    // SARE
     Route::get('/sare', 'FrontController@sare')->name('sare.index');
     Route::get('/desarrollo_institucional', 'FrontController@desarrolloInstitucional')->name('desarrollo_institucional.index');
     Route::get('/registro_municipal_de_regulaciones', 'FrontController@registroMunicipalDeRegulaciones')->name('regulaciones_municipales.index');
@@ -38,7 +50,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/tramites_y_servicios', 'FrontController@tramitesYServicios')->name('tramites_y_servicios.index');
     Route::get('/tramites_y_servicios/{id}', 'FrontController@showTramite')->name('tramites_y_servicios.show');
 
-    // DESARROLLO URBANO 
+    // DESARROLLO URBANO
     Route::get('/desarrollo_urbano', 'FrontController@urbanDev')->name('urban_dev.index');
     Route::get('/desarrollo_urbano/{tramite}', 'FrontController@urbanDevDetail')->name('urban_dev.show');
 
@@ -168,14 +180,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Usuarios */
         Route::resource('users', UserController::class);
-        
+
         // Rutas adicionales para usuarios ciudadanos
         Route::post('users/citizens', 'UserController@storeCitizen')->name('users.store-citizen');
         Route::put('users/citizens/{id}', 'UserController@updateCitizen')->name('users.update-citizen');
         Route::delete('users/citizens/{id}', 'UserController@destroyCitizen')->name('users.destroy-citizen');
-        
+
         Route::resource('roles', RoleController::class);
-        
+
         // Rutas adicionales para permisos
         Route::post('roles/permissions', 'RoleController@storePermission')->name('roles.store-permission');
         Route::put('roles/permissions/{id}', 'RoleController@updatePermission')->name('roles.update-permission');
@@ -259,7 +271,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Ciudadanos */
         Route::resource('citizens', CitizenController::class);
-        
+
         Route::post('/importacion-ciudadanos', [
             'uses' => 'CitizenController@import',
             'as' => 'citizens.import',
@@ -345,7 +357,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'urban_dev.request_files.destroy',
             ]);
         });
-        
+
         /* DIF */
         Route::group(['prefix' => 'dif'], function () {
             Route::resource('doctors', DIFDoctorController::class)->names([
@@ -367,7 +379,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'dif.specialties.update',
                 'destroy' => 'dif.specialties.destroy',
             ]);
-            
+
             Route::resource('consult_types', DIFConsultTypeController::class)->names([
                 'index' => 'dif.consult_types.index',
                 'create' => 'dif.consult_types.create',
@@ -423,39 +435,39 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 // Paso 2: Proveedor Económico
                 Route::get('{id}/paso-2', 'DIFSocioEconomicTestController@step2')->name('dif.socio_economic_tests.step2');
                 Route::post('{id}/paso-2', 'DIFSocioEconomicTestController@storeStep2')->name('dif.socio_economic_tests.step2.store');
-                
+
                 // Paso 3: Estructura Familiar
                 Route::get('{id}/paso-3', 'DIFSocioEconomicTestController@step3')->name('dif.socio_economic_tests.step3');
                 Route::post('{id}/paso-3', 'DIFSocioEconomicTestController@storeStep3')->name('dif.socio_economic_tests.step3.store');
-                
+
                 // Paso 4: Estructura Económica
                 Route::get('{id}/paso-4', 'DIFSocioEconomicTestController@step4')->name('dif.socio_economic_tests.step4');
                 Route::post('{id}/paso-4', 'DIFSocioEconomicTestController@storeStep4')->name('dif.socio_economic_tests.step4.store');
-                
+
                 // Paso 5: Salud y Vivienda
                 Route::get('{id}/paso-5', 'DIFSocioEconomicTestController@step5')->name('dif.socio_economic_tests.step5');
                 Route::post('{id}/paso-5', 'DIFSocioEconomicTestController@storeStep5')->name('dif.socio_economic_tests.step5.store');
-                
+
                 // Rutas AJAX para cálculo en tiempo real
                 Route::post('calcular-puntaje', 'DIFSocioEconomicTestController@updateScore')->name('dif.socio_economic_tests.update_score');
-                
+
                 // Rutas para gestión de dependientes
                 Route::post('{id}/dependientes', 'DIFSocioEconomicTestController@addDependent')->name('dif.socio_economic_tests.add_dependent');
                 Route::put('dependientes/{dependentId}', 'DIFSocioEconomicTestController@updateDependent')->name('dif.socio_economic_tests.update_dependent');
                 Route::delete('dependientes/{dependentId}', 'DIFSocioEconomicTestController@removeDependent')->name('dif.socio_economic_tests.remove_dependent');
-                
+
                 // Rutas para gestión de archivos
                 Route::post('{id}/archivos', 'DIFSocioEconomicTestController@uploadFile')->name('dif.socio_economic_tests.upload_file');
                 Route::delete('archivos/{fileId}', 'DIFSocioEconomicTestController@deleteFile')->name('dif.socio_economic_tests.delete_file');
                 Route::get('archivos/{fileId}/descargar', 'DIFSocioEconomicTestController@downloadFile')->name('dif.socio_economic_tests.download_file');
-                
+
                 // Rutas para aprobación/rechazo
                 Route::post('{id}/aprobar', 'DIFSocioEconomicTestController@approve')->name('dif.socio_economic_tests.approve');
                 Route::post('{id}/rechazar', 'DIFSocioEconomicTestController@reject')->name('dif.socio_economic_tests.reject');
-                
+
                 // Ruta para generar PDF del estudio
                 Route::get('{id}/pdf', 'DIFSocioEconomicTestController@generatePDF')->name('dif.socio_economic_tests.pdf');
-                
+
                 // Ruta para búsqueda de ciudadanos (AJAX)
                 Route::get('buscar-ciudadanos', 'DIFSocioEconomicTestController@searchCitizens')->name('dif.socio_economic_tests.search_citizens');
             });
@@ -615,7 +627,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'dif.prescription-files.destroy',
             ]);
             Route::get('prescription-files/{prescriptionFile}/download', [DIFPrescriptionFileController::class, 'download'])->name('dif.prescription-files.download');
-        
+
             Route::resource('banners', DIFBannerController::class)->names([
                 'index' => 'dif.banners.index',
                 'create' => 'dif.banners.create',
@@ -1121,6 +1133,51 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'institucional_development.requests.destroy',
             ]);
         });
+
+        /* ------------------- */
+        /* ------------------- */
+        /* IMPLAN */
+        Route::group(['prefix' => 'implan'], function () {
+            Route::resource('projects', ImplanProjectController::class)->names([
+                'index' => 'implan.projects.index',
+                'create' => 'implan.projects.create',
+                'store' => 'implan.projects.store',
+                'show' => 'implan.projects.show',
+                'edit' => 'implan.projects.edit',
+                'update' => 'implan.projects.update',
+                'destroy' => 'implan.projects.destroy',
+            ]);
+
+            Route::resource('blog', ImplanBlogController::class)->names([
+                'index' => 'implan.blog.index',
+                'create' => 'implan.blog.create',
+                'store' => 'implan.blog.store',
+                'show' => 'implan.blog.show',
+                'edit' => 'implan.blog.edit',
+                'update' => 'implan.blog.update',
+                'destroy' => 'implan.blog.destroy',
+            ]);
+
+            Route::resource('achievements', ImplanAchievementController::class)->names([
+                'index' => 'implan.achievements.index',
+                'create' => 'implan.achievements.create',
+                'store' => 'implan.achievements.store',
+                'show' => 'implan.achievements.show',
+                'edit' => 'implan.achievements.edit',
+                'update' => 'implan.achievements.update',
+                'destroy' => 'implan.achievements.destroy',
+            ]);
+
+            Route::resource('banners', ImplanBannerController::class)->names([
+                'index' => 'implan.banners.index',
+                'create' => 'implan.banners.create',
+                'store' => 'implan.banners.store',
+                'show' => 'implan.banners.show',
+                'edit' => 'implan.banners.edit',
+                'update' => 'implan.banners.update',
+                'destroy' => 'implan.banners.destroy',
+            ]);
+        });
     });
 
     // Rutas del Perfil Ciudadano (Front-End)
@@ -1132,7 +1189,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil/tramites', 'CitizenProfileController@urbanDevRequests')->name('citizen.profile.urban_dev_requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
         Route::put('/perfil/notificaciones', 'CitizenProfileController@updateNotifications')->name('citizen.profile.notifications');
-        
+
         // Rutas SARE para ciudadanos
         Route::get('/sare/crear', 'CitizenProfileController@createSareRequest')->name('citizen.sare.create');
         Route::post('/sare/guardar', 'CitizenProfileController@storeSareRequest')->name('citizen.sare.store');
@@ -1140,7 +1197,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/sare/{sareRequest}/editar', 'CitizenProfileController@editSareRequest')->name('citizen.sare.edit');
         Route::put('/sare/{sareRequest}/actualizar', 'CitizenProfileController@updateSareRequest')->name('citizen.sare.update');
         Route::delete('/sare/{sareRequest}/eliminar', 'CitizenProfileController@destroySareRequest')->name('citizen.sare.destroy');
-        
+
         // Rutas para archivos de SARE
         Route::post('/sare/archivo/subir', 'CitizenProfileController@uploadSareFile')->name('citizen.sare.file.upload');
         Route::delete('/sare/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteSareFile')->name('citizen.sare.file.delete');
@@ -1152,13 +1209,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/desarrollo-urbano/{urbanDevRequest}/editar', 'CitizenProfileController@editUrbanDevRequest')->name('citizen.urban_dev.edit');
         Route::put('/desarrollo-urbano/{urbanDevRequest}/actualizar', 'CitizenProfileController@updateUrbanDevRequest')->name('citizen.urban_dev.update');
         Route::delete('/desarrollo-urbano/{urbanDevRequest}/eliminar', 'CitizenProfileController@destroyUrbanDevRequest')->name('citizen.urban_dev.destroy');
-        
+
         // Rutas para archivos de desarrollo urbano
         Route::post('/desarrollo-urbano/archivo/subir', 'CitizenProfileController@uploadUrbanDevFile')->name('citizen.urban_dev.file.upload');
         Route::delete('/desarrollo-urbano/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteUrbanDevFile')->name('citizen.urban_dev.file.delete');
     });
 
-    Route::get('/reload-captcha',[
+    Route::get('/reload-captcha', [
         'uses' => 'FrontController@reloadCaptcha',
         'as' => 'reload.captcha',
     ]);

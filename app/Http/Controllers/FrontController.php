@@ -518,4 +518,50 @@ class FrontController extends Controller
 
         return view('front.tramites_y_servicios.show')->with('request', $request);
     }
+
+    public function implan()
+    {
+        return view('front.implan.index');
+    }
+
+    public function implanWhoWeAre()
+    {
+        return view('front.implan.who_we_are');
+    }
+
+    public function implanBlog()
+    {
+        $posts = Blog::where('category', 'IMPLAN')->orderBy('updated_at', 'desc')->paginate(6);
+        $mode = 1;
+
+        $category = 'IMPLAN';
+
+        return view('front.implan.blog.index')->with([
+            'posts' => $posts,
+            'mode' => $mode,
+            'category' => $category
+        ]);
+    }
+
+    public function implanBlogDetail($slug)
+    {
+        $blog = Blog::where('slug', $slug)->first();
+
+        return view('front.implan.blog.detail')->with('blog', $blog);
+    }
+
+    public function implanProjects()
+    {
+        return view('front.implan.projects.index');
+    }
+
+    public function implanProjectDetail($slug)
+    {
+        return view('front.implan.projects.show')->with('slug', $slug);
+    }
+
+    public function implanAchievements()
+    {
+        return view('front.implan.achievements.index');
+    }
 }
