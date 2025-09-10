@@ -82,13 +82,18 @@
                             <div class="col-md-6">
                                 <div class="row align-items-center">
                                     <div class="col-md-6">
-                                        <a href="http://201.116.233.69/ovie-client/#" class="card card-body">
+                                        <a href="http://201.116.233.69/ovie-client/#"
+                                            class="card card-body d-flex flex-column align-items-center">
+                                            <img src="{{ asset('images/implan/coordinates.svg') }}" alt=""
+                                                style="height: 200px">
                                             <h4>Visor OVIE</h4>
                                         </a>
                                     </div>
                                     <div class="col-md-6">
                                         <a href="http://implan.ddns.net/mxsig/?v=bGF0OjIwLjg4MTA0LGxvbjotMTAwLjg4MzkyLHo6NSxsOmMxMDB8YzEwMQ=="
-                                            class="card card-body">
+                                            class="card card-body d-flex flex-column align-items-center">
+                                            <img src="{{ asset('images/implan/globe.svg') }}" alt=""
+                                                style="height: 200px">
                                             <h4>Visor OVIE</h4>
                                         </a>
                                     </div>

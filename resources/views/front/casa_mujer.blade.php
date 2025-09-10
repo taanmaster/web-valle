@@ -2,6 +2,18 @@
 
 @section('content')
     <div class="container">
+
+
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <img src="{{ asset('front/img/mujer.png') }}" alt="" style="height: 240px">
+            </div>
+            <div class="col-md-6">
+                <h2>Casa de la Mujer</h2>
+            </div>
+        </div>
+
+
         <div class="row justify-content-center mb-4">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner wow fadeInUp">
