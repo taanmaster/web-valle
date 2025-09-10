@@ -7,20 +7,18 @@ use Illuminate\Http\Request;
 
 class ImplanProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $projects = ImplanProject::all();
+
+        return view('implan.projects.index')->with('projects', $projects);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $mode = 0;
+
+        return view('implan.projects.create')->with('mode', $mode);
     }
 
     /**
@@ -31,20 +29,28 @@ class ImplanProjectController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ImplanProject $implanProject)
+    public function show($id)
     {
-        //
+        $project = ImplanProject::findOrFail($id);
+
+        $mode = 1;
+
+        return view('implan.projects.show')->with([
+            'project' => $project,
+            'mode' => $mode
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ImplanProject $implanProject)
+    public function edit($id)
     {
-        //
+        $project = ImplanProject::findOrFail($id);
+
+        $mode = 2;
+
+        return view('implan.projects.edit')->with([
+            'project' => $project,
+            'mode' => $mode
+        ]);
     }
 
     /**
@@ -55,11 +61,11 @@ class ImplanProjectController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ImplanProject $implanProject)
+    public function destroy($id)
     {
-        //
+        $project = ImplanProject::findOrFail($id);
+        $project->delete();
+
+        return redirect()->route('implan.projects.index')->with('success', 'Project deleted successfully');
     }
 }

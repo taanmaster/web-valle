@@ -7,20 +7,18 @@ use Illuminate\Http\Request;
 
 class ImplanAchievementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $achievements = ImplanAchievement::all();
+
+        return view('implan.achievements.index')->with('achievements', $achievements);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $mode = 0;
+
+        return view('implan.achievements.create')->with('mode', $mode);
     }
 
     /**
@@ -31,20 +29,28 @@ class ImplanAchievementController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ImplanAchievement $implanAchievement)
+    public function show($id)
     {
-        //
+        $achievement = ImplanAchievement::findOrFail($id);
+
+        $mode = 1;
+
+        return view('implan.achievements.show')->with([
+            'achievement' => $achievement,
+            'mode' => $mode
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ImplanAchievement $implanAchievement)
+    public function edit($id)
     {
-        //
+        $achievement = ImplanAchievement::findOrFail($id);
+
+        $mode = 2;
+
+        return view('implan.achievements.edit')->with([
+            'achievement' => $achievement,
+            'mode' => $mode
+        ]);
     }
 
     /**
@@ -58,8 +64,11 @@ class ImplanAchievementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ImplanAchievement $implanAchievement)
+    public function destroy($id)
     {
-        //
+        $achievement = ImplanAchievement::findOrFail($id);
+        $achievement->delete();
+
+        return redirect()->route('implan.achievements.index')->with('success', 'Achievement deleted successfully');
     }
 }
