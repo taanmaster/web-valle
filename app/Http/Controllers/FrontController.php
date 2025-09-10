@@ -46,6 +46,12 @@ use App\Models\Event;
 use App\Models\MunicipalRegulation;
 use App\Models\ServiceRequest;
 
+//IMPLAN
+use App\Models\ImplanBanner;
+use App\Models\ImplanProject;
+use App\Models\ImplanAchievement;
+use App\Models\ImplanBlog;
+
 class FrontController extends Controller
 {
     public function index()
@@ -532,5 +538,49 @@ class FrontController extends Controller
         $request = ServiceRequest::findOrFail($id);
 
         return view('front.tramites_y_servicios.show')->with('request', $request);
+    }
+
+    public function implan()
+    {
+        $banners = ImplanBanner::where('is_active', true)->orderBy('priority', 'asc')->get();
+
+        return view('front.implan.index')->with('banners', $banners);
+    }
+
+    public function implanWhoWeAre()
+    {
+        return view('front.implan.who_we_are');
+    }
+
+    public function implanBlog()
+    {
+        $planos = ImplanBlog::where('type', 'Plano')->get();
+        $capas = ImplanBlog::where('type', 'Capa')->get();
+
+        return view('front.implan.blog.index')->with([
+            'planos' => $planos,
+            'capas' => $capas,
+        ]);
+    }
+
+    public function implanProjects()
+    {
+        $projects = ImplanProject::where('is_active', true)->get();
+
+        return view('front.implan.projects.index')->with('projects', $projects);
+    }
+
+    public function implanProjectDetail($slug)
+    {
+        $project = ImplanProject::where('slug', $slug)->first();
+
+        return view('front.implan.projects.show')->with('project', $project);
+    }
+
+    public function implanAchievements()
+    {
+        $achievements = ImplanAchievement::where('is_active', true)->get();
+
+        return view('front.implan.achievements')->with('achievements', $achievements);
     }
 }

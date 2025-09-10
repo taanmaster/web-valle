@@ -80,6 +80,13 @@
             </li>
 
             <li>
+                <a href="{{ route('implan.index') }}">
+                    <ion-icon name="medkit-outline"></ion-icon>
+                    <span>Instituto Municipal de Planeación</span>
+                </a>
+            </li>
+
+            <li>
                 <div class="switch">
                     <input type="checkbox" id="mode" checked>
                     <label for="mode">
