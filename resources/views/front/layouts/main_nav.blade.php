@@ -52,6 +52,13 @@
             </li>
 
             <li>
+                <a href="{{ route('implan.index') }}">
+                    <ion-icon name="bulb-outline"></ion-icon>
+                    <span>IMPLAN</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('sare.index') }}">
                     <ion-icon name="layers-outline"></ion-icon>
                     <span>S.A.R.E</span>
@@ -78,14 +85,7 @@
                     <span>DIF</span>
                 </a>
             </li>
-
-            <li>
-                <a href="{{ route('implan.index') }}">
-                    <ion-icon name="medkit-outline"></ion-icon>
-                    <span>Instituto Municipal de Planeación</span>
-                </a>
-            </li>
-
+            
             <li>
                 <div class="switch">
                     <input type="checkbox" id="mode" checked>
