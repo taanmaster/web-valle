@@ -45,6 +45,8 @@ class Crud extends Component
     {
         $this->title = $this->achievement->title;
         $this->description = $this->achievement->description;
+        $this->image = $this->achievement->image;
+        $this->file = $this->achievement->file;
         $this->hex = $this->achievement->hex;
         $this->published_at = $this->achievement->published_at ? Carbon::parse($this->achievement->published_at)->format('Y-m-d') : null;
         $this->is_active = $this->achievement->is_active;

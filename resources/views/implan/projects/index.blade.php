@@ -18,9 +18,7 @@
 
     <div class="row layout-spacing">
         <div class="main-content">
-
-
-
+            @include('implan.projects.utilities.table')
         </div>
     </div>
 @endsection

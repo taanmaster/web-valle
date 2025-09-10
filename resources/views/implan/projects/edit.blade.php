@@ -19,7 +19,7 @@
     <div class="row layout-spacing">
         <div class="main-content">
 
-
+            <livewire:implan.projects.crud :mode="$mode" :project="$project" />
 
         </div>
     </div>

@@ -47,6 +47,9 @@ class Crud extends Component
         $this->title = $this->project->title;
         $this->slug = $this->project->slug;
         $this->description = $this->project->description;
+        $this->type = $this->project->type;
+        $this->image = $this->project->image;
+        $this->file = $this->project->file;
         $this->published_at = $this->project->published_at ? Carbon::parse($this->project->published_at)->format('Y-m-d') : null;
         $this->is_active = $this->project->is_active;
     }

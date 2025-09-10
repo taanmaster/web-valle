@@ -19,7 +19,7 @@
     <div class="row layout-spacing">
         <div class="main-content">
 
-
+            @include('implan.blog.utilities.table')
 
         </div>
     </div>

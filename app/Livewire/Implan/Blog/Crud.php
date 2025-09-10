@@ -43,6 +43,7 @@ class Crud extends Component
     {
         $this->title = $this->blog->title;
         $this->slug = $this->blog->slug;
+        $this->image = $this->blog->image;
         $this->type = $this->blog->type;
         $this->published_at = $this->blog->published_at ? Carbon::parse($this->blog->published_at)->format('Y-m-d') : null;
     }

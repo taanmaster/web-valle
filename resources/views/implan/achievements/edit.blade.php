@@ -19,7 +19,7 @@
     <div class="row layout-spacing">
         <div class="main-content">
 
-
+            <livewire:implan.achievements.crud :mode="$mode" :achievement="$achievement" />
 
         </div>
     </div>

@@ -18,9 +18,7 @@
 
     <div class="row layout-spacing">
         <div class="main-content">
-
-
-
+            <livewire:implan.achievements.table />
         </div>
     </div>
 @endsection
