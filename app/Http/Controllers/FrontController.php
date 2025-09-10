@@ -46,6 +46,12 @@ use App\Models\Event;
 use App\Models\MunicipalRegulation;
 use App\Models\ServiceRequest;
 
+//IMPLAN
+use App\Models\ImplanBanner;
+use App\Models\ImplanProject;
+use App\Models\ImplanAchievement;
+use App\Models\ImplanBlog;
+
 class FrontController extends Controller
 {
     public function index()
@@ -521,7 +527,9 @@ class FrontController extends Controller
 
     public function implan()
     {
-        return view('front.implan.index');
+        $banners = ImplanBanner::where('is_active', true)->orderBy('priority', 'asc')->get();
+
+        return view('front.implan.index')->with('banners', $banners);
     }
 
     public function implanWhoWeAre()
@@ -531,37 +539,31 @@ class FrontController extends Controller
 
     public function implanBlog()
     {
-        $posts = Blog::where('category', 'IMPLAN')->orderBy('updated_at', 'desc')->paginate(6);
-        $mode = 1;
-
-        $category = 'IMPLAN';
+        $posts = ImplanBlog::get();
 
         return view('front.implan.blog.index')->with([
             'posts' => $posts,
-            'mode' => $mode,
-            'category' => $category
         ]);
-    }
-
-    public function implanBlogDetail($slug)
-    {
-        $blog = Blog::where('slug', $slug)->first();
-
-        return view('front.implan.blog.detail')->with('blog', $blog);
     }
 
     public function implanProjects()
     {
-        return view('front.implan.projects.index');
+        $projects = ImplanProject::where('is_active', true)->get();
+
+        return view('front.implan.projects.index')->with('projects', $projects);
     }
 
     public function implanProjectDetail($slug)
     {
-        return view('front.implan.projects.show')->with('slug', $slug);
+        $project = ImplanProject::where('slug', $slug)->first();
+
+        return view('front.implan.projects.show')->with('project', $project);
     }
 
     public function implanAchievements()
     {
-        return view('front.implan.achievements.index');
+        $achievements = ImplanAchievement::where('is_active', true)->get();
+
+        return view('front.implan.achievements')->with('achievements', $achievements);
     }
 }

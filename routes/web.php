@@ -35,11 +35,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::group(['prefix' => '/instituto-municipal-de-planeacion'], function () {
         Route::get('/', 'FrontController@implan')->name('implan.index');
         Route::get('/quienes-somos', 'FrontController@implanWhoWeAre')->name('implan.who_we_are');
-        Route::get('/blog', 'FrontController@implanBlog')->name('implan.blog');
-        Route::get('/blog/{slug}', 'FrontController@implanBlogDetail')->name('implan.blog.detail');
-        Route::get('/proyectos', 'FrontController@implanProjects')->name('implan.projects');
-        Route::get('/proyectos/{slug}', 'FrontController@implanProjectDetail')->name('implan.project.detail');
-        Route::get('/logros', 'FrontController@implanAchievements')->name('implan.achievements');
+        Route::get('/blog', 'FrontController@implanBlog')->name('implan.front.blog');
+        Route::get('/blog/{slug}', 'FrontController@implanBlogDetail')->name('implan.front.blog.detail');
+        Route::get('/proyectos', 'FrontController@implanProjects')->name('implan.front.projects');
+        Route::get('/proyectos/{slug}', 'FrontController@implanProjectDetail')->name('implan.front.project.detail');
+        Route::get('/logros', 'FrontController@implanAchievements')->name('implan.front.achievements');
     });
 
     // SARE

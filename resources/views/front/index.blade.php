@@ -237,19 +237,26 @@
         </div>
 
         <!--Agenda Regulatoria -->
-        <div href="{{ route('urban_dev.index') }}" class="card card-image card-alignment-bottom wow fadeInUp h-100 d-block">
-            <img src="{{ asset('front/img/placeholder-3.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+        <div href="{{ route('urban_dev.index') }}"
+            class="card card-image card-alignment-bottom wow fadeInUp h-100 d-block">
+            <img src="{{ asset('front/img/placeholder-3.jpg') }}" class="card-img-top"
+                alt="Portada de Desarrollo Urbano">
             <div class="overlay"></div>
 
             <div class="card-content">
                 <h2 style="padding-top: 120px;">Agenda Regulatoria</h2>
                 <p class="mb-4">Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
-                <a href="{{ route('regulatory-agenda.index') }}" class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0" style="width: fit-content">Acceder a directorio de Dependencias <ion-icon name="caret-forward-outline"></ion-icon></a>
+                <a href="{{ route('regulatory-agenda.index') }}"
+                    class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0"
+                    style="width: fit-content">Acceder a directorio de Dependencias <ion-icon
+                        name="caret-forward-outline"></ion-icon></a>
             </div>
         </div>
 
-        <a href="{{ route('urban_dev.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
-            <img src="{{ asset('front/img/placeholder-6.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+        <a href="{{ route('urban_dev.index') }}"
+            class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+            <img src="{{ asset('front/img/placeholder-6.jpg') }}" class="card-img-top"
+                alt="Portada de Desarrollo Urbano">
             <div class="overlay"></div>
 
             <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
@@ -264,8 +271,10 @@
 
         <div class="row">
             <div class="col-md-6">
-                <a href="{{ route('casa_mujer.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
-                    <img src="{{ asset('front/img/mujer-placeholder.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+                <a href="{{ route('casa_mujer.index') }}"
+                    class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                    <img src="{{ asset('front/img/mujer-placeholder.jpg') }}" class="card-img-top"
+                        alt="Portada de Desarrollo Urbano">
                     <div class="overlay"></div>
 
                     <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
@@ -274,13 +283,17 @@
 
                     <div class="card-content">
                         <h2>Casa de la Mujer</h2>
-                        <p class="mb-0">Un espacio donde nos reconocemos unas a otras y ejercemos un poder transformador que da testimonio de nuestra ciudadanía en la reivindicación de nuestros derechos, para que ninguna se quede atrás.</p>
+                        <p class="mb-0">Un espacio donde nos reconocemos unas a otras y ejercemos un poder transformador
+                            que da testimonio de nuestra ciudadanía en la reivindicación de nuestros derechos, para que
+                            ninguna se quede atrás.</p>
                     </div>
                 </a>
             </div>
             <div class="col-md-6">
-                <a href="{{ route('desarrollo_institucional.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
-                    <img src="{{ asset('front/img/placeholder.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+                <a href="{{ route('desarrollo_institucional.index') }}"
+                    class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                    <img src="{{ asset('front/img/placeholder.jpg') }}" class="card-img-top"
+                        alt="Portada de Desarrollo Urbano">
                     <div class="overlay"></div>
 
                     <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
@@ -289,11 +302,29 @@
 
                     <div class="card-content">
                         <h2>Desarrollo Institucional</h2>
-                        <p class="mb-0">Valle de Santiago busca modernizar la administración pública municipal, hacerla más eficiente y transparente, y generar un entorno favorable para el desarrollo económico y el bienestar de sus habitantes.</p>
+                        <p class="mb-0">Valle de Santiago busca modernizar la administración pública municipal, hacerla
+                            más eficiente y transparente, y generar un entorno favorable para el desarrollo económico y el
+                            bienestar de sus habitantes.</p>
                     </div>
                 </a>
             </div>
         </div>
+
+
+        <!--IMPLAN-->
+        <a href="{{ route('implan.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+            <img src="{{ asset('front/img/placeholder-6.jpg') }}" class="card-img-top"
+                alt="Portada de Desarrollo Urbano">
+            <div class="overlay"></div>
+
+            <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+            </div>
+
+            <div class="card-content">
+                <h2 style="padding-top: 120px;">Instituto Municipal de Planeación</h2>
+            </div>
+        </a>
     </div>
 
     @if (!empty($popup))
@@ -307,13 +338,14 @@
                         @if ($popup->image == null)
                         @else
                             <div class="valle-modal-image">
-                                <img class="img-fluid" src="{{ asset('front/img/popups/' . $popup->image) }}" alt="">
+                                <img class="img-fluid" src="{{ asset('front/img/popups/' . $popup->image) }}"
+                                    alt="">
                             </div>
                         @endif
 
                         <div class="valle-info-wrap">
                             <h3>{{ $popup->title }}</h3>
-                            
+
                             @if ($popup->subtitle != null)
                                 <h5>{{ $popup->subtitle }}</h5>
                             @endif

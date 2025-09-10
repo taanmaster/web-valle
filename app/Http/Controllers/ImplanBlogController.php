@@ -7,44 +7,47 @@ use Illuminate\Http\Request;
 
 class ImplanBlogController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $posts = ImplanBlog::get();
+
+        return view('implan.blog.index')->with('posts', $posts);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $mode = 0;
+
+        return view('implan.blog.create')->with('mode', $mode);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ImplanBlog $implanBlog)
+    public function show($id)
     {
-        //
+        $blog = ImplanBlog::findOrFail($id);
+
+        $mode = 1;
+
+        return view('implan.blog.show')->with([
+            'blog' => $blog,
+            'mode' => $mode
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ImplanBlog $implanBlog)
+    public function edit($id)
     {
-        //
+        $blog = ImplanBlog::findOrFail($id);
+
+        $mode = 2;
+
+        return view('implan.blog.edit')->with([
+            'blog' => $blog,
+            'mode' => $mode
+        ]);
     }
 
     /**
@@ -55,11 +58,11 @@ class ImplanBlogController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ImplanBlog $implanBlog)
+    public function destroy($id)
     {
-        //
+        $blog = ImplanBlog::findOrFail($id);
+        $blog->delete();
+
+        return redirect()->route('implan.blog.index')->with('success', 'Blog eliminado correctamente');
     }
 }
