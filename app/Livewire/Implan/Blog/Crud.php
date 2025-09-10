@@ -51,14 +51,45 @@ class Crud extends Component
     public function save()
     {
         if ($this->blog != null) {
+            // --- Subida de archivos si hay nuevos ---
+            $file_url = $this->image ? $this->handleUpload($this->image) : $this->blog->image;
+
             $record = ImplanBlog::find($this->blog->id);
 
             $record->title = $this->title;
             $record->published_at = $this->published_at;
             $record->type = $this->type;
 
+            $record->image = $file_url;
+
             $record->save();
         } else {
+
+            $file_url = null;
+
+            if ($this->image) {
+                $document = $this->image;
+
+                $originalName = pathinfo($document->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $document->getClientOriginalExtension();
+
+                // Reemplazar espacios y caracteres no válidos
+                $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+                $filename = $cleanName . '.' . $extension;
+
+                // Crear ruta S3 bajo institutional_development
+                $filepath = 'institutional_development/regulations/' . $filename;
+
+                // Usar streaming para subir a S3
+                $stream = fopen($document->getRealPath(), 'r+');
+                Storage::disk('s3')->put($filepath, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+
+                $file_url = Storage::disk('s3')->url($filepath);
+            }
+
             $slug = Str::slug($this->title);
 
             $record = new ImplanBlog;
@@ -67,10 +98,31 @@ class Crud extends Component
             $record->published_at = $this->published_at;
             $record->type = $this->type;
 
+            $record->image = $file_url;
+
             $record->save();
         }
 
         return redirect()->route('implan.blog.show', $record->id);
+    }
+
+    protected function handleUpload($document)
+    {
+        $originalName = pathinfo($document->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $document->getClientOriginalExtension();
+
+        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+        $filename = $cleanName . '.' . $extension;
+
+        $filepath = 'institutional_development/regulations/' . $filename;
+
+        $stream = fopen($document->getRealPath(), 'r+');
+        Storage::disk('s3')->put($filepath, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        return Storage::disk('s3')->url($filepath);
     }
 
     public function render()

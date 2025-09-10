@@ -1,3 +1,12 @@
+<div class="d-flex align-items-center justify-content-between" style="padding: 18px 0;">
+    <div class="d-flex align-items-center" style="gap:40px">
+        <img src="{{ asset('images/implan/implan-logo.png') }}" alt="" style="height: 140px;">
+        <img src="{{ asset('front/img/logo-valle.png') }}" alt="" style="width: 140px">
+    </div>
+
+    <h1>Instituto Municipal de Planeación</h1>
+</div>
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 nav-implan">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

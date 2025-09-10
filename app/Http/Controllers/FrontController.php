@@ -539,10 +539,12 @@ class FrontController extends Controller
 
     public function implanBlog()
     {
-        $posts = ImplanBlog::get();
+        $planos = ImplanBlog::where('type', 'Plano')->get();
+        $capas = ImplanBlog::where('type', 'Capa')->get();
 
         return view('front.implan.blog.index')->with([
-            'posts' => $posts,
+            'planos' => $planos,
+            'capas' => $capas,
         ]);
     }
 
