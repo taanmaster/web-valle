@@ -4,10 +4,11 @@
     height: auto;
     overflow: hidden;
     border-radius: 15px;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    background-color: #fff;
+    box-shadow: var(--box-shadow);
+    background-color: var(--card-bg);
     font-family: var(--bs-body-font-family);
     position: relative; /* Añadido para posicionamiento de elementos hijos */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Clase para controlar el estado durante la animación */
@@ -18,12 +19,13 @@
 .cal-header {
     height: auto;
     width: 100%;
-    background: #551312;
+    background: var(--bs-primary);
     text-align: center;
     position: relative;
     z-index: 100;
     border-radius: 0.25rem 0.25rem 0 0;
     padding: 10px 0px;
+    transition: background-color 0.3s ease;
 }
 
 .cal-header h1 {
@@ -113,11 +115,12 @@
 }
 
 .week {
-    background: #f8f9fa;
+    background: var(--card-bg);
     display: flex;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid var(--border-color);
     margin-bottom: 0px;
     position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .day {
@@ -128,7 +131,8 @@
     position: relative;
     z-index: 100;
     transition: background-color 0.2s;
-    border-right: 1px solid #dee2e6;
+    border-right: 1px solid var(--border-color);
+    color: var(--bs-body-color);
 }
 
 .day:last-child {
@@ -136,23 +140,24 @@
 }
 
 .day:hover {
-    background-color: #e9ecef;
+    background-color: var(--dropdown-link-hover-bg);
 }
 
 .day.other {
-    color: #adb5bd;
+    color: var(--text-muted);
 }
 
 .day.today {
     background-color: rgba(var(--bs-primary-rgb), 0.1);
     font-weight: bold;
+    color: var(--bs-primary);
 }
 
 .day-name {
     font-size: 0.5rem;
     text-transform: uppercase;
     margin-bottom: 0px;
-    color: #6c757d;
+    color: var(--text-muted);
     font-weight: 500;
     margin-top: 5px;
 }
@@ -184,7 +189,7 @@
 }
 
 .primary {
-    background: #551312;
+    background: var(--bs-primary);
 }
 .success {
     background: var(--bs-success);
@@ -203,15 +208,16 @@
     position: relative;
     width: 100%;
     min-height: 120px;
-    background: #fff;
+    background: var(--card-bg);
     margin: 10px 0;
     border-radius: 0.25rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    border: 1px solid #dee2e6;
+    box-shadow: var(--box-shadow);
+    border: 1px solid var(--card-border);
     clear: both;
     overflow: hidden;
     display: block;
     z-index: 200;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .details.in {
@@ -230,7 +236,7 @@
     height: 0;
     border-style: solid;
     border-width: 0 10px 10px 10px;
-    border-color: transparent transparent #fff transparent;
+    border-color: transparent transparent var(--card-bg) transparent;
     filter: drop-shadow(0px -2px 1px rgba(0,0,0,0.1));
 }
 
@@ -260,7 +266,8 @@
     border-radius: 0.25rem;
     margin-bottom: 10px;
     background-color: rgba(var(--bs-primary-rgb), 0.05);
-    border-left: 4px solid #551312;
+    border-left: 4px solid var(--bs-primary);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .event:last-child {
@@ -268,7 +275,7 @@
 }
 
 .event.empty {
-    color: #6c757d;
+    color: var(--text-muted);
     justify-content: center;
 }
 
@@ -287,32 +294,34 @@
 .event-name {
     font-weight: 500;
     font-size: 1rem;
-    color: #212529;
+    color: var(--bs-body-color);
     margin-bottom: 2px;
 }
 
 .event-time {
     font-size: 0.875rem;
-    color: #6c757d;
+    color: var(--text-muted);
     margin-bottom: 2px;
 }
 
 .event-location {
     font-size: 0.875rem;
-    color: #6c757d;
+    color: var(--text-muted);
     margin-bottom: 4px;
 }
 
 .event-url {
     display: inline-block;
     font-size: 0.875rem;
-    color: #551312;
+    color: var(--link-color);
     text-decoration: none;
     padding: 2px 0;
+    transition: color 0.3s ease;
 }
 
 .event-url:hover {
     text-decoration: underline;
+    color: var(--link-hover-color);
 }
 
 /* Estilos para los indicadores de eventos */
@@ -331,7 +340,7 @@
 .more-events {
     display: inline-block;
     font-size: 10px;
-    color: #6c757d;
+    color: var(--text-muted);
     margin-left: 2px;
 }
 
@@ -446,4 +455,200 @@
         padding: 0;
         height: 0;
     }
+}
+
+/* DARK MODE CALENDAR STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.dark-mode #calendar {
+    background-color: var(--card-bg);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode .cal-header {
+    background: var(--bs-primary);
+}
+
+.dark-mode .cal-header h1 {
+    color: #ffffff;
+}
+
+.dark-mode .left,
+.dark-mode .right {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .left:hover,
+.dark-mode .right:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode .week {
+    background: var(--card-bg);
+    border-bottom-color: var(--border-color);
+}
+
+.dark-mode .day {
+    color: var(--bs-body-color);
+    border-right-color: var(--border-color);
+}
+
+.dark-mode .day:hover {
+    background-color: var(--dropdown-link-hover-bg);
+}
+
+.dark-mode .day.other {
+    color: var(--text-muted);
+}
+
+.dark-mode .day.today {
+    background-color: rgba(var(--bs-primary-rgb), 0.2);
+    color: var(--bs-primary);
+}
+
+.dark-mode .day-name {
+    color: var(--text-muted);
+}
+
+.dark-mode .details {
+    background: var(--card-bg);
+    border-color: var(--card-border);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .arrow {
+    border-color: transparent transparent var(--card-bg) transparent;
+    filter: drop-shadow(0px -2px 1px rgba(0,0,0,0.3));
+}
+
+.dark-mode .event {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    border-left-color: var(--bs-primary);
+}
+
+.dark-mode .event.empty {
+    color: var(--text-muted);
+}
+
+.dark-mode .event-name {
+    color: var(--bs-body-color);
+}
+
+.dark-mode .event-time,
+.dark-mode .event-location {
+    color: var(--text-muted);
+}
+
+.dark-mode .event-url {
+    color: var(--link-color);
+}
+
+.dark-mode .event-url:hover {
+    color: var(--link-hover-color);
+}
+
+.dark-mode .more-events {
+    color: var(--text-muted);
+}
+
+/* Mejoras específicas para hover en modo oscuro */
+.dark-mode .day.has-events:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.15);
+}
+
+/* LIGHT MODE CALENDAR STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.light-mode #calendar {
+    background-color: var(--card-bg);
+    box-shadow: var(--box-shadow);
+}
+
+.light-mode .cal-header {
+    background: var(--bs-primary);
+}
+
+.light-mode .cal-header h1 {
+    color: #ffffff;
+}
+
+.light-mode .left,
+.light-mode .right {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.light-mode .left:hover,
+.light-mode .right:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.light-mode .week {
+    background: var(--card-bg);
+    border-bottom-color: var(--border-color);
+}
+
+.light-mode .day {
+    color: var(--bs-body-color);
+    border-right-color: var(--border-color);
+}
+
+.light-mode .day:hover {
+    background-color: var(--dropdown-link-hover-bg);
+}
+
+.light-mode .day.other {
+    color: var(--text-muted);
+}
+
+.light-mode .day.today {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    color: var(--bs-primary);
+}
+
+.light-mode .day-name {
+    color: var(--text-muted);
+}
+
+.light-mode .details {
+    background: var(--card-bg);
+    border-color: var(--card-border);
+    box-shadow: var(--box-shadow);
+}
+
+.light-mode .arrow {
+    border-color: transparent transparent var(--card-bg) transparent;
+    filter: drop-shadow(0px -2px 1px rgba(0,0,0,0.1));
+}
+
+.light-mode .event {
+    background-color: rgba(var(--bs-primary-rgb), 0.05);
+    border-left-color: var(--bs-primary);
+}
+
+.light-mode .event.empty {
+    color: var(--text-muted);
+}
+
+.light-mode .event-name {
+    color: var(--bs-body-color);
+}
+
+.light-mode .event-time,
+.light-mode .event-location {
+    color: var(--text-muted);
+}
+
+.light-mode .event-url {
+    color: var(--link-color);
+}
+
+.light-mode .event-url:hover {
+    color: var(--link-hover-color);
+}
+
+.light-mode .more-events {
+    color: var(--text-muted);
+}
+
+/* Mejoras específicas para hover en modo claro */
+.light-mode .day.has-events:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
 }
