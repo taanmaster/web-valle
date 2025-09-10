@@ -45,6 +45,13 @@
             </li>
 
             <li>
+                <a href="{{ route('urban_dev.index') }}">
+                    <ion-icon name="bus-outline"></ion-icon>
+                    <span>Desarrollo Urbano</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('sare.index') }}">
                     <ion-icon name="layers-outline"></ion-icon>
                     <span>S.A.R.E</span>
@@ -82,7 +89,7 @@
                 </div>
 
                 <button class="collapse-btn btn btn-secondary-outline" aria-expanded="true" aria-label="collapse menu">
-                    <ion-icon name="eye-off-outline"></ion-icon>
+                    <ion-icon name="chevron-back-outline"></ion-icon>
                     <span>Ocultar Menú</span>
                 </button>
             </li>

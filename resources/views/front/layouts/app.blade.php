@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +21,7 @@
 
     @stack('styles')
 </head>
-<body>
+<body class="preload light-mode">
     @include('front.layouts.main_nav')
 
     <section class="page-content">
@@ -41,71 +41,105 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+    <!-- Theme System -->
+    <script src="{{ asset('front/js/theme-system.js') }}"></script>
+
     <script>
-        const html = document.documentElement;
-        const body = document.body;
-        const menuLinks = document.querySelectorAll(".admin-menu a");
-        const collapseBtn = document.querySelector(".admin-menu .collapse-btn");
-        const toggleMobileMenu = document.querySelector(".toggle-mob-menu");
-        const switchInput = document.querySelector(".switch input");
-        const switchLabel = document.querySelector(".switch label");
-        const switchLabelText = switchLabel.querySelector("span:last-child");
-        const collapsedClass = "collapsed";
-        const lightModeClass = "light-mode";
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remover clase preload después de que todo esté cargado
+            setTimeout(() => {
+                document.body.classList.remove('preload');
+            }, 100);
 
-        /*TOGGLE HEADER STATE*/
-        collapseBtn.addEventListener("click", function () {
-        body.classList.toggle(collapsedClass);
-        this.getAttribute("aria-expanded") == "true"
-            ? this.setAttribute("aria-expanded", "false")
-            : this.setAttribute("aria-expanded", "true");
-        this.getAttribute("aria-label") == "ocultar menu"
-            ? this.setAttribute("aria-label", "mostrar menu")
-            : this.setAttribute("aria-label", "ocultar menu");
-        });
+            // Variables de menu
+            const body = document.body;
+            const menuLinks = document.querySelectorAll(".admin-menu a");
+            const collapseBtn = document.querySelector(".admin-menu .collapse-btn");
+            const toggleMobileMenu = document.querySelector(".toggle-mob-menu");
+            const collapsedClass = "collapsed";
 
-        /*TOGGLE MOBILE MENU*/
-        toggleMobileMenu.addEventListener("click", function () {
-        body.classList.toggle("mob-menu-opened");
-        this.getAttribute("aria-expanded") == "true"
-            ? this.setAttribute("aria-expanded", "false")
-            : this.setAttribute("aria-expanded", "true");
-        this.getAttribute("aria-label") == "abrir menu"
-            ? this.setAttribute("aria-label", "cerrar menu")
-            : this.setAttribute("aria-label", "abrir menu");
-        });
-
-        /*SHOW TOOLTIP ON MENU LINK HOVER*/
-        for (const link of menuLinks) {
-        link.addEventListener("mouseenter", function () {
-            if (
-            body.classList.contains(collapsedClass) &&
-            window.matchMedia("(min-width: 768px)").matches
-            ) {
-            const tooltip = this.querySelector("span").textContent;
-            this.setAttribute("title", tooltip);
-            } else {
-            this.removeAttribute("title");
+            // Toggle Header State
+            if (collapseBtn) {
+                collapseBtn.addEventListener("click", function () {
+                    body.classList.toggle(collapsedClass);
+                    
+                    const isCollapsed = body.classList.contains(collapsedClass);
+                    
+                    // Update aria-expanded
+                    this.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
+                    
+                    // Update aria-label
+                    this.setAttribute("aria-label", isCollapsed ? "mostrar menu" : "ocultar menu");
+                    
+                    // Update button text
+                    const buttonText = this.querySelector("span");
+                    if (buttonText) {
+                        buttonText.textContent = isCollapsed ? "Mostrar Menú" : "Ocultar Menú";
+                    }
+                });
             }
-        });
-        }
 
-        /*TOGGLE LIGHT/DARK MODE*/
-        if (localStorage.getItem("dark-mode") === "false") {
-            html.classList.add(lightModeClass);
-            switchInput.checked = false;
-            switchLabelText.textContent = "Claro";
-        }
+            // Toggle Mobile Menu
+            if (toggleMobileMenu) {
+                toggleMobileMenu.addEventListener("click", function () {
+                    body.classList.toggle("mob-menu-opened");
+                    this.getAttribute("aria-expanded") == "true"
+                        ? this.setAttribute("aria-expanded", "false")
+                        : this.setAttribute("aria-expanded", "true");
+                    this.getAttribute("aria-label") == "abrir menu"
+                        ? this.setAttribute("aria-label", "cerrar menu")
+                        : this.setAttribute("aria-label", "abrir menu");
+                });
+            }
 
-        switchInput.addEventListener("input", function () {
-        html.classList.toggle(lightModeClass);
-        if (html.classList.contains(lightModeClass)) {
-            switchLabelText.textContent = "Claro";
-            localStorage.setItem("dark-mode", "false");
-        } else {
-            switchLabelText.textContent = "Oscuro";
-            localStorage.setItem("dark-mode", "true");
-        }
+            // Show Tooltip on Menu Link Hover
+            for (const link of menuLinks) {
+                link.addEventListener("mouseenter", function () {
+                    if (
+                        body.classList.contains(collapsedClass) &&
+                        window.matchMedia("(min-width: 768px)").matches
+                    ) {
+                        const tooltip = this.querySelector("span").textContent;
+                        this.setAttribute("title", tooltip);
+                    } else {
+                        this.removeAttribute("title");
+                    }
+                });
+            }
+
+            // Agregar título al botón collapse cuando está colapsado
+            if (collapseBtn) {
+                const updateCollapseTitle = () => {
+                    if (
+                        body.classList.contains(collapsedClass) &&
+                        window.matchMedia("(min-width: 768px)").matches
+                    ) {
+                        collapseBtn.setAttribute("title", "Mostrar Menú");
+                    } else {
+                        collapseBtn.removeAttribute("title");
+                    }
+                };
+
+                // Actualizar título cuando se hace hover
+                collapseBtn.addEventListener("mouseenter", updateCollapseTitle);
+                
+                // Actualizar título cuando cambia el estado
+                collapseBtn.addEventListener("click", function() {
+                    setTimeout(updateCollapseTitle, 100);
+                });
+            }
+
+            // Theme change listener para debug
+            document.addEventListener('themeChanged', function(e) {
+                console.log('✅ Tema cambiado a:', e.detail.theme);
+                
+                // Debug: mostrar variables CSS actuales
+                const rootStyles = getComputedStyle(document.documentElement);
+                console.log('🎨 Variables CSS actuales:');
+                console.log('  --page-content-bgColor:', rootStyles.getPropertyValue('--page-content-bgColor'));
+                console.log('  --page-header-bgColor:', rootStyles.getPropertyValue('--page-header-bgColor'));
+                console.log('  --bs-body-bg:', rootStyles.getPropertyValue('--bs-body-bg'));
+            });
         });
     </script>
 
