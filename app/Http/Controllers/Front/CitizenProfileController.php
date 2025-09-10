@@ -792,6 +792,9 @@ class CitizenProfileController extends Controller
                 ], 403);
             }
 
+            // Obtener el nombre del documento y slug correcto
+            $documentInfo = $this->getDocumentInfoFromSlug($request->document_type);
+            
             $file = $request->file('file');
             $originalName = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
@@ -806,8 +809,8 @@ class CitizenProfileController extends Controller
             $urbanDevFile = \App\Models\UrbanDevRequestFile::create([
                 'user_id' => Auth::id(),
                 'urban_dev_request_id' => $urbanDevRequest->id,
-                'name' => $request->document_type,
-                'slug' => Str::slug($request->document_type),
+                'name' => $documentInfo['name'],
+                'slug' => $documentInfo['slug'],
                 'filename' => $fileName,
                 'file_extension' => $extension,
                 'filesize' => $file->getSize(),
@@ -820,9 +823,11 @@ class CitizenProfileController extends Controller
                 'file' => [
                     'id' => $urbanDevFile->id,
                     'name' => $urbanDevFile->name,
+                    'slug' => $urbanDevFile->slug,
                     'filename' => $urbanDevFile->filename,
                     'size' => $file->getSize(),
-                    'url' => $s3Url
+                    'url' => $s3Url,
+                    'created_at' => $urbanDevFile->created_at->toISOString() // Agregar created_at para evitar Invalid Date
                 ]
             ]);
 
@@ -832,6 +837,52 @@ class CitizenProfileController extends Controller
                 'message' => 'Error al subir el archivo: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Obtener información del documento basado en el slug recibido
+     */
+    private function getDocumentInfoFromSlug($receivedSlug)
+    {
+        // Mapeo completo de slugs a nombres de documentos
+        $documentMapping = [
+            // uso-de-suelo
+            'formato-de-solicitud-para-licencia-de-uso-de-suelo-fdduem-01' => 'Formato de solicitud para licencia de Uso de Suelo (FDDUEM-01)',
+            'copia-de-la-escritura-de-la-propiedad-o-documento-notariado-que-compruebe-la-posesion-del-predio' => 'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
+            'contrato-de-arrendamiento-simple' => 'Contrato de arrendamiento simple.',
+            'copia-del-ultimo-pago-del-predial' => 'Copia del último pago del predial.',
+            'copia-de-identificacion-de-la-persona-que-acredita-la-propiedad-asi-como-la-del-arrendatario-o-representante-legal-segun-sea-el-caso' => 'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso',
+            'croquis-de-ubicacion-del-inmueble' => 'Croquis de ubicación del inmueble',
+            
+            // constancia-de-factibilidad, permiso-de-anuncios, certificacion-numero-oficial
+            'poder-legal' => 'Poder Legal',
+            
+            // permiso-de-division
+            'solicitud-por-escrito-con-proyecto-de-division' => 'Solicitud por escrito con proyecto de división',
+            'croquis-del-predio' => 'Croquis del predio',
+            'copia-de-identificacion-de-la-persona-que-acredita-la-propiedad' => 'Copia de identificación de la persona que acredita la propiedad',
+            
+            // licencia-de-construccion
+            'proyecto-arquitectonico-en-dos-tantos-fisicos-con-escala-1-100-o-1-50-elaborados-avaldaos-y-firmados-por-dro' => 'Proyecto arquitectonico, en dos tantos físicos. Con escala 1:100 O 1:50 elaborados, avaldaos y firmados por DRO',
+            
+            // permiso-construccion-panteones
+            'copia-de-identificacion-del-propietario' => 'Copia de identificación del propietario',
+            'copia-del-documento-de-perpetuidad' => 'Copia del documento de perpetuidad'
+        ];
+        
+        // Verificar si el slug existe en el mapeo
+        if (isset($documentMapping[$receivedSlug])) {
+            return [
+                'name' => $documentMapping[$receivedSlug],
+                'slug' => $receivedSlug
+            ];
+        }
+        
+        // Si no existe en el mapeo, usar el slug recibido como nombre y generar un slug limpio
+        return [
+            'name' => $receivedSlug,
+            'slug' => Str::slug($receivedSlug)
+        ];
     }
 
     /**
