@@ -11,19 +11,19 @@
                 <tr>
                     <td>{{ $project->title }}</td>
                     <td>
-                        <a href="{{ route('implan.projects.show', $project->id) }}" class="btn btn-primary"
+                        <a href="{{ route('implan.projects.show', $project->id) }}" class="btn btn-sm btn-primary"
                             data-toggle="tooltip" data-original-title="Ver Detalle">
-                            Ver Detalle
+                            Ver
                         </a>
-                        <a href="{{ route('implan.projects.edit', $project->id) }}" class="btn btn-warning"
-                            data-toggle="tooltip" data-original-title="Editar">
+                        <a href="{{ route('implan.projects.edit', $project->id) }}"
+                            class="btn btn-sm btn-outline-secondary" data-toggle="tooltip" data-original-title="Editar">
                             Editar
                         </a>
                         <form action="{{ route('implan.projects.destroy', $project->id) }}" method="POST"
                             style="display: inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger" data-toggle="tooltip"
+                            <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip"
                                 data-original-title="Eliminar"
                                 onclick="return confirm('¿Estás seguro de que deseas eliminar esta regulación?')">
                                 Eliminar

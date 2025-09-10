@@ -57,22 +57,29 @@ class Crud extends Component
     public function save()
     {
         if ($this->project != null) {
-            $this->project->update([
-                'title' => $this->title,
-                'slug' => $this->slug,
-                'description' => $this->description,
-                'published_at' => $this->published_at,
-                'is_active' => $this->is_active,
-            ]);
+            $record = ImplanProject::find($this->project->id);
+
+            $record->title = $this->title;
+            $record->description = $this->description;
+            $record->published_at = $this->published_at;
+            $record->is_active = $this->is_active;
+
+            $record->save();
         } else {
-            ImplanProject::create([
-                'title' => $this->title,
-                'slug' => $this->slug,
-                'description' => $this->description,
-                'published_at' => $this->published_at,
-                'is_active' => $this->is_active,
-            ]);
+            $slug = Str::slug($this->title);
+
+            $record = new ImplanProject;
+
+            $record->title = $this->title;
+            $record->slug = $slug;
+            $record->description = $this->description;
+            $record->published_at = $this->published_at;
+            $record->is_active = $this->is_active;
+
+            $record->save();
         }
+
+        return redirect()->route('implan.projects.show', $record->id);
     }
 
     public function render()

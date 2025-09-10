@@ -15,10 +15,10 @@
                     <td>
                         <a href="{{ route('implan.blog.show', $post->id) }}" class="btn btn-primary" data-toggle="tooltip"
                             data-original-title="Ver Detalle">
-                            Ver Detalle
+                            Ver
                         </a>
-                        <a href="{{ route('implan.blog.edit', $post->id) }}" class="btn btn-warning" data-toggle="tooltip"
-                            data-original-title="Editar">
+                        <a href="{{ route('implan.blog.edit', $post->id) }}" class="btn btn-outline-secondary"
+                            data-toggle="tooltip" data-original-title="Editar">
                             Editar
                         </a>
                         <form action="{{ route('implan.blog.destroy', $post->id) }}" method="POST"
@@ -27,7 +27,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger" data-toggle="tooltip"
                                 data-original-title="Eliminar"
-                                onclick="return confirm('¿Estás seguro de que deseas eliminar esta regulación?')">
+                                onclick="return confirm('¿Estás seguro de que deseas eliminar este post?')">
                                 Eliminar
                             </button>
                         </form>

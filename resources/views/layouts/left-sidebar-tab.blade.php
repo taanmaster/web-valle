@@ -101,6 +101,13 @@
                         </li>
                     @endif
 
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
+                        data-bs-trigger="hover">
+                        <a href="#valleImplan" id="implan-tab" class="nav-link">
+                            <i class="ti ti-heart menu-icon"></i>
+                        </a>
+                    </li>
+
                     @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
                             title="Configuraciones" data-bs-trigger="hover">
@@ -457,23 +464,26 @@
                             <a class="nav-link" href="{{ route('dif.programs.index') }}">Programas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dif.socio_economic_tests.index') }}">Estudio Socioeconómmico</a>
+                            <a class="nav-link" href="{{ route('dif.socio_economic_tests.index') }}">Estudio
+                                Socioeconómmico</a>
                         </li>
                     </ul>
 
                     <div class="title-box">
                         <h6 class="menu-title">Generales</h6>
                     </div>
-                    
+
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dif.social_assistances.index') }}">Asistencia Social</a>
+                            <a class="nav-link" href="{{ route('dif.social_assistances.index') }}">Asistencia
+                                Social</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dif.medications.index') }}">Medicamentos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dif.legal_processes.index') }}">Procesos Jurídicos</a>
+                            <a class="nav-link" href="{{ route('dif.legal_processes.index') }}">Procesos
+                                Jurídicos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dif.locations.index') }}">Locaciones</a>
@@ -491,6 +501,34 @@
                     </ul>
                 </div>
             @endif
+
+            <div id="valleImplan" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="implan-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">IMPLAN</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('implan.projects.index') }}">Proyectos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('implan.achievements.index') }}">Logros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('implan.blog.index') }}">Blog</a>
+                    </li>
+                </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Comunicación</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('implan.banners.index') }}">Banners</a>
+                    </li>
+                </ul>
+            </div>
 
             @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                 <div id="valleConfiguration" class="main-icon-menu-pane tab-pane" role="tabpanel"

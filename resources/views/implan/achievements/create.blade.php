@@ -9,10 +9,10 @@
             Mejora regulatoria
         @endslot
         @slot('li_2')
-            Normativa municipal
+            Implan
         @endslot
         @slot('title')
-            Regulación
+            Logros
         @endslot
     @endcomponent
 

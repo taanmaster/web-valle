@@ -66,6 +66,6 @@ class ImplanProjectController extends Controller
         $project = ImplanProject::findOrFail($id);
         $project->delete();
 
-        return redirect()->route('implan.projects.index')->with('success', 'Project deleted successfully');
+        return redirect()->route('implan.projects.index')->with('success', 'Proyecto eliminado correctamente');
     }
 }

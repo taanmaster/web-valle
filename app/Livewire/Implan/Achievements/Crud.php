@@ -56,22 +56,27 @@ class Crud extends Component
     {
         if ($this->achievement != null) {
 
-            $this->achievement->update([
-                'title' => $this->title,
-                'description' => $this->description,
-                'hex' => $this->hex,
-                'published_at' => $this->published_at,
-                'is_active' => $this->is_active,
-            ]);
+            $record = ImplanAchievement::find($this->achievement->id);
+
+            $record->title = $this->title;
+            $record->description = $this->description;
+            $record->hex = $this->hex;
+            $record->published_at = $this->published_at;
+            $record->is_active = $this->is_active;
+
+            $record->save();
         } else {
-            ImplanAchievement::create([
-                'title' => $this->title,
-                'description' => $this->description,
-                'hex' => $this->hex,
-                'published_at' => $this->published_at,
-                'is_active' => $this->is_active,
-            ]);
+            $record = new ImplanAchievement;
+            $record->title = $this->title;
+            $record->description = $this->description;
+            $record->hex = $this->hex;
+            $record->published_at = $this->published_at;
+            $record->is_active = $this->is_active;
+
+            $record->save();
         }
+
+        return redirect()->route('implan.achievements.show', $record->id);
     }
 
     public function render()

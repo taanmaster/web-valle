@@ -69,6 +69,6 @@ class ImplanAchievementController extends Controller
         $achievement = ImplanAchievement::findOrFail($id);
         $achievement->delete();
 
-        return redirect()->route('implan.achievements.index')->with('success', 'Achievement deleted successfully');
+        return redirect()->route('implan.achievements.index')->with('success', 'Logro eliminado correctamente');
     }
 }

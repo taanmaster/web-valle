@@ -51,21 +51,26 @@ class Crud extends Component
     public function save()
     {
         if ($this->blog != null) {
+            $record = ImplanBlog::find($this->blog->id);
 
-            $this->blog->update([
-                'title' => $this->title,
-                'slug' => $this->slug,
-                'type' => $this->type,
-                'published_at' => $this->published_at,
-            ]);
+            $record->title = $this->title;
+            $record->published_at = $this->published_at;
+            $record->type = $this->type;
+
+            $record->save();
         } else {
-            ImplanBlog::create([
-                'title' => $this->title,
-                'slug' => $this->slug,
-                'type' => $this->type,
-                'published_at' => $this->published_at,
-            ]);
+            $slug = Str::slug($this->title);
+
+            $record = new ImplanBlog;
+            $record->title = $this->title;
+            $record->slug = $slug;
+            $record->published_at = $this->published_at;
+            $record->type = $this->type;
+
+            $record->save();
         }
+
+        return redirect()->route('implan.blog.show', $record->id);
     }
 
     public function render()
