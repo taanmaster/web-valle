@@ -2,6 +2,8 @@
 
 @section('content')
 <div class="container">
+    @include('front.urban_dev.utilities._nav')
+
     @php
         // Configuración de trámites con sus pasos específicos
         $tramites_config = [
@@ -341,7 +343,7 @@
                         <p class="mt-2"><small>Para los trámites debes Iniciar Sesión y tener una cuenta en nuestro sistema. Registrate <a href="{{ route('register') }}">aquí</a></small></p>
 
                         <div class="mt-3">
-                            <a href="{{ route('urban_dev.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('urban_dev.procedures') }}" class="btn btn-outline-secondary">
                                 <ion-icon name="arrow-back-outline" class="me-2"></ion-icon>
                                 Volver a Trámites
                             </a>
@@ -370,6 +372,8 @@
             </div>
         </div>
     @endif
+
+    @include('front.urban_dev.utilities._footer')
 </div>
 
 <style>

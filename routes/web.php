@@ -40,7 +40,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     // DESARROLLO URBANO 
     Route::get('/desarrollo_urbano', 'FrontController@urbanDev')->name('urban_dev.index');
-    Route::get('/desarrollo_urbano/{tramite}', 'FrontController@urbanDevDetail')->name('urban_dev.show');
+    Route::get('/desarrollo_urbano/tramites', 'FrontController@urbanDevProcedures')->name('urban_dev.procedures');
+    Route::get('/desarrollo_urbano/servicios', 'FrontController@urbanDevServices')->name('urban_dev.services');
+    Route::get('/desarrollo_urbano/contacto', 'FrontController@urbanDevContact')->name('urban_dev.contact');
+    Route::get('/desarrollo_urbano/tramites/{tramite}', 'FrontController@urbanDevDetail')->name('urban_dev.show');
 
     // CASA DE LA MUJER
     Route::get('/casa_de_la_mujer', 'FrontController@casaMujer')->name('casa_mujer.index');
