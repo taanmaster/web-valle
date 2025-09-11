@@ -48,7 +48,7 @@
 
         <div class="row">
             <!-- Información Principal y Documentos -->
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <!-- Información del Solicitante -->
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">
@@ -320,7 +320,7 @@
             </div>
 
             <!-- Panel de Control -->
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <!-- Cambio de Estatus -->
                 <div class="card">
                     <div class="card-header bg-warning text-dark">
@@ -338,13 +338,11 @@
                                 <label for="status" class="form-label">Cambiar Estatus:</label>
                                 <select name="status" id="status" class="form-select" required>
                                     <option value="new" {{ $urbanDevRequest->status == 'new' ? 'selected' : '' }}>Nuevo</option>
-                                    <option value="initial_review" {{ $urbanDevRequest->status == 'initial_review' ? 'selected' : '' }}>Revisión Inicial</option>
-                                    <option value="requirement_validation" {{ $urbanDevRequest->status == 'requirement_validation' ? 'selected' : '' }}>Validación de Requisitos</option>
+                                    <option value="entry" {{ $urbanDevRequest->status == 'entry' ? 'selected' : '' }}>Ingreso</option>
+                                    <option value="validation" {{ $urbanDevRequest->status == 'validation' ? 'selected' : '' }}>Validación</option>
                                     <option value="requires_correction" {{ $urbanDevRequest->status == 'requires_correction' ? 'selected' : '' }}>Requiere Corrección</option>
-                                    <option value="payment_pending" {{ $urbanDevRequest->status == 'payment_pending' ? 'selected' : '' }}>Espera de Pago</option>
-                                    <option value="authorization_process" {{ $urbanDevRequest->status == 'authorization_process' ? 'selected' : '' }}>Proceso de Autorización</option>
-                                    <option value="authorized" {{ $urbanDevRequest->status == 'authorized' ? 'selected' : '' }}>Autorizada</option>
-                                    <option value="rejected" {{ $urbanDevRequest->status == 'rejected' ? 'selected' : '' }}>Rechazada</option>
+                                    <option value="inspection" {{ $urbanDevRequest->status == 'inspection' ? 'selected' : '' }}>Inspección</option>
+                                    <option value="resolved" {{ $urbanDevRequest->status == 'resolved' ? 'selected' : '' }}>Resolución</option>
                                 </select>
                             </div>
                             
@@ -384,6 +382,91 @@
                             <small class="text-muted">Última Actualización:</small>
                             <p class="mb-0">{{ $urbanDevRequest->updated_at->format('d/m/Y H:i:s') }}</p>
                         </div>
+
+                        <!-- Información Adicional -->
+                        <hr class="my-3">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">
+                                <i class="fas fa-plus-circle"></i>
+                                Información Adicional
+                            </h6>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-primary mb-0" data-bs-toggle="modal" data-bs-target="#editDetailsModal">
+                                    <i class="fas fa-edit"></i> Configurar
+                                </button>
+                            </div>
+                        </div>
+
+                        @if($urbanDevRequest->inspector_id)
+                        <div class="mb-2">
+                            <small class="text-muted">Inspector Asignado:</small>
+                            <p class="mb-1">{{ $urbanDevRequest->inspector->name ?? 'No asignado' }}</p>
+                            @if($urbanDevRequest->inspector_license_number)
+                                <small class="text-muted">Licencia: {{ $urbanDevRequest->inspector_license_number }}</small>
+                            @endif
+                        </div>
+                        @endif
+
+                        @if($urbanDevRequest->inspection_start_date)
+                        <div class="mb-2">
+                            <small class="text-muted">Fecha de entrega a Inspector:</small>
+                            <p class="mb-1">{{ $urbanDevRequest->inspection_start_date->format('d/m/Y') }}</p>
+                        </div>
+                        @endif
+
+                        @if($urbanDevRequest->building_type)
+                        <div class="mb-2">
+                            <small class="text-muted">Tipo de Edificación:</small>
+                            <p class="mb-1">{{ $urbanDevRequest->getBuildingTypeLabelAttribute() }}</p>
+                        </div>
+                        @endif
+
+                        @if($urbanDevRequest->payment_date)
+                        <div class="mb-2">
+                            <small class="text-muted">Información de Pago:</small>
+                            <p class="mb-1">
+                                <strong>Fecha:</strong> {{ $urbanDevRequest->payment_date->format('d/m/Y') }}
+                                @if($urbanDevRequest->payment_amount)
+                                    <br><strong>Monto:</strong> ${{ number_format($urbanDevRequest->payment_amount, 2) }}
+                                @endif
+                            </p>
+                            @if($urbanDevRequest->payment_ref_number_1 || $urbanDevRequest->payment_ref_number_2)
+                                <small class="text-muted">
+                                    @if($urbanDevRequest->payment_ref_number_1)
+                                        Folio de Entero por Desarrollo: {{ $urbanDevRequest->payment_ref_number_1 }}
+                                    @endif
+                                    @if($urbanDevRequest->payment_ref_number_2)
+                                        <br>Folio de Entero por Pagado: {{ $urbanDevRequest->payment_ref_number_2 }}
+                                    @endif
+                                </small>
+                            @endif
+                        </div>
+                        @endif
+
+                        @if($urbanDevRequest->inspection_validity_start && $urbanDevRequest->inspection_validity_end)
+                        <div class="mb-2">
+                            <small class="text-muted">Vigencia de Inspección:</small>
+                            <p class="mb-1">
+                                {{ $urbanDevRequest->inspection_validity_start->format('d/m/Y') }} - 
+                                {{ $urbanDevRequest->inspection_validity_end->format('d/m/Y') }}
+                            </p>
+                            @php
+                                $now = now();
+                                $isValid = $now->between($urbanDevRequest->inspection_validity_start, $urbanDevRequest->inspection_validity_end);
+                            @endphp
+                            <span class="badge bg-{{ $isValid ? 'success' : 'danger' }}">
+                                {{ $isValid ? 'Vigente' : 'Vencida' }}
+                            </span>
+                        </div>
+                        @endif
+
+                        @if(!$urbanDevRequest->inspector_id && !$urbanDevRequest->building_type && !$urbanDevRequest->payment_date)
+                        <div class="text-center text-muted py-2">
+                            <i class="fas fa-info-circle"></i>
+                            <small>Haz clic en "Editar" para agregar información adicional</small>
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -470,6 +553,146 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Detalles Adicionales -->
+<div class="modal fade" id="editDetailsModal" tabindex="-1" aria-labelledby="editDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDetailsModalLabel">
+                    <i class="fas fa-edit"></i>
+                    Editar Información Adicional
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ route('urban_dev.requests.update-details', $urbanDevRequest) }}">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Inspector -->
+                        <div class="col-md-6 mb-3">
+                            <label for="inspector_id" class="form-label">Inspector Asignado</label>
+                            <select name="inspector_id" id="inspector_id" class="form-select">
+                                <option value="">Seleccionar Inspector</option>
+                                @php
+                                    // Obtener usuarios con rol de inspector o usuarios que pueden ser inspectores
+                                    // Si no tienes roles específicos, puedes usar una consulta simple
+                                    try {
+                                        $inspectors = \App\Models\User::whereHas('roles', function($q) {
+                                            $q->where('name', 'inspector');
+                                        })->get();
+                                    } catch (\Exception $e) {
+                                        // Fallback: obtener algunos usuarios para testing
+                                        $inspectors = \App\Models\User::limit(10)->get();
+                                    }
+                                @endphp
+                                @foreach($inspectors as $inspector)
+                                    <option value="{{ $inspector->id }}" {{ $urbanDevRequest->inspector_id == $inspector->id ? 'selected' : '' }}>
+                                        {{ $inspector->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Número de Licencia del Inspector -->
+                        <div class="col-md-6 mb-3">
+                            <label for="inspector_license_number" class="form-label">Número de Licencia</label>
+                            <input type="text" name="inspector_license_number" id="inspector_license_number" 
+                                   class="form-control" value="{{ $urbanDevRequest->inspector_license_number }}"
+                                   placeholder="Número de licencia del inspector">
+                        </div>
+
+                        <!-- Fecha de entrega a Inspector -->
+                        <div class="col-md-6 mb-3">
+                            <label for="inspection_start_date" class="form-label">Fecha de entrega a Inspector</label>
+                            <input type="date" name="inspection_start_date" id="inspection_start_date" 
+                                   class="form-control" value="{{ $urbanDevRequest->inspection_start_date?->format('Y-m-d') }}">
+                        </div>
+
+                        <!-- Tipo de Edificación -->
+                        <div class="col-md-6 mb-3">
+                            <label for="building_type" class="form-label">Tipo de Edificación</label>
+                            <select name="building_type" id="building_type" class="form-select">
+                                <option value="">Seleccionar tipo</option>
+                                <option value="casa_habitacion" {{ $urbanDevRequest->building_type == 'casa_habitacion' ? 'selected' : '' }}>Casa Habitación</option>
+                                <option value="bodega" {{ $urbanDevRequest->building_type == 'bodega' ? 'selected' : '' }}>Bodega</option>
+                                <option value="local_comercial" {{ $urbanDevRequest->building_type == 'local_comercial' ? 'selected' : '' }}>Local Comercial</option>
+                                <option value="otro" {{ $urbanDevRequest->building_type == 'otro' ? 'selected' : '' }}>Otro</option>
+                            </select>
+                        </div>
+
+                        <!-- Información de Pago -->
+                        <div class="col-12 mb-3">
+                            <h6 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-money-bill"></i>
+                                Información de Pago
+                            </h6>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="payment_date" class="form-label">Fecha de Pago</label>
+                            <input type="date" name="payment_date" id="payment_date" 
+                                   class="form-control" value="{{ $urbanDevRequest->payment_date?->format('Y-m-d') }}">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="payment_amount" class="form-label">Monto</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" name="payment_amount" id="payment_amount" 
+                                       class="form-control" step="0.01" value="{{ $urbanDevRequest->payment_amount }}"
+                                       placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="payment_ref_number_1" class="form-label">Folio de Entero por Desarrollo</label>
+                            <input type="text" name="payment_ref_number_1" id="payment_ref_number_1" 
+                                   class="form-control" value="{{ $urbanDevRequest->payment_ref_number_1 }}"
+                                   placeholder="Número de referencia">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="payment_ref_number_2" class="form-label">Folio de Entero Pagado</label>
+                            <input type="text" name="payment_ref_number_2" id="payment_ref_number_2" 
+                                   class="form-control" value="{{ $urbanDevRequest->payment_ref_number_2 }}"
+                                   placeholder="Número de referencia adicional">
+                        </div>
+
+                        <!-- Vigencia de Inspección -->
+                        <div class="col-12 mb-3">
+                            <h6 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-calendar-check"></i>
+                                Vigencia de Inspección
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="inspection_validity_start" class="form-label">Fecha de Inicio</label>
+                            <input type="date" name="inspection_validity_start" id="inspection_validity_start" 
+                                   class="form-control" value="{{ $urbanDevRequest->inspection_validity_start?->format('Y-m-d') }}">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="inspection_validity_end" class="form-label">Fecha de Vencimiento</label>
+                            <input type="date" name="inspection_validity_end" id="inspection_validity_end" 
+                                   class="form-control" value="{{ $urbanDevRequest->inspection_validity_end?->format('Y-m-d') }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -765,6 +988,46 @@ document.addEventListener('DOMContentLoaded', function() {
         // Esta función se puede implementar con una librería como jsPDF
         alert('Funcionalidad de exportar PDF en desarrollo');
     };
+});
+
+// Script para el modal de edición de detalles
+document.addEventListener('DOMContentLoaded', function() {
+    // Validación de fechas de vigencia
+    const validityStart = document.getElementById('inspection_validity_start');
+    const validityEnd = document.getElementById('inspection_validity_end');
+    
+    if (validityStart && validityEnd) {
+        validityStart.addEventListener('change', function() {
+            validityEnd.min = this.value;
+            if (validityEnd.value && validityEnd.value < this.value) {
+                validityEnd.value = '';
+            }
+        });
+    }
+    
+    // Validar que la fecha de fin sea mayor que la de inicio
+    const modal = document.getElementById('editDetailsModal');
+    if (modal) {
+        modal.addEventListener('submit', function(e) {
+            const startDate = validityStart?.value;
+            const endDate = validityEnd?.value;
+            
+            if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+                e.preventDefault();
+                alert('La fecha de vencimiento debe ser posterior a la fecha de inicio.');
+                return false;
+            }
+        });
+    }
+    
+    // Auto-completar algunos campos según el tipo de edificación
+    const buildingType = document.getElementById('building_type');
+    if (buildingType) {
+        buildingType.addEventListener('change', function() {
+            // Aquí se pueden agregar sugerencias automáticas
+            // Por ejemplo, duración típica de inspección según el tipo
+        });
+    }
 });
 </script>
 @endsection
