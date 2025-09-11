@@ -94,10 +94,33 @@
                         @endif
                     </div>
                     
-                    <div>
-                        <a href="{{ route('urban_dev.requests.index') }}" class="btn btn-outline-secondary me-2">
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('urban_dev.requests.index') }}" class="btn btn-outline-secondary">
                             <i class="fas fa-arrow-left"></i> Volver al Listado
                         </a>
+                        
+                        <!-- Dropdown de Exportación -->
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-download"></i> Exportar <i class="mdi mdi-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <h6 class="dropdown-header">
+                                    <i class="fas fa-file-export"></i> Opciones de Exportación
+                                </h6>
+                                <button type="button" class="dropdown-item" onclick="exportQueryResults('excel')">
+                                    <i class="fas fa-file-excel text-success me-2"></i> Exportar a Excel
+                                </button>
+                                <button type="button" class="dropdown-item" onclick="exportQueryResults('pdf')">
+                                    <i class="fas fa-file-pdf text-danger me-2"></i> Exportar a PDF
+                                </button>
+                                <div class="dropdown-divider"></div>
+                                <small class="dropdown-item-text text-muted">
+                                    <i class="fas fa-info-circle me-1"></i> Se exportarán {{ $urban_dev_requests->total() }} resultado(s)
+                                </small>
+                            </div>
+                        </div>
+                    </div>
                         @include('urban_dev.requests.utilities._search_options')
                     </div>
                 </div>
@@ -168,5 +191,65 @@
     border: 1px solid rgba(0, 0, 0, 0.15);
 }
 </style>
+
+<script>
+function exportQueryResults(format) {
+    // Construir la URL con los parámetros actuales de la búsqueda
+    let baseUrl = '';
+    if (format === 'excel') {
+        baseUrl = '{{ route("urban_dev.requests.export-excel") }}';
+    } else if (format === 'pdf') {
+        baseUrl = '{{ route("urban_dev.requests.export-pdf") }}';
+    }
+
+    // Obtener los parámetros actuales de la URL
+    const params = new URLSearchParams();
+    
+    @if(request('fecha_inicio'))
+        params.append('fecha_inicio', '{{ request('fecha_inicio') }}');
+    @endif
+    
+    @if(request('fecha_fin'))
+        params.append('fecha_fin', '{{ request('fecha_fin') }}');
+    @endif
+    
+    @if(request('folio'))
+        params.append('folio', '{{ request('folio') }}');
+    @endif
+    
+    @if(request('solicitante'))
+        params.append('solicitante', '{{ request('solicitante') }}');
+    @endif
+    
+    @if(request('estatus'))
+        params.append('estatus', '{{ request('estatus') }}');
+    @endif
+    
+    @if(request('tipo_tramite'))
+        params.append('tipo_tramite', '{{ request('tipo_tramite') }}');
+    @endif
+    
+    @if(request('inspector'))
+        params.append('inspector', '{{ request('inspector') }}');
+    @endif
+
+    const fullUrl = baseUrl + (params.toString() ? '?' + params.toString() : '');
+    
+    // Mostrar indicador de carga
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generando...';
+    button.disabled = true;
+
+    // Abrir la URL en una nueva ventana para descargar
+    window.open(fullUrl, '_blank');
+
+    // Restaurar el botón después de un breve delay
+    setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    }, 2000);
+}
+</script>
 @endsection
 @endsection
