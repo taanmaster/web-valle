@@ -1,5 +1,6 @@
 <?php
 
+// Controladores
 use App\Http\Controllers\RegulatoryAgendaController;
 use App\Http\Controllers\RegulatoryAgendaDependencyController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
@@ -17,9 +18,13 @@ use App\Http\Controllers\InstitucionalDevelopmentBannerController;
 use App\Http\Controllers\TapChecklistAuthorizationNoteController;
 use App\Http\Controllers\TapSupplierLogController;
 use App\Http\Controllers\TreasuryAccountPayableController;
+use App\Http\Controllers\UrbanDevRequestController;
+
+// Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
+
 use Illuminate\Support\Facades\Route;
 
 Route::namespace('App\Http\Controllers')->group(function () {
@@ -340,6 +345,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'urban_dev.requests.destroy',
             ]);
 
+            // Ruta adicional para actualizar detalles específicos
+            Route::put('requests/{id}/update-details', [UrbanDevRequestController::class, 'updateDetails'])->name('urban_dev.requests.update-details');
+            
+            // Ruta para búsqueda/query
+            Route::get('requests-query', [UrbanDevRequestController::class, 'query'])->name('urban_dev.requests.query');
+
             Route::resource('request_notes', UrbanDevRequestNoteController::class)->names([
                 'index' => 'urban_dev.request_notes.index',
                 'create' => 'urban_dev.request_notes.create',
@@ -358,6 +369,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'edit' => 'urban_dev.request_files.edit',
                 'update' => 'urban_dev.request_files.update',
                 'destroy' => 'urban_dev.request_files.destroy',
+            ]);
+
+            Route::resource('inspectors', UrbanDevInspectorController::class)->names([
+                'index' => 'urban_dev.inspectors.index',
+                'create' => 'urban_dev.inspectors.create',
+                'store' => 'urban_dev.inspectors.store',
+                'show' => 'urban_dev.inspectors.show',
+                'edit' => 'urban_dev.inspectors.edit',
+                'update' => 'urban_dev.inspectors.update',
+                'destroy' => 'urban_dev.inspectors.destroy',
             ]);
         });
 
