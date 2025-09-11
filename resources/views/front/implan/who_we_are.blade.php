@@ -45,63 +45,7 @@
                 <div class="card-body">
                     <h3>Organigrama</h3>
 
-                    <div class="row mb-3 justify-content-center">
-                        <div class="col-md-8">
-                            <div class="card card-body text-center" style="background: #3CADFF; color:white;">
-                                <h3>CUERPO TÉCNICO DEL IMPLAN</h3>
-                                <h5>Organigrama</h5>
-                                <br>
-                                <p>Municipio de Valle de Santiago, Gto. 2024</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3 justify-content-center">
-                        <div class="col-md-8">
-                            <div class="card card-body text-center" style="background:black; color:white">
-                                <h4 class="mb-0">Director General</h4>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-8">
-                            <div class="card card-body text-center" style="background: #757575; color:white">
-                                <h4 class="mb-0">Coordinación de planeación estratégica y gestión</h4>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card card-body text-center" style="background: #4BB027; color:white">
-                                <h4 class="mb-0">Coordinación Administrativa</h4>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-2">
-                            <div class="card card-body p-2" style="background: #65D675; color:white">
-                                <p class="mb-0">Jefatura de participación ciudadana y
-                                    comunicación social</p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="card card-body p-2" style="background: #65D675; color:white">
-                                <p class="mb-0">Jefatura de información estadística y
-                                    geográfica</p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="card card-body p-2" style="background: #65D675; color:white">
-                                <p class="mb-0">Jefatura de desarollo urbano y
-                                    ordenamiento ecológico territorial</p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="card card-body p-2" style="background: #65D675; color:white">
-                                <p class="mb-0">Jefatura Jurídica</p>
-                            </div>
-                        </div>
-                    </div>
+                    <img src="{{ asset('images/implan/org_implan.png') }}" alt="" width="100%">
 
                 </div>
             </div>
