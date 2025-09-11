@@ -3,7 +3,7 @@
         <div class="main-content">
             <div class="row align-items-center mb-4">
                 <div class="col text-start">
-                    @if ($blog != null)
+                    @if ($post != null)
                         @switch($mode)
                             @case(1)
                                 <h2>Ver publicación</h2>
