@@ -254,7 +254,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('images/mujer/hombre_hombre.jpg') }}" alt="">
                     <div class="overlay"></div>
                 </div>
             </div>
@@ -317,7 +317,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('images/mujer/mujer_salud.jpg') }}" alt="">
                     <div class="overlay"></div>
                 </div>
             </div>
@@ -357,7 +357,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('images/mujer/alimentos.jpg') }}" alt="">
                     <div class="overlay"></div>
                 </div>
             </div>
@@ -384,7 +384,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('images/mujer/servicios_bell.jpg') }}" alt="">
                     <div class="overlay"></div>
                 </div>
             </div>
@@ -406,7 +406,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('images/mujer/Manualidades.jpg') }}" alt="">
                     <div class="overlay"></div>
                 </div>
             </div>
@@ -431,7 +431,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card card-image wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/mujer-8.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('images/mujer/primeros_aux.jpg') }}" alt="">
                     <div class="overlay"></div>
                 </div>
             </div>
