@@ -312,7 +312,8 @@
 
 
         <!--IMPLAN-->
-        <a href="{{ route('implan.index') }}" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+        <a href="{{ route('implan.index') }}"
+            class="card link-card card-image card-alignment-bottom wow fadeInUp h-100 mt-4">
             <img src="{{ asset('front/img/placeholder-6.jpg') }}" class="card-img-top"
                 alt="Portada de Desarrollo Urbano">
             <div class="overlay"></div>

@@ -104,7 +104,7 @@
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
                         data-bs-trigger="hover">
                         <a href="#valleImplan" id="implan-tab" class="nav-link">
-                            <i class="ti ti-heart menu-icon"></i>
+                            <i class="ti ti-direction menu-icon"></i>
                         </a>
                     </li>
 

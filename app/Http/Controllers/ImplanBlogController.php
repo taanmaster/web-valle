@@ -28,24 +28,24 @@ class ImplanBlogController extends Controller
 
     public function show($id)
     {
-        $blog = ImplanBlog::findOrFail($id);
+        $post = ImplanBlog::findOrFail($id);
 
         $mode = 1;
 
         return view('implan.blog.show')->with([
-            'blog' => $blog,
+            'post' => $post,
             'mode' => $mode
         ]);
     }
 
     public function edit($id)
     {
-        $blog = ImplanBlog::findOrFail($id);
+        $post = ImplanBlog::findOrFail($id);
 
         $mode = 2;
 
         return view('implan.blog.edit')->with([
-            'blog' => $blog,
+            'post' => $post,
             'mode' => $mode
         ]);
     }

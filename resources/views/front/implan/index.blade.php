@@ -46,23 +46,36 @@
 
         <div class="row mb-4">
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>Logros</h3>
-                        <br>
-                        <a href="{{ route('implan.front.achievements') }}" class="btn btn-outline-primary">Consulta
-                            aquí</a>
+                <a href="{{ route('implan.front.achievements') }}"
+                    class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                    <img src="{{ asset('images/implan/logros.png') }}" class="card-img-top"
+                        alt="Portada de Desarrollo Urbano">
+                    <div class="overlay"></div>
+
+                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
                     </div>
-                </div>
+
+                    <div class="card-content">
+                        <h2>Logros</h2>
+                    </div>
+                </a>
             </div>
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>Convocatorias</h3>
-                        <br>
-                        <a href="javascript:void(0)" class="btn btn-outline-primary">Consulta aquí</a>
+
+                <a href="javascript:void(0)" class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                    <img src="{{ asset('images/implan/convocatoria.png') }}" class="card-img-top"
+                        alt="Portada de Desarrollo Urbano">
+                    <div class="overlay"></div>
+
+                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
                     </div>
-                </div>
+
+                    <div class="card-content">
+                        <h2>Convocatoria</h2>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -70,7 +83,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col-md-6">
                                 <h3>Visores INEGI</h3>
                                 <br>

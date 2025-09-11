@@ -1177,6 +1177,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'implan.banners.update',
                 'destroy' => 'implan.banners.destroy',
             ]);
+
+            Route::post('/implan/banners/status/{id}', [
+                'uses' => 'ImplanBannerController@status',
+                'as' => 'implan.banners.status',
+            ]);
         });
     });
 
