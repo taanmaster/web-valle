@@ -19,6 +19,7 @@ use App\Http\Controllers\TapChecklistAuthorizationNoteController;
 use App\Http\Controllers\TapSupplierLogController;
 use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Http\Controllers\UrbanDevRequestController;
+use App\Http\Controllers\UrbanDevInspectorController;
 
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
@@ -380,6 +381,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'urban_dev.inspectors.update',
                 'destroy' => 'urban_dev.inspectors.destroy',
             ]);
+            
+            // Ruta para solicitudes de inspector
+            Route::get('inspector_requests', [UrbanDevInspectorController::class, 'requests'])->name('urban_dev.inspectors.requests');
         });
 
         /* DIF */

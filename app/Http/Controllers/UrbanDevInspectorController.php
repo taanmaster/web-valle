@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UrbanDevRequest;
 use Spatie\Permission\Models\Role;
 use Session;
 use Auth;
@@ -93,7 +94,7 @@ class UrbanDevInspectorController extends Controller
 
         $inspector->name = $request->input('name');
         $inspector->email = $request->input('email');
-        
+
         if ($request->filled('password')) {
             $inspector->password = bcrypt($request->input('password'));
         }
@@ -125,5 +126,25 @@ class UrbanDevInspectorController extends Controller
         Session::flash('success', 'El inspector se eliminó exitosamente.');
 
         return redirect()->back();
+    }
+
+    /**
+     * Mostrar solicitudes asignadas al inspector autenticado
+     */
+    public function requests()
+    {
+        // Verificar que el usuario autenticado tenga rol de inspector
+        if (!Auth::user()->hasRole('inspector') && !Auth::user()->hasRole('all')) {
+            abort(403, 'No tienes permisos para acceder a esta sección.');
+        }
+
+        // Obtener solicitudes asignadas al inspector autenticado
+        $urban_dev_requests = UrbanDevRequest::with(['user', 'files', 'inspector'])
+            ->where('inspector_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('urban_dev.inspectors.requests')
+            ->with('urban_dev_requests', $urban_dev_requests);
     }
 }

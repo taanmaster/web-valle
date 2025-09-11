@@ -664,6 +664,17 @@
                         </div>
 
                         <!-- Vigencia de Inspección -->
+                        @php
+                            $isInspector = false;
+                            try {
+                                $isInspector = auth()->user()->hasRole('inspector');
+                            } catch (\Exception $e) {
+                                // Fallback: verificar si el usuario tiene 'inspector' en alguna relación
+                                $isInspector = false;
+                            }
+                        @endphp
+                        
+                        @if(!$isInspector)
                         <div class="col-12 mb-3">
                             <h6 class="border-bottom pb-2 mb-3">
                                 <i class="fas fa-calendar-check"></i>
@@ -682,6 +693,42 @@
                             <input type="date" name="inspection_validity_end" id="inspection_validity_end" 
                                    class="form-control" value="{{ $urbanDevRequest->inspection_validity_end?->format('Y-m-d') }}">
                         </div>
+                        @else
+                        @if($urbanDevRequest->inspection_validity_start && $urbanDevRequest->inspection_validity_end)
+                        <div class="col-12 mb-3">
+                            <h6 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-calendar-check"></i>
+                                Vigencia de Inspección
+                            </h6>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <div class="alert alert-light border">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Fecha de Inicio:</small>
+                                        <p class="mb-0 fw-bold">{{ $urbanDevRequest->inspection_validity_start->format('d/m/Y') }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Fecha de Vencimiento:</small>
+                                        <p class="mb-0 fw-bold">{{ $urbanDevRequest->inspection_validity_end->format('d/m/Y') }}</p>
+                                        @php
+                                            $now = now();
+                                            $isValid = $now->between($urbanDevRequest->inspection_validity_start, $urbanDevRequest->inspection_validity_end);
+                                        @endphp
+                                        <span class="badge bg-{{ $isValid ? 'success' : 'danger' }} mt-1">
+                                            {{ $isValid ? 'Vigente' : 'Vencida' }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <small class="text-muted d-block mt-2">
+                                    <i class="fas fa-info-circle"></i>
+                                    Solo administradores pueden modificar la vigencia de inspección.
+                                </small>
+                            </div>
+                        </div>
+                        @endif
+                        @endif
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -992,10 +1039,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Script para el modal de edición de detalles
 document.addEventListener('DOMContentLoaded', function() {
-    // Validación de fechas de vigencia
+    // Validación de fechas de vigencia (solo si los campos existen y son editables)
     const validityStart = document.getElementById('inspection_validity_start');
     const validityEnd = document.getElementById('inspection_validity_end');
     
+    // Solo aplicar validaciones si ambos campos existen (es decir, el usuario puede editarlos)
     if (validityStart && validityEnd) {
         validityStart.addEventListener('change', function() {
             validityEnd.min = this.value;
@@ -1003,21 +1051,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 validityEnd.value = '';
             }
         });
-    }
-    
-    // Validar que la fecha de fin sea mayor que la de inicio
-    const modal = document.getElementById('editDetailsModal');
-    if (modal) {
-        modal.addEventListener('submit', function(e) {
-            const startDate = validityStart?.value;
-            const endDate = validityEnd?.value;
-            
-            if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
-                e.preventDefault();
-                alert('La fecha de vencimiento debe ser posterior a la fecha de inicio.');
-                return false;
-            }
-        });
+        
+        // Validar que la fecha de fin sea mayor que la de inicio
+        const modal = document.getElementById('editDetailsModal');
+        if (modal) {
+            modal.addEventListener('submit', function(e) {
+                const startDate = validityStart?.value;
+                const endDate = validityEnd?.value;
+                
+                if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+                    e.preventDefault();
+                    alert('La fecha de vencimiento debe ser posterior a la fecha de inicio.');
+                    return false;
+                }
+            });
+        }
     }
     
     // Auto-completar algunos campos según el tipo de edificación

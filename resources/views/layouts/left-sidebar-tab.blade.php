@@ -424,6 +424,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('urban_dev.requests.index') }}">Expedientes</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.inspectors.requests') }}">Vista Inspector</a>
+                        </li>
                     </ul>
 
                     <div class="title-box">
