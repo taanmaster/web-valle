@@ -21,7 +21,7 @@ class Crud extends Component
 {
     use WithFileUploads;
 
-    public $blog;
+    public $post;
 
     //Modes: 0: create, 1 show, 2 edit
     public $mode;
@@ -34,27 +34,27 @@ class Crud extends Component
 
     public function mount()
     {
-        if ($this->blog != null) {
+        if ($this->post != null) {
             $this->fetchBlogData();
         }
     }
 
     public function fetchBlogData()
     {
-        $this->title = $this->blog->title;
-        $this->slug = $this->blog->slug;
-        $this->image = $this->blog->image;
-        $this->type = $this->blog->type;
-        $this->published_at = $this->blog->published_at ? Carbon::parse($this->blog->published_at)->format('Y-m-d') : null;
+        $this->title = $this->post->title;
+        $this->slug = $this->post->slug;
+        $this->image = $this->post->image;
+        $this->type = $this->post->type;
+        $this->published_at = $this->post->published_at ? Carbon::parse($this->post->published_at)->format('Y-m-d') : null;
     }
 
     public function save()
     {
-        if ($this->blog != null) {
+        if ($this->post != null) {
             // --- Subida de archivos si hay nuevos ---
-            $file_url = $this->image ? $this->handleUpload($this->image) : $this->blog->image;
+            $file_url = $this->image ? $this->handleUpload($this->image) : $this->post->image;
 
-            $record = ImplanBlog::find($this->blog->id);
+            $record = ImplanBlog::find($this->post->id);
 
             $record->title = $this->title;
             $record->published_at = $this->published_at;
