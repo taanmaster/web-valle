@@ -369,6 +369,21 @@ class FrontController extends Controller
         return view('front.urban_dev.index');
     }
 
+    public function urbanDevProcedures()
+    {
+        return view('front.urban_dev.procedures');
+    }
+
+    public function urbanDevServices()
+    {
+        return view('front.urban_dev.services');
+    }
+
+    public function urbanDevContact()
+    {
+        return view('front.urban_dev.contact');
+    }
+
     public function urbanDevDetail($tramite)
     {
         return view('front.urban_dev.show')->with('tramite', $tramite);

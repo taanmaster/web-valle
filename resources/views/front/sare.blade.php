@@ -85,7 +85,7 @@
                 <div class="icon bg-primary">
                     <ion-icon name="business-outline"></ion-icon>
                 </div>
-                <h3 class="mb-0">Si tu negocio se encuentra en Zona Urbana</h2>
+                <h3 class="mb-0">Si tu negocio se encuentra en Zona Urbana</h3>
             </div>
 
             <div class="row">

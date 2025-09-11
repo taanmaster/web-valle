@@ -11,9 +11,12 @@
 <div class="row layout-spacing">
     <div class="main-content">
         <div class="row align-items-center mb-4">
-            <div class="col text-start">
+            <div class="col-md-8 text-start">
                 <h4 class="mb-0">Solicitudes de Desarrollo Urbano</h4>
                 <p class="text-muted">Gestión de solicitudes enviadas por los ciudadanos</p>
+            </div>
+            <div class="col-md-4 text-end">
+                @include('urban_dev.requests.utilities._search_options')
             </div>
         </div>
 
@@ -42,4 +45,35 @@
         @endif    
     </div>
 </div>
+
+@section('scripts')
+<style>
+.table th {
+    background-color: #495057;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.875rem;
+}
+
+.table td {
+    vertical-align: middle;
+    font-size: 0.875rem;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > td {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.dropdown-menu {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.badge {
+    font-size: 0.75em;
+}
+</style>
+@endsection
 @endsection

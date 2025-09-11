@@ -1,32 +1,82 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 :root {
-    --page-header-bgColor: #F5F5F5;
-    --page-header-bgColor-hover: #551312;
-    --page-header-txtColor: #171616;
-    --page-header-headingColor: #7889a4;
+    /* Layout Variables */
     --page-header-width: 250px;
-    --page-content-bgColor: #F5F5F5;
-    --page-content-txtColor: #171616;
-    --page-content-blockColor: #fff;
-    --white: #fff;
-    --black: #333;
-    --blue: #00b9eb;
-    --red: #ec1848;
     --border-radius: 4px;
-    --box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.075);
+    
+    /* Switch Variables */
     --switch-bgLightModeColor: #87cefa;
     --switch-sunColor: gold;
     --switch-moonColor: #f4f4f4;
     --switch-bgDarkModeColor: #1f1f27;
+    
+    /* Light Mode Colors - Default (High Contrast) */
+    --page-header-bgColor: #ffffff;
+    --page-header-bgColor-hover: #551312;
+    --page-header-txtColor: #212529;
+    --page-header-headingColor: #6c757d;
+    --page-content-bgColor: #f8f9fa;
+    --page-content-txtColor: #212529;
+    --page-content-blockColor: #ffffff;
+    --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    
+    /* Bootstrap Override Colors - Light Mode */
+    --bs-body-bg: #f8f9fa;
+    --bs-body-color: #212529;
+    --bs-primary: #551312;
+    --bs-secondary: #6c757d;
+    --bs-success: #198754;
+    --bs-info: #0dcaf0;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+    
+    /* Card and Component Colors - Light Mode */
+    --card-bg: #ffffff;
+    --card-border: rgba(0, 0, 0, 0.125);
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --navbar-brand-color: #212529;
+    --navbar-nav-link-color: #495057;
+    --table-bg: transparent;
+    --table-striped-bg: rgba(0, 0, 0, 0.05);
+    --table-hover-bg: rgba(0, 0, 0, 0.075);
+    --modal-bg: #ffffff;
+    --modal-backdrop: rgba(0, 0, 0, 0.5);
+    --dropdown-bg: #ffffff;
+    --dropdown-border: rgba(0, 0, 0, 0.15);
+    --dropdown-link-color: #212529;
+    --dropdown-link-hover-bg: #f8f9fa;
+    
+    /* Focus and State Colors */
+    --focus-ring-color: rgba(85, 19, 18, 0.25);
+    --link-color: #551312;
+    --link-hover-color: #440f0e;
+    
+    /* Brand Colors */
+    --white: #fff;
+    --black: #333;
+    --blue: #00b9eb;
+    --red: #ec1848;
 }
 
 * {
     font-family: Inter, sans-serif;
 }
 
+/* Prevent transitions on initial load */
+.preload * {
+    transition: none !important;
+}
+
 body {
-    background-color: #F5F5F5;
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1 {
@@ -92,7 +142,7 @@ small {
 }
 
 .small-uppercase {
-    font-size: 10px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -175,6 +225,7 @@ small {
     width: var(--page-header-width);
     color: var(--page-header-txtColor);
     background: var(--page-header-bgColor);
+    transition: background-color 0.3s ease, color 0.3s ease, width 0.3s ease;
 }
 
 .page-header nav {
@@ -276,6 +327,7 @@ small {
     padding: 30px;
     color: var(--page-content-txtColor);
     background: var(--page-content-bgColor);
+    transition: background-color 0.3s ease, color 0.3s ease, left 0.3s ease, width 0.3s ease;
 }
 
 /* MQ RULES
@@ -400,14 +452,23 @@ small {
 
 @media screen and (min-width: 768px) {
     .collapsed .page-header {
-        width: 40px;
+        width: 80px;
+        padding-top: 10px;
     }
 
     .collapsed .page-header .admin-menu li>* {
-        padding: 10px;
+        padding: 12px;
+        justify-content: center;
     }
 
-    .collapsed .page-header .logo,
+    .collapsed .page-header .logo {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 20px auto;
+        background-size: contain;
+        display: block;
+    }
+
     .collapsed .page-header .admin-menu span,
     .collapsed .page-header .admin-menu .menu-heading {
         display: none;
@@ -415,15 +476,103 @@ small {
 
     .collapsed .page-header .admin-menu ion-icon {
         margin-right: 0;
+        font-size: 1.5em;
+    }
+
+    .collapsed .page-header .admin-menu a,
+    .collapsed .page-header .admin-menu button {
+        border-radius: 12px;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 8px auto;
+        position: relative;
+    }
+
+    .collapsed .page-header .admin-menu .switch {
+        width: 60px;
+        margin: 0 auto;
+        justify-content: center;
+    }
+
+    .collapsed .page-header .admin-menu .switch label {
+        grid-template-columns: auto;
+        justify-content: center;
+    }
+
+    .collapsed .page-header .admin-menu .switch label span:last-child {
+        display: none;
+    }
+
+    .collapsed .page-header .collapse-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .collapsed .page-header .collapse-btn ion-icon {
         transform: rotate(180deg);
+        font-size: 1.5em;
+    }
+
+    .collapsed .page-header .collapse-btn span {
+        display: none;
     }
 
     .collapsed .page-content {
-        left: 40px;
-        width: calc(100% - 40px);
+        left: 80px;
+        width: calc(100% - 80px);
+    }
+
+    /* Tooltip para iconos cuando el menú está colapsado */
+    .collapsed .page-header .admin-menu a:hover::after,
+    .collapsed .page-header .admin-menu button:hover::after {
+        content: attr(title);
+        position: absolute;
+        left: 70px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--bs-dark);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        white-space: nowrap;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        opacity: 0;
+        animation: tooltipFadeIn 0.2s ease forwards;
+    }
+
+    .collapsed .page-header .admin-menu a:hover::before,
+    .collapsed .page-header .admin-menu button:hover::before {
+        content: '';
+        position: absolute;
+        left: 65px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 5px solid transparent;
+        border-right-color: var(--bs-dark);
+        z-index: 1001;
+        opacity: 0;
+        animation: tooltipFadeIn 0.2s ease forwards;
+    }
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
     }
 }
 
@@ -503,12 +652,415 @@ small {
 /* LIGHT MODE STYLES
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .light-mode {
-    --page-header-bgColor: #f1efec;
+    --page-header-bgColor: #ffffff;
     --page-header-bgColor-hover: #551312;
-    --page-header-txtColor: #2c303a;
-    --page-header-headingColor: #979595;
-    --page-content-bgColor: #fff;
-    --box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.25);
+    --page-header-txtColor: #212529;
+    --page-header-headingColor: #6c757d;
+    --page-content-bgColor: #f8f9fa;
+    --page-content-txtColor: #212529;
+    --page-content-blockColor: #ffffff;
+    --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    
+    /* Bootstrap Override Colors - Light Mode */
+    --bs-body-bg: #f8f9fa;
+    --bs-body-color: #212529;
+    --bs-primary: #551312;
+    --bs-secondary: #6c757d;
+    --bs-success: #198754;
+    --bs-info: #0dcaf0;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+    
+    /* Card and Component Colors - Light Mode */
+    --card-bg: #ffffff;
+    --card-border: rgba(0, 0, 0, 0.125);
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --navbar-brand-color: #212529;
+    --navbar-nav-link-color: #495057;
+    --table-bg: transparent;
+    --table-striped-bg: rgba(0, 0, 0, 0.05);
+    --table-hover-bg: rgba(0, 0, 0, 0.075);
+    --modal-bg: #ffffff;
+    --modal-backdrop: rgba(0, 0, 0, 0.5);
+    --dropdown-bg: #ffffff;
+    --dropdown-border: rgba(0, 0, 0, 0.15);
+    --dropdown-link-color: #212529;
+    --dropdown-link-hover-bg: #f8f9fa;
+    
+    /* Focus and State Colors */
+    --focus-ring-color: rgba(85, 19, 18, 0.25);
+    --link-color: #551312;
+    --link-hover-color: #440f0e;
+}
+
+/* DARK MODE STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.dark-mode {
+    --page-header-bgColor: #0a0a0a;
+    --page-header-bgColor-hover: #8b2635;
+    --page-header-txtColor: #ffffff;
+    --page-header-headingColor: #a3a3a3;
+    --page-content-bgColor: #000000;
+    --page-content-txtColor: #ffffff;
+    --page-content-blockColor: #171717;
+    --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    
+    /* Bootstrap Override Colors - Dark Mode */
+    --bs-body-bg: #000000;
+    --bs-body-color: #ffffff;
+    --bs-primary: #dc2626;
+    --bs-secondary: #525252;
+    --bs-success: #16a34a;
+    --bs-info: #0891b2;
+    --bs-warning: #ca8a04;
+    --bs-danger: #dc2626;
+    --bs-light: #404040;
+    --bs-dark: #0a0a0a;
+    
+    /* Card and Component Colors - Dark Mode */
+    --card-bg: #171717;
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text-muted: #a3a3a3;
+    --border-color: #404040;
+    --input-bg: #262626;
+    --input-border: #404040;
+    --navbar-brand-color: #ffffff;
+    --navbar-nav-link-color: #d4d4d4;
+    --table-bg: transparent;
+    --table-striped-bg: rgba(255, 255, 255, 0.02);
+    --table-hover-bg: rgba(255, 255, 255, 0.05);
+    --modal-bg: #171717;
+    --modal-backdrop: rgba(0, 0, 0, 0.8);
+    --dropdown-bg: #262626;
+    --dropdown-border: rgba(255, 255, 255, 0.1);
+    --dropdown-link-color: #ffffff;
+    --dropdown-link-hover-bg: #404040;
+    
+    /* Focus and State Colors */
+    --focus-ring-color: rgba(220, 38, 38, 0.5);
+    --link-color: #ef4444;
+    --link-hover-color: #dc2626;
+}
+
+/* Apply Bootstrap color variables to components */
+.dark-mode,
+.light-mode {
+    color-scheme: light dark;
+}
+
+/* SMOOTH TRANSITIONS FOR THEME SWITCHING
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+* {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}
+
+/* Prevent transition on page load */
+.preload * {
+    transition: none !important;
+}
+
+/* DARK MODE SPECIFIC OVERRIDES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.dark-mode .owl-prev, 
+.dark-mode .owl-next {
+    background-color: var(--bs-primary) !important;
+    color: #fff !important;
+}
+
+.dark-mode .icon {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+.dark-mode .icon.blue {
+    background-color: #3b82f6;
+}
+
+.dark-mode img {
+    opacity: 0.85;
+    filter: brightness(0.9);
+}
+
+.dark-mode .folder-text h3 {
+    color: white;
+}
+
+/* Dark mode folder text - all text elements should be white */
+.dark-mode .folder-text h1,
+.dark-mode .folder-text h2,
+.dark-mode .folder-text h3,
+.dark-mode .folder-text h4,
+.dark-mode .folder-text h5,
+.dark-mode .folder-text h6,
+.dark-mode .folder-text p,
+.dark-mode .folder-text small,
+.dark-mode .folder-text .small-uppercase,
+.dark-mode .folder-text .help,
+.dark-mode .folder-text span,
+.dark-mode .folder-text a,
+.dark-mode .folder-text div {
+    color: #ffffff !important;
+}
+
+.dark-mode .citizen-avatar {
+    border-color: var(--card-bg);
+    box-shadow: 0 8px 25px rgba(255,255,255,0.1);
+}
+
+/* Dark mode text improvements */
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6 {
+    color: #ffffff;
+}
+
+.dark-mode p {
+    color: #d4d4d4;
+}
+
+.dark-mode small {
+    color: var(--text-muted);
+}
+
+/* Dark mode card-specific text colors */
+.dark-mode .card-normal h1,
+.dark-mode .card-normal h2,
+.dark-mode .card-normal h3,
+.dark-mode .card-normal h4,
+.dark-mode .card-normal h5,
+.dark-mode .card-normal h6,
+.dark-mode .card-normal p,
+.dark-mode .card-normal small,
+.dark-mode .card-normal .small-uppercase,
+.dark-mode .card-normal .help {
+    color: #ffffff !important;
+}
+
+.dark-mode .card-image h1,
+.dark-mode .card-image h2,
+.dark-mode .card-image h3,
+.dark-mode .card-image h4,
+.dark-mode .card-image h5,
+.dark-mode .card-image h6,
+.dark-mode .card-image p,
+.dark-mode .card-image small,
+.dark-mode .card-image .small-uppercase,
+.dark-mode .card-image .help,
+.dark-mode .card-image .card-content h1,
+.dark-mode .card-image .card-content h2,
+.dark-mode .card-image .card-content h3,
+.dark-mode .card-image .card-content h4,
+.dark-mode .card-image .card-content h5,
+.dark-mode .card-image .card-content h6,
+.dark-mode .card-image .card-content p,
+.dark-mode .card-image .card-content small {
+    color: #ffffff !important;
+}
+
+/* Dark mode sidebar improvements */
+.dark-mode .page-header .admin-menu a {
+    color: #d4d4d4;
+    background-color: transparent;
+    border-radius: 12px;
+    margin-bottom: 4px;
+}
+
+.dark-mode .page-header .admin-menu a:hover,
+.dark-mode .page-header .admin-menu a:focus {
+    background-color: var(--page-header-bgColor-hover);
+    color: #ffffff;
+}
+
+.dark-mode .page-header {
+    border-right: 1px solid #262626;
+}
+
+/* Dark mode collapsed menu styles */
+@media screen and (min-width: 768px) {
+    .dark-mode.collapsed .page-header .admin-menu a:hover::after,
+    .dark-mode.collapsed .page-header .admin-menu button:hover::after {
+        background: var(--card-bg);
+        color: var(--bs-body-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .dark-mode.collapsed .page-header .admin-menu a:hover::before,
+    .dark-mode.collapsed .page-header .admin-menu button:hover::before {
+        border-right-color: var(--card-bg);
+    }
+}
+
+/* Dark mode content area - background handled by CSS variables */
+
+/* LIGHT MODE SPECIFIC OVERRIDES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.light-mode .owl-prev, 
+.light-mode .owl-next {
+    background-color: #551312 !important;
+    color: #fff !important;
+}
+
+.light-mode .icon {
+    background-color: #E6A655;
+    color: white;
+}
+
+.light-mode .icon.blue {
+    background-color: #507CCC;
+}
+
+/* Light mode text improvements - General dark text for content outside cards */
+.light-mode h1,
+.light-mode h2,
+.light-mode h3,
+.light-mode h4,
+.light-mode h5,
+.light-mode h6 {
+    color: #212529;
+}
+
+.light-mode p {
+    color: #212529;
+}
+
+.light-mode small {
+    color: var(--text-muted);
+}
+
+/* Light mode sidebar improvements */
+.light-mode .page-header .admin-menu a {
+    color: #495057;
+    background-color: transparent;
+    border-radius: 12px;
+    margin-bottom: 4px;
+}
+
+.light-mode .page-header .admin-menu a:hover,
+.light-mode .page-header .admin-menu a:focus {
+    background-color: var(--page-header-bgColor-hover);
+    color: #ffffff;
+}
+
+.light-mode .page-header {
+    border-right: 1px solid #dee2e6;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode collapsed menu styles */
+@media screen and (min-width: 768px) {
+    .light-mode.collapsed .page-header .admin-menu a:hover::after,
+    .light-mode.collapsed .page-header .admin-menu button:hover::after {
+        background: var(--card-bg);
+        color: var(--bs-body-color);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .light-mode.collapsed .page-header .admin-menu a:hover::before,
+    .light-mode.collapsed .page-header .admin-menu button:hover::before {
+        border-right-color: var(--card-bg);
+    }
+}
+
+/* Light mode content area - background handled by CSS variables */
+
+/* Light mode card-specific text colors */
+.light-mode .card-normal h1,
+.light-mode .card-normal h2,
+.light-mode .card-normal h3,
+.light-mode .card-normal h4,
+.light-mode .card-normal h5,
+.light-mode .card-normal h6,
+.light-mode .card-normal p,
+.light-mode .card-normal small,
+.light-mode .card-normal .small-uppercase,
+.light-mode .card-normal .help {
+    color: #212529 !important;
+}
+
+.light-mode .card-image h1,
+.light-mode .card-image h2,
+.light-mode .card-image h3,
+.light-mode .card-image h4,
+.light-mode .card-image h5,
+.light-mode .card-image h6,
+.light-mode .card-image p,
+.light-mode .card-image small,
+.light-mode .card-image .small-uppercase,
+.light-mode .card-image .help,
+.light-mode .card-image .card-content h1,
+.light-mode .card-image .card-content h2,
+.light-mode .card-image .card-content h3,
+.light-mode .card-image .card-content h4,
+.light-mode .card-image .card-content h5,
+.light-mode .card-image .card-content h6,
+.light-mode .card-image .card-content p,
+.light-mode .card-image .card-content small {
+    color: #ffffff !important;
+}
+
+/* Light mode folder text - all text elements should be white */
+.light-mode .folder-text h1,
+.light-mode .folder-text h2,
+.light-mode .folder-text h3,
+.light-mode .folder-text h4,
+.light-mode .folder-text h5,
+.light-mode .folder-text h6,
+.light-mode .folder-text p,
+.light-mode .folder-text small,
+.light-mode .folder-text .small-uppercase,
+.light-mode .folder-text .help,
+.light-mode .folder-text span,
+.light-mode .folder-text a,
+.light-mode .folder-text div {
+    color: #ffffff !important;
+}
+
+/* ACCESSIBILITY IMPROVEMENTS
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Focus indicators for better accessibility */
+.dark-mode .btn:focus,
+.dark-mode .form-control:focus,
+.dark-mode .form-select:focus {
+    box-shadow: 0 0 0 0.25rem var(--focus-ring-color);
+}
+
+.light-mode .btn:focus,
+.light-mode .form-control:focus,
+.light-mode .form-select:focus {
+    box-shadow: 0 0 0 0.25rem var(--focus-ring-color);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --card-border: #000000;
+        --border-color: #000000;
+    }
+    
+    .dark-mode {
+        --card-border: #ffffff;
+        --border-color: #ffffff;
+        --bs-body-color: #ffffff;
+        --bs-body-bg: #000000;
+    }
 }
 
 .light-mode .page-header .admin-menu a:hover,
@@ -536,6 +1088,450 @@ small {
     }
 }
 
+/* BOOTSTRAP 5 COMPONENT STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+/* Cards */
+.card {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    color: var(--bs-body-color);
+    transition: all 0.3s ease;
+}
+
+.card-header {
+    background-color: var(--card-bg);
+    border-bottom-color: var(--card-border);
+}
+
+.card-footer {
+    background-color: var(--card-bg);
+    border-top-color: var(--card-border);
+}
+
+/* Forms */
+.form-control {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--bs-body-color);
+}
+
+.form-control:focus {
+    background-color: var(--input-bg);
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem var(--focus-ring-color);
+    color: var(--bs-body-color);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.form-select {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--bs-body-color);
+}
+
+.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem var(--focus-ring-color);
+}
+
+.form-check-input {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+}
+
+.form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+/* Tables */
+.table {
+    --bs-table-bg: var(--table-bg);
+    --bs-table-striped-bg: var(--table-striped-bg);
+    --bs-table-hover-bg: var(--table-hover-bg);
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--border-color);
+}
+
+.table-dark {
+    --bs-table-bg: var(--bs-dark);
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
+    --bs-table-color: #fff;
+}
+
+/* Modals */
+.modal-content {
+    background-color: var(--modal-bg);
+    border-color: var(--card-border);
+    color: var(--bs-body-color);
+}
+
+.modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+.modal-footer {
+    border-top-color: var(--border-color);
+}
+
+.modal-backdrop {
+    background-color: var(--modal-backdrop);
+}
+
+/* Dropdowns */
+.dropdown-menu {
+    background-color: var(--dropdown-bg);
+    border-color: var(--dropdown-border);
+    color: var(--bs-body-color);
+}
+
+.dropdown-item {
+    color: var(--dropdown-link-color);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--dropdown-link-hover-bg);
+    color: var(--dropdown-link-color);
+}
+
+.dropdown-divider {
+    border-top-color: var(--border-color);
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+.navbar-brand {
+    color: var(--navbar-brand-color);
+}
+
+.navbar-nav .nav-link {
+    color: var(--navbar-nav-link-color);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+    color: var(--link-color);
+}
+
+/* Buttons */
+.btn-primary {
+    --bs-btn-bg: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-bg: var(--link-hover-color);
+    --bs-btn-hover-border-color: var(--link-hover-color);
+    --bs-btn-focus-shadow-rgb: 85, 19, 18;
+}
+
+.btn-secondary {
+    --bs-btn-bg: var(--bs-secondary);
+    --bs-btn-border-color: var(--bs-secondary);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-bg: var(--bs-primary);
+    --bs-btn-hover-border-color: var(--bs-primary);
+    --bs-btn-focus-shadow-rgb: 85, 19, 18;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: var(--bs-secondary);
+    --bs-btn-border-color: var(--bs-secondary);
+    --bs-btn-hover-bg: var(--bs-secondary);
+    --bs-btn-hover-border-color: var(--bs-secondary);
+}
+
+/* Links */
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
+
+/* Text utilities */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Bootstrap text color utilities with high specificity */
+.text-primary {
+    color: var(--bs-primary) !important;
+}
+
+.text-secondary {
+    color: var(--bs-secondary) !important;
+}
+
+.text-success {
+    color: var(--bs-success) !important;
+}
+
+.text-danger {
+    color: var(--bs-danger) !important;
+}
+
+.text-warning {
+    color: var(--bs-warning) !important;
+}
+
+.text-info {
+    color: var(--bs-info) !important;
+}
+
+.text-light {
+    color: var(--bs-light) !important;
+}
+
+.text-dark {
+    color: var(--bs-dark) !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+
+.text-black {
+    color: #000000 !important;
+}
+
+/* Override folder-text and card-specific rules when Bootstrap utilities are used */
+.light-mode .folder-text .text-dark,
+.dark-mode .folder-text .text-dark {
+    color: var(--bs-dark) !important;
+}
+
+.light-mode .folder-text .text-white,
+.dark-mode .folder-text .text-white {
+    color: #ffffff !important;
+}
+
+.light-mode .folder-text .text-light,
+.dark-mode .folder-text .text-light {
+    color: var(--bs-light) !important;
+}
+
+.light-mode .folder-text .text-primary,
+.dark-mode .folder-text .text-primary {
+    color: var(--bs-primary) !important;
+}
+
+.light-mode .folder-text .text-secondary,
+.dark-mode .folder-text .text-secondary {
+    color: var(--bs-secondary) !important;
+}
+
+.light-mode .folder-text .text-success,
+.dark-mode .folder-text .text-success {
+    color: var(--bs-success) !important;
+}
+
+.light-mode .folder-text .text-danger,
+.dark-mode .folder-text .text-danger {
+    color: var(--bs-danger) !important;
+}
+
+.light-mode .folder-text .text-warning,
+.dark-mode .folder-text .text-warning {
+    color: var(--bs-warning) !important;
+}
+
+.light-mode .folder-text .text-info,
+.dark-mode .folder-text .text-info {
+    color: var(--bs-info) !important;
+}
+
+.light-mode .folder-text .text-muted,
+.dark-mode .folder-text .text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Override card-specific rules when Bootstrap utilities are used */
+.light-mode .card-normal .text-dark,
+.dark-mode .card-normal .text-dark {
+    color: var(--bs-dark) !important;
+}
+
+.light-mode .card-normal .text-white,
+.dark-mode .card-normal .text-white {
+    color: #ffffff !important;
+}
+
+.light-mode .card-normal .text-light,
+.dark-mode .card-normal .text-light {
+    color: var(--bs-light) !important;
+}
+
+.light-mode .card-image .text-dark,
+.dark-mode .card-image .text-dark {
+    color: var(--bs-dark) !important;
+}
+
+.light-mode .card-image .text-white,
+.dark-mode .card-image .text-white {
+    color: #ffffff !important;
+}
+
+.light-mode .card-image .text-light,
+.dark-mode .card-image .text-light {
+    color: var(--bs-light) !important;
+}
+
+/* Borders */
+.border {
+    border-color: var(--border-color) !important;
+}
+
+.border-top {
+    border-top-color: var(--border-color) !important;
+}
+
+.border-bottom {
+    border-bottom-color: var(--border-color) !important;
+}
+
+.border-start {
+    border-left-color: var(--border-color) !important;
+}
+
+.border-end {
+    border-right-color: var(--border-color) !important;
+}
+
+/* Alerts */
+.alert {
+    border-color: var(--card-border);
+}
+
+.alert-primary {
+    background-color: rgba(85, 19, 18, 0.1);
+    border-color: rgba(85, 19, 18, 0.2);
+    color: var(--bs-primary);
+}
+
+.alert-secondary {
+    background-color: rgba(108, 117, 125, 0.1);
+    border-color: rgba(108, 117, 125, 0.2);
+    color: var(--bs-secondary);
+}
+
+/* Pagination */
+.page-link {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--link-color);
+}
+
+.page-link:hover {
+    background-color: var(--dropdown-link-hover-bg);
+    border-color: var(--border-color);
+    color: var(--link-hover-color);
+}
+
+.page-item.active .page-link {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    background-color: var(--card-bg);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--text-muted);
+}
+
+/* List Group */
+.list-group-item {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    color: var(--bs-body-color);
+}
+
+.list-group-item:hover {
+    background-color: var(--dropdown-link-hover-bg);
+}
+
+.list-group-item.active {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+/* Accordion */
+.accordion-item {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+.accordion-button {
+    background-color: var(--card-bg);
+    color: var(--bs-body-color);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--dropdown-link-hover-bg);
+    color: var(--bs-body-color);
+}
+
+.accordion-button::after {
+    filter: var(--bs-accordion-btn-icon-filter, invert(1));
+}
+
+/* Progress */
+.progress {
+    background-color: var(--dropdown-link-hover-bg);
+}
+
+/* Toast */
+.toast {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    color: var(--bs-body-color);
+}
+
+.toast-header {
+    background-color: var(--card-bg);
+    border-bottom-color: var(--card-border);
+}
+
+/* Offcanvas */
+.offcanvas {
+    background-color: var(--card-bg);
+    color: var(--bs-body-color);
+}
+
+.offcanvas-header {
+    border-bottom-color: var(--border-color);
+}
+
+/* Tooltips and Popovers inherit from Bootstrap's default styling but use our color variables */
+.tooltip-inner {
+    background-color: var(--bs-dark);
+    color: #fff;
+}
+
+.popover {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+.popover-body {
+    color: var(--bs-body-color);
+}
+
 .header-bar {
     margin-bottom: 30px;
 }
@@ -556,10 +1552,35 @@ small {
 
 .card {
     border-radius: 15px;
-    border: 1px solid rgba(0, 0, 0, 0.10);
-    background: #FFF;
-    box-shadow: -2px -2px 59.3px -21px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    box-shadow: var(--box-shadow);
     margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+/* Dark mode card enhancements */
+.dark-mode .card {
+    background: linear-gradient(135deg, #171717 0%, #262626 100%);
+    border-color: #404040;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode .card:hover {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Light mode card enhancements */
+.light-mode .card {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.light-mode .card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
 .card-normal {
@@ -641,11 +1662,12 @@ small {
 
 .gazette-card {
     text-decoration: none;
-    color: black;
+    color: var(--bs-body-color);
     padding: 20px;
     flex-direction: column;
     align-items: flex-start;
     gap: 35px;
+    transition: color 0.3s ease;
 }
 
 .card-logo {
@@ -655,6 +1677,7 @@ small {
 .link-card {
     transition: .2s ease-in-out all;
     text-decoration: none;
+    color: var(--bs-body-color);
 }
 
 .link-card .card-icon {
@@ -745,6 +1768,34 @@ small {
     background-color: #2E4981;
 }
 
+/* Dark mode folder enhancements */
+.dark-mode .folder-green .folder-body,
+.dark-mode .folder-green .folder-head {
+    background-color: #10b981;
+}
+
+.dark-mode .folder-green .folder-text {
+    background-color: #059669;
+}
+
+.dark-mode .folder-yellow .folder-body,
+.dark-mode .folder-yellow .folder-head {
+    background-color: #f59e0b;
+}
+
+.dark-mode .folder-yellow .folder-text {
+    background-color: #d97706;
+}
+
+.dark-mode .folder-blue .folder-body,
+.dark-mode .folder-blue .folder-head {
+    background-color: #3b82f6;
+}
+
+.dark-mode .folder-blue .folder-text {
+    background-color: #1d4ed8;
+}
+
 .folder-card {
     position: relative;
     display: block;
@@ -820,10 +1871,13 @@ small {
 /* BLOG STYLES */
 .card-blog {
     text-decoration: none;
+    color: var(--bs-body-color);
+    transition: color 0.3s ease;
 }
 
 .card-blog:hover {
     text-decoration: underline;
+    color: var(--link-color);
 }
 
 .card-blog .card-img-top {

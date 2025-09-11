@@ -14,11 +14,25 @@ class UrbanDevRequest extends Model
         'status',
         'request_type',
         'description',
+        'inspector_id',
+        'inspection_start_date',
+        'inspector_license_number',
+        'building_type',
+        'payment_date',
+        'payment_ref_number_1',
+        'payment_ref_number_2',
+        'payment_amount',
+        'inspection_validity_start',
+        'inspection_validity_end',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'inspection_start_date' => 'date',
+        'payment_date' => 'date',
+        'inspection_validity_start' => 'date',
+        'inspection_validity_end' => 'date',
     ];
 
     /**
@@ -38,23 +52,25 @@ class UrbanDevRequest extends Model
     }
 
     /**
+     * Relación con el inspector
+     */
+    public function inspector()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'inspector_id');
+    }
+
+    /**
      * Obtener el estado en formato legible
      */
     public function getStatusLabelAttribute()
     {
         $statuses = [
             'new' => 'Nuevo',
-            'initial_review' => 'Revisión Inicial',
-            'requirement_validation' => 'Validación de Requisitos',
+            'entry' => 'Ingreso',
+            'validation' => 'Validación',
             'requires_correction' => 'Requiere Corrección',
-            'payment_pending' => 'Espera de Pago',
-            'authorization_process' => 'Proceso de Autorización',
-            'authorized' => 'Autorizada',
-            'rejected' => 'Rechazada',
-            // Estados legacy
-            'in_progress' => 'En Progreso',
-            'cancelled' => 'Cancelado',
-            'validation' => 'Validación'
+            'inspection' => 'Inspección',
+            'resolved' => 'Resolución'
         ];
 
         return $statuses[$this->status] ?? $this->status;
@@ -67,17 +83,11 @@ class UrbanDevRequest extends Model
     {
         $colors = [
             'new' => 'primary',
-            'initial_review' => 'info',
-            'requirement_validation' => 'warning',
+            'entry' => 'info',
+            'validation' => 'warning',
             'requires_correction' => 'danger',
-            'payment_pending' => 'warning',
-            'authorization_process' => 'info',
-            'authorized' => 'success',
-            'rejected' => 'danger',
-            // Estados legacy
-            'in_progress' => 'warning',
-            'cancelled' => 'secondary',
-            'validation' => 'dark'
+            'inspection' => 'secondary',
+            'resolved' => 'success'
         ];
 
         return $colors[$this->status] ?? 'primary';
@@ -110,5 +120,48 @@ class UrbanDevRequest extends Model
         ];
 
         return $types[$this->request_type] ?? $this->request_type;
+    }
+
+    /**
+     * Obtener el tipo de edificación en formato legible
+     */
+    public function getBuildingTypeLabelAttribute()
+    {
+        $types = [
+            'casa_habitacion' => 'Casa Habitación',
+            'bodega' => 'Bodega',
+            'local_comercial' => 'Local Comercial',
+            'otro' => 'Otro'
+        ];
+
+        return $types[$this->building_type] ?? $this->building_type;
+    }
+
+    /**
+     * Obtener el domicilio del ciudadano relacionado
+     */
+    public function getUserAddressAttribute()
+    {
+        $citizen = \App\Models\Citizen::where('email', $this->user->email)->first();
+        
+        if (!$citizen) {
+            return 'No disponible';
+        }
+
+        $addressParts = [];
+        
+        if ($citizen->street) {
+            $addressParts[] = $citizen->street;
+        }
+        
+        if ($citizen->colony) {
+            $addressParts[] = $citizen->colony;
+        }
+        
+        if ($citizen->address && !in_array($citizen->address, $addressParts)) {
+            $addressParts[] = $citizen->address;
+        }
+
+        return !empty($addressParts) ? implode(', ', $addressParts) : 'No disponible';
     }
 }
