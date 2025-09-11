@@ -352,6 +352,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
             // Ruta para búsqueda/query
             Route::get('requests-query', [UrbanDevRequestController::class, 'query'])->name('urban_dev.requests.query');
 
+            // Rutas para exportación
+            Route::get('requests-export-excel', [UrbanDevRequestController::class, 'exportExcel'])->name('urban_dev.requests.export-excel');
+            Route::get('requests-export-pdf', [UrbanDevRequestController::class, 'exportPdf'])->name('urban_dev.requests.export-pdf');
+
             Route::resource('request_notes', UrbanDevRequestNoteController::class)->names([
                 'index' => 'urban_dev.request_notes.index',
                 'create' => 'urban_dev.request_notes.create',

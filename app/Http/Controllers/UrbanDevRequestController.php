@@ -6,11 +6,16 @@ namespace App\Http\Controllers;
 use Str;
 use Auth;
 use Session;
+use PDF;
 
 // Modelos
 use App\Models\UrbanDevRequest;
 use App\Models\UrbanDevRequestFile;
 use App\Models\User;
+
+// Exports
+use App\Exports\UrbanDevRequestsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Http\Request;
 
@@ -194,6 +199,120 @@ class UrbanDevRequestController extends Controller
 
         Session::flash('success', 'Información adicional actualizada exitosamente.');
         return redirect()->back();
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $filters = $request->only([
+            'fecha_inicio', 
+            'fecha_fin', 
+            'folio', 
+            'solicitante', 
+            'estatus', 
+            'tipo_tramite', 
+            'inspector'
+        ]);
+
+        $filename = 'solicitudes_desarrollo_urbano_' . now()->format('Y_m_d_H_i_s') . '.xlsx';
+
+        return Excel::download(new UrbanDevRequestsExport($filters), $filename);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $query = UrbanDevRequest::with(['user', 'files', 'inspector']);
+
+        // Aplicar los mismos filtros
+        if ($request->filled('fecha_inicio')) {
+            $query->whereDate('created_at', '>=', $request->fecha_inicio);
+        }
+
+        if ($request->filled('fecha_fin')) {
+            $query->whereDate('created_at', '<=', $request->fecha_fin);
+        }
+
+        if ($request->filled('folio')) {
+            $query->where(function($q) use ($request) {
+                $q->where('payment_ref_number_1', 'LIKE', '%' . $request->folio . '%')
+                  ->orWhere('payment_ref_number_2', 'LIKE', '%' . $request->folio . '%')
+                  ->orWhere('inspector_license_number', 'LIKE', '%' . $request->folio . '%');
+            });
+        }
+
+        if ($request->filled('solicitante')) {
+            $query->whereHas('user', function($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->solicitante . '%')
+                  ->orWhere('email', 'LIKE', '%' . $request->solicitante . '%');
+            });
+        }
+
+        if ($request->filled('estatus')) {
+            $query->where('status', $request->estatus);
+        }
+
+        if ($request->filled('tipo_tramite')) {
+            $query->where('request_type', $request->tipo_tramite);
+        }
+
+        if ($request->filled('inspector')) {
+            $query->where('inspector_id', $request->inspector);
+        }
+
+        $requests = $query->orderBy('created_at', 'desc')->get();
+
+        // Preparar filtros aplicados para mostrar en el PDF
+        $appliedFilters = [];
+        if ($request->filled('fecha_inicio')) {
+            $appliedFilters['Fecha Inicio'] = $request->fecha_inicio;
+        }
+        if ($request->filled('fecha_fin')) {
+            $appliedFilters['Fecha Fin'] = $request->fecha_fin;
+        }
+        if ($request->filled('folio')) {
+            $appliedFilters['Folio'] = $request->folio;
+        }
+        if ($request->filled('solicitante')) {
+            $appliedFilters['Solicitante'] = $request->solicitante;
+        }
+        if ($request->filled('estatus')) {
+            $statusLabels = [
+                'new' => 'Nuevo',
+                'entry' => 'Ingreso',
+                'validation' => 'Validación',
+                'requires_correction' => 'Requiere Corrección',
+                'inspection' => 'Inspección',
+                'resolved' => 'Resolución'
+            ];
+            $appliedFilters['Estatus'] = $statusLabels[$request->estatus] ?? $request->estatus;
+        }
+        if ($request->filled('tipo_tramite')) {
+            $typeLabels = [
+                'uso-de-suelo' => 'Licencia de Uso de Suelo',
+                'constancia-de-factibilidad' => 'Constancia de Factibilidad',
+                'permiso-de-anuncios' => 'Permiso de Anuncios',
+                'certificacion-numero-oficial' => 'Certificación de Número Oficial',
+                'permiso-de-division' => 'Permiso de División',
+                'uso-de-via-publica' => 'Uso de Vía Pública',
+                'licencia-de-construccion' => 'Licencia de Construcción',
+                'permiso-construccion-panteones' => 'Permiso de Construcción en Panteones',
+            ];
+            $appliedFilters['Tipo de Trámite'] = $typeLabels[$request->tipo_tramite] ?? $request->tipo_tramite;
+        }
+        if ($request->filled('inspector')) {
+            $inspector = User::find($request->inspector);
+            $appliedFilters['Inspector'] = $inspector ? $inspector->name : 'Inspector ID: ' . $request->inspector;
+        }
+
+        $pdf = PDF::loadView('urban_dev.requests.exports.pdf', [
+            'requests' => $requests,
+            'appliedFilters' => $appliedFilters
+        ]);
+
+        $pdf->setPaper('A4', 'landscape');
+
+        $filename = 'reporte_solicitudes_desarrollo_urbano_' . now()->format('Y_m_d_H_i_s') . '.pdf';
+
+        return $pdf->download($filename);
     }
 
     public function destroy($id)

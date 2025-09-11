@@ -48,32 +48,32 @@
 
 @section('scripts')
 <style>
-.table th {
-    background-color: #495057;
-    color: white;
-    font-weight: 600;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 0.875rem;
-}
+    .table th {
+        background-color: #495057;
+        color: white;
+        font-weight: 600;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 0.875rem;
+    }
 
-.table td {
-    vertical-align: middle;
-    font-size: 0.875rem;
-}
+    .table td {
+        vertical-align: middle;
+        font-size: 0.875rem;
+    }
 
-.table-striped > tbody > tr:nth-of-type(odd) > td {
-    background-color: rgba(0, 0, 0, 0.02);
-}
+    .table-striped > tbody > tr:nth-of-type(odd) > td {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
 
-.dropdown-menu {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(0, 0, 0, 0.15);
-}
+    .dropdown-menu {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+    }
 
-.badge {
-    font-size: 0.75em;
-}
+    .badge {
+        font-size: 0.75em;
+    }
 </style>
 @endsection
 @endsection
