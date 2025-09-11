@@ -47,7 +47,9 @@ class RoleController extends Controller
 
         // Asignar permisos si fueron seleccionados
         if ($request->has('permissions')) {
-            $role->syncPermissions($request->permissions);
+            // Convertir IDs a nombres de permisos
+            $permissionNames = Permission::whereIn('id', $request->permissions)->pluck('name')->toArray();
+            $role->syncPermissions($permissionNames);
         }
 
         Session::flash('success', 'El rol se creó exitosamente.');
@@ -88,7 +90,9 @@ class RoleController extends Controller
 
         // Sincronizar permisos
         if ($request->has('permissions')) {
-            $role->syncPermissions($request->permissions);
+            // Convertir IDs a nombres de permisos
+            $permissionNames = Permission::whereIn('id', $request->permissions)->pluck('name')->toArray();
+            $role->syncPermissions($permissionNames);
         } else {
             $role->syncPermissions([]);
         }

@@ -1,3 +1,6 @@
+{{-- La libreria de iconos es TABLER ICONS https://tablericons.com/ --}}
+{{-- Usar nomeclatura ti ti-[NOMBRE DEL ARCHIVO DE TABLER ICONS] --}}
+
 <div class="leftbar-tab-menu">
     <div class="main-icon-menu">
         <a href="{{ route('dashboard') }}" class="logo logo-metrica d-block text-center">
@@ -78,7 +81,7 @@
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="SARE"
                             data-bs-trigger="hover">
                             <a href="#valleSARE" id="sare-tab" class="nav-link">
-                                <i class="ti ti-bulb menu-icon"></i>
+                                <i class="ti ti-box-multiple menu-icon"></i>
                             </a>
                         </li>
                     @endif
@@ -104,7 +107,7 @@
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
                         data-bs-trigger="hover">
                         <a href="#valleImplan" id="implan-tab" class="nav-link">
-                            <i class="ti ti-direction menu-icon"></i>
+                            <i class="ti ti-bulb menu-icon"></i>
                         </a>
                     </li>
 
@@ -420,6 +423,19 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('urban_dev.requests.index') }}">Expedientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.inspectors.requests') }}">Vista
+                                Inspector</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Usuarios</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.inspectors.index') }}">Inspectores</a>
                         </li>
                     </ul>
                 </div>

@@ -1,5 +1,6 @@
 <?php
 
+// Controladores
 use App\Http\Controllers\RegulatoryAgendaController;
 use App\Http\Controllers\RegulatoryAgendaDependencyController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
@@ -17,9 +18,14 @@ use App\Http\Controllers\InstitucionalDevelopmentBannerController;
 use App\Http\Controllers\TapChecklistAuthorizationNoteController;
 use App\Http\Controllers\TapSupplierLogController;
 use App\Http\Controllers\TreasuryAccountPayableController;
+use App\Http\Controllers\UrbanDevRequestController;
+use App\Http\Controllers\UrbanDevInspectorController;
+
+// Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
+
 use Illuminate\Support\Facades\Route;
 
 Route::namespace('App\Http\Controllers')->group(function () {
@@ -52,7 +58,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     // DESARROLLO URBANO
     Route::get('/desarrollo_urbano', 'FrontController@urbanDev')->name('urban_dev.index');
-    Route::get('/desarrollo_urbano/{tramite}', 'FrontController@urbanDevDetail')->name('urban_dev.show');
+    Route::get('/desarrollo_urbano/tramites', 'FrontController@urbanDevProcedures')->name('urban_dev.procedures');
+    Route::get('/desarrollo_urbano/servicios', 'FrontController@urbanDevServices')->name('urban_dev.services');
+    Route::get('/desarrollo_urbano/contacto', 'FrontController@urbanDevContact')->name('urban_dev.contact');
+    Route::get('/desarrollo_urbano/tramites/{tramite}', 'FrontController@urbanDevDetail')->name('urban_dev.show');
 
     // CASA DE LA MUJER
     Route::get('/casa_de_la_mujer', 'FrontController@casaMujer')->name('casa_mujer.index');
@@ -337,6 +346,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'urban_dev.requests.destroy',
             ]);
 
+            // Ruta adicional para actualizar detalles específicos
+            Route::put('requests/{id}/update-details', [UrbanDevRequestController::class, 'updateDetails'])->name('urban_dev.requests.update-details');
+            
+            // Ruta para búsqueda/query
+            Route::get('requests-query', [UrbanDevRequestController::class, 'query'])->name('urban_dev.requests.query');
+
+            // Rutas para exportación
+            Route::get('requests-export-excel', [UrbanDevRequestController::class, 'exportExcel'])->name('urban_dev.requests.export-excel');
+            Route::get('requests-export-pdf', [UrbanDevRequestController::class, 'exportPdf'])->name('urban_dev.requests.export-pdf');
+
             Route::resource('request_notes', UrbanDevRequestNoteController::class)->names([
                 'index' => 'urban_dev.request_notes.index',
                 'create' => 'urban_dev.request_notes.create',
@@ -356,6 +375,19 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'urban_dev.request_files.update',
                 'destroy' => 'urban_dev.request_files.destroy',
             ]);
+
+            Route::resource('inspectors', UrbanDevInspectorController::class)->names([
+                'index' => 'urban_dev.inspectors.index',
+                'create' => 'urban_dev.inspectors.create',
+                'store' => 'urban_dev.inspectors.store',
+                'show' => 'urban_dev.inspectors.show',
+                'edit' => 'urban_dev.inspectors.edit',
+                'update' => 'urban_dev.inspectors.update',
+                'destroy' => 'urban_dev.inspectors.destroy',
+            ]);
+            
+            // Ruta para solicitudes de inspector
+            Route::get('inspector_requests', [UrbanDevInspectorController::class, 'requests'])->name('urban_dev.inspectors.requests');
         });
 
         /* DIF */

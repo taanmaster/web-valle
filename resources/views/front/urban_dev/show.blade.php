@@ -2,6 +2,8 @@
 
 @section('content')
 <div class="container">
+    @include('front.urban_dev.utilities._nav')
+
     @php
         // Configuración de trámites con sus pasos específicos
         $tramites_config = [
@@ -341,7 +343,7 @@
                         <p class="mt-2"><small>Para los trámites debes Iniciar Sesión y tener una cuenta en nuestro sistema. Registrate <a href="{{ route('register') }}">aquí</a></small></p>
 
                         <div class="mt-3">
-                            <a href="{{ route('urban_dev.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('urban_dev.procedures') }}" class="btn btn-outline-secondary">
                                 <ion-icon name="arrow-back-outline" class="me-2"></ion-icon>
                                 Volver a Trámites
                             </a>
@@ -370,155 +372,157 @@
             </div>
         </div>
     @endif
+
+    @include('front.urban_dev.utilities._footer')
 </div>
 
 <style>
-.process-timeline {
-    position: relative;
-    padding-left: 30px;
-}
-
-.process-timeline::before {
-    content: '';
-    position: absolute;
-    left: 25px;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: linear-gradient(to bottom, #007bff, #28a745);
-    border-radius: 2px;
-}
-
-.timeline-item {
-    position: relative;
-    margin-bottom: 30px;
-}
-
-.timeline-marker {
-    position: absolute;
-    left: -30px;
-    top: 10px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid #fff;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    z-index: 10;
-}
-
-.step-number {
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.timeline-content {
-    margin-left: 40px;
-}
-
-.border-left-info {
-    border-left: 4px solid #17a2b8 !important;
-}
-
-.border-left-warning {
-    border-left: 4px solid #ffc107 !important;
-}
-
-.border-left-primary {
-    border-left: 4px solid #007bff !important;
-}
-
-.border-left-danger {
-    border-left: 4px solid #dc3545 !important;
-}
-
-.border-left-success {
-    border-left: 4px solid #28a745 !important;
-}
-
-.border-left-dark {
-    border-left: 4px solid #343a40 !important;
-}
-
-.cost-item {
-    transition: all 0.3s ease;
-    background: #f8f9fa;
-}
-
-.cost-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.cost-letter {
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-
-.cost-description {
-    color: #495057;
-    font-size: 0.95rem;
-    line-height: 1.3;
-}
-
-.cost-price {
-    font-weight: 700;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.card-image-banner {
-    position: relative;
-    min-height: 250px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.4);
-    border-radius: inherit;
-}
-
-.card-content {
-    position: absolute;
-    bottom: 30px;
-    left: 30px;
-    right: 30px;
-    color: white;
-    z-index: 10;
-}
-
-.card-icon-static {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    flex-shrink: 0;
-}
-
-@media (max-width: 768px) {
     .process-timeline {
-        padding-left: 20px;
+        position: relative;
+        padding-left: 30px;
     }
-    
+
+    .process-timeline::before {
+        content: '';
+        position: absolute;
+        left: 25px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(to bottom, #007bff, #28a745);
+        border-radius: 2px;
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
     .timeline-marker {
-        left: -25px;
-        width: 40px;
-        height: 40px;
+        position: absolute;
+        left: -30px;
+        top: 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 10;
     }
-    
+
     .step-number {
-        font-size: 16px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
     }
-    
+
     .timeline-content {
-        margin-left: 30px;
+        margin-left: 40px;
     }
-}
+
+    .border-left-info {
+        border-left: 4px solid #17a2b8 !important;
+    }
+
+    .border-left-warning {
+        border-left: 4px solid #ffc107 !important;
+    }
+
+    .border-left-primary {
+        border-left: 4px solid #007bff !important;
+    }
+
+    .border-left-danger {
+        border-left: 4px solid #dc3545 !important;
+    }
+
+    .border-left-success {
+        border-left: 4px solid #28a745 !important;
+    }
+
+    .border-left-dark {
+        border-left: 4px solid #343a40 !important;
+    }
+
+    .cost-item {
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+    .cost-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .cost-letter {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .cost-description {
+        color: #495057;
+        font-size: 0.95rem;
+        line-height: 1.3;
+    }
+
+    .cost-price {
+        font-weight: 700;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .card-image-banner {
+        position: relative;
+        min-height: 250px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.4);
+        border-radius: inherit;
+    }
+
+    .card-content {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        right: 30px;
+        color: white;
+        z-index: 10;
+    }
+
+    .card-icon-static {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+        .process-timeline {
+            padding-left: 20px;
+        }
+        
+        .timeline-marker {
+            left: -25px;
+            width: 40px;
+            height: 40px;
+        }
+        
+        .step-number {
+            font-size: 16px;
+        }
+        
+        .timeline-content {
+            margin-left: 30px;
+        }
+    }
 </style>
 @endsection
