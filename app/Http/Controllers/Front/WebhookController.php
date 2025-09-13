@@ -33,19 +33,39 @@ class WebhookController extends Controller
 
 		if($data['type'] == 'charge.created'){
 			$order = NULL;
+			$reference = '';
+			$payment_method = '';
 			
+			// Determinar el método de pago y obtener la referencia
 			if($data['data']['object']['payment_method']['object'] == 'bank_payment'){
+				// BanBajio
 				$reference = $data['data']['object']['order_id'];	
-				$order = Order::where('payment_id', $reference)->where('payment_method', 'Pago con BanBajio')->first();
+				$payment_method = 'banbajio';
+				$order = Order::where('payment_id', $reference)->where('payment_method', $payment_method)->first();
 			
 				if($order != NULL){
 					$order->status = 'Pago Pendiente';
 					$order->payment_id = $data['data']['object']['payment_method']['reference'];
 					$order->save();
 				
-					return response()->json(['mensaje' => 'Orden Pendiente de Pago.', 'order' => $reference]);
+					return response()->json(['mensaje' => 'Orden Pendiente de Pago.', 'order' => $reference, 'gateway' => 'BanBajio']);
 				}else{
-					return response()->json(['mensaje' => 'Ese numero de orden no existe.', 'order' => $reference]);
+					return response()->json(['mensaje' => 'Ese numero de orden no existe.', 'order' => $reference, 'gateway' => 'BanBajio']);
+				}
+			}elseif($data['data']['object']['payment_method']['object'] == 'cash_payment'){
+				// Oxxo (DigitalFemsa)
+				$reference = $data['data']['object']['order_id'];
+				$payment_method = 'oxxopay';
+				$order = Order::where('payment_id', $reference)->where('payment_method', $payment_method)->first();
+			
+				if($order != NULL){
+					$order->status = 'Pago Pendiente';
+					$order->payment_id = $data['data']['object']['payment_method']['reference'];
+					$order->save();
+				
+					return response()->json(['mensaje' => 'Orden Pendiente de Pago.', 'order' => $reference, 'gateway' => 'Oxxo']);
+				}else{
+					return response()->json(['mensaje' => 'Ese numero de orden no existe.', 'order' => $reference, 'gateway' => 'Oxxo']);
 				}
 			}else{
 				return response()->json(['mensaje' => 'Evento recibido con éxito.']);
@@ -53,9 +73,20 @@ class WebhookController extends Controller
 		}
 
 		if($data['type'] == 'charge.expired'){
+			$order = NULL;
+			$reference = '';
+			$gateway = '';
+			
 			if($data['data']['object']['payment_method']['object'] == 'bank_payment'){
+				// BanBajio
 				$reference = $data['data']['object']['payment_method']['reference'];
-				$order = Order::where('payment_id', $reference)->where('payment_method', 'Pago con BanBajio')->first();
+				$order = Order::where('payment_id', $reference)->where('payment_method', 'banbajio')->first();
+				$gateway = 'BanBajio';
+			}elseif($data['data']['object']['payment_method']['object'] == 'cash_payment'){
+				// Oxxo (DigitalFemsa)
+				$reference = $data['data']['object']['payment_method']['reference'];
+				$order = Order::where('payment_id', $reference)->where('payment_method', 'oxxopay')->first();
+				$gateway = 'Oxxo';
 			}
 			
 			if($order != NULL){
@@ -63,19 +94,40 @@ class WebhookController extends Controller
 					$order->status = 'Referencia Expirada';
 					$order->save();
 					
-					return response()->json(['mensaje' => 'Orden Expirada, asientos eliminados.', 'order' => $reference]);
+					return response()->json(['mensaje' => 'Orden Expirada.', 'order' => $reference, 'gateway' => $gateway]);
 				}else{
-					return response()->json(['mensaje' => 'La orden ya esta pagada.', 'order' => $reference]);
+					return response()->json(['mensaje' => 'La orden ya esta pagada.', 'order' => $reference, 'gateway' => $gateway]);
 				}
+			}else{
+				return response()->json(['mensaje' => 'Orden no encontrada.', 'order' => $reference, 'gateway' => $gateway]);
 			}
 		}
 
 		if ($data['type'] == 'charge.paid') {
+			$order = NULL;
+			$reference = '';
+			$gateway = '';
+			
 			if($data['data']['object']['payment_method']['object'] == 'bank_payment'){
+				// BanBajio
 				$reference = $data['data']['object']['payment_method']['reference'];
+				$order = Order::where('payment_id', $reference)->where('payment_method', 'banbajio')->first();
+				$gateway = 'BanBajio';
+			}elseif($data['data']['object']['payment_method']['object'] == 'cash_payment'){
+				// Oxxo (DigitalFemsa)
+				$reference = $data['data']['object']['payment_method']['reference'];
+				$order = Order::where('payment_id', $reference)->where('payment_method', 'oxxopay')->first();
+				$gateway = 'Oxxo';
 			}
 			
-			return response()->json(['mensaje' => 'Orden Pagada Exitosamente.', 'order' => $reference]);
+			if($order != NULL){
+				$order->status = 'Pagado';
+				$order->save();
+				
+				return response()->json(['mensaje' => 'Orden Pagada Exitosamente.', 'order' => $reference, 'gateway' => $gateway]);
+			}else{
+				return response()->json(['mensaje' => 'Orden no encontrada.', 'order' => $reference, 'gateway' => $gateway]);
+			}
 		}
 
 		return response()->json(['mensaje' => 'Evento recibido con éxito.']);
