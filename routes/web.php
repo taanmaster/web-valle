@@ -544,6 +544,26 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'dif.medications.destroy',
             ]);
 
+            Route::resource('medication_variants', DIFMedicationVariantController::class)->names([
+                'index' => 'dif.medication_variants.index',
+                'create' => 'dif.medication_variants.create',
+                'store' => 'dif.medication_variants.store',
+                'show' => 'dif.medication_variants.show',
+                'edit' => 'dif.medication_variants.edit',
+                'update' => 'dif.medication_variants.update',
+                'destroy' => 'dif.medication_variants.destroy',
+            ]);
+
+            Route::resource('stock_movements', DIFStockMovementController::class)->names([
+                'index' => 'dif.stock_movements.index',
+                'create' => 'dif.stock_movements.create',
+                'store' => 'dif.stock_movements.store',
+                'show' => 'dif.stock_movements.show',
+                'edit' => 'dif.stock_movements.edit',
+                'update' => 'dif.stock_movements.update',
+                'destroy' => 'dif.stock_movements.destroy',
+            ]);
+
             Route::resource('legal_processes', DIFLegalProcessController::class)->names([
                 'index' => 'dif.legal_processes.index',
                 'create' => 'dif.legal_processes.create',
