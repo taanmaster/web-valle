@@ -249,11 +249,21 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{ route('dif.stock_movements.show', $movement->id) }}" 
-                                                   class="btn btn-outline-primary btn-sm" 
-                                                   title="Ver detalles del movimiento">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="{{ route('dif.stock_movements.show', $movement->id) }}" 
+                                                       class="btn btn-outline-primary" 
+                                                       title="Ver detalles del movimiento">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    @if($movement->movement_type === 'outbound')
+                                                        <a href="{{ route('dif.stock_movements.receipt', $movement->id) }}" 
+                                                           class="btn btn-outline-secondary" 
+                                                           title="Descargar recibo de salida"
+                                                           target="_blank">
+                                                            <i class="fas fa-receipt"></i>
+                                                        </a>
+                                                    @endif
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

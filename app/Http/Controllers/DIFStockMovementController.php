@@ -28,7 +28,7 @@ class DIFStockMovementController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Mostrar listado de movimientos de inventario.
      */
     public function index()
     {
@@ -83,7 +83,7 @@ class DIFStockMovementController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario para crear un nuevo movimiento.
      */
     public function create()
     {
@@ -100,7 +100,7 @@ class DIFStockMovementController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacenar un nuevo movimiento en la base de datos.
      */
     public function store(Request $request)
     {
@@ -158,7 +158,7 @@ class DIFStockMovementController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar detalles de un movimiento específico.
      */
     public function show($id)
     {
@@ -169,7 +169,7 @@ class DIFStockMovementController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar formulario para editar un movimiento.
      */
     public function edit($id)
     {
@@ -185,7 +185,7 @@ class DIFStockMovementController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar un movimiento existente en la base de datos.
      */
     public function update(Request $request, $id)
     {
@@ -251,7 +251,7 @@ class DIFStockMovementController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar un movimiento de la base de datos.
      */
     public function destroy($id)
     {
@@ -270,5 +270,127 @@ class DIFStockMovementController extends Controller
 
         Session::flash('success', 'Movimiento de inventario eliminado de manera exitosa.');
         return redirect()->route('dif.stock_movements.index');
+    }
+
+    /**
+     * Generar PDF de recibo para movimiento de salida.
+     */
+    public function receipt($id)
+    {
+        $movement = StockMovement::with(['variant.medication'])->findOrFail($id);
+
+        // Verificar que sea un movimiento de salida
+        if ($movement->movement_type !== 'outbound') {
+            Session::flash('error', 'Solo se pueden generar recibos para movimientos de salida.');
+            return redirect()->back();
+        }
+
+        // Datos para el PDF
+        $data = [
+            'movement' => $movement,
+            'fecha_salida' => $movement->date->format('d/m/Y'),
+            'folio' => str_pad($movement->id, 8, '0', STR_PAD_LEFT),
+            'beneficiario' => $movement->external_reference ?? 'No especificado',
+            'concepto' => [
+                'variante' => $movement->variant->name,
+                'medicamento' => $movement->variant->medication->generic_name,
+                'sku' => $movement->variant->sku
+            ],
+            'cantidad' => $movement->quantity,
+            'precio_unitario' => $movement->variant->price ?? 0,
+            'subtotal' => ($movement->variant->price ?? 0) * $movement->quantity,
+            'fecha_generacion' => now()->format('d/m/Y H:i')
+        ];
+
+        // Generar PDF
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('dif.stock_movements.receipt', $data);
+        $pdf->setPaper('letter', 'portrait');
+        
+        $filename = "recibo_salida_{$data['folio']}.pdf";
+        
+        return $pdf->stream($filename);
+    }
+
+    /**
+     * Mostrar todos los movimientos de entrada con filtros.
+     */
+    public function inbound()
+    {
+        $query = StockMovement::with(['variant.medication'])
+                             ->where('movement_type', 'inbound')
+                             ->orderBy('date', 'desc');
+
+        // Filtros
+        if (request('date_from')) {
+            $query->whereDate('date', '>=', request('date_from'));
+        }
+
+        if (request('date_to')) {
+            $query->whereDate('date', '<=', request('date_to'));
+        }
+
+        if (request('medication_id')) {
+            $query->whereHas('variant.medication', function($q) {
+                $q->where('id', request('medication_id'));
+            });
+        }
+
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function($q) use ($search) {
+                $q->where('external_reference', 'LIKE', "%{$search}%")
+                  ->orWhereHas('variant', function($subQ) use ($search) {
+                      $subQ->where('name', 'LIKE', "%{$search}%")
+                           ->orWhere('sku', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+
+        $movements = $query->paginate(15);
+        $medications = Medication::where('is_active', true)->orderBy('generic_name')->get();
+
+        return view('dif.stock_movements.inbound', compact('movements', 'medications'));
+    }
+
+    /**
+     * Mostrar todos los movimientos de salida con filtros.
+     */
+    public function outbound()
+    {
+        $query = StockMovement::with(['variant.medication'])
+                             ->where('movement_type', 'outbound')
+                             ->orderBy('date', 'desc');
+
+        // Filtros
+        if (request('date_from')) {
+            $query->whereDate('date', '>=', request('date_from'));
+        }
+
+        if (request('date_to')) {
+            $query->whereDate('date', '<=', request('date_to'));
+        }
+
+        if (request('medication_id')) {
+            $query->whereHas('variant.medication', function($q) {
+                $q->where('id', request('medication_id'));
+            });
+        }
+
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function($q) use ($search) {
+                $q->where('external_reference', 'LIKE', "%{$search}%")
+                  ->orWhereHas('variant', function($subQ) use ($search) {
+                      $subQ->where('name', 'LIKE', "%{$search}%")
+                           ->orWhere('sku', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+
+        $movements = $query->paginate(15);
+        $medications = Medication::where('is_active', true)->orderBy('generic_name')->get();
+
+        return view('dif.stock_movements.outbound', compact('movements', 'medications'));
     }
 }
