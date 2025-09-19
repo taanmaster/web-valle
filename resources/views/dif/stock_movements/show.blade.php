@@ -73,6 +73,11 @@
                         <div class="d-flex gap-2" role="group">
                             <a href="{{ route('dif.stock_movements.edit', $movement->id) }}" class="btn btn-sm btn-secondary">Editar</a>
                             <a href="{{ route('dif.medication_variants.show', $movement->variant->id) }}" class="btn btn-sm btn-info">Ver Variante</a>
+                            @if($movement->movement_type === 'outbound')
+                                <a href="{{ route('dif.stock_movements.receipt', $movement->id) }}" class="btn btn-sm btn-success" target="_blank">
+                                    <i class="fas fa-receipt me-1"></i> Descargar Recibo
+                                </a>
+                            @endif
                             <form method="POST" action="{{ route('dif.stock_movements.destroy', $movement->id) }}" style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')

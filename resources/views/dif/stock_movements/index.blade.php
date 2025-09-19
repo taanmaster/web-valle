@@ -16,7 +16,13 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">Inventario de Medicamentos</h5>
 
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('dif.stock_movements.inbound') }}" class="btn btn-outline-success">
+                                <i class="fas fa-arrow-down"></i> Ver Entradas
+                            </a>
+                            <a href="{{ route('dif.stock_movements.outbound') }}" class="btn btn-outline-danger">
+                                <i class="fas fa-arrow-up"></i> Ver Salidas
+                            </a>
                             <a href="{{ route('dif.stock_movements.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Registrar Movimiento
                             </a>
