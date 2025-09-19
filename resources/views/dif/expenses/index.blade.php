@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Consultas Médicas
+    Salidas
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
             DIF
         @endslot
         @slot('title')
-            Consultas Médicas
+            Salidas
         @endslot
     @endcomponent
 

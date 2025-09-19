@@ -11,7 +11,7 @@
             DIF
         @endslot
         @slot('title')
-            Nueva Consulta
+            Salidas
         @endslot
     @endcomponent
 

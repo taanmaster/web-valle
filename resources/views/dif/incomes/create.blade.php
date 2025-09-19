@@ -10,7 +10,7 @@
             DIF
         @endslot
         @slot('title')
-            Nueva Consulta
+            Ingreso
         @endslot
     @endcomponent
 
