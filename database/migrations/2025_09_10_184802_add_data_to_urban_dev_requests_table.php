@@ -35,7 +35,18 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('urban_dev_requests', function (Blueprint $table) {
-            //
+            $table->dropColumn([
+                'inspector_id',
+                'inspection_start_date',
+                'inspector_license_number',
+                'building_type',
+                'payment_date',
+                'payment_ref_number_1',
+                'payment_ref_number_2',
+                'payment_amount',
+                'inspection_validity_start',
+                'inspection_validity_end',
+            ]);
         });
     }
 };
