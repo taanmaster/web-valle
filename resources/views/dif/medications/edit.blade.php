@@ -36,6 +36,7 @@
                                 <textarea class="form-control" id="formula" name="formula" rows="2">{{ $medication->formula }}</textarea>
                             </div>
 
+                            {{--  
                             <div class="col-md-4 mb-3">
                                 <label for="type" class="form-label">Presentación <span class="text-info tx-12">*</span></label>
                                 <select name="type" id="type" class="form-control">
@@ -79,6 +80,7 @@
                                 <label for="expiration_date" class="form-label">Fecha de expiración <span class="text-danger tx-12">*</span></label>
                                 <input type="date" class="form-control" id="expiration_date" name="expiration_date" value="{{ Carbon\Carbon::parse($medication->expiration_date)->format('Y-m-d') }}" required>
                             </div>
+                            --}}
 
                             <div class="col-md-12 mb-3">
                                 <div class="form-check">

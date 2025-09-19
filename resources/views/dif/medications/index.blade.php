@@ -14,6 +14,9 @@
             <div class="col text-start">
                 @include('dif.medications.utilities._search_options')
                 <a href="{{ route('dif.medications.create') }}" class="btn btn-primary">Nuevo Medicamento</a>
+                <a href="{{ route('dif.stock_movements.index') }}" class="btn btn-info">
+                    <i class="fas fa-boxes"></i> Ver Inventario
+                </a>
             </div>
         </div>
 
@@ -37,6 +40,59 @@
         @else
         <div class="row"> 
             @include('dif.medications.utilities._table')
+        </div>
+
+        <!-- Resumen estadístico -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title">Resumen de Medicamentos</h6>
+                        <div class="row">
+                            @php
+                                $totalMedications = $medications->total();
+                                $activeMedications = $medications->where('is_active', true)->count();
+                                $totalVariants = $medications->sum(function($med) { return $med->getVariantsCount(); });
+                                $totalStock = $medications->sum(function($med) { return $med->getTotalStock(); });
+                                $medicationsWithStock = $medications->filter(function($med) { 
+                                    return $med->getTotalStock() > 0; 
+                                })->count();
+                            @endphp
+                            
+                            <div class="col-md-2">
+                                <div class="text-center">
+                                    <h5 class="text-primary">{{ $totalMedications }}</h5>
+                                    <small class="text-muted">Total Medicamentos</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-center">
+                                    <h5 class="text-success">{{ $activeMedications }}</h5>
+                                    <small class="text-muted">Activos</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-center">
+                                    <h5 class="text-info">{{ $totalVariants }}</h5>
+                                    <small class="text-muted">Total Variantes</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h5 class="text-warning">{{ $totalStock }}</h5>
+                                    <small class="text-muted">Unidades en Stock</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h5 class="text-success">{{ $medicationsWithStock }}</h5>
+                                    <small class="text-muted">Con Existencias</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     
         <div class="align-items-center mt-4">
