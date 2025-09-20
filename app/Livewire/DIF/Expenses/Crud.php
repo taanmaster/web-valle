@@ -4,6 +4,7 @@ namespace App\Livewire\DIF\Expenses;
 
 use App\Models\DIFExpense;
 use Livewire\Component;
+use App\Models\DIFSocialAssistance;
 
 class Crud extends Component
 {
@@ -19,11 +20,15 @@ class Crud extends Component
     public $concept = '';
     public $value = '';
 
+    public $concepts = [];
+
     public function mount()
     {
         if ($this->expense != null) {
             $this->fetchExpenseData();
         }
+
+        $this->concepts = DIFSocialAssistance::get();
     }
 
     public function fetchExpenseData()
@@ -37,29 +42,32 @@ class Crud extends Component
 
     public function save()
     {
+
+        $concept = DIFSocialAssistance::where('name', $this->concept)->first();
+
         if ($this->expense != null) {
 
             $this->expense->update([
                 'type' => $this->type,
-                'ammount' => $this->ammount,
+                'ammount' => $concept->value,
                 'recipient' => $this->recipient,
-                'concept' => $this->concept,
-                'value' => $this->value,
+                'concept' => $concept->name,
+                'value' => $concept->value,
             ]);
 
         } else {
 
             DIFExpense::create([
                 'type' => $this->type,
-                'ammount' => $this->ammount,
+                'ammount' => $concept->value,
                 'recipient' => $this->recipient,
-                'concept' => $this->concept,
-                'value' => $this->value,
+                'concept' => $concept->name,
+                'value' => $concept->value,
             ]);
 
         }
 
-        return redirect()->route('dif.incomes.index');
+        return redirect()->route('dif.expenses.index');
     }
 
     public function render()
