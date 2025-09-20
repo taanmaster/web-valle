@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class DIFIncome extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'type',
+        'ammount',
+        'client',
+        'concept',
+        'payment_method',
+    ];
 }

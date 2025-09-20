@@ -15,6 +15,5 @@
         @endslot
     @endcomponent
 
-    <div class="row">
-    </div>
+    <livewire:dif.expenses.crud :mode="$mode" />
 @endsection

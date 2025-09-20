@@ -10,11 +10,10 @@
             DIF
         @endslot
         @slot('title')
-            Ingreso
+            Ingresos
         @endslot
     @endcomponent
 
 
-    <div class="row">
-    </div>
+    <livewire:dif.incomes.crud :mode="$mode" />
 @endsection

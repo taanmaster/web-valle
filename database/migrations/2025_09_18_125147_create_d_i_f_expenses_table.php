@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('d_i_f_expenses', function (Blueprint $table) {
             $table->id();
+
+            $table->string('recipient');
+            $table->string('concept')->nullable();
+            $table->string('type')->nullable();
+            $table->string('value')->nullable();
+            $table->string('ammount')->nullable();
+
+
             $table->timestamps();
         });
     }

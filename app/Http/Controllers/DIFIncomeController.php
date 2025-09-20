@@ -14,21 +14,38 @@ class DIFIncomeController extends Controller
 
     public function create()
     {
-        return view('dif.incomes.create');
+        $mode = 0;
+
+        return view('dif.incomes.create')->with('mode', $mode);
     }
 
     public function show($id)
     {
-        return view('dif.incomes.show');
+        $mode = 1;
+        $income = DIFIncome::findOrFail($id);
+
+        return view('dif.incomes.show', [
+            'mode' => $mode,
+            'income' => $income,
+        ]);
     }
 
     public function edit($id)
     {
-        return view('dif.incomes.edit');
+        $mode = 2;
+        $income = DIFIncome::findOrFail($id);
+
+        return view('dif.incomes.edit', [
+            'mode' => $mode,
+            'income' => $income,
+        ]);
     }
 
     public function destroy($id)
     {
-        return view('dif.incomes.index');
+        $income = DIFIncome::findOrFail($id);
+        $income->delete();
+
+        return view('dif.incomes.index')->with('success', 'Ingreso eliminado correctamente.');
     }
 }

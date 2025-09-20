@@ -18,6 +18,15 @@
         @endslot
     @endcomponent
 
-    <div class="row">
+    <div class="row layout-spacing">
+        <div class="main-content">
+            <div class="row align-items-center mb-4">
+                <div class="col text-start">
+                    <a href="{{ route('dif.incomes.create') }}" class="btn btn-primary">Nuevo Ingreso</a>
+                </div>
+            </div>
+
+            <livewire:dif.incomes.table />
+        </div>
     </div>
 @endsection

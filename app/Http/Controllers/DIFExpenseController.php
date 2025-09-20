@@ -15,21 +15,38 @@ class DIFExpenseController extends Controller
 
     public function create()
     {
-        return view('dif.expenses.create');
+        $mode = 0;
+
+        return view('dif.expenses.create')->with('mode', $mode);
     }
 
     public function show($id)
     {
-        return view('dif.expenses.show');
+        $mode = 1;
+        $expense = DIFExpense::findOrFail($id);
+
+        return view('dif.expenses.show', [
+            'mode' => $mode,
+            'expense' => $expense,
+        ]);
     }
 
     public function edit($id)
     {
-        return view('dif.expenses.edit');
+        $mode = 2;
+        $expense = DIFExpense::findOrFail($id);
+
+        return view('dif.expenses.edit', [
+            'mode' => $mode,
+            'expense' => $expense,
+        ]);
     }
 
     public function destroy($id)
     {
-        return view('dif.expenses.index');
+        $expense = DIFExpense::findOrFail($id);
+        $expense->delete();
+
+        return view('dif.expenses.index')->with('success', 'Salida eliminada correctamente.');
     }
 }

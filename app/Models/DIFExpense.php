@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class DIFExpense extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'type',
+        'ammount',
+        'recipient',
+        'concept',
+        'value',
+    ];
 }

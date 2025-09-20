@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('d_i_f_incomes', function (Blueprint $table) {
             $table->id();
+
+            $table->string('type')->nullable();
+            $table->string('ammount')->nullable();
+            $table->string('client')->nullable();
+            $table->string('concept')->nullable();
+            $table->string('payment_method')->nullable();
+
             $table->timestamps();
         });
     }
