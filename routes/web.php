@@ -13,6 +13,9 @@ use App\Http\Controllers\DIFCoordinationController;
 use App\Http\Controllers\DIFDoctorConsultController;
 use App\Http\Controllers\DIFPrescriptionController;
 use App\Http\Controllers\DIFPrescriptionFileController;
+use App\Http\Controllers\DIFMedicationController;
+use App\Http\Controllers\DIFMedicationVariantController;
+use App\Http\Controllers\DIFStockMovementController;
 use App\Http\Controllers\CitizenMedicalProfileController;
 use App\Http\Controllers\DIFExpenseController;
 use App\Http\Controllers\DIFIncomeController;
@@ -545,6 +548,33 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'dif.medications.update',
                 'destroy' => 'dif.medications.destroy',
             ]);
+
+            Route::resource('medication_variants', DIFMedicationVariantController::class)->names([
+                'index' => 'dif.medication_variants.index',
+                'create' => 'dif.medication_variants.create',
+                'store' => 'dif.medication_variants.store',
+                'show' => 'dif.medication_variants.show',
+                'edit' => 'dif.medication_variants.edit',
+                'update' => 'dif.medication_variants.update',
+                'destroy' => 'dif.medication_variants.destroy',
+            ]);
+
+            Route::resource('stock_movements', DIFStockMovementController::class)->names([
+                'index' => 'dif.stock_movements.index',
+                'create' => 'dif.stock_movements.create',
+                'store' => 'dif.stock_movements.store',
+                'show' => 'dif.stock_movements.show',
+                'edit' => 'dif.stock_movements.edit',
+                'update' => 'dif.stock_movements.update',
+                'destroy' => 'dif.stock_movements.destroy',
+            ]);
+            
+            // Ruta adicional para generar recibo PDF
+            Route::get('stock_movements/{movement}/receipt', [DIFStockMovementController::class, 'receipt'])->name('dif.stock_movements.receipt');
+            
+            // Rutas adicionales para ver movimientos por tipo
+            Route::get('stock_movements_inbound', [DIFStockMovementController::class, 'inbound'])->name('dif.stock_movements.inbound');
+            Route::get('stock_movements_outbound', [DIFStockMovementController::class, 'outbound'])->name('dif.stock_movements.outbound');
 
             Route::resource('legal_processes', DIFLegalProcessController::class)->names([
                 'index' => 'dif.legal_processes.index',

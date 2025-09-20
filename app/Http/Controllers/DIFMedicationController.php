@@ -40,7 +40,7 @@ class DIFMedicationController extends Controller
                   ->orWhere('use_type', 'LIKE', "%{$search}%");
         }
 
-        $medications = $query->orderBy('generic_name')->paginate(30);
+        $medications = $query->with(['variants.stockMovements'])->orderBy('generic_name')->paginate(30);
 
         return view('dif.medications.index', compact('medications'));
     }
@@ -63,11 +63,6 @@ class DIFMedicationController extends Controller
             'commercial_name' => 'nullable|max:255',
             'description' => 'nullable|max:2000',
             'formula' => 'nullable|max:2000',
-            'type' => 'nullable|max:100',
-            'type_num' => 'nullable|max:50',
-            'type_dosage' => 'nullable|max:50',
-            'use_type' => 'nullable|max:100',
-            'expiration_date' => 'required|date',
             'is_active' => 'boolean',
         ]);
 
@@ -80,7 +75,6 @@ class DIFMedicationController extends Controller
             'type_num' => $request->type_num,
             'type_dosage' => $request->type_dosage,
             'use_type' => $request->use_type,
-            'expiration_date' => $request->expiration_date,
             'is_active' => $request->has('is_active'),
         ]);
 

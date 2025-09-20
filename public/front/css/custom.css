@@ -276,7 +276,7 @@ small {
 
 .page-header .admin-menu li>* {
     width: 100%;
-    padding: 12px 15px;
+    padding: 8px 12px;
 }
 
 .page-header .admin-menu .switcher {
@@ -713,7 +713,7 @@ small {
     /* Bootstrap Override Colors - Dark Mode */
     --bs-body-bg: #000000;
     --bs-body-color: #ffffff;
-    --bs-primary: #dc2626;
+    --bs-primary: #551312;
     --bs-secondary: #525252;
     --bs-success: #16a34a;
     --bs-info: #0891b2;

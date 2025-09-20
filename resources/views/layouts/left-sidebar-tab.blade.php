@@ -442,7 +442,7 @@
             @endif
 
             @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('all'))
-                <div id="valleDIF" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dif-tab">
+                <div id="valleDIF" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dif-tab" style="padding-bottom: 120px;">
                     <div class="title-box">
                         <h6 class="menu-title">Perfiles</h6>
                     </div>
@@ -494,9 +494,7 @@
                             <a class="nav-link" href="{{ route('dif.social_assistances.index') }}">Asistencia
                                 Social</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dif.medications.index') }}">Medicamentos</a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dif.expenses.index') }}">Salidas</a>
                         </li>
@@ -509,6 +507,25 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dif.locations.index') }}">Locaciones</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Inventario</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.medications.index') }}">Medicamentos</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.medication_variants.index') }}">Variantes</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.stock_movements.index') }}">Movimientos</a>
                         </li>
                     </ul>
 
