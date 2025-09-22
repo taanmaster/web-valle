@@ -8,6 +8,7 @@ use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\TsrBillingAccountController;
 use App\Http\Controllers\DIFReceiptController;
+use App\Http\Controllers\DIFBannerController;
 use App\Http\Controllers\DIFProgramController;
 use App\Http\Controllers\DIFCoordinationController;
 use App\Http\Controllers\DIFDoctorConsultController;
