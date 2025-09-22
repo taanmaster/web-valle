@@ -15,5 +15,5 @@
         @endslot
     @endcomponent
 
-    <livewire:dif.expenses.crud :mode="$mode" />
+    <livewire:d-i-f.expenses.crud :mode="$mode" />
 @endsection

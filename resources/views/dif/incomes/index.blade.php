@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <livewire:dif.incomes.table />
+            <livewire:d-i-f.incomes.table />
         </div>
     </div>
 @endsection

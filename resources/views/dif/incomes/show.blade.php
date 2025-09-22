@@ -15,5 +15,5 @@
     @endcomponent
 
 
-    <livewire:dif.incomes.crud :mode="$mode" :income="$income" />
+    <livewire:d-i-f.incomes.crud :mode="$mode" :income="$income" />
 @endsection
