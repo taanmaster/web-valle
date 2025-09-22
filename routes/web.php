@@ -17,13 +17,15 @@ use App\Http\Controllers\DIFMedicationController;
 use App\Http\Controllers\DIFMedicationVariantController;
 use App\Http\Controllers\DIFStockMovementController;
 use App\Http\Controllers\CitizenMedicalProfileController;
+use App\Http\Controllers\DIFExpenseController;
+use App\Http\Controllers\DIFIncomeController;
 use App\Http\Controllers\InstitucionalDevelopmentBannerController;
 use App\Http\Controllers\TapChecklistAuthorizationNoteController;
 use App\Http\Controllers\TapSupplierLogController;
 use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Http\Controllers\UrbanDevRequestController;
 use App\Http\Controllers\UrbanDevInspectorController;
-
+use App\Models\DIFIncome;
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -351,7 +353,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             // Ruta adicional para actualizar detalles específicos
             Route::put('requests/{id}/update-details', [UrbanDevRequestController::class, 'updateDetails'])->name('urban_dev.requests.update-details');
-            
+
             // Ruta para búsqueda/query
             Route::get('requests-query', [UrbanDevRequestController::class, 'query'])->name('urban_dev.requests.query');
 
@@ -388,7 +390,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'urban_dev.inspectors.update',
                 'destroy' => 'urban_dev.inspectors.destroy',
             ]);
-            
+
             // Ruta para solicitudes de inspector
             Route::get('inspector_requests', [UrbanDevInspectorController::class, 'requests'])->name('urban_dev.inspectors.requests');
         });
@@ -703,6 +705,24 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('/banners/status/{id}', [
                 'uses' => 'DIFBannerController@status',
                 'as' => 'dif.banners.status',
+            ]);
+
+
+            //Ingresos y Salidas
+            Route::resource('incomes', DIFIncomeController::class)->names([
+                'index' => 'dif.incomes.index',
+                'create' => 'dif.incomes.create',
+                'show' => 'dif.incomes.show',
+                'edit' => 'dif.incomes.edit',
+                'destroy' => 'dif.incomes.destroy',
+            ]);
+
+            Route::resource('expenses', DIFExpenseController::class)->names([
+                'index' => 'dif.expenses.index',
+                'create' => 'dif.expenses.create',
+                'show' => 'dif.expenses.show',
+                'edit' => 'dif.expenses.edit',
+                'destroy' => 'dif.expenses.destroy',
             ]);
         });
 

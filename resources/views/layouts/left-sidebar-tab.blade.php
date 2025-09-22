@@ -496,6 +496,12 @@
                         </li>
                         
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.expenses.index') }}">Salidas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dif.incomes.index') }}">Ingresos</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('dif.legal_processes.index') }}">Procesos
                                 Jurídicos</a>
                         </li>
