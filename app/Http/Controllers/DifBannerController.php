@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 
 class DIFBannerController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $banners = Banner::orderBy('priority', 'asc')->paginate(5);
