@@ -20,7 +20,7 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->hasRole('institutional_development') ||
+                    @if (auth()->user()->hasRole('des_Institucional') ||
                             auth()->user()->hasRole('private_secretary') ||
                             auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -157,7 +157,7 @@
                 </div>
             @endif
 
-            @if (auth()->user()->hasRole('institutional_development') || auth()->user()->hasRole('all'))
+            @if (auth()->user()->hasRole('des_Institucional') || auth()->user()->hasRole('all'))
                 <div id="valleInstitutionalDevelopment" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="institutional-development-tab">
 
@@ -246,18 +246,21 @@
                 </div>
             @endif
 
-            @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
+            @if (auth()->user()->hasRole('des_Institucional') || auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                 <div id="valleTransparency" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="apps-tab">
+
                     @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                         <div class="title-box">
                             <h6 class="menu-title">Transparencia</h6>
                         </div>
                         <ul class="nav flex-column">
+                            @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link"
                                     href="{{ route('transparency_dependencies.index') }}">Dependencias</a>
                             </li>
+                            @endif
 
                             <li class="nav-item">
                                 <a class="nav-link"
@@ -271,18 +274,20 @@
                         </ul>
                     @endif
 
-                    <div class="title-box">
-                        <h6 class="menu-title">Gaceta</h6>
-                    </div>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('gazettes.index') }}">Gaceta Municipal</a>
-                        </li>
-                    </ul>
+                    @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
+                        <div class="title-box">
+                            <h6 class="menu-title">Gaceta</h6>
+                        </div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('gazettes.index') }}">Gaceta Municipal</a>
+                            </li>
+                        </ul>
+                    @endif
                 </div>
             @endif
 
-            @if (auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('all'))
+            @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('all'))
                 <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
                     <div class="title-box">
