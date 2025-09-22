@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <livewire:dif.expenses.table />
+            <livewire:d.i.f.expenses.table />
         </div>
     </div>
 @endsection
