@@ -16,7 +16,9 @@ class DIFStockMovement extends Model
         'date',
         'expiration_date',
         'external_reference',
-        'additional_info',
+    'additional_info',
+    'parent_id',
+    'movement_sub_type',
     ];
 
     protected $casts = [
@@ -28,5 +30,21 @@ class DIFStockMovement extends Model
     public function variant()
     {
         return $this->belongsTo(DIFMedicationVariant::class, 'variant_id');
+    }
+
+    /**
+     * Movimiento padre (entrada) al que puede estar vinculada una salida.
+     */
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    /**
+     * Salidas que consumen esta entrada.
+     */
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
     }
 }

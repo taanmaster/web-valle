@@ -47,6 +47,32 @@ class DIFMedicationVariant extends Model
     }
 
     /**
+     * Obtener lotes (entradas) disponibles para esta variante.
+     * Devuelve un array de arrays con keys: parent_id, expiration_date (Carbon|null), available_qty
+     */
+    public function getBatches()
+    {
+        $entries = $this->stockMovements()->where('movement_type', 'inbound')->orderBy('expiration_date', 'asc')->get();
+
+        $batches = [];
+
+        foreach ($entries as $entry) {
+            $consumed = $entry->children()->sum('quantity');
+            $available = $entry->quantity - $consumed;
+
+            if ($available > 0) {
+                $batches[] = [
+                    'parent_id' => $entry->id,
+                    'expiration_date' => $entry->expiration_date,
+                    'available_qty' => $available,
+                ];
+            }
+        }
+
+        return $batches;
+    }
+
+    /**
      * Obtener el estado del inventario
      */
     public function getStockStatus()

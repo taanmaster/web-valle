@@ -41,7 +41,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="movement_type" class="form-label">Tipo de Movimiento <span class="text-danger">*</span></label>
                                         <select class="form-select @error('movement_type') is-invalid @enderror" id="movement_type" name="movement_type" required>
@@ -58,6 +58,36 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <!-- Subtipo para salidas -->
+                                <div class="mb-3" id="movement-subtype-group" style="display:none;">
+                                    <label for="movement_sub_type" class="form-label">Subtipo de Salida</label>
+                                    <select class="form-select @error('movement_sub_type') is-invalid @enderror" id="movement_sub_type" name="movement_sub_type">
+                                        <option value="">Seleccionar subtipo...</option>
+                                        <option value="entrega_ciudadano">Entrega Ciudadano</option>
+                                        <option value="venta">Venta</option>
+                                        <option value="merma">Merma</option>
+                                        <option value="donacion_externa">Donación Externa</option>
+                                    </select>
+                                    @error('movement_sub_type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                
+                                <!-- Selector de parent (lote/entrada) para salidas -->
+                                <div class="col-md-6">
+                                    <div class="mb-3" id="parent-group" style="display:none;">
+                                        <label for="parent_id" class="form-label">Lote / Entrada vinculada</label>
+                                        <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" name="parent_id">
+                                            <option value="">Seleccionar lote (mostrar fecha de vencimiento)...</option>
+                                        </select>
+                                        <div class="form-text">Selecciona la entrada (por fecha de vencimiento) que se consumirá.</div>
+                                        @error('parent_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="quantity" class="form-label">Cantidad <span class="text-danger">*</span></label>
@@ -167,15 +197,92 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    variantSelect.addEventListener('change', updateStockInfo);
+    variantSelect.addEventListener('change', function() {
+        updateStockInfo();
+        loadBatches();
+    });
+
     movementTypeSelect.addEventListener('change', function() {
         updateStockInfo();
         toggleExpirationDate();
+        toggleOutboundFields();
+        if (movementTypeSelect.value === 'outbound') {
+            loadBatches();
+        }
     });
+
+    // Cuando se seleccione un lote, ajustar max quantity
+    const parentSelect = document.getElementById('parent_id');
+    parentSelect.addEventListener('change', function() {
+        const opt = parentSelect.options[parentSelect.selectedIndex];
+        const available = opt ? parseInt(opt.dataset.available || 0) : 0;
+        if (available > 0) {
+            quantityInput.max = available;
+            // Si la cantidad actual excede el disponible, ajustar
+            if (parseInt(quantityInput.value || 0) > available) {
+                quantityInput.value = available;
+            }
+            stockInfo.innerHTML = `<span class="text-warning">Stock disponible en lote seleccionado: ${available} unidades</span>`;
+        } else {
+            quantityInput.removeAttribute('max');
+        }
+    });
+
+    function toggleOutboundFields() {
+        if (movementTypeSelect.value === 'outbound') {
+            document.getElementById('movement-subtype-group').style.display = 'block';
+            document.getElementById('parent-group').style.display = 'block';
+        } else {
+            document.getElementById('movement-subtype-group').style.display = 'none';
+            document.getElementById('parent-group').style.display = 'none';
+            // limpiar selección
+            document.getElementById('movement_sub_type').value = '';
+            document.getElementById('parent_id').innerHTML = '<option value="">Seleccionar lote (mostrar fecha de vencimiento)...</option>';
+        }
+    }
+
+    // Cargar lotes via AJAX
+    function loadBatches() {
+        const variantId = variantSelect.value;
+        const parentSelect = document.getElementById('parent_id');
+
+        parentSelect.innerHTML = '<option value="">Cargando lotes...</option>';
+
+        if (!variantId) {
+            parentSelect.innerHTML = '<option value="">Selecciona una variante primero</option>';
+            return;
+        }
+
+        fetch(`{{ route('dif.stock_movements.batches') }}?variant_id=${variantId}`)
+            .then(res => res.json())
+            .then(json => {
+                parentSelect.innerHTML = '<option value="">Seleccionar lote (mostrar fecha de vencimiento)...</option>';
+                if (json.data && json.data.length > 0) {
+                    json.data.forEach(batch => {
+                        const label = batch.expiration_date ? `${batch.expiration_date} — Disponible: ${batch.available_qty}` : `Sin fecha — Disponible: ${batch.available_qty}`;
+                        const opt = document.createElement('option');
+                        opt.value = batch.parent_id;
+                        opt.dataset.available = batch.available_qty;
+                        opt.text = label;
+                        parentSelect.appendChild(opt);
+                    });
+                } else {
+                    parentSelect.innerHTML = '<option value="">No hay lotes disponibles</option>';
+                }
+            }).catch(err => {
+                parentSelect.innerHTML = '<option value="">Error cargando lotes</option>';
+                console.error(err);
+            });
+    }
 
     // Inicializar
     updateStockInfo();
     toggleExpirationDate();
+    toggleOutboundFields();
+    // Si ya es salida por defecto, cargar lotes
+    if (movementTypeSelect.value === 'outbound') {
+        loadBatches();
+    }
 });
 </script>
 @endsection

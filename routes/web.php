@@ -569,6 +569,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'dif.stock_movements.destroy',
             ]);
             
+            // Endpoint AJAX para obtener lotes disponibles por variante
+            Route::get('stock_movements_batches', [DIFStockMovementController::class, 'batches'])->name('dif.stock_movements.batches');
+            
             // Ruta adicional para generar recibo PDF
             Route::get('stock_movements/{movement}/receipt', [DIFStockMovementController::class, 'receipt'])->name('dif.stock_movements.receipt');
             

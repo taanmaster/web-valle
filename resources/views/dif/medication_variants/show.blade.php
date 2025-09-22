@@ -170,9 +170,188 @@
                         </div>
                     </div>
 
+                    {{-- Tabla de inventario por lote/fecha de expiración --}}
+                    @php
+                        $batches = $variant->getBatches();
+                    @endphp
 
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="mb-0">Inventario por Lote / Fecha de Vencimiento</h6>
+                    </div>
 
-                    {{--  
+                    @if(count($batches) > 0)
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="border-0">Fecha de Vencimiento</th>
+                                        <th class="border-0">Estado</th>
+                                        <th class="border-0">Entrada Original</th>
+                                        <th class="border-0">Consumido</th>
+                                        <th class="border-0">Disponible</th>
+                                        <th class="border-0">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($batches as $batch)
+                                        @php
+                                            $parentMovement = \App\Models\DIFStockMovement::find($batch['parent_id']);
+                                            $consumedQty = $parentMovement->children()->sum('quantity');
+                                            $originalQty = $parentMovement->quantity;
+                                            $availableQty = $batch['available_qty'];
+                                            
+                                            // Calcular estado de vencimiento
+                                            $isExpired = false;
+                                            $isSoon = false;
+                                            $statusBadge = '';
+                                            $statusClass = '';
+                                            
+                                            if ($batch['expiration_date']) {
+                                                $exp = \Carbon\Carbon::parse($batch['expiration_date']);
+                                                $isExpired = $exp->lt(\Carbon\Carbon::now());
+                                                $isSoon = !$isExpired && $exp->lte(\Carbon\Carbon::now()->addMonth());
+                                                
+                                                if ($isExpired) {
+                                                    $statusBadge = 'Vencido';
+                                                    $statusClass = 'bg-danger';
+                                                } elseif ($isSoon) {
+                                                    $statusBadge = 'Vence pronto';
+                                                    $statusClass = 'bg-warning text-dark';
+                                                } else {
+                                                    $statusBadge = 'Vigente';
+                                                    $statusClass = 'bg-success';
+                                                }
+                                            } else {
+                                                $statusBadge = 'Sin fecha';
+                                                $statusClass = 'bg-secondary';
+                                            }
+                                        @endphp
+                                        <tr class="{{ $isExpired ? 'table-danger' : ($isSoon ? 'table-warning' : '') }}">
+                                            <td>
+                                                @if($batch['expiration_date'])
+                                                    @php $exp = \Carbon\Carbon::parse($batch['expiration_date']); @endphp
+                                                    <span class="fw-bold {{ $isExpired ? 'text-danger' : ($isSoon ? 'text-warning' : 'text-dark') }}">
+                                                        {{ $exp->format('d/m/Y') }}
+                                                    </span>
+                                                    <br>
+                                                    <small class="text-muted">
+                                                        {{ $exp->diffForHumans() }}
+                                                    </small>
+                                                @else
+                                                    <span class="text-muted fst-italic">Sin fecha</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <span class="badge {{ $statusClass }} fs-6">
+                                                    {{ $statusBadge }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold text-success">{{ $originalQty }}</span>
+                                                <small class="text-muted"> unidades</small>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold text-danger">{{ $consumedQty }}</span>
+                                                <small class="text-muted"> unidades</small>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold {{ $availableQty > 0 ? 'text-primary' : 'text-muted' }}">
+                                                    {{ $availableQty }}
+                                                </span>
+                                                <small class="text-muted"> unidades</small>
+                                                @if($availableQty <= 0)
+                                                    <br>
+                                                    <span class="badge bg-secondary">Agotado</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="{{ route('dif.stock_movements.show', $batch['parent_id']) }}" 
+                                                       class="btn btn-outline-primary btn-sm" 
+                                                       title="Ver entrada original">
+                                                        <i class="fas fa-eye me-1"></i> Ver Entrada
+                                                    </a>
+                                                    @if($availableQty > 0 && !$isExpired)
+                                                        <a href="{{ route('dif.stock_movements.create', ['variant_id' => $variant->id, 'parent_id' => $batch['parent_id']]) }}" 
+                                                           class="btn btn-outline-success btn-sm"
+                                                           title="Crear salida de este lote">
+                                                            <i class="fas fa-arrow-up me-1"></i> Crear Salida
+                                                        </a>
+                                                    @elseif($isExpired)
+                                                        <button class="btn btn-outline-danger btn-sm" disabled title="Lote vencido">
+                                                            <i class="fas fa-exclamation-triangle me-1"></i> Vencido
+                                                        </button>
+                                                    @else
+                                                        <button class="btn btn-outline-secondary btn-sm" disabled title="Sin stock disponible">
+                                                            <i class="fas fa-ban me-1"></i> Agotado
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        {{-- Resumen por estado --}}
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="d-flex flex-wrap gap-2">
+                                    @php
+                                        $vigentes = collect($batches)->filter(function($batch) {
+                                            if (!$batch['expiration_date']) return true;
+                                            $exp = \Carbon\Carbon::parse($batch['expiration_date']);
+                                            return $exp->gt(\Carbon\Carbon::now()->addMonth());
+                                        })->sum('available_qty');
+                                        
+                                        $prontoVencer = collect($batches)->filter(function($batch) {
+                                            if (!$batch['expiration_date']) return false;
+                                            $exp = \Carbon\Carbon::parse($batch['expiration_date']);
+                                            return $exp->lte(\Carbon\Carbon::now()->addMonth()) && $exp->gt(\Carbon\Carbon::now());
+                                        })->sum('available_qty');
+                                        
+                                        $vencidos = collect($batches)->filter(function($batch) {
+                                            if (!$batch['expiration_date']) return false;
+                                            $exp = \Carbon\Carbon::parse($batch['expiration_date']);
+                                            return $exp->lte(\Carbon\Carbon::now());
+                                        })->sum('available_qty');
+                                    @endphp
+                                    
+                                    <div class="badge bg-success fs-6 p-2">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        Vigentes: {{ $vigentes }} unidades
+                                    </div>
+                                    
+                                    @if($prontoVencer > 0)
+                                        <div class="badge bg-warning text-dark fs-6 p-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            Vencen pronto: {{ $prontoVencer }} unidades
+                                        </div>
+                                    @endif
+                                    
+                                    @if($vencidos > 0)
+                                        <div class="badge bg-danger fs-6 p-2">
+                                            <i class="fas fa-times-circle me-1"></i>
+                                            Vencidos: {{ $vencidos }} unidades
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="text-center py-3">
+                            <i class="fas fa-box-open text-muted" style="font-size: 2rem;"></i>
+                            <h6 class="text-muted mt-2">No hay lotes disponibles</h6>
+                            <p class="text-muted mb-3">Registra una entrada para que aparezca como lote y pueda consumirse en salidas.</p>
+                            <a href="{{ route('dif.stock_movements.create', ['variant_id' => $variant->id]) }}" class="btn btn-success btn-sm">
+                                <i class="fas fa-plus me-1"></i> Registrar Entrada
+                            </a>
+                        </div>
+                    @endif
+
+  
                     @if($variant->stockMovements->count() > 0)
                         <hr>
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -198,7 +377,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($variant->stockMovements()->orderBy('created_at', 'desc')->limit(3)->get() as $movement)
+                                    @foreach($variant->stockMovements()->orderBy('created_at', 'desc')->limit(10)->get() as $movement)
                                         <tr>
                                             <td>
                                                 @if($movement->movement_type === 'inbound')
@@ -274,11 +453,11 @@
                             </table>
                         </div>
                         
-                        @if($variant->stockMovements->count() > 3)
+                        @if($variant->stockMovements->count() > 10)
                             <div class="text-center mt-3 py-2 bg-light rounded">
                                 <small class="text-muted">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Mostrando los 3 movimientos más recientes de {{ $variant->stockMovements->count() }} total
+                                    Mostrando los 10 movimientos más recientes de {{ $variant->stockMovements->count() }} total
                                 </small>
                             </div>
                         @endif
@@ -292,7 +471,6 @@
                             </a>
                         </div>
                     @endif
-                    --}}
                 </div>
             </div>
         </div>

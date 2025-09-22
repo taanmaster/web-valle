@@ -250,29 +250,27 @@
                 <div id="valleTransparency" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="apps-tab">
 
-                    @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
-                        <div class="title-box">
-                            <h6 class="menu-title">Transparencia</h6>
-                        </div>
-                        <ul class="nav flex-column">
-                            @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                    href="{{ route('transparency_dependencies.index') }}">Dependencias</a>
-                            </li>
-                            @endif
+                    <div class="title-box">
+                        <h6 class="menu-title">Transparencia</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('transparency_dependencies.index') }}">Dependencias</a>
+                        </li>
+                        @endif
 
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                    href="{{ route('transparency_obligations.index') }}">Obligaciones</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('transparency_obligations.index') }}">Obligaciones</a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('transparency_files.index') }}">Repositorio de
-                                    Archivos (Links)</a>
-                            </li>
-                        </ul>
-                    @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('transparency_files.index') }}">Repositorio de
+                                Archivos (Links)</a>
+                        </li>
+                    </ul>
 
                     @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                         <div class="title-box">

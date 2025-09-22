@@ -104,7 +104,7 @@ class DIFStockMovementController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validationRules = [
             'variant_id' => 'required|exists:d_i_f_medication_variants,id',
             'movement_type' => 'required|in:inbound,outbound',
             'quantity' => 'required|integer|min:1',
@@ -112,16 +112,34 @@ class DIFStockMovementController extends Controller
             'expiration_date' => 'nullable|date|after:today',
             'external_reference' => 'nullable|string|max:255',
             'notes' => 'nullable|string|max:1000',
-        ]);
+        ];
 
-        // Validar que no se pueda sacar más inventario del disponible
+        // Validaciones adicionales para salidas
         if ($request->movement_type === 'outbound') {
-            $variant = MedicationVariant::findOrFail($request->variant_id);
-            $currentStock = $variant->getCurrentStock();
+            $validationRules['movement_sub_type'] = 'required|in:entrega_ciudadano,venta,merma,donacion_externa';
+            $validationRules['parent_id'] = 'required|exists:d_i_f_stock_movements,id';
+        }
+
+        $this->validate($request, $validationRules);
+
+        // Validaciones específicas para salidas
+        if ($request->movement_type === 'outbound') {
+            $parentMovement = StockMovement::findOrFail($request->parent_id);
             
-            if ($request->quantity > $currentStock) {
+            // Verificar que el parent sea una entrada del mismo variant
+            if ($parentMovement->movement_type !== 'inbound' || $parentMovement->variant_id != $request->variant_id) {
                 return back()->withErrors([
-                    'quantity' => "No puedes sacar {$request->quantity} unidades. Stock disponible: {$currentStock}"
+                    'parent_id' => 'La entrada seleccionada no es válida para esta variante.'
+                ])->withInput();
+            }
+
+            // Calcular disponible en el lote específico
+            $consumed = $parentMovement->children()->sum('quantity');
+            $available = $parentMovement->quantity - $consumed;
+            
+            if ($request->quantity > $available) {
+                return back()->withErrors([
+                    'quantity' => "No puedes sacar {$request->quantity} unidades de este lote. Disponible: {$available}"
                 ])->withInput();
             }
         }
@@ -139,6 +157,8 @@ class DIFStockMovementController extends Controller
             'expiration_date' => $request->expiration_date,
             'external_reference' => $request->external_reference,
             'additional_info' => !empty($additionalInfo) ? $additionalInfo : null,
+            'movement_sub_type' => $request->movement_sub_type,
+            'parent_id' => $request->parent_id,
         ]);
 
         // Notificación
@@ -392,5 +412,40 @@ class DIFStockMovementController extends Controller
         $medications = Medication::where('is_active', true)->orderBy('generic_name')->get();
 
         return view('dif.stock_movements.outbound', compact('movements', 'medications'));
+    }
+
+    /**
+     * Devuelve los lotes (entradas) disponibles para una variante, agrupados por entrada (parent_id)
+     * usado por AJAX en el formulario de salidas.
+     */
+    public function batches(Request $request)
+    {
+        $variantId = $request->query('variant_id');
+
+        if (! $variantId) {
+            return response()->json(['error' => 'variant_id es requerido'], 400);
+        }
+
+        $entries = StockMovement::where('variant_id', $variantId)
+                                ->where('movement_type', 'inbound')
+                                ->orderBy('expiration_date', 'asc')
+                                ->get();
+
+        $result = [];
+
+        foreach ($entries as $entry) {
+            $consumed = $entry->children()->sum('quantity');
+            $available = $entry->quantity - $consumed;
+
+            if ($available > 0) {
+                $result[] = [
+                    'parent_id' => $entry->id,
+                    'expiration_date' => $entry->expiration_date ? $entry->expiration_date->toDateString() : null,
+                    'available_qty' => $available,
+                ];
+            }
+        }
+
+        return response()->json(['data' => $result]);
     }
 }
