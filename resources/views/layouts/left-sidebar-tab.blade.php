@@ -50,7 +50,7 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
+                    @if (auth()->user()->hasRole('des_Institucional') || auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Transparencia"
                             data-bs-trigger="hover">
                             <a href="#valleTransparency" id="apps-tab" class="nav-link">
@@ -103,7 +103,7 @@
                             </a>
                         </li>
                     @endif
-
+                        
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
                         data-bs-trigger="hover">
                         <a href="#valleImplan" id="implan-tab" class="nav-link">

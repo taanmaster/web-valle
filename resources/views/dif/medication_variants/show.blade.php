@@ -170,10 +170,13 @@
                         </div>
                     </div>
 
+
+
+                    {{--  
                     @if($variant->stockMovements->count() > 0)
                         <hr>
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="mb-0">Últimos Movimientos</h6>
+                            <h6 class="mb-0">Histórico de Movimientos</h6>
 
                             <div class="d-flex justify-content-end">
                                 <a href="{{ route('dif.stock_movements.index', ['search' => $variant->sku]) }}" class="btn btn-outline-secondary btn-sm">
@@ -289,6 +292,7 @@
                             </a>
                         </div>
                     @endif
+                    --}}
                 </div>
             </div>
         </div>
