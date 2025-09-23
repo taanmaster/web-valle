@@ -103,13 +103,15 @@
                             </a>
                         </li>
                     @endif
-                        
+                    
+                    @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
                         data-bs-trigger="hover">
                         <a href="#valleImplan" id="implan-tab" class="nav-link">
                             <i class="ti ti-bulb menu-icon"></i>
                         </a>
                     </li>
+                    @endif
 
                     @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -544,6 +546,7 @@
                 </div>
             @endif
 
+            @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
             <div id="valleImplan" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="implan-tab">
                 <div class="title-box">
                     <h6 class="menu-title">IMPLAN</h6>
@@ -571,6 +574,7 @@
                     </li>
                 </ul>
             </div>
+            @endif
 
             @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                 <div id="valleConfiguration" class="main-icon-menu-pane tab-pane" role="tabpanel"
