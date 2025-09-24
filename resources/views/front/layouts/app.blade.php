@@ -20,6 +20,16 @@
     <link rel="stylesheet" href="{{ asset('front/css/custom.css') }}">
 
     @stack('styles')
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDGMGZTQ0K"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-QDGMGZTQ0K');
+    </script>
 </head>
 <body class="preload light-mode">
     @include('front.layouts.main_nav')

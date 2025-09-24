@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use App\Models\Popup;
 use App\Models\Banner;
 use App\Models\Headerband;
-use App\Models\DifBanner;
+use App\Models\DIFBanner;
 
 // Modelos Gaceta Municipal
 use App\Models\Gazette;
@@ -401,7 +401,7 @@ class FrontController extends Controller
     {
         $fav_posts = Blog::where('is_fav', true)->where('category', 'DIF')->orderBy('updated_at', 'desc')->limit(3)->get();
 
-        $banners = DifBanner::where('is_active', true)->orderBy('priority', 'asc')->get();
+        $banners = DIFBanner::where('is_active', true)->orderBy('priority', 'asc')->get();
 
         $category = 'Dif';
 
