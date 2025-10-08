@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('municipal_inspections', function (Blueprint $table) {
             $table->id();
+
+            $table->string('name');
+            $table->string('file')->nullable();
+            $table->string('dependency')->nullable();
+            $table->string('year')->nullable();
+            $table->boolean('is_active')->default(true)->nullable();
+
             $table->timestamps();
         });
     }

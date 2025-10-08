@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('council_members', function (Blueprint $table) {
             $table->id();
+
+            $table->string('name');
+            $table->string('position')->nullable();
+
             $table->timestamps();
         });
     }

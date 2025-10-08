@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('council_minutes', function (Blueprint $table) {
             $table->id();
+
+            $table->string('name');
+            $table->string('file')->nullable();
+            $table->string('year')->nullable();
+            $table->string('session')->nullable();
+
+
             $table->timestamps();
         });
     }
