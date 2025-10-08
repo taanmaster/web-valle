@@ -583,4 +583,9 @@ class FrontController extends Controller
 
         return view('front.implan.achievements')->with('achievements', $achievements);
     }
+
+    public function municipalInspection()
+    {
+        return view('front.municipal_inspection');
+    }
 }

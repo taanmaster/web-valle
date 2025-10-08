@@ -96,7 +96,7 @@
                                 Protesta ciudadana en materia regulatoria
                             </li>
                             <li>
-                                <a href="" class="btn-link">
+                                <a href="{{ route('inspeccion_municipal.index') }}" class="btn-link">
                                     Registro municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
                                 </a>
                             </li>

@@ -42,6 +42,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
 
+    //Registro Municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
+    Route::get('/registro-municipal-de-inspecciones', 'FrontController@municipalInspection')->name('inspeccion_municipal.index');
+
     //Instituto Municipal de Planeación
 
     Route::group(['prefix' => '/instituto-municipal-de-planeacion'], function () {
@@ -569,13 +572,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'dif.stock_movements.update',
                 'destroy' => 'dif.stock_movements.destroy',
             ]);
-            
+
             // Endpoint AJAX para obtener lotes disponibles por variante
             Route::get('stock_movements_batches', [DIFStockMovementController::class, 'batches'])->name('dif.stock_movements.batches');
-            
+
             // Ruta adicional para generar recibo PDF
             Route::get('stock_movements/{movement}/receipt', [DIFStockMovementController::class, 'receipt'])->name('dif.stock_movements.receipt');
-            
+
             // Rutas adicionales para ver movimientos por tipo
             Route::get('stock_movements_inbound', [DIFStockMovementController::class, 'inbound'])->name('dif.stock_movements.inbound');
             Route::get('stock_movements_outbound', [DIFStockMovementController::class, 'outbound'])->name('dif.stock_movements.outbound');
