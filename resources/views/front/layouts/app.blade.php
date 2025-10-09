@@ -31,6 +31,7 @@
     gtag('config', 'G-QDGMGZTQ0K');
     </script>
 </head>
+
 <body class="preload light-mode">
     @include('front.layouts.main_nav')
 
@@ -154,6 +155,7 @@
     </script>
 
     <script src="{{ asset('front/libs/wowjs/wow.js') }}"></script>
+
     <script>
         new WOW().init();
     </script>

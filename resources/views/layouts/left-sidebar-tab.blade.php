@@ -440,9 +440,32 @@
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('urban_dev.inspectors.index') }}">Inspectores</a>
+                            <a class="nav-link" href="{{ route('urban_dev.workers.inspectors') }}">Inspectores</a>
                         </li>
                     </ul>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.workers.experts') }}">Peritos</a>
+                        </li>
+                    </ul>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.workers.auditors') }}">Fiscalización</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Indicadores y KPI's</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.kpis.index') }}">Gráficas</a>
+                        </li>
+                    </ul>
+
                 </div>
             @endif
 
