@@ -379,9 +379,47 @@ class FrontController extends Controller
         return view('front.urban_dev.services');
     }
 
-    public function urbanDevContact()
+    public function urbanDevDirectory()
     {
-        return view('front.urban_dev.contact');
+        return view('front.urban_dev.directory');
+    }
+
+    public function urbanDevContacts($type)
+    {
+        $workers = collect();
+        $title = '';
+
+        switch ($type) {
+            case 'inspectors':
+                $workers = \App\Models\UrbanDevWorker::inspectors()
+                    ->orderBy('name', 'asc')
+                    ->get();
+                $title = 'Inspectores';
+                break;
+            
+            case 'auditors':
+                $workers = \App\Models\UrbanDevWorker::auditors()
+                    ->orderBy('name', 'asc')
+                    ->get();
+                $title = 'Peritos';
+                break;
+            
+            case 'experts':
+                $workers = \App\Models\UrbanDevWorker::experts()
+                    ->orderBy('name', 'asc')
+                    ->get();
+                $title = 'Fiscalización';
+                break;
+            
+            default:
+                abort(404);
+        }
+
+        return view('front.urban_dev.contacts')->with([
+            'type' => $type,
+            'workers' => $workers,
+            'title' => $title
+        ]);
     }
 
     public function urbanDevDetail($tramite)
