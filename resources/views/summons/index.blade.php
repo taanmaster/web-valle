@@ -1,0 +1,79 @@
+@extends('layouts.master')
+@section('title')Intranet @endsection
+@section('content')
+<!-- this is breadcrumbs -->
+@component('components.breadcrumb')
+@slot('li_1') Intranet @endslot
+@slot('li_2') Documentos @endslot
+@slot('title') Particulares @endslot
+@endcomponent
+
+<div class="row layout-spacing">
+    <div class="main-content">
+        <div class="row align-items-center mb-4">
+            <div class="col text-start">
+                @include('citizens.utilities._search_options')
+                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-primary">Nuevo Particular</a>
+            </div>
+        </div>
+
+        @if(Auth::user()->email == 'webmaster@valle.com')
+        <a data-bs-toggle="modal" data-bs-target="#import" href="#" class="btn btn-outline-primary">Importar Excel</a>
+
+        <!-- Modal -->
+        <div class="modal fade" id="import" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Importar Excel de Asistencia</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('citizens.import') }}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Selecciona tu Archivo</label>
+                                <input class="form-control" type="file" name="import_file" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Procesar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        @include('citizens.utilities._modal')
+
+        @if($citizens->count() == 0)
+        <div class="row"> 
+            <div class="col-lg-12">
+                <div class="box">
+                    <div class="box-body"> 
+                        <div class="text-center" style="padding:80px 0px 100px 0px;">
+                            <img src="{{ asset('assets/images/empty.svg') }}" class="ml-auto mr-auto" style="width:30%; margin-bottom: 40px;">
+                            <h4>¡No hay elementos guardados en la base de datos!</h4>
+                            <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
+                            <a href="{{ route('citizens.create') }}" data-bs-toggle="modal" data-bs-target="#modalCreate" class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo Particular</a>
+                        </div>       
+                    </div>
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="row"> 
+            @include('citizens.utilities._table')
+        </div>
+    
+        <div class="align-items-center mt-4">
+            {{ $citizens->links('pagination::bootstrap-5') }}
+        </div>
+        @endif    
+    </div>
+</div>
+@endsection

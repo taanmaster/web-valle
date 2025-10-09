@@ -56,6 +56,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/', 'FrontController@index')->name('index');
     Route::get('/en-construccion', 'FrontController@building')->name('building');
 
+    //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
+
+    //Registro Municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
+    Route::get('/registro-municipal-de-inspecciones', 'FrontController@municipalInspection')->name('inspeccion_municipal.index');
+
     //Instituto Municipal de Planeación
     Route::group(['prefix' => '/instituto-municipal-de-planeacion'], function () {
         Route::get('/', 'FrontController@implan')->name('implan.index');
@@ -410,7 +415,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('workers/inspectors', [UrbanDevWorkerController::class, 'inspectors'])->name('urban_dev.workers.inspectors');
             Route::get('workers/experts', [UrbanDevWorkerController::class, 'experts'])->name('urban_dev.workers.experts');
             Route::get('workers/auditors', [UrbanDevWorkerController::class, 'auditors'])->name('urban_dev.workers.auditors');
-            
+
             Route::resource('workers', UrbanDevWorkerController::class)->names([
                 'create' => 'urban_dev.workers.create',
                 'store' => 'urban_dev.workers.store',

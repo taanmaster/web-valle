@@ -24,7 +24,7 @@
 
 
         <div class="row">
-            <livewire:municipal-regulations.table :mode="$mode" />
+            <livewire:municipal-inspection.table :mode="$mode" />
         </div>
     </div>
 @endsection

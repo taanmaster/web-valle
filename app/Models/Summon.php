@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Summon extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function citizen()
+    {
+        return $this->belongsTo(Citizen::class);
+    }
 }

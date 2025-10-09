@@ -12,7 +12,9 @@ class MunicipalInspectionController extends Controller
      */
     public function index()
     {
-        //
+        $mode = 0; // List mode
+
+        return view('municipal_inspections.index')->with('mode', $mode);
     }
 
     /**
@@ -20,7 +22,8 @@ class MunicipalInspectionController extends Controller
      */
     public function create()
     {
-        //
+        $mode = 0; // Create mode
+        return view('municipal_inspections.create')->with('mode', $mode);
     }
 
     /**
@@ -34,22 +37,30 @@ class MunicipalInspectionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MunicipalInspection $municipalInspection)
+    public function show($id)
     {
-        //
+        $inspection = MunicipalInspection::findOrFail($id);
+        $mode = 1; // Show mode
+        return view('municipal_inspections.show')->with([
+            'inspection' => $inspection,
+            'mode' => $mode
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MunicipalInspection $municipalInspection)
+    public function edit($id)
     {
-        //
+        $inspection = MunicipalInspection::findOrFail($id);
+        $mode = 2; // Edit mode
+        return view('municipal_inspections.edit')->with([
+            'inspection' => $inspection,
+            'mode' => $mode
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, MunicipalInspection $municipalInspection)
     {
         //
@@ -58,8 +69,11 @@ class MunicipalInspectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MunicipalInspection $municipalInspection)
+    public function destroy($id)
     {
-        //
+        $inspection = MunicipalInspection::findOrFail($id);
+        $inspection->delete();
+
+        return redirect()->route('institucional_development.regulations.index')->with('success', 'Regulación eliminada correctamente.');
     }
 }
