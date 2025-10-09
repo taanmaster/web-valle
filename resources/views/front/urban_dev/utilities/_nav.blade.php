@@ -43,8 +43,8 @@
                 
                 <li class="nav-item">
                     <a class="nav-link text-white fw-medium px-3 py-2 rounded-pill mx-1  d-flex align-items-center gap-2
-                              {{ request()->routeIs('urban_dev.contact') ? 'bg-white bg-opacity-25' : '' }}" 
-                       href="{{ route('urban_dev.contact') }}">
+                              {{ request()->routeIs('urban_dev.directory') ? 'bg-white bg-opacity-25' : '' }}" 
+                       href="{{ route('urban_dev.directory') }}">
                         <ion-icon name="people-outline"></ion-icon>
                         
                         Contacto

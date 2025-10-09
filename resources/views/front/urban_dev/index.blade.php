@@ -87,7 +87,7 @@
             </div>
 
             <div class="col-md-12 mt-4">
-                <a href="{{ route('urban_dev.services') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp">
+                <a href="{{ route('urban_dev.directory') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp">
                     <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
                         <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
                     </div>
@@ -98,6 +98,61 @@
                                 <ion-icon name="people-outline"></ion-icon>
                             </div>
                             <h4 class="mb-0">Ir a Directorio</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-12 wow fadeInUp mb-4">
+                <hr>
+            </div>
+            
+            <div class="col-md-4">
+                <a href="{{ route('urban_dev.contacts', 'inspectors') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp">
+                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="d-flex flex-column gap-3">
+                            <div class="card-icon card-icon-static bg-info text-white d-flex align-items-center justify-content-center">
+                                <ion-icon name="people-outline"></ion-icon>
+                            </div>
+                            <h4 class="mb-0">Inspectores</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="{{ route('urban_dev.contacts', 'auditors') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp">
+                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="d-flex flex-column gap-3">
+                            <div class="card-icon card-icon-static bg-primary text-white d-flex align-items-center justify-content-center">
+                                <ion-icon name="people-outline"></ion-icon>
+                            </div>
+                            <h4 class="mb-0">Peritos</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="{{ route('urban_dev.contacts', 'experts') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp">
+                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="d-flex flex-column gap-3">
+                            <div class="card-icon card-icon-static bg-warning text-white d-flex align-items-center justify-content-center">
+                                <ion-icon name="people-outline"></ion-icon>
+                            </div>
+                            <h4 class="mb-0">Fiscalización</h4>
                         </div>
                     </div>
                 </a>
