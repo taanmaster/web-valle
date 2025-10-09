@@ -1,12 +1,16 @@
 <?php
 
 // Controladores
+
+// Agenda Regulatoria
 use App\Http\Controllers\RegulatoryAgendaController;
 use App\Http\Controllers\RegulatoryAgendaDependencyController;
-use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
-use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
+
+// Comunicación Social
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\TsrBillingAccountController;
+
+// DIF
+use App\Http\Controllers\CitizenMedicalProfileController;
 use App\Http\Controllers\DIFReceiptController;
 use App\Http\Controllers\DIFBannerController;
 use App\Http\Controllers\DIFProgramController;
@@ -17,33 +21,42 @@ use App\Http\Controllers\DIFPrescriptionFileController;
 use App\Http\Controllers\DIFMedicationController;
 use App\Http\Controllers\DIFMedicationVariantController;
 use App\Http\Controllers\DIFStockMovementController;
-use App\Http\Controllers\CitizenMedicalProfileController;
 use App\Http\Controllers\DIFExpenseController;
 use App\Http\Controllers\DIFIncomeController;
-use App\Http\Controllers\InstitucionalDevelopmentBannerController;
 use App\Http\Controllers\TapChecklistAuthorizationNoteController;
 use App\Http\Controllers\TapSupplierLogController;
+
+// Desarrollo Institucional
+use App\Http\Controllers\InstitucionalDevelopmentBannerController;
+
+// Tesorería
 use App\Http\Controllers\TreasuryAccountPayableController;
+use App\Http\Controllers\TsrBillingAccountController;
+use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
+use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
+
+// Desarrollo Urbano
 use App\Http\Controllers\UrbanDevRequestController;
 use App\Http\Controllers\UrbanDevInspectorController;
-use App\Models\DIFIncome;
+use App\Http\Controllers\UrbanDevRequestNoteController;
+use App\Http\Controllers\UrbanDevRequestFileController;
+use App\Http\Controllers\UrbanDevWorkerController;
+use App\Http\Controllers\UrbanDevKPIsController;
+
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
 use App\Models\TsrAdminRevenueColletionFraction;
+use App\Models\DIFIncome;
 
 use Illuminate\Support\Facades\Route;
 
 Route::namespace('App\Http\Controllers')->group(function () {
     /* Portal Ciudadanos */
     Route::get('/', 'FrontController@index')->name('index');
-
     Route::get('/en-construccion', 'FrontController@building')->name('building');
 
-    //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
-
     //Instituto Municipal de Planeación
-
     Route::group(['prefix' => '/instituto-municipal-de-planeacion'], function () {
         Route::get('/', 'FrontController@implan')->name('implan.index');
         Route::get('/quienes-somos', 'FrontController@implanWhoWeAre')->name('implan.who_we_are');
@@ -66,7 +79,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/desarrollo_urbano', 'FrontController@urbanDev')->name('urban_dev.index');
     Route::get('/desarrollo_urbano/tramites', 'FrontController@urbanDevProcedures')->name('urban_dev.procedures');
     Route::get('/desarrollo_urbano/servicios', 'FrontController@urbanDevServices')->name('urban_dev.services');
-    Route::get('/desarrollo_urbano/contacto', 'FrontController@urbanDevContact')->name('urban_dev.contact');
+    Route::get('/desarrollo_urbano/directorio', 'FrontController@urbanDevDirectory')->name('urban_dev.directory');
+    Route::get('/desarrollo_urbano/contactos/{type}', 'FrontController@urbanDevContacts')->name('urban_dev.contacts');
     Route::get('/desarrollo_urbano/tramites/{tramite}', 'FrontController@urbanDevDetail')->name('urban_dev.show');
 
     // CASA DE LA MUJER
@@ -392,8 +406,25 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'urban_dev.inspectors.destroy',
             ]);
 
+            // Rutas para trabajadores de Desarrollo Urbano
+            Route::get('workers/inspectors', [UrbanDevWorkerController::class, 'inspectors'])->name('urban_dev.workers.inspectors');
+            Route::get('workers/experts', [UrbanDevWorkerController::class, 'experts'])->name('urban_dev.workers.experts');
+            Route::get('workers/auditors', [UrbanDevWorkerController::class, 'auditors'])->name('urban_dev.workers.auditors');
+            
+            Route::resource('workers', UrbanDevWorkerController::class)->names([
+                'create' => 'urban_dev.workers.create',
+                'store' => 'urban_dev.workers.store',
+                'show' => 'urban_dev.workers.show',
+                'edit' => 'urban_dev.workers.edit',
+                'update' => 'urban_dev.workers.update',
+                'destroy' => 'urban_dev.workers.destroy',
+            ]);
+
             // Ruta para solicitudes de inspector
             Route::get('inspector_requests', [UrbanDevInspectorController::class, 'requests'])->name('urban_dev.inspectors.requests');
+
+            // Ruta para KPIs de desarrollo urbano
+            Route::get('kpis', [UrbanDevKPIsController::class, 'index'])->name('urban_dev.kpis.index');
         });
 
         /* DIF */
