@@ -50,7 +50,9 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->hasRole('des_Institucional') || auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
+                    @if (auth()->user()->hasRole('des_Institucional') ||
+                            auth()->user()->hasRole('transparency') ||
+                            auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Transparencia"
                             data-bs-trigger="hover">
                             <a href="#valleTransparency" id="apps-tab" class="nav-link">
@@ -103,14 +105,14 @@
                             </a>
                         </li>
                     @endif
-                    
+
                     @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
-                        data-bs-trigger="hover">
-                        <a href="#valleImplan" id="implan-tab" class="nav-link">
-                            <i class="ti ti-bulb menu-icon"></i>
-                        </a>
-                    </li>
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
+                            data-bs-trigger="hover">
+                            <a href="#valleImplan" id="implan-tab" class="nav-link">
+                                <i class="ti ti-bulb menu-icon"></i>
+                            </a>
+                        </li>
                     @endif
 
                     @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
@@ -171,6 +173,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('regulatory_agenda.index') }}">Agenda
                                     Regulatoria</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('municipal_inspections.index') }}" class="nav-link">
+                                    Registro Municipal de Inspecciones
+                                </a>
                             </li>
                         </ul>
                     @endif
@@ -248,7 +255,9 @@
                 </div>
             @endif
 
-            @if (auth()->user()->hasRole('des_Institucional') || auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
+            @if (auth()->user()->hasRole('des_Institucional') ||
+                    auth()->user()->hasRole('transparency') ||
+                    auth()->user()->hasRole('all'))
                 <div id="valleTransparency" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="apps-tab">
 
@@ -257,15 +266,14 @@
                     </div>
                     <ul class="nav flex-column">
                         @if (auth()->user()->hasRole('transparency') || auth()->user()->hasRole('all'))
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('transparency_dependencies.index') }}">Dependencias</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="{{ route('transparency_dependencies.index') }}">Dependencias</a>
+                            </li>
                         @endif
 
                         <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('transparency_obligations.index') }}">Obligaciones</a>
+                            <a class="nav-link" href="{{ route('transparency_obligations.index') }}">Obligaciones</a>
                         </li>
 
                         <li class="nav-item">
@@ -470,7 +478,8 @@
             @endif
 
             @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('all'))
-                <div id="valleDIF" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dif-tab" style="padding-bottom: 120px;">
+                <div id="valleDIF" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dif-tab"
+                    style="padding-bottom: 120px;">
                     <div class="title-box">
                         <h6 class="menu-title">Perfiles</h6>
                     </div>
@@ -522,7 +531,7 @@
                             <a class="nav-link" href="{{ route('dif.social_assistances.index') }}">Asistencia
                                 Social</a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dif.expenses.index') }}">Salidas</a>
                         </li>
@@ -570,33 +579,34 @@
             @endif
 
             @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
-            <div id="valleImplan" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="implan-tab">
-                <div class="title-box">
-                    <h6 class="menu-title">IMPLAN</h6>
+                <div id="valleImplan" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="implan-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">IMPLAN</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('implan.projects.index') }}">Proyectos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('implan.achievements.index') }}">Logros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('implan.blog.index') }}">Blog</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Comunicación</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('implan.banners.index') }}">Banners</a>
+                        </li>
+                    </ul>
                 </div>
-
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('implan.projects.index') }}">Proyectos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('implan.achievements.index') }}">Logros</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('implan.blog.index') }}">Blog</a>
-                    </li>
-                </ul>
-
-                <div class="title-box">
-                    <h6 class="menu-title">Comunicación</h6>
-                </div>
-
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('implan.banners.index') }}">Banners</a>
-                    </li>
-                </ul>
-            </div>
             @endif
 
             @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))

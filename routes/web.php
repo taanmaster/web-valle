@@ -1256,6 +1256,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ]);
         });
 
+        //Inspecciones municipales
+        Route::resource('municipal_inspections', MunicipalInspectionController::class)->names([
+            'index' => 'municipal_inspections.index',
+            'create' => 'municipal_inspections.create',
+            'store' => 'municipal_inspections.store',
+            'show' => 'municipal_inspections.show',
+            'edit' => 'municipal_inspections.edit',
+            'update' => 'municipal_inspections.update',
+            'destroy' => 'municipal_inspections.destroy',
+        ]);
+
         /* ------------------- */
         /* ------------------- */
         /* IMPLAN */

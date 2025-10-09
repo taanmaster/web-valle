@@ -12,15 +12,11 @@
             Mejora regulatoría
         @endslot
         @slot('title')
-            Normativa Municipal
+            Registro Municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
         @endslot
     @endcomponent
 
     <div class="content">
-        <p class="mb-4">La administración municipal presenta las regulaciones que integran el marco normativo que rige al
-            municipio como
-            códigos, reglamentos, manuales, etc.</p>
-
 
 
         <div class="row">
