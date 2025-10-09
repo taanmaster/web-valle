@@ -15,4 +15,9 @@ class Summon extends Model
     {
         return $this->belongsTo(Citizen::class);
     }
+
+    public function followups()
+    {
+        return $this->hasMany(SummonFollowup::class);
+    }
 }
