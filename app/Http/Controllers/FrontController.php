@@ -396,21 +396,21 @@ class FrontController extends Controller
                     ->get();
                 $title = 'Inspectores';
                 break;
-            
+
             case 'auditors':
                 $workers = \App\Models\UrbanDevWorker::auditors()
                     ->orderBy('name', 'asc')
                     ->get();
                 $title = 'Peritos';
                 break;
-            
+
             case 'experts':
                 $workers = \App\Models\UrbanDevWorker::experts()
                     ->orderBy('name', 'asc')
                     ->get();
                 $title = 'Fiscalización';
                 break;
-            
+
             default:
                 abort(404);
         }
@@ -625,5 +625,20 @@ class FrontController extends Controller
     public function municipalInspection()
     {
         return view('front.municipal_inspection');
+    }
+
+    public function urbanCouncil()
+    {
+        return view('front.urban_council');
+    }
+
+    public function councilAttributions()
+    {
+        return view('front.council_attributions');
+    }
+
+    public function actasConsejo()
+    {
+        return view('front.council_minutes');
     }
 }

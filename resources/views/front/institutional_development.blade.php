@@ -131,17 +131,17 @@
                     <div class="card-content">
                         <ul>
                             <li>
-                                <a href="" class="btn-link">
+                                <a href="{{ route('urban_council.index') }}" class="btn-link">
                                     Integrantes
                                 </a>
                             </li>
                             <li>
-                                <a href="" class="btn-link">
+                                <a href="{{ route('council_attributions.index') }}" class="btn-link">
                                     Atribuciones del Consejo
                                 </a>
                             </li>
                             <li>
-                                <a href="" class="btn-link">
+                                <a href="{{ route('actas_consejo.index') }}" class="btn-link">
                                     Actas de Consejo
                                 </a>
                             </li>

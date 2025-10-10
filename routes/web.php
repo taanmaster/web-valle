@@ -61,6 +61,15 @@ Route::namespace('App\Http\Controllers')->group(function () {
     //Registro Municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
     Route::get('/registro-municipal-de-inspecciones', 'FrontController@municipalInspection')->name('inspeccion_municipal.index');
 
+    //Integrantes del Consejo
+    Route::get('/integrantes-del-consejo', 'FrontController@urbanCouncil')->name('urban_council.index');
+
+    //Atribuciones del Consejo
+    Route::get('/atribuciones-del-consejo', 'FrontController@councilAttributions')->name('council_attributions.index');
+
+    //Actas de Consejo
+    Route::get('/actas-de-consejo', 'FrontController@actasConsejo')->name('actas_consejo.index');
+
     //Instituto Municipal de Planeación
     Route::group(['prefix' => '/instituto-municipal-de-planeacion'], function () {
         Route::get('/', 'FrontController@implan')->name('implan.index');
@@ -1265,6 +1274,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'edit' => 'municipal_inspections.edit',
             'update' => 'municipal_inspections.update',
             'destroy' => 'municipal_inspections.destroy',
+        ]);
+
+        //Actas de Consejo
+        Route::resource('council_minutes', CouncilMinuteController::class)->names([
+            'index' => 'council_minutes.index',
+            'create' => 'council_minutes.create',
+            'store' => 'council_minutes.store',
+            'show' => 'council_minutes.show',
+            'edit' => 'council_minutes.edit',
+            'update' => 'council_minutes.update',
+            'destroy' => 'council_minutes.destroy',
         ]);
 
         /* ------------------- */
