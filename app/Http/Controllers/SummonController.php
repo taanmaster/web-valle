@@ -12,7 +12,9 @@ class SummonController extends Controller
      */
     public function index()
     {
-        //
+        $mode = 0; // List mode
+
+        return view('summons.index')->with('mode', $mode);
     }
 
     /**
@@ -20,7 +22,8 @@ class SummonController extends Controller
      */
     public function create()
     {
-        //
+        $mode = 0; // Create mode
+        return view('summons.create')->with('mode', $mode);
     }
 
     /**
@@ -34,23 +37,31 @@ class SummonController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Summon $summon)
+    public function show($id)
     {
-        //
+        $summon = Summon::findOrFail($id);
+        $mode = 1; // Show mode
+        return view('summons.show')->with([
+            'summon' => $summon,
+            'mode' => $mode
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Summon $summon)
+    public function edit($id)
     {
-        //
+        $summon = Summon::findOrFail($id);
+        $mode = 2; // Edit mode
+        return view('summons.edit')->with([
+            'summon' => $summon,
+            'mode' => $mode
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Summon $summon)
+
+    public function update(Request $request, CouncilMinute $councilMinute)
     {
         //
     }
@@ -58,8 +69,11 @@ class SummonController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Summon $summon)
+    public function destroy($id)
     {
-        //
+        $summon = Summon::findOrFail($id);
+        $summon->delete();
+
+        return redirect()->route('summons.index')->with('success', 'Citatorio eliminado correctamente.');
     }
 }

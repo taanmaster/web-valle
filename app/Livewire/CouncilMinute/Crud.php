@@ -64,8 +64,11 @@ class Crud extends Component
             Session::flash('message', 'Minuta actualizada correctamente.');
         } else {
 
+            $file_url = null;
             // --- Subida de archivos ---
-            $file_url = $this->handleUpload($this->file);
+            if ($this->file) {
+                $file_url = $this->handleUpload($this->file);
+            }
 
             CouncilMinute::create([
                 'name' => $this->name,
@@ -80,12 +83,23 @@ class Crud extends Component
         return redirect()->route('council_minutes.index');
     }
 
-    public function handleUpload($file)
+    protected function handleUpload($document)
     {
-        $filename = Str::random(10) . '_' . trim($file->getClientOriginalName());
-        $filePath = 'council_minutes/' . $filename;
-        Storage::disk('public')->put($filePath, file_get_contents($file->getRealPath()));
-        return 'storage/' . $filePath;
+        $originalName = pathinfo($document->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $document->getClientOriginalExtension();
+
+        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+        $filename = $cleanName . '.' . $extension;
+
+        $filepath = 'council_minutes/' . $filename;
+
+        $stream = fopen($document->getRealPath(), 'r+');
+        Storage::disk('s3')->put($filepath, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        return Storage::disk('s3')->url($filepath);
     }
 
     public function render()

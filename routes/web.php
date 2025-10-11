@@ -1287,6 +1287,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'destroy' => 'council_minutes.destroy',
         ]);
 
+        //Citatorios
+        Route::resource('summons', SummonController::class)->names([
+            'index' => 'summons.index',
+            'create' => 'summons.create',
+            'store' => 'summons.store',
+            'show' => 'summons.show',
+            'edit' => 'summons.edit',
+            'update' => 'summons.update',
+            'destroy' => 'summons.destroy',
+        ]);
+
         /* ------------------- */
         /* ------------------- */
         /* IMPLAN */

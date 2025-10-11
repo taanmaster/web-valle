@@ -446,6 +446,11 @@
                             <a class="nav-link" href="{{ route('urban_dev.inspectors.requests') }}">Vista
                                 Inspector</a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('summons.index') }}" class="nav-link">
+                                Citatorios
+                            </a>
+                        </li>
                     </ul>
 
                     <div class="title-box">

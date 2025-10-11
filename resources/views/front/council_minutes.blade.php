@@ -16,7 +16,7 @@
             <div class="col-md-12">
                 <div class="card card-normal">
                     <div class="card-content w-100">
-
+                        <livewire:council-minute.table :mode="1" />
                     </div>
                 </div>
             </div>
