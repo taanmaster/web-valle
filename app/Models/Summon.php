@@ -20,4 +20,9 @@ class Summon extends Model
     {
         return $this->hasMany(SummonFollowup::class);
     }
+
+    public function worker()
+    {
+        return $this->belongsTo(UrbanDevWorker::class);
+    }
 }

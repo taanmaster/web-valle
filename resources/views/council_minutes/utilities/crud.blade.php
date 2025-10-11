@@ -86,8 +86,8 @@
 
                 <div class="d-flex align-items-center justify-content-end" style="gap: 12px">
 
-                    <a href="{{ route('institucional_development.regulations.index') }}"
-                        class="btn btn-sm btn-secondary" style="max-width: 100px">Regresar</a>
+                    <a href="{{ route('council_minutes.index') }}" class="btn btn-sm btn-secondary"
+                        style="max-width: 100px">Regresar</a>
 
 
                     @if ($mode != 1)
