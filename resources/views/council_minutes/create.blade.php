@@ -12,13 +12,13 @@
             Normativa municipal
         @endslot
         @slot('title')
-            Regulación
+            Actas de Consejo
         @endslot
     @endcomponent
 
     <div class="row layout-spacing">
         <div class="main-content">
-            <livewire:municipal-inspection.crud :mode="$mode" />
+            <livewire:council-minute.crud :mode="$mode" />
         </div>
     </div>
 @endsection

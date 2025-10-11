@@ -179,6 +179,11 @@
                                     Registro Municipal de Inspecciones
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('council_minutes.index') }}" class="nav-link">
+                                    Actas de Consejo
+                                </a>
+                            </li>
                         </ul>
                     @endif
 

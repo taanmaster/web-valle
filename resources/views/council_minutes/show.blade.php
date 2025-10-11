@@ -12,7 +12,7 @@
             Normativa municipal
         @endslot
         @slot('title')
-            Regulación
+            Actas de Consejo
         @endslot
     @endcomponent
 
@@ -20,7 +20,7 @@
         <div class="main-content">
             <h4>Información General</h4>
 
-            <livewire:municipal-inspection.crud :mode="$mode" :inspection="$inspection" />
+            <livewire:council-minute.crud :mode="$mode" :minute="$minute" />
         </div>
     </div>
 @endsection

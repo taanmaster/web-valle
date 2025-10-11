@@ -12,7 +12,7 @@
             Mejora regulatoría
         @endslot
         @slot('title')
-            Registro Municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
+            Actas de Consejo
         @endslot
     @endcomponent
 
@@ -20,7 +20,7 @@
 
 
         <div class="row">
-            <livewire:municipal-inspection.table :mode="$mode" />
+            <livewire:council-minute.table :mode="$mode" />
         </div>
     </div>
 @endsection
