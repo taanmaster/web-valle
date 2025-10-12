@@ -49,7 +49,7 @@
                             {{ $summon->created_at ?? 'N/A' }}
                         </td>
                         <td>
-                            {{ $summon->name ?? 'N/A' }}
+                            {{ $summon->full_name ?? 'N/A' }}
                         </td>
                         <td>
                             {{ $summon->street ?? 'N/A' }}
@@ -60,8 +60,28 @@
                         <td>
                             {{ $summon->suburb ?? 'N/A' }}
                         </td>
+                        <td>
+                            {{ $summon->worker->name ?? 'N/A' }} {{ $summon->worker->last_name ?? 'N/A' }}
+                        </td>
                         @if ($mode == 0)
-                            <td></td>
+                            <td>
+                                <a href="{{ route('summons.edit', $summon->id) }}"
+                                    class="btn btn-sm btn-primary">Editar</a>
+
+                                <a href="{{ route('summons.show', $summon->id) }}"
+                                    class="btn btn-sm btn-secondary">Ver</a>
+
+                                <form action="{{ route('summons.destroy', $summon->id) }}" method="POST"
+                                    style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip"
+                                        data-original-title="Eliminar"
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este citatorio?')">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </td>
                         @endif
                     </tr>
                 @endforeach

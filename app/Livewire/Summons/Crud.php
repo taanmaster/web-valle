@@ -30,6 +30,7 @@ class Crud extends Component
 
 
     public $searchCitizen = '';
+    public $selectedCitizen = '';
 
     public $citizen_id = '';
     public $full_name = '';
@@ -44,6 +45,11 @@ class Crud extends Component
     public $searchWorker = '';
     public $worker_id = '';
     public $worker_name = '';
+    public $selectedWorker = '';
+
+
+    public $followup_type = '';
+    public $followup_comment = '';
 
     public function mount()
     {
@@ -54,12 +60,15 @@ class Crud extends Component
 
     public function fetchSummonData()
     {
-        $this->expiration_date = $this->summon->expiration_date;
+        $this->expiration_date = \Carbon\Carbon::parse($this->summon->expiration_date)->format('Y-m-d');
+
         $this->folio = $this->summon->folio;
         $this->number = $this->summon->number;
 
         $this->citizen_id = $this->summon->citizen_id;
         $this->full_name = $this->summon->full_name;
+
+        $this->selectedCitizen = \App\Models\Citizen::find($this->citizen_id);
 
         $this->street = $this->summon->street;
         $this->external_number = $this->summon->external_number;
@@ -69,6 +78,8 @@ class Crud extends Component
         $this->file = $this->summon->file;
 
         $this->worker_id = $this->summon->worker_id;
+        $this->worker_name = $this->summon->worker ? $this->summon->worker->name . ' ' . $this->summon->worker->last_name : '';
+        $this->selectedWorker = \App\Models\UrbanDevWorker::find($this->worker_id);
     }
 
     public function save()
@@ -147,12 +158,19 @@ class Crud extends Component
         $citizen = \App\Models\Citizen::find($citizen_id);
         if ($citizen) {
             $this->full_name = $citizen->name . ' ' . $citizen->first_name . ' ' . $citizen->last_name;
-            $this->street = $citizen->street;
-            $this->external_number = $citizen->external_number;
-            $this->suburb = $citizen->suburb;
         }
 
+        $this->selectedCitizen = $citizen;
+
         $this->searchCitizen = '';
+    }
+
+    public function clearCitizen()
+    {
+        $this->full_name = '';
+        $this->citizen_id = '';
+
+        $this->selectedCitizen = null;
     }
 
     public function selectWorker($worker_id)
@@ -164,7 +182,40 @@ class Crud extends Component
             $this->worker_name = $worker->name . ' ' . $worker->last_name;
         }
 
+        $this->selectedWorker = $worker;
+
         $this->searchWorker = '';
+    }
+
+    public function clearWorker()
+    {
+        $this->worker_id = '';
+        $this->worker_name = '';
+        $this->selectedWorker = null;
+
+        $this->searchWorker = '';
+    }
+
+    public function saveFollowup()
+    {
+        $this->validate([
+            'details' => 'required|string',
+        ]);
+
+        if ($this->summon) {
+            $this->summon->followups()->create([
+                'summon_id' => $this->summon->id,
+                'followup_type' => $this->followup_type,
+                'notes' => $this->followup_comment,
+            ]);
+
+            $this->followup_type = '';
+            $this->followup_comment = '';
+
+            Session::flash('message', 'Seguimiento creado correctamente.');
+
+            $this->fetchSummonData();
+        }
     }
 
     public function render()

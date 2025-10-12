@@ -103,9 +103,20 @@
                             </div>
                             <div class="col-md">
                                 <div class="input-group">
-                                    <input type="text" name="searchFolio" wire:model.live="searchCitizen"
-                                        class="form-control" @if ($mode == 1) disabled @endif
-                                        placeholder="Buscar por nombre">
+
+                                    @if ($selectedCitizen != null)
+                                        <div class="d-flex w-100">
+                                            <input type="text" name="full_name" wire:model="full_name"
+                                                class="form-control" @if ($mode == 1) disabled @endif
+                                                placeholder="Nombre completo" disabled>
+                                            <button type="button" wire:click="clearCitizen"
+                                                class="btn btn-link btn-sm @if ($mode == 1) d-none @endif">Limpiar</button>
+                                        </div>
+                                    @else
+                                        <input type="text" name="searchFolio" wire:model.live="searchCitizen"
+                                            class="form-control" @if ($mode == 1) disabled @endif
+                                            placeholder="Buscar por nombre">
+                                    @endif
                                 </div>
 
                                 <div class="position-absolute drop-search p-3 pt-1 @if ($searchCitizen == null) d-none @endif"
@@ -144,9 +155,20 @@
                             </div>
                             <div class="col-md">
                                 <div class="input-group">
-                                    <input type="text" name="searchFolio" wire:model.live="searchWorker"
-                                        class="form-control" @if ($mode == 1) disabled @endif
-                                        placeholder="Buscar por nombre">
+
+                                    @if ($selectedWorker != null)
+                                        <div class="d-flex w-100">
+                                            <input type="text" name="worker_name" wire:model="worker_name"
+                                                class="form-control" @if ($mode == 1) disabled @endif
+                                                placeholder="Nombre completo" disabled>
+                                            <button type="button" wire:click="clearWorker"
+                                                class="btn btn-link btn-sm @if ($mode == 1) d-none @endif">Limpiar</button>
+                                        </div>
+                                    @else
+                                        <input type="text" name="searchFolio" wire:model.live="searchWorker"
+                                            class="form-control" @if ($mode == 1) disabled @endif
+                                            placeholder="Buscar por nombre">
+                                    @endif
                                 </div>
 
                                 <div class="position-absolute drop-search p-3 pt-1 @if ($searchWorker == null) d-none @endif"
@@ -188,8 +210,9 @@
                             @if ($mode == 1) disabled @endif placeholder="Calle">
                     </div>
                     <div class="col-md">
-                        <input type="text" name="exterior_number" wire:model="exterior_number" class="form-control"
-                            @if ($mode == 1) disabled @endif placeholder="Número Exterior">
+                        <input type="text" name="external_number" wire:model="external_number"
+                            class="form-control" @if ($mode == 1) disabled @endif
+                            placeholder="Número Exterior">
                     </div>
                     <div class="col-md">
                         <input type="text" name="suburb" wire:model="suburb" class="form-control"
@@ -202,7 +225,8 @@
                         <label for="file" class="col-form-label">Observaciones</label>
                     </div>
                     <div class="col-md">
-                        <textarea name="details" id="details" cols="20" rows="5" wire:model="details" class="form-control"></textarea>
+                        <textarea name="details" id="details" cols="20" rows="5" wire:model="details" class="form-control"
+                            @if ($mode == 1) disabled @endif></textarea>
                     </div>
                 </div>
 
@@ -230,4 +254,92 @@
             </form>
         </div>
     </div>
+
+    @if ($mode != 0)
+        <div class="main-content mt-4 mx-3">
+            <div class="row layout-spacing mb-4">
+
+                <div class="col-md">
+                    <h5>Seguimiento</h5>
+                </div>
+
+                @if ($mode != 1)
+                    <div class="col-md-3 text-end">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            Crear seguimiento
+                        </button>
+                    </div>
+                @endif
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Comentario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($summon->followups as $log)
+                                    <tr>
+                                        <td>{{ $log->created_at->format('Y-m-d') }}</td>
+                                        <td>{{ $log->followup_type ?? 'N/A' }}</td>
+                                        <td>{{ $log->notes }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear seguimiento</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="type" class="col-form-label">Tipo</label>
+                                <select name="followup_type" id="followup_type" class="form-select"
+                                    wire:model="followup_type">
+                                    <option value="" selected disabled>Selecciona una opción</option>
+                                    <option value="Documentación">Documentación</option>
+                                    <option value="Citatorio">Citatorio</option>
+                                    <option value="Trámite realizado">Trámite realizado</option>
+                                    <option value="Trámite cerrado">Trámite cerrado</option>
+                                    <option value="Suspensión Obra">Suspensión Obra</option>
+                                    <option value="Cierre">Cierre</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="followup_comment" class="col-form-label">Comentario</label>
+                                <textarea name="followup_comment" id="followup_comment" cols="30" rows="5" class="form-control"
+                                    wire:model="followup_comment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" wire:click="saveFollowup"
+                            data-bs-dismiss="modal">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
 </div>
