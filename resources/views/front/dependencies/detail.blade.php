@@ -37,7 +37,7 @@
                 </div>
             </div>
         @else
-            <livewire:front.transparency-obligations.table :dependency="$dependency->id" :type="$type" />
+            <livewire:front.transparency-obligations.table :dependency="$dependency->id" :mode="2" />
         @endif
 
     </div>

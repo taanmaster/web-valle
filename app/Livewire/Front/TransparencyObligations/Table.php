@@ -21,7 +21,7 @@ class Table extends Component
 {
     use WithPagination;
 
-    //Mode: 0 normal, 1 Filtrado por obligación
+    //Mode: 0 normal, 1 Filtrado por obligación, 2 Sin tipo
     public $mode;
 
     public $dependency;
@@ -51,7 +51,11 @@ class Table extends Component
 
     public function render()
     {
-        $obligations = TransparencyObligation::where('dependency_id', $this->dependency)->where('type', $this->type)->get();
+        if ($this->mode == 2) {
+            $obligations = TransparencyObligation::where('dependency_id', $this->dependency)->get();
+        } else {
+            $obligations = TransparencyObligation::where('dependency_id', $this->dependency)->where('type', $this->type)->get();
+        }
 
         $query = TransparencyDocument::query();
 
