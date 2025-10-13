@@ -132,9 +132,9 @@
                                     </tr>
                                 </thead>
 
-                                <tbody id="uploaded_image">
+                                <div id="uploaded_image">
 
-                                </tbody>
+                                </div>
                             </table>
                         </div>
 

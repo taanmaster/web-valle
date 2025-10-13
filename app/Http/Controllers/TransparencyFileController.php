@@ -65,7 +65,7 @@ class TransparencyFileController extends Controller
     {
         $dependency = TransparencyDependency::find($id);
 
-
+        $output = '<div class="row">';
         foreach($dependency->files as $file)
         {
             $icon = 'fa-file';
@@ -116,20 +116,22 @@ class TransparencyFileController extends Controller
             $fileSizeFormatted = $file->filesize ? $this->formatFileSize($file->filesize) : 'N/A';
 
             $output .= '
-            <tr>
-                <td>'.$file->id.'</td>
-                <td>'.$file->name.'</td>
-                <td>'.$file->filename.'</td>
-                <td>'.$file->obligation->name. '</td>
-                <td><span class="badge bg-primary">' . $badge . '</span></td>
-                <td>'.$file->created_at. '</td>
-                <td>
-                    <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard(\'filePath' . $file->id . '\')">Copiar Ruta</button>
-                    <button type="button" class="btn btn-link remove_file mt-2" id="' . $file->filename . '">Eliminar</button>
-                </td>
-            </tr>
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas ' . $icon . ' fa-3x"></i>
+                        <h5 class="card-title mt-2">' . $file->name . '</h5>
+                        <span class="badge bg-primary">' . $badge . '</span>
+                        <small class="text-muted d-block mt-1">' . $fileSizeFormatted . '</small>
+                        <input type="text" class="form-control mt-2" id="filePath' . $file->id . '" value="' . $publicPath . '" readonly>
+                        <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard(\'filePath' . $file->id . '\')">Copiar Ruta</button>
+                        <button type="button" class="btn btn-link remove_file mt-2" id="' . $file->filename . '">Eliminar</button>
+                    </div>
+                </div>
+            </div>
             ';
         }
+        $output .= '</div>';
 
         echo $output;
     }
