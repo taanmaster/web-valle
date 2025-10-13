@@ -11,30 +11,41 @@
 
                 <div class="modal-body pd-25">
                     <div class="row">
-                        @if(isset($transparency_dependency))
-                        <input type="hidden" name="dependency_id" value="{{ $transparency_dependency->id }}">
+                        @if (isset($transparency_dependency))
+                            <input type="hidden" name="dependency_id" value="{{ $transparency_dependency->id }}">
                         @else
-                        <div class="col-md-12 mb-3">
-                            <label for="dependency_id" class="form-label">Dependencia <span class="text-danger tx-12">*</span></label>
-                            <select name="dependency_id" id="dependency_id" class="form-control" required>
-                                <option value="">Seleccione una dependencia</option>
-                                @foreach($transparency_dependencies as $dependency)
-                                <option value="{{ $dependency->id }}">{{ $dependency->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="dependency_id" class="form-label">Dependencia <span
+                                        class="text-danger tx-12">*</span></label>
+                                <select name="dependency_id" id="dependency_id" class="form-control" required>
+                                    <option value="">Seleccione una dependencia</option>
+                                    @foreach ($transparency_dependencies as $dependency)
+                                        <option value="{{ $dependency->id }}">{{ $dependency->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         @endif
-                        
+
                         <div class="col-md-12 mb-3">
-                            <label for="name" class="form-label">Nombre <span class="text-danger tx-12">*</span></label>
+                            <label for="name" class="form-label">Nombre <span
+                                    class="text-danger tx-12">*</span></label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
+
                         <div class="col-md-12 mb-3">
-                            <label for="description" class="form-label">Descripción <span class="text-info tx-12">(Opcional)</span></label>
+                            <label for="icon" class="form-label">Icono <span
+                                    class="text-info tx-12">(PNG)</span></label>
+                            <input type="file" class="form-control" id="icon" name="icon">
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="description" class="form-label">Descripción <span
+                                    class="text-info tx-12">(Opcional)</span></label>
                             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="type" class="form-label">Tipo <span class="text-danger tx-12">*</span></label>
+                            <label for="type" class="form-label">Tipo <span
+                                    class="text-danger tx-12">*</span></label>
                             <select class="form-control" id="type" name="type" required>
                                 <option value="Especifica">Especifica</option>
                                 <option value="Común">Común</option>
@@ -45,7 +56,8 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="update_period" class="form-label">Periodo de Actualización <span class="text-danger tx-12">*</span></label>
+                            <label for="update_period" class="form-label">Periodo de Actualización <span
+                                    class="text-danger tx-12">*</span></label>
                             <select class="form-control" id="update_period" name="update_period" required>
                                 <option value="Trimestral">Trimestral</option>
                                 <option value="Anual">Anual</option>

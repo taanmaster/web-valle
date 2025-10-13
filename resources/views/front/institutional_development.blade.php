@@ -78,13 +78,14 @@
                     <div class="card-content">
                         <ul>
                             <li>
-                                <a href="{{ route('tramites_y_servicios.index') }}">Trámites y servicios</a>
+                                <a href="{{ route('tramites_y_servicios.index') }}" class="btn-link">Trámites y
+                                    servicios</a>
                             </li>
                             <li>
                                 Expediente único
                             </li>
                             <li>
-                                <a href="{{ route('regulaciones_municipales.index') }}">
+                                <a href="{{ route('regulaciones_municipales.index') }}" class="btn-link">
                                     Registro municipal de regulaciones
                                 </a>
                             </li>
@@ -95,7 +96,9 @@
                                 Protesta ciudadana en materia regulatoria
                             </li>
                             <li>
-                                Registro municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
+                                <a href="{{ route('inspeccion_municipal.index') }}" class="btn-link">
+                                    Registro municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -128,13 +131,19 @@
                     <div class="card-content">
                         <ul>
                             <li>
-                                Integrantes
+                                <a href="{{ route('urban_council.index') }}" class="btn-link">
+                                    Integrantes
+                                </a>
                             </li>
                             <li>
-                                Atribuciones del Consejo
+                                <a href="{{ route('council_attributions.index') }}" class="btn-link">
+                                    Atribuciones del Consejo
+                                </a>
                             </li>
                             <li>
-                                Actas de Consejo
+                                <a href="{{ route('actas_consejo.index') }}" class="btn-link">
+                                    Actas de Consejo
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -149,13 +158,14 @@
                     <div class="card-content">
                         <ul>
                             <li>
-                                <a href="{{ route('sare.index') }}">SARE</a>
+                                <a href="{{ route('sare.index') }}" class="btn-link">SARE</a>
                             </li>
                             <li>
-                                <a href="https://www.gob.mx/conamer">CONAMER</a>
+                                <a href="https://www.gob.mx/conamer" class="btn-link">CONAMER</a>
                             </li>
                             <li>
-                                <a href="https://migtodigitalciudadano.guanajuato.gob.mx/sign-in">GTO Digital</a>
+                                <a href="https://migtodigitalciudadano.guanajuato.gob.mx/sign-in" class="btn-link">GTO
+                                    Digital</a>
                             </li>
                         </ul>
                     </div>
@@ -179,7 +189,10 @@
                         <p>
                             Planeación de las regulaciones, que pretendan ser emitidas, modificadas o eliminadas.
                         </p>
-                        <a href="{{ route('regulatory-agenda.index') }}" class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0" style="width: fit-content">Acceder a directorio de Dependencias <ion-icon name="caret-forward-outline"></ion-icon></a>
+                        <a href="{{ route('regulatory-agenda.index') }}"
+                            class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0"
+                            style="width: fit-content">Acceder a directorio de Dependencias <ion-icon
+                                name="caret-forward-outline"></ion-icon></a>
                     </div>
                 </div>
             </div>

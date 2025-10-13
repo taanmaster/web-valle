@@ -37,9 +37,20 @@ class Table extends Component
         $this->publication_type = '';
     }
 
+    public function changeStatus($id)
+    {
+        $regulation = MunicipalRegulation::find($id);
+        $regulation->is_active = !$regulation->is_active;
+        $regulation->save();
+    }
+
     public function render()
     {
-        $query = MunicipalRegulation::query();
+        if ($this->mode == 1) {
+            $query = MunicipalRegulation::where('is_active', true);
+        } else {
+            $query = MunicipalRegulation::query();
+        }
 
         if ($this->title !== '') {
             $query->where('title', $this->title);

@@ -240,6 +240,7 @@ class FrontController extends Controller
         return view('front.dependencies.transparency_obligations')
             ->with('dependency', $dependency)
             ->with('obligations', $obligations)
+            ->with('type', $type)
             ->with('submenu_name', $submenu_name)
             ->with('submenu_description', $submenu_description);
     }
@@ -258,8 +259,11 @@ class FrontController extends Controller
     {
         $dependency = TransparencyDependency::where('slug', '=', $slug)->first();
 
+        $type = '';
+
         return view('front.dependencies.detail')
-            ->with('dependency', $dependency);
+            ->with('dependency', $dependency)
+            ->with('type', $type);
     }
 
     // Módulo Obligaciones
@@ -396,21 +400,21 @@ class FrontController extends Controller
                     ->get();
                 $title = 'Inspectores';
                 break;
-            
+
             case 'auditors':
                 $workers = \App\Models\UrbanDevWorker::auditors()
                     ->orderBy('name', 'asc')
                     ->get();
                 $title = 'Fiscalización';
                 break;
-            
+
             case 'experts':
                 $workers = \App\Models\UrbanDevWorker::experts()
                     ->orderBy('name', 'asc')
                     ->get();
                 $title = 'Peritos';
                 break;
-            
+
             default:
                 abort(404);
         }
@@ -620,5 +624,25 @@ class FrontController extends Controller
         $achievements = ImplanAchievement::where('is_active', true)->get();
 
         return view('front.implan.achievements')->with('achievements', $achievements);
+    }
+
+    public function municipalInspection()
+    {
+        return view('front.municipal_inspection');
+    }
+
+    public function urbanCouncil()
+    {
+        return view('front.urban_council');
+    }
+
+    public function councilAttributions()
+    {
+        return view('front.council_attributions');
+    }
+
+    public function actasConsejo()
+    {
+        return view('front.council_minutes');
     }
 }

@@ -78,4 +78,9 @@ class UrbanDevWorker extends Model
     {
         return $query->where('dependency_category', 'Fiscalización');
     }
+
+    public function summons()
+    {
+        return $this->hasMany(Summon::class, 'worker_id');
+    }
 }

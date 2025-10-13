@@ -30,4 +30,9 @@ class Citizen extends Model
     {
         return $this->hasOne(CitizenMedicalProfile::class);
     }
+
+    public function summons()
+    {
+        return $this->hasMany(Summon::class);
+    }
 }

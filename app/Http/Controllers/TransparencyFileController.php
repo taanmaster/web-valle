@@ -29,7 +29,7 @@ class TransparencyFileController extends Controller
     }
 
     function uploadFile(Request $request, $id)
-    {   
+    {
         $dependency = TransparencyDependency::find($id);
 
         // Guardar datos en la base de datos
@@ -38,10 +38,10 @@ class TransparencyFileController extends Controller
 
         $file = $request->file('file');
         $filename = Str::slug($dependency->name) . '_' . Str::random(8) . '_file' . '.' . $file->getClientOriginalExtension();
-        
+
         /* Guardar en S3 usando streaming */
         $filepath = 'transparency/files/' . $filename;
-        
+
         // Usar streaming para archivos
         $stream = fopen($file->getRealPath(), 'r+');
         Storage::disk('s3')->put($filepath, $stream);
@@ -57,20 +57,20 @@ class TransparencyFileController extends Controller
         $var_file->uploaded_by = Auth::user()->id;
 
         $var_file->save();
-        
+
         return response()->json(['success' => $filename]);
     }
 
     function fetchFile($id)
     {
         $dependency = TransparencyDependency::find($id);
-        
-        $output = '<div class="row">';
+
+        $output = '<tbody>';
         foreach($dependency->files as $file)
         {
             $icon = 'fa-file';
             $badge = '';
-            
+
             // Condicional para determinar qué ruta usar
             if ($file->s3_asset_url !== null) {
                 $publicPath = $file->s3_asset_url; // Usar ruta de Amazon AWS
@@ -116,22 +116,21 @@ class TransparencyFileController extends Controller
             $fileSizeFormatted = $file->filesize ? $this->formatFileSize($file->filesize) : 'N/A';
 
             $output .= '
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <i class="fas '.$icon.' fa-3x"></i>
-                        <h5 class="card-title mt-2">'.$file->name.'</h5>
-                        <span class="badge bg-primary">'.$badge.'</span>
-                        <small class="text-muted d-block mt-1">'.$fileSizeFormatted.'</small>
-                        <input type="text" class="form-control mt-2" id="filePath'.$file->id.'" value="'.$publicPath.'" readonly>
-                        <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard(\'filePath'.$file->id.'\')">Copiar Ruta</button>
-                        <button type="button" class="btn btn-link remove_file mt-2" id="'.$file->filename.'">Eliminar</button>
-                    </div>
-                </div>
-            </div>
+            <tr>
+                <td>'.$file->id.'</td>
+                <td>'.$file->name.'</td>
+                <td>'.$file->filename.'</td>
+                <td>'.$file->obligation->name. '</td>
+                <td><span class="badge bg-primary">' . $badge . '</span></td>
+                <td>'.$file->created_at. '</td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard(\'filePath' . $file->id . '\')">Copiar Ruta</button>
+                    <button type="button" class="btn btn-link remove_file mt-2" id="' . $file->filename . '">Eliminar</button>
+                </td>
+            </tr>
             ';
         }
-        $output .= '</div>';
+        $output .= '</tbody>';
 
         echo $output;
     }
@@ -139,7 +138,7 @@ class TransparencyFileController extends Controller
     function deleteFile(Request $request)
     {
         $file = TransparencyFile::where('filename', $request->name)->first();
-        
+
         if ($file) {
             // Eliminar el archivo de S3
             $s3Path = 'transparency/files/' . $file->filename;
@@ -162,11 +161,11 @@ class TransparencyFileController extends Controller
     private function formatFileSize($bytes, $precision = 2)
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
-        
+
         for ($i = 0; $bytes > 1024 && $i < count($units) - 1; $i++) {
             $bytes /= 1024;
         }
-        
+
         return round($bytes, $precision) . ' ' . $units[$i];
     }
 
@@ -185,7 +184,7 @@ class TransparencyFileController extends Controller
         // Validar extensión de archivo
         $allowedExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'zip', 'rar', 'png', 'jpg', 'jpeg', 'gif', 'bmp'];
         $fileExtension = strtolower(pathinfo($request->filename, PATHINFO_EXTENSION));
-        
+
         if (!in_array($fileExtension, $allowedExtensions)) {
             return response()->json([
                 'success' => false,
@@ -196,7 +195,7 @@ class TransparencyFileController extends Controller
         $dependency = TransparencyDependency::find($request->dependency_id);
         $filename = Str::slug($dependency->name) . '_' . Str::random(8) . '_file.' . $fileExtension;
         $filepath = 'transparency/files/' . $filename;
-        
+
         // Crear registro temporal para tracking
         $uploadSession = [
             'upload_id' => uniqid(),
@@ -236,7 +235,7 @@ class TransparencyFileController extends Controller
         ]);
 
         $uploadSession = cache()->get('chunk_upload_transparency_file_' . $request->upload_id);
-        
+
         if (!$uploadSession) {
             return response()->json(['error' => 'Sesión de subida no encontrada'], 400);
         }
@@ -280,7 +279,7 @@ class TransparencyFileController extends Controller
         ]);
 
         $uploadSession = cache()->get('chunk_upload_transparency_file_' . $request->upload_id);
-        
+
         if (!$uploadSession) {
             return response()->json(['error' => 'Sesión de subida no encontrada'], 400);
         }
@@ -297,7 +296,7 @@ class TransparencyFileController extends Controller
 
             // Combinar chunks en orden
             $finalFileHandle = fopen($finalFile, 'wb');
-            
+
             for ($i = 0; $i < $uploadSession['total_chunks']; $i++) {
                 $chunkPath = $tempDir . '/chunk_' . $i;
                 if (file_exists($chunkPath)) {

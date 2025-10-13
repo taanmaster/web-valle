@@ -56,6 +56,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/', 'FrontController@index')->name('index');
     Route::get('/en-construccion', 'FrontController@building')->name('building');
 
+    //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
+
+    //Registro Municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
+    Route::get('/registro-municipal-de-inspecciones', 'FrontController@municipalInspection')->name('inspeccion_municipal.index');
+
+    //Integrantes del Consejo
+    Route::get('/integrantes-del-consejo', 'FrontController@urbanCouncil')->name('urban_council.index');
+
+    //Atribuciones del Consejo
+    Route::get('/atribuciones-del-consejo', 'FrontController@councilAttributions')->name('council_attributions.index');
+
+    //Actas de Consejo
+    Route::get('/actas-de-consejo', 'FrontController@actasConsejo')->name('actas_consejo.index');
+
     //Instituto Municipal de Planeación
     Route::group(['prefix' => '/instituto-municipal-de-planeacion'], function () {
         Route::get('/', 'FrontController@implan')->name('implan.index');
@@ -410,7 +424,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('workers/inspectors', [UrbanDevWorkerController::class, 'inspectors'])->name('urban_dev.workers.inspectors');
             Route::get('workers/experts', [UrbanDevWorkerController::class, 'experts'])->name('urban_dev.workers.experts');
             Route::get('workers/auditors', [UrbanDevWorkerController::class, 'auditors'])->name('urban_dev.workers.auditors');
-            
+
             Route::resource('workers', UrbanDevWorkerController::class)->names([
                 'create' => 'urban_dev.workers.create',
                 'store' => 'urban_dev.workers.store',
@@ -600,13 +614,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'dif.stock_movements.update',
                 'destroy' => 'dif.stock_movements.destroy',
             ]);
-            
+
             // Endpoint AJAX para obtener lotes disponibles por variante
             Route::get('stock_movements_batches', [DIFStockMovementController::class, 'batches'])->name('dif.stock_movements.batches');
-            
+
             // Ruta adicional para generar recibo PDF
             Route::get('stock_movements/{movement}/receipt', [DIFStockMovementController::class, 'receipt'])->name('dif.stock_movements.receipt');
-            
+
             // Rutas adicionales para ver movimientos por tipo
             Route::get('stock_movements_inbound', [DIFStockMovementController::class, 'inbound'])->name('dif.stock_movements.inbound');
             Route::get('stock_movements_outbound', [DIFStockMovementController::class, 'outbound'])->name('dif.stock_movements.outbound');
@@ -1251,6 +1265,39 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ]);
         });
 
+        //Inspecciones municipales
+        Route::resource('municipal_inspections', MunicipalInspectionController::class)->names([
+            'index' => 'municipal_inspections.index',
+            'create' => 'municipal_inspections.create',
+            'store' => 'municipal_inspections.store',
+            'show' => 'municipal_inspections.show',
+            'edit' => 'municipal_inspections.edit',
+            'update' => 'municipal_inspections.update',
+            'destroy' => 'municipal_inspections.destroy',
+        ]);
+
+        //Actas de Consejo
+        Route::resource('council_minutes', CouncilMinuteController::class)->names([
+            'index' => 'council_minutes.index',
+            'create' => 'council_minutes.create',
+            'store' => 'council_minutes.store',
+            'show' => 'council_minutes.show',
+            'edit' => 'council_minutes.edit',
+            'update' => 'council_minutes.update',
+            'destroy' => 'council_minutes.destroy',
+        ]);
+
+        //Citatorios
+        Route::resource('summons', SummonController::class)->names([
+            'index' => 'summons.index',
+            'create' => 'summons.create',
+            'store' => 'summons.store',
+            'show' => 'summons.show',
+            'edit' => 'summons.edit',
+            'update' => 'summons.update',
+            'destroy' => 'summons.destroy',
+        ]);
+
         /* ------------------- */
         /* ------------------- */
         /* IMPLAN */
@@ -1335,6 +1382,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         // Rutas para archivos de desarrollo urbano
         Route::post('/desarrollo-urbano/archivo/subir', 'CitizenProfileController@uploadUrbanDevFile')->name('citizen.urban_dev.file.upload');
         Route::delete('/desarrollo-urbano/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteUrbanDevFile')->name('citizen.urban_dev.file.delete');
+
+        //Rutas para citatorios
+        Route::get('/citatorios', 'CitizenProfileController@summons')->name('citizen.summons.index');
+        Route::get('/citatorios/{id}', 'CitizenProfileController@showSummon')->name('citizen.summons.show');
     });
 
     Route::get('/reload-captcha', [
