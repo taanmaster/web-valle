@@ -54,7 +54,7 @@ class Crud extends Component
             'name' => 'required|string|max:255',
             'year' => 'required|integer|min:2000|max:' . date('Y'),
             'session' => 'required|string|max:255',
-            'file' => $this->minute ? 'nullable|file|mimes:pdf,doc,docx|max:5120' : 'required|file|mimes:pdf,doc,docx|max:5120',
+            'file' => $this->minute ? 'nullable|file|mimes:pdf,doc,docx|max:5120' : 'nullable|file|mimes:pdf,doc,docx|max:5120',
         ], [
             'name.required' => 'El nombre es obligatorio.',
             'year.required' => 'El año es obligatorio.',

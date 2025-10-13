@@ -98,7 +98,7 @@ class Crud extends Component
             'worker_id' => 'required|integer',
             'file' => $this->summon
                 ? 'nullable|file|max:10240' // 10 MB
-                : 'required|file|max:10240',
+                : 'nullable|file|max:10240',
         ], [
             'expiration_date.required' => 'La fecha de vencimiento es obligatoria.',
             'expiration_date.after_or_equal' => 'La fecha de vencimiento no puede ser anterior a hoy.',

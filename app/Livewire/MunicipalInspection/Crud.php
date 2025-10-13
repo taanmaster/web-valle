@@ -52,6 +52,23 @@ class Crud extends Component
 
     public function save()
     {
+        // Validación de campos
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'dependency' => 'required|string|max:255',
+            'year' => 'required|integer|min:2000|max:' . date('Y'),
+            'file' => 'nullable|file|max:10240', // opcional, máximo 10 MB
+        ], [
+            'name.required' => 'El nombre es obligatorio.',
+            'dependency.required' => 'La dependencia es obligatoria.',
+            'year.required' => 'El año es obligatorio.',
+            'year.integer' => 'El año debe ser un número.',
+            'year.min' => 'El año debe ser mayor o igual a 2000.',
+            'year.max' => 'El año no puede ser mayor al actual.',
+            'file.max' => 'El archivo no puede superar los 10 MB.',
+        ]);
+
+
         if ($this->inspection != null) {
 
             // --- Subida de archivos si hay nuevos ---
