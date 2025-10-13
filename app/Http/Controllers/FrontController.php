@@ -405,14 +405,14 @@ class FrontController extends Controller
                 $workers = \App\Models\UrbanDevWorker::auditors()
                     ->orderBy('name', 'asc')
                     ->get();
-                $title = 'Peritos';
+                $title = 'Fiscalización';
                 break;
 
             case 'experts':
                 $workers = \App\Models\UrbanDevWorker::experts()
                     ->orderBy('name', 'asc')
                     ->get();
-                $title = 'Fiscalización';
+                $title = 'Peritos';
                 break;
 
             default:

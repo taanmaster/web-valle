@@ -125,7 +125,7 @@
             </div>
 
             <div class="col-md-4">
-                <a href="{{ route('urban_dev.contacts', 'auditors') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp">
+                <a href="{{ route('urban_dev.contacts', 'experts') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp">
                     <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
                         <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
                     </div>
@@ -142,7 +142,7 @@
             </div>
 
             <div class="col-md-4">
-                <a href="{{ route('urban_dev.contacts', 'experts') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp">
+                <a href="{{ route('urban_dev.contacts', 'auditors') }}" class="card link-card card-normal card-alignment-bottom wow fadeInUp">
                     <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
                         <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
                     </div>
