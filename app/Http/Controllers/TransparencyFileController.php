@@ -67,7 +67,7 @@ class TransparencyFileController extends Controller
 
         $output = '
     <div class="table-responsive">
-        <table class="table table-bordered align-middle">
+        <table class="table align-middle">
             <thead class="table-light">
                 <tr>
                     <th>ID</th>
@@ -75,7 +75,6 @@ class TransparencyFileController extends Controller
                     <th>Nombre Oficial</th>
                     <th>Pertenece a</th>
                     <th>Tipo</th>
-                    <th>Tamaño</th>
                     <th>Creado</th>
                     <th>Acciones</th>
                 </tr>
@@ -141,17 +140,13 @@ class TransparencyFileController extends Controller
                     <td>' . ($file->name ?? '-') . '</td>
                     <td>' . ($dependency->name ?? '-') . '</td>
                     <td><span class="badge bg-primary">' . $badge . '</span></td>
-                    <td>' . $fileSizeFormatted . '</td>
                     <td>' . ($file->created_at ? $file->created_at->format('Y-m-d') : '-') . '</td>
                     <td>
                         <div class="d-flex gap-2">
                             <input type="text" id="filePath' . $file->id . '" value="' . $publicPath . '" hidden readonly>
                             <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard(\'filePath' . $file->id . '\')">
-                                <i class="fas fa-copy"></i>
+                                Copiar ruta
                             </button>
-                            <a href="' . $publicPath . '" target="_blank" class="btn btn-sm btn-outline-secondary">
-                                <i class="fas fa-eye"></i>
-                            </a>
                             <button class="btn btn-sm btn-outline-danger remove_file" id="' . $file->filename . '">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
