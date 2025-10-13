@@ -14,36 +14,61 @@ use Livewire\WithPagination;
 
 //Modelos
 use App\Models\TransparencyObligation;
+use App\Models\TransparencyDocument;
+
 
 class Table extends Component
 {
     use WithPagination;
 
+    //Mode: 0 normal, 1 Filtrado por obligación
+    public $mode;
+
     public $dependency;
+    public $type;
+
+    public $transparency_obligation;
 
     public $period = '';
-    public $type = '';
+    public $year = '';
+    public $selectedObligation = '';
+
+    public $years = ['2028', '2027', '2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015'];
+
+    public function mount()
+    {
+    }
 
     public function resetFilters()
     {
         $this->period = '';
-        $this->type = '';
+        $this->year = '';
+
+        if ($this->mode != 1) {
+            $this->selectedObligation = '';
+        }
     }
 
     public function render()
     {
-        $query = TransparencyObligation::where('dependency_id', $this->dependency);
+        $obligations = TransparencyObligation::where('dependency_id', $this->dependency)->where('type', $this->type)->get();
+
+        $query = TransparencyDocument::query();
 
         if ($this->period) {
-            $query->where('update_period', $this->period);
+            $query->where('period', $this->period);
         }
-        if ($this->type !== '') {
-            $query->where('type', $this->type);
+        if ($this->year !== '') {
+            $query->where('year', $this->year);
+        }
+        if ($this->selectedObligation) {
+            $query->where('obligation_id', $this->selectedObligation);
         }
 
-        $obligations = $query->get();
+        $documents = $query->get();
 
         return view('front.dependencies.utilities.table', [
+            'documents' => $documents,
             'obligations' => $obligations,
         ]);
     }
