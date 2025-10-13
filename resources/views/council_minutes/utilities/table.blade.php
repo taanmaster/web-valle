@@ -60,9 +60,9 @@
                                                 <td>{{ $minute->year }}</td>
                                                 <td>{{ $minute->name }}</td>
                                                 <td>
-                                                    @if ($minute->file_path)
-                                                        <a href="{{ Storage::url($minute->file_path) }}"
-                                                            target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    @if ($minute->file)
+                                                        <a href="{{ $minute->file }}" target="_blank"
+                                                            class="btn btn-sm btn-outline-primary">
                                                             Ver
                                                         </a>
                                                     @else
