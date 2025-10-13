@@ -62,6 +62,16 @@
             <form method="POST" wire:submit="save" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="row justify-content-end">
                     <div class="col-md-4">
                         <div class="row my-3">
