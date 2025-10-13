@@ -11,7 +11,8 @@
                         <div class="overlay"></div>
 
                         <div class="card-content">
-                            <img src="{{ asset('images/dependencies/' . $dependency->logo) }}" class="card-logo mb-3" alt="Logotipo de {{ $dependency->name }}" style="height: 80px;">
+                            <img src="{{ asset('images/dependencies/' . $dependency->logo) }}" class="card-logo mb-3"
+                                alt="Logotipo de {{ $dependency->name }}" style="height: 80px;">
                             <h4>{{ $submenu_name }}</h4>
                             <p class="mb-0">{{ $submenu_description }}</p>
                         </div>
@@ -41,13 +42,7 @@
                                 </div>
 
                                 <div class="card-content">
-                                    <span class="badge bg-primary mb-3">{{ $obligation->update_period }}</span>
-                                    <h4 class="mb-1">{{ $obligation->name }}</h4>
-                                    <p class="truncate-text">{{ $obligation->description }}</p>
-
-                                    <div class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-between gap-2">
-                                        Ver Documentación <ion-icon name="arrow-forward-outline"></ion-icon>
-                                    </div>
+                                    <p class="mb-1">{{ $obligation->name }}</p>
                                 </div>
                             </a>
                         </div>

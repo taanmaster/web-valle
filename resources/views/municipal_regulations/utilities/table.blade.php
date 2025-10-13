@@ -55,6 +55,7 @@
                     <th>PDF</th>
                     <th>Word</th>
                     @if ($mode === 0)
+                        <th>Visible en front</th>
                         <th>Acciones</th>
                     @endif
                 </tr>
@@ -97,6 +98,25 @@
                         </td>
 
                         @if ($mode === 0)
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="switchCheckDefault" @if ($regulation->is_active) checked @endif
+                                        wire:click="changeStatus({{ $regulation->id }})">
+                                    <label class="form-check-label" for="switchCheckDefault">
+
+                                        @switch($regulation->is_active)
+                                            @case(1)
+                                                Si
+                                            @break
+
+                                            @case(0)
+                                                No
+                                            @break
+                                        @endswitch
+                                    </label>
+                                </div>
+                            </td>
                             <td>
                                 <a href="{{ route('institucional_development.regulations.edit', $regulation->id) }}"
                                     class="btn btn-link btn-sm">Editar</a>
