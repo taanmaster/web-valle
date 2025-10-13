@@ -58,7 +58,7 @@
                                             <tr>
                                                 <td>{{ $inspection->name }}</td>
                                                 <td>
-                                                    <a href="{{ Storage::url($inspection->file_path) }}" target="_blank"
+                                                    <a href="{{ $inspection->file }}" target="_blank"
                                                         class="btn btn-sm btn-outline-primary">
                                                         Ver
                                                     </a>
