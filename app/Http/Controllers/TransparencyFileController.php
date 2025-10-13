@@ -65,7 +65,7 @@ class TransparencyFileController extends Controller
     {
         $dependency = TransparencyDependency::find($id);
 
-        $output = '<tbody>';
+
         foreach($dependency->files as $file)
         {
             $icon = 'fa-file';
@@ -130,7 +130,6 @@ class TransparencyFileController extends Controller
             </tr>
             ';
         }
-        $output .= '</tbody>';
 
         echo $output;
     }
