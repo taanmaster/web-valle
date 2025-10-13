@@ -65,19 +65,36 @@ class TransparencyFileController extends Controller
     {
         $dependency = TransparencyDependency::find($id);
 
-        $output = '<div class="row">';
-        foreach($dependency->files as $file)
-        {
+        $output = '
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Archivo</th>
+                    <th>Nombre Oficial</th>
+                    <th>Pertenece a</th>
+                    <th>Tipo</th>
+                    <th>Tamaño</th>
+                    <th>Creado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+    ';
+
+        foreach ($dependency->files as $file) {
             $icon = 'fa-file';
             $badge = '';
 
-            // Condicional para determinar qué ruta usar
+            // Determinar la ruta del archivo
             if ($file->s3_asset_url !== null) {
-                $publicPath = $file->s3_asset_url; // Usar ruta de Amazon AWS
+                $publicPath = $file->s3_asset_url;
             } else {
-                $publicPath = url('files/transparency/' . $file->filename); // Usar ruta local tradicional
+                $publicPath = url('files/transparency/' . $file->filename);
             }
 
+            // Determinar tipo e ícono
             switch ($file->file_extension) {
                 case 'pdf':
                     $icon = 'fa-file-pdf';
@@ -116,22 +133,39 @@ class TransparencyFileController extends Controller
             $fileSizeFormatted = $file->filesize ? $this->formatFileSize($file->filesize) : 'N/A';
 
             $output .= '
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <i class="fas ' . $icon . ' fa-3x"></i>
-                        <h5 class="card-title mt-2">' . $file->name . '</h5>
-                        <span class="badge bg-primary">' . $badge . '</span>
-                        <small class="text-muted d-block mt-1">' . $fileSizeFormatted . '</small>
-                        <input type="text" class="form-control mt-2" id="filePath' . $file->id . '" value="' . $publicPath . '" readonly>
-                        <button type="button" class="btn btn-outline-primary mt-2" onclick="copyToClipboard(\'filePath' . $file->id . '\')">Copiar Ruta</button>
-                        <button type="button" class="btn btn-link remove_file mt-2" id="' . $file->filename . '">Eliminar</button>
-                    </div>
-                </div>
+                <tr>
+                    <td>' . $file->id . '</td>
+                    <td>
+                        <i class="fas ' . $icon . ' text-secondary me-2"></i>' . $file->filename . '
+                    </td>
+                    <td>' . ($file->name ?? '-') . '</td>
+                    <td>' . ($dependency->name ?? '-') . '</td>
+                    <td><span class="badge bg-primary">' . $badge . '</span></td>
+                    <td>' . $fileSizeFormatted . '</td>
+                    <td>' . ($file->created_at ? $file->created_at->format('Y-m-d') : '-') . '</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <input type="text" id="filePath' . $file->id . '" value="' . $publicPath . '" hidden readonly>
+                            <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard(\'filePath' . $file->id . '\')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <a href="' . $publicPath . '" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn btn-sm btn-outline-danger remove_file" id="' . $file->filename . '">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                ';
+                }
+
+                $output .= '
+                    </tbody>
+                </table>
             </div>
             ';
-        }
-        $output .= '</div>';
 
         echo $output;
     }

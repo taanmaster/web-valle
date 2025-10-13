@@ -118,24 +118,9 @@
                                 dependencia.</div>
                         @endif
 
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Nombre Archivo</th>
-                                        <th>Nombre Oficial</th>
-                                        <th>Pertenece a</th>
-                                        <th>Tipo</th>
-                                        <th>Creado</th>
-                                        <th scope="col">Acciones</th>
-                                    </tr>
-                                </thead>
 
-                                <div id="uploaded_image">
+                        <div id="uploaded_image">
 
-                                </div>
-                            </table>
                         </div>
 
 
