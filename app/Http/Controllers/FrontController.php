@@ -240,6 +240,7 @@ class FrontController extends Controller
         return view('front.dependencies.transparency_obligations')
             ->with('dependency', $dependency)
             ->with('obligations', $obligations)
+            ->with('type', $type)
             ->with('submenu_name', $submenu_name)
             ->with('submenu_description', $submenu_description);
     }
@@ -258,8 +259,11 @@ class FrontController extends Controller
     {
         $dependency = TransparencyDependency::where('slug', '=', $slug)->first();
 
+        $type = '';
+
         return view('front.dependencies.detail')
-            ->with('dependency', $dependency);
+            ->with('dependency', $dependency)
+            ->with('type', $type);
     }
 
     // Módulo Obligaciones

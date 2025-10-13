@@ -30,25 +30,14 @@
             </div>
         </div>
 
-        <div class="row w-100">
-            <div class="col-md-12">
-                <div class="row">
-                    @foreach ($obligations as $obligation)
-                        <div class="col-md-3" style="margin-bottom: 30px;">
-                            <a href="{{ route('obligation.detail', [$dependency, $obligation->slug]) }}"
-                                class="card link-card card-normal card-alignment-bottom wow fadeInUp h-100">
-                                <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
-                                    <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
-                                </div>
-
-                                <div class="card-content">
-                                    <p class="mb-1">{{ $obligation->name }}</p>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
+        @if ($obligations->count() == 0)
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-muted">No hay obligaciones disponibles.</p>
                 </div>
             </div>
-        </div>
+        @else
+            <livewire:front.transparency-obligations.table :dependency="$dependency->id" :type="$type" />
+        @endif
     </div>
 @endsection
