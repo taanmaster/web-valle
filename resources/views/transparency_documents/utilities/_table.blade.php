@@ -41,13 +41,12 @@
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">
                             {{--
-                        <a href="{{ route('transparency_documents.show', $transparency_document->id) }}" class="btn btn-sm btn-icon"><i class='bx bx-show-alt'></i> Ver Detalle</a>
-                        --}}
+                            <a href="{{ route('transparency_documents.show', $transparency_document->id) }}" class="btn btn-sm btn-icon"><i class='bx bx-show-alt'></i> Ver Detalle</a>
+                            --}}
                             <a href="{{ route('transparency_documents.edit', $transparency_document->id) }}"
                                 class="btn btn-sm btn-icon"><i class='bx bx-edit'></i> Editar</a>
 
-                            
-                                {{--  
+                            @if (auth()->user()->hasRole('transparency_admin') || auth()->user()->hasRole('all'))  
                             <form method="POST"
                                 action="{{ route('transparency_documents.destroy', $transparency_document->id) }}"
                                 style="display: inline-block;">
@@ -57,7 +56,7 @@
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                             </form>
-                            --}}
+                            @endif
                         </div>
                     </td>
                 </tr>
