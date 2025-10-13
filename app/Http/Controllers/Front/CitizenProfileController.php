@@ -8,6 +8,7 @@ use App\Models\Citizen;
 use App\Models\UserInfo;
 use App\Models\SareRequest;
 use App\Models\SareRequestFile;
+use App\Models\Summon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -33,14 +34,14 @@ class CitizenProfileController extends Controller
     {
         $user = Auth::user();
         $citizen = $this->getOrCreateCitizenProfile($user);
-        
+
         return view('front.citizen_profile.edit', compact('citizen'));
     }
 
     public function update(Request $request)
     {
         $user = Auth::user();
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
@@ -60,11 +61,11 @@ class CitizenProfileController extends Controller
         // Actualizar usuario
         $user->name = $request->name;
         $user->email = $request->email;
-        
+
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
-        
+
         $user->save();
 
         // Actualizar o crear perfil de ciudadano
@@ -77,7 +78,7 @@ class CitizenProfileController extends Controller
         ]);
 
         Session::flash('success', 'Tu perfil se actualizó correctamente.');
-        
+
         return redirect()->route('citizen.profile.edit');
     }
 
@@ -87,7 +88,7 @@ class CitizenProfileController extends Controller
         $sareRequests = \App\Models\SareRequest::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        
+
         // Si es una petición AJAX, devolver solo los datos
         if ($request->ajax() || $request->get('ajax')) {
             return response()->json([
@@ -100,7 +101,7 @@ class CitizenProfileController extends Controller
                 })
             ]);
         }
-        
+
         return view('front.citizen_profile.requests', compact('sareRequests'));
     }
 
@@ -131,7 +132,7 @@ class CitizenProfileController extends Controller
     {
         $user = Auth::user();
         $userInfo = $this->getOrCreateUserInfo($user);
-        
+
         return view('front.citizen_profile.settings', compact('userInfo'));
     }
 
@@ -147,7 +148,7 @@ class CitizenProfileController extends Controller
         ]);
 
         Session::flash('success', 'Tus preferencias de notificaciones se actualizaron correctamente.');
-        
+
         return redirect()->route('citizen.profile.settings');
     }
 
@@ -157,7 +158,7 @@ class CitizenProfileController extends Controller
     private function getOrCreateCitizenProfile($user)
     {
         $citizen = Citizen::where('email', $user->email)->first();
-        
+
         if (!$citizen) {
             $citizen = Citizen::create([
                 'name' => $user->name,
@@ -168,7 +169,7 @@ class CitizenProfileController extends Controller
                 'curp' => null,
             ]);
         }
-        
+
         return $citizen;
     }
 
@@ -178,10 +179,10 @@ class CitizenProfileController extends Controller
     private function getOrCreateUserInfo($user)
     {
         $userInfo = UserInfo::where('user_id', $user->id)->first();
-        
+
         if (!$userInfo) {
             $citizen = $this->getOrCreateCitizenProfile($user);
-            
+
             $userInfo = UserInfo::create([
                 'user_id' => $user->id,
                 'model_type' => 'App\Models\Citizen',
@@ -191,7 +192,7 @@ class CitizenProfileController extends Controller
                 'push_notifications' => true,
             ]);
         }
-        
+
         return $userInfo;
     }
 
@@ -368,7 +369,7 @@ class CitizenProfileController extends Controller
                     'message' => 'Solo puedes editar solicitudes en estado "Nuevo".'
                 ], 403);
             }
-            
+
             Session::flash('error', 'Solo puedes editar solicitudes en estado "Nuevo".');
             return redirect()->route('citizen.sare.show', $sareRequest);
         }
@@ -485,7 +486,7 @@ class CitizenProfileController extends Controller
     public function destroySareRequest(Request $request, $id)
     {
         $sareRequest = SareRequest::findOrFail($id);
-        
+
         // Verificar que la solicitud pertenece al usuario autenticado
         if ($sareRequest->user_id !== Auth::id()) {
             abort(403, 'No tienes acceso a esta solicitud.');
@@ -499,7 +500,7 @@ class CitizenProfileController extends Controller
                     'message' => 'Solo puedes eliminar solicitudes pendientes.'
                 ], 403);
             }
-            
+
             Session::flash('error', 'Solo puedes eliminar solicitudes pendientes.');
             return redirect()->route('citizen.profile.requests');
         }
@@ -657,7 +658,7 @@ class CitizenProfileController extends Controller
                     'message' => 'Solo puedes editar solicitudes en estado "Nuevo".'
                 ], 403);
             }
-            
+
             Session::flash('error', 'Solo puedes editar solicitudes en estado "Nuevo".');
             return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
         }
@@ -732,7 +733,7 @@ class CitizenProfileController extends Controller
                     'message' => 'Solo puedes eliminar solicitudes en estado "Nuevo".'
                 ], 403);
             }
-            
+
             Session::flash('error', 'Solo puedes eliminar solicitudes en estado "Nuevo".');
             return redirect()->route('citizen.profile.urban_dev_requests');
         }
@@ -783,7 +784,7 @@ class CitizenProfileController extends Controller
             ]);
 
             $urbanDevRequest = \App\Models\UrbanDevRequest::findOrFail($request->urban_dev_request_id);
-            
+
             // Verificar que la solicitud pertenece al usuario autenticado
             if ($urbanDevRequest->user_id !== Auth::id()) {
                 return response()->json([
@@ -794,17 +795,17 @@ class CitizenProfileController extends Controller
 
             // Obtener el nombre del documento y slug correcto
             $documentInfo = $this->getDocumentInfoFromSlug($request->document_type);
-            
+
             $file = $request->file('file');
             $originalName = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
             $fileName = 'desarrollo_urbano_' . time() . '_' . Str::random(10) . '.' . $extension;
-            
+
             // Guardar archivo en S3
             $filepath = 'desarrollo_urbano/' . $fileName;
             Storage::disk('s3')->put($filepath, file_get_contents($file));
             $s3Url = Storage::disk('s3')->url($filepath);
-            
+
             // Crear registro en base de datos
             $urbanDevFile = \App\Models\UrbanDevRequestFile::create([
                 'user_id' => Auth::id(),
@@ -853,23 +854,23 @@ class CitizenProfileController extends Controller
             'copia-del-ultimo-pago-del-predial' => 'Copia del último pago del predial.',
             'copia-de-identificacion-de-la-persona-que-acredita-la-propiedad-asi-como-la-del-arrendatario-o-representante-legal-segun-sea-el-caso' => 'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso',
             'croquis-de-ubicacion-del-inmueble' => 'Croquis de ubicación del inmueble',
-            
+
             // constancia-de-factibilidad, permiso-de-anuncios, certificacion-numero-oficial
             'poder-legal' => 'Poder Legal',
-            
+
             // permiso-de-division
             'solicitud-por-escrito-con-proyecto-de-division' => 'Solicitud por escrito con proyecto de división',
             'croquis-del-predio' => 'Croquis del predio',
             'copia-de-identificacion-de-la-persona-que-acredita-la-propiedad' => 'Copia de identificación de la persona que acredita la propiedad',
-            
+
             // licencia-de-construccion
             'proyecto-arquitectonico-en-dos-tantos-fisicos-con-escala-1-100-o-1-50-elaborados-avaldaos-y-firmados-por-dro' => 'Proyecto arquitectonico, en dos tantos físicos. Con escala 1:100 O 1:50 elaborados, avaldaos y firmados por DRO',
-            
+
             // permiso-construccion-panteones
             'copia-de-identificacion-del-propietario' => 'Copia de identificación del propietario',
             'copia-del-documento-de-perpetuidad' => 'Copia del documento de perpetuidad'
         ];
-        
+
         // Verificar si el slug existe en el mapeo
         if (isset($documentMapping[$receivedSlug])) {
             return [
@@ -877,7 +878,7 @@ class CitizenProfileController extends Controller
                 'slug' => $receivedSlug
             ];
         }
-        
+
         // Si no existe en el mapeo, usar el slug recibido como nombre y generar un slug limpio
         return [
             'name' => $receivedSlug,
@@ -892,7 +893,7 @@ class CitizenProfileController extends Controller
     {
         try {
             $file = SareRequestFile::findOrFail($fileId);
-            
+
             // Verificar que el archivo pertenece al usuario autenticado
             $sareRequest = $file->sareRequest;
             if ($sareRequest->user_id !== Auth::id()) {
@@ -929,7 +930,7 @@ class CitizenProfileController extends Controller
     {
         try {
             $file = \App\Models\UrbanDevRequestFile::findOrFail($fileId);
-            
+
             // Verificar que el archivo pertenece al usuario autenticado
             if ($file->user_id !== Auth::id()) {
                 return response()->json([
@@ -983,14 +984,14 @@ class CitizenProfileController extends Controller
             // Validar extensión
             $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx'];
             $extension = strtolower($file->getClientOriginalExtension());
-            
+
             if (!in_array($extension, $allowedExtensions)) {
                 return response()->json(['error' => 'Tipo de archivo no permitido.'], 400);
             }
 
             // Generar nombre único con el tipo de documento
             $fileName = 'sare_' . $documentType . '_' . time() . '_' . Str::random(10) . '.' . $extension;
-            
+
             // Guardar archivo en S3
             $filepath = 'sare/' . $fileName;
             Storage::disk('s3')->put($filepath, file_get_contents($file));
@@ -1092,7 +1093,7 @@ class CitizenProfileController extends Controller
             $sareRequestId = $request->sare_request_id;
 
             $tempDir = public_path('temp/chunks/' . $uploadId);
-            
+
             // Validar que todos los chunks estén presentes
             for ($i = 0; $i < $totalChunks; $i++) {
                 $chunkPath = $tempDir . '/chunk_' . $i;
@@ -1113,14 +1114,14 @@ class CitizenProfileController extends Controller
             }
 
             $finalFile = fopen($finalPath, 'wb');
-            
+
             for ($i = 0; $i < $totalChunks; $i++) {
                 $chunkPath = $tempDir . '/chunk_' . $i;
                 $chunkData = file_get_contents($chunkPath);
                 fwrite($finalFile, $chunkData);
                 unlink($chunkPath); // Eliminar chunk temporal
             }
-            
+
             fclose($finalFile);
             rmdir($tempDir); // Eliminar directorio temporal
 
@@ -1147,5 +1148,33 @@ class CitizenProfileController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al finalizar upload: ' . $e->getMessage()], 500);
         }
+    }
+
+    //Citatorios
+    public function summons()
+    {
+        $user = Auth::user();
+        $citizen = $this->getOrCreateCitizenProfile($user);
+
+        $mode = 1;
+
+        $summons = Summon::where('citizen_id', $citizen->id)->get();
+
+        $citizenId = $citizen->id;
+
+        return view('front.citizen_profile.summons.index', [
+            'summons' => $summons,
+            'mode' => $mode,
+            'citizenId' => $citizenId
+        ]);
+    }
+
+    public function showSummon($id)
+    {
+        $summon = Summon::findOrFail($id);
+
+        $mode = 1;
+
+        return view('front.citizen_profile.summons.show')->with('summon', $summon)->with('mode', $mode);
     }
 }

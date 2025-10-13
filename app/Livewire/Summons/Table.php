@@ -20,9 +20,23 @@ class Table extends Component
 
     public $mode = 0; // 0: Listado, 1: Index
 
+    public $citizen = '';
+
+    public function mount()
+    {
+
+    }
+
     public function render()
     {
-        $summons = Summon::paginate(10);
+
+        if ($this->citizen != '') {
+            $summons = Summon::where('citizen_id', $this->citizen)->paginate(10);
+
+        } else {
+
+            $summons = Summon::paginate(10);
+        }
 
         return view('summons.utilities.table', [
             'summons' => $summons,

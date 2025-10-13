@@ -35,6 +35,12 @@
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
+                                <a class="nav-link" href="{{ route('citizen.summons.index') }}" id="citatorios-tab"
+                                    role="tab">
+                                    <ion-icon name="document-text-outline"></ion-icon>Citatorios
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
                                 <a class="nav-link" href="{{ route('citizen.profile.settings') }}" id="configuraciones-tab"
                                     role="tab">
                                     <ion-icon name="cog-outline"></ion-icon> Configuraciones
@@ -104,7 +110,8 @@
                                                             <i class="bx bx-calendar"></i> Creada:
                                                             {{ $request->created_at->format('d/m/Y') }}
                                                             <span class="mx-2">|</span>
-                                                            <i class="bx bx-tag"></i> {{ ucfirst($request->request_type) }}
+                                                            <i class="bx bx-tag"></i>
+                                                            {{ ucfirst($request->request_type) }}
                                                             <span class="mx-2">|</span>
                                                             <i class="bx bx-building"></i> {{ $request->commercial_name }}
                                                         </p>

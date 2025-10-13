@@ -1382,6 +1382,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         // Rutas para archivos de desarrollo urbano
         Route::post('/desarrollo-urbano/archivo/subir', 'CitizenProfileController@uploadUrbanDevFile')->name('citizen.urban_dev.file.upload');
         Route::delete('/desarrollo-urbano/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteUrbanDevFile')->name('citizen.urban_dev.file.delete');
+
+        //Rutas para citatorios
+        Route::get('/citatorios', 'CitizenProfileController@summons')->name('citizen.summons.index');
+        Route::get('/citatorios/{id}', 'CitizenProfileController@showSummon')->name('citizen.summons.show');
     });
 
     Route::get('/reload-captcha', [

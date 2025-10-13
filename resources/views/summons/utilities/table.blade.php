@@ -14,11 +14,11 @@
     </div>
 
      --}}
-
-        <div class="col-md-3 text-end">
-            <a href="{{ route('summons.create') }}" class="btn btn-primary btn-sm">Agregar Citatorio</a>
-        </div>
-
+        @if ($mode != 1)
+            <div class="col-md-3 text-end">
+                <a href="{{ route('summons.create') }}" class="btn btn-primary btn-sm">Agregar Citatorio</a>
+            </div>
+        @endif
     </div>
 
     <div class="table-responsive">
@@ -33,6 +33,9 @@
                     <th>Número</th>
                     <th>Colonia</th>
                     <th>Inspector</th>
+                    @if ($mode == 1)
+                        <th>Acción</th>
+                    @endif
                     @if ($mode == 0)
                         <th>Acción</th>
                     @endif
@@ -46,7 +49,7 @@
                             {{ $summon->number ?? 'N/A' }}<br>
                         </td>
                         <td>
-                            {{ $summon->created_at ?? 'N/A' }}
+                            {{ $summon->expiration_date ? \Carbon\Carbon::parse($summon->expiration_date)->format('Y-m-d') : 'N/A' }}
                         </td>
                         <td>
                             {{ $summon->full_name ?? 'N/A' }}
@@ -63,6 +66,13 @@
                         <td>
                             {{ $summon->worker->name ?? 'N/A' }} {{ $summon->worker->last_name ?? 'N/A' }}
                         </td>
+                        @if ($mode == 1)
+                            <td>
+                                <a href="{{ route('citizen.summons.show', $summon->id) }}"
+                                    class="btn btn-sm btn-primary">Ver</a>
+                            </td>
+                        @endif
+                        <td></td>
                         @if ($mode == 0)
                             <td>
                                 <a href="{{ route('summons.edit', $summon->id) }}"
