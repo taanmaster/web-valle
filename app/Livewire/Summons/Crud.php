@@ -84,6 +84,34 @@ class Crud extends Component
 
     public function save()
     {
+        // Validación de datos
+        $this->validate([
+            'expiration_date' => 'required|date',
+            'folio' => 'required|string|max:255',
+            'number' => 'required|string|max:255',
+            'citizen_id' => 'nullable|integer',
+            'full_name' => 'required|string|max:255',
+            'street' => 'required|string|max:255',
+            'external_number' => 'nullable|string|max:50',
+            'suburb' => 'nullable|string|max:255',
+            'details' => 'nullable|string|max:1000',
+            'worker_id' => 'required|integer',
+            'file' => $this->summon
+                ? 'nullable|file|max:10240' // 10 MB
+                : 'required|file|max:10240',
+        ], [
+            'expiration_date.required' => 'La fecha de vencimiento es obligatoria.',
+            'expiration_date.after_or_equal' => 'La fecha de vencimiento no puede ser anterior a hoy.',
+            'folio.required' => 'El folio es obligatorio.',
+            'number.required' => 'El número de citatorio es obligatorio.',
+            'full_name.required' => 'El nombre completo es obligatorio.',
+            'street.required' => 'La calle es obligatoria.',
+            'worker_id.required' => 'Debes seleccionar un trabajador.',
+            'file.required' => 'Debes subir un archivo.',
+            'file.max' => 'El archivo no puede superar los 10 MB.',
+        ]);
+
+
         if ($this->summon != null) {
 
             // --- Subida de archivos si hay nuevos ---

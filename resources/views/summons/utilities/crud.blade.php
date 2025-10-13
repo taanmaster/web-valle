@@ -175,14 +175,15 @@
                                     style="height: 400px; overflow:scroll;">
                                     <!-- Cities dependent select menu... -->
 
-                                    <label for="provisional_integer_id" class="col-form-label mb-1">Inpector</label>
+                                    <label for="provisional_integer_id" class="col-form-label mb-1">Inspector</label>
 
                                     @php
                                         $workers = \App\Models\UrbanDevWorker::where(
-                                            'name',
-                                            'like',
-                                            '%' . $searchWorker . '%',
-                                        )->get();
+                                            'dependency_subcategory',
+                                            'Inspector',
+                                        )
+                                            ->where('name', 'like', '%' . $searchWorker . '%')
+                                            ->get();
                                     @endphp
 
                                     @if ($workers->count() > 0)
