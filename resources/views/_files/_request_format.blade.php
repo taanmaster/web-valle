@@ -142,7 +142,7 @@
         <h3 style="margin-bottom: 0px; margin-top: 0;">PRESIDENTE MUNICIPAL</h3>
         <h3 style="margin-top: 0;">PRESENTE:</h3>
 
-        <p>POR MEDIO DE LA PRESENTE, RECIBA UN CORDIAL SALUDO Y ME DIRIJO A USTED DE LA MANERA MAS ATENTA PARA SOLICITARLE APOYO RECURSO ECONÓMICO POR LA CANTIDAD DE ${{ number_format($financial_support->qty,2) }} PARA SOLVENTAR GASTOS DE MANUTENCIÓN (BASICOS DEL HOGAR AGUA, GAS, ALIMENTOS).</p>
+        <p>POR MEDIO DE LA PRESENTE, RECIBA UN CORDIAL SALUDO Y ME DIRIJO A USTED DE LA MANERA MAS ATENTA PARA SOLICITARLE APOYO RECURSO ECONÓMICO POR LA CANTIDAD DE ${{ number_format($financial_support->qty ?? 0, 2) }} PARA SOLVENTAR GASTOS DE MANUTENCIÓN (BASICOS DEL HOGAR AGUA, GAS, ALIMENTOS).</p>
         <p>SIN MAS POR EL MOMENTO ME DESPIDO DANDOLE LAS GRACIAS Y QUEDANDO A SUS DISTINGUIDAS ORDENES.</p>
 
         <h3 style="margin-top: 50px;">ATENTAMENTE:</h3>
@@ -153,14 +153,26 @@
         </div>
         <div style="margin-top: 50px;">
             <p style="margin-bottom: 0;">NOMBRE:</p>
-            <p style="margin-top: 0;">{{ $financial_support->citizen->name }} {{ $financial_support->citizen->first_name }} {{ $financial_support->citizen->last_name }}</p>
+            @if($financial_support->citizen)
+                <p style="margin-top: 0;">{{ $financial_support->citizen->name ?? '' }} {{ $financial_support->citizen->first_name ?? '' }} {{ $financial_support->citizen->last_name ?? '' }}</p>
+            @else
+                <p style="margin-top: 0;"><span style="background-color: #ffc107; color: #000; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: bold;">⚠ Falta configurar más datos</span></p>
+            @endif
         </div>
 
         <p style="margin-bottom: 0;">DIRECCIÓN:</p>
-        <p style="margin-top: 0;">{{ $financial_support->citizen->address ?? 'Sin Dirección Configurada' }}</p>
+        @if($financial_support->citizen && ($financial_support->citizen->address || $financial_support->citizen->street || $financial_support->citizen->colony))
+            <p style="margin-top: 0;">{{ ($financial_support->citizen->address ?? '') . ' ' . ($financial_support->citizen->street ?? '') . ' ' . ($financial_support->citizen->colony ?? '') }}</p>
+        @else
+            <p style="margin-top: 0;"><span style="background-color: #ffc107; color: #000; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: bold;">⚠ Falta configurar más datos</span></p>
+        @endif
 
         <p style="margin-bottom: 0;">TELÉFONO:</p>
-        <p style="margin-top: 0;">{{ $financial_support->citizen->phone }}</p>
+        @if($financial_support->citizen && $financial_support->citizen->phone)
+            <p style="margin-top: 0;">{{ $financial_support->citizen->phone }}</p>
+        @else
+            <p style="margin-top: 0;"><span style="background-color: #ffc107; color: #000; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: bold;">⚠ Falta configurar más datos</span></p>
+        @endif
     </main>
 </body>
 </html>
