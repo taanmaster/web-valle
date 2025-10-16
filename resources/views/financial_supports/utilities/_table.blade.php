@@ -23,21 +23,16 @@
             <tr>
                 <th scope="row">#{{ $financial_support->int_num }}</th>
                 <td>
-                    {{--  
-                    <a href="{{ route('financial_supports.show', $financial_support->id) }}">
-                        {{ $financial_support->citizen->name }} {{ $financial_support->citizen->first_name }} {{ $financial_support->citizen->last_name }}
-                    </a>
-                    --}}
                     @if($financial_support->citizen == null)
-                        <p class="text-danger text-bold mb-0"><strong>Información de Beneficiario Eliminada por Administración.</strong></p>
+                        <span class="badge bg-danger">Ciudadano Eliminado por Administrador</span>
                     @else
-                    {{ $financial_support->citizen->name }} {{ $financial_support->citizen->first_name }} {{ $financial_support->citizen->last_name }}
+                        {{ $financial_support->citizen->name ?? '' }} {{ $financial_support->citizen->first_name ?? '' }} {{ $financial_support->citizen->last_name ?? '' }}
                     @endif
                 </td>
-                <td>${{ number_format($financial_support->qty,2) }}</td>
-                <td>{{ $financial_support->receipt_num }}</td>
-                <td>{{ $financial_support->type->name }}</td>
-                <td>{{ $financial_support->created_at }}</td>
+                <td>${{ number_format($financial_support->qty ?? 0, 2) }}</td>
+                <td>{{ $financial_support->receipt_num ?? 'N/A' }}</td>
+                <td>{{ $financial_support->type->name ?? 'N/A' }}</td>
+                <td>{{ $financial_support->created_at ?? 'N/A' }}</td>
 
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
