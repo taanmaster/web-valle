@@ -10,6 +10,7 @@
                             <th>Apellidos</th>
                             <th style="width: 140px;">No. Empleado</th>
                             <th>Puesto/Cargo</th>
+                            <th style="width: 200px;">Contacto</th>
                             <th style="width: 180px;">Vigencia</th>
                             <th style="width: 140px;" class="text-center">Acciones</th>
                         </tr>
@@ -34,6 +35,32 @@
                                 <span class="badge bg-secondary">{{ $worker->employee_number }}</span>
                             </td>
                             <td>{{ $worker->position }}</td>
+                            <td>
+                                @if($worker->email || $worker->phone || $worker->extension)
+                                    @if($worker->email)
+                                        <small class="d-block text-muted">
+                                            <i class="fas fa-envelope me-1"></i>
+                                            <a href="mailto:{{ $worker->email }}" class="text-decoration-none">{{ $worker->email }}</a>
+                                        </small>
+                                    @endif
+                                    @if($worker->phone)
+                                        <small class="d-block text-muted">
+                                            <i class="fas fa-phone me-1"></i>
+                                            <a href="tel:{{ $worker->phone }}" class="text-decoration-none">{{ $worker->phone }}</a>
+                                            @if($worker->extension)
+                                                <span class="badge bg-light text-dark ms-1">Ext. {{ $worker->extension }}</span>
+                                            @endif
+                                        </small>
+                                    @elseif($worker->extension)
+                                        <small class="d-block text-muted">
+                                            <i class="fas fa-phone me-1"></i>
+                                            <span class="badge bg-light text-dark">Ext. {{ $worker->extension }}</span>
+                                        </small>
+                                    @endif
+                                @else
+                                    <small class="text-muted">Sin información</small>
+                                @endif
+                            </td>
                             <td>
                                 @if($worker->validity_date_end)
                                     @php

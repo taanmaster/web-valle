@@ -19,6 +19,9 @@ class UrbanDevWorker extends Model
         'validity_date_start',
         'validity_date_end',
         'position',
+        'email',
+        'phone',
+        'extension',
         'dependency_category',
         'dependency_subcategory',
     ];

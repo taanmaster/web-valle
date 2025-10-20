@@ -80,6 +80,9 @@ class UrbanDevWorkerController extends Controller
             'validity_date_start' => 'required|date',
             'validity_date_end' => 'nullable|date',
             'position' => 'required|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|max:20',
+            'extension' => 'nullable|max:10',
             'dependency_category' => 'required',
             'dependency_subcategory' => 'nullable',
             'profile_photo' => 'nullable|image|max:5120', // 5MB max
@@ -93,6 +96,9 @@ class UrbanDevWorkerController extends Controller
             'validity_date_start' => $request->validity_date_start,
             'validity_date_end' => $request->validity_date_end,
             'position' => $request->position,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'extension' => $request->extension,
             'dependency_category' => $request->dependency_category,
             'dependency_subcategory' => $request->dependency_subcategory,
         ]);
@@ -176,6 +182,9 @@ class UrbanDevWorkerController extends Controller
             'validity_date_start' => 'required|date',
             'validity_date_end' => 'nullable|date',
             'position' => 'required|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|max:20',
+            'extension' => 'nullable|max:10',
             'dependency_category' => 'required',
             'dependency_subcategory' => 'nullable',
             'profile_photo' => 'nullable|image|max:5120',
@@ -188,6 +197,9 @@ class UrbanDevWorkerController extends Controller
         $worker->validity_date_start = $request->validity_date_start;
         $worker->validity_date_end = $request->validity_date_end;
         $worker->position = $request->position;
+        $worker->email = $request->email;
+        $worker->phone = $request->phone;
+        $worker->extension = $request->extension;
         $worker->dependency_category = $request->dependency_category;
         $worker->dependency_subcategory = $request->dependency_subcategory;
 

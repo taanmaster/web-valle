@@ -30,6 +30,9 @@ class UrbanDevWorkerImport implements ToCollection, WithHeadingRow
             $validity_date_start = $row['validity_date_start'];
             $validity_date_end = $row['validity_date_end'] ?? null;
             $position = $row['position'];
+            $email = $row['email'] ?? null;
+            $phone = $row['phone'] ?? null;
+            $extension = $row['extension'] ?? null;
 
             // Determinar dependency_category y dependency_subcategory
             $dependency_category = '';
@@ -65,6 +68,9 @@ class UrbanDevWorkerImport implements ToCollection, WithHeadingRow
                     'validity_date_start' => $validity_date_start,
                     'validity_date_end' => $validity_date_end,
                     'position' => $position,
+                    'email' => $email,
+                    'phone' => $phone,
+                    'extension' => $extension,
                     'dependency_category' => $dependency_category,
                     'dependency_subcategory' => $dependency_subcategory,
                 ]);
