@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
+// Ayudantes
+use Session;
+use Auth;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
+// Modelos
 use App\Models\UrbanDevWorker;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Session;
-use Auth;
+
+// Importaciones
+use App\Imports\UrbanDevWorkerImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UrbanDevWorkerController extends Controller
 {
@@ -257,5 +265,51 @@ class UrbanDevWorkerController extends Controller
 
         // Por defecto, redirigir a inspectores
         return redirect()->route('urban_dev.workers.inspectors');
+    }
+
+    public function import(Request $request)
+    {
+        $this->validate($request, [
+            'import_file' => 'required|file|mimes:xlsx,xls,csv',
+            'dependency_category' => 'required|in:Peritos,Inspectores,Fiscalización',
+        ]);
+
+        $archivo = $request->file('import_file');
+        $dependency_category = $request->input('dependency_category');
+        
+        $filename_excel = 'excel_importado_' . Carbon::now()->format('d_m_y_H_m_s') . '.'. $archivo->getClientOriginalExtension();
+        $location = public_path('excel/');
+        $archivo->move($location, $filename_excel);
+
+        try {
+            Excel::import(new UrbanDevWorkerImport($dependency_category), public_path('excel/' . $filename_excel));
+
+            // Mensaje de session
+            Session::flash('success', 'La información se importó a tu base de datos sin errores. Los registros repetidos fueron ignorados automáticamente.');
+
+            // Redirigir según la categoría seleccionada
+            if ($dependency_category == 'Fiscalización') {
+                return redirect()->route('urban_dev.workers.auditors');
+            } elseif ($dependency_category == 'Peritos') {
+                return redirect()->route('urban_dev.workers.experts');
+            } else {
+                return redirect()->route('urban_dev.workers.inspectors');
+            }
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $errors = [];
+
+            foreach ($failures as $failure) {
+                $errors[] = 'Fila ' . $failure->row() . ': ' . implode(', ', $failure->errors());
+            }
+
+            Session::flash('error', 'Hubo errores en la importación: ' . implode(' | ', $errors));
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            Session::flash('error', 'Error al importar el archivo: ' . $e->getMessage());
+            
+            return redirect()->back();
+        }
     }
 }
