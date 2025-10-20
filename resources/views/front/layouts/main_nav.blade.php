@@ -52,6 +52,13 @@
             </li>
 
             <li>
+                <a href="{{ route('urban_dev.contacts', 'auditors') }}">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <span>Fiscalización</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('implan.index') }}">
                     <ion-icon name="bulb-outline"></ion-icon>
                     <span>IMPLAN</span>

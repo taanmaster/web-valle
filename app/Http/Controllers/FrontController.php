@@ -406,6 +406,12 @@ class FrontController extends Controller
                     ->orderBy('name', 'asc')
                     ->get();
                 $title = 'Fiscalización';
+
+                return view('front.urban_dev.auditors_detail')->with([
+                    'type' => $type,
+                    'workers' => $workers,
+                    'title' => $title
+                ]);
                 break;
 
             case 'experts':

@@ -163,6 +163,30 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="email" class="form-label">Correo Electrónico</label>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $worker->email) }}" placeholder="Ej. trabajador@ejemplo.com">
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="phone" class="form-label">Teléfono</label>
+                                        <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', $worker->phone) }}" placeholder="Ej. 123-456-7890">
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="extension" class="form-label">Extensión</label>
+                                        <input type="text" class="form-control @error('extension') is-invalid @enderror" id="extension" name="extension" value="{{ old('extension', $worker->extension) }}" placeholder="Ej. 1234">
+                                        @error('extension')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
 

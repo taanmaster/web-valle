@@ -440,6 +440,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'urban_dev.workers.destroy',
             ]);
 
+            Route::post('/importacion-trabajadores', [
+                'uses' => 'UrbanDevWorkerController@import',
+                'as' => 'urban_dev.workers.import',
+            ]);
+
             // Ruta para solicitudes de inspector
             Route::get('inspector_requests', [UrbanDevInspectorController::class, 'requests'])->name('urban_dev.inspectors.requests');
 

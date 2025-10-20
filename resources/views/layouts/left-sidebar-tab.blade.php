@@ -474,6 +474,14 @@
                         </li>
                     </ul>
 
+                    @if(Auth::user()->email == 'webmaster@valle.com')
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#importEmployees" class="btn btn-outline-primary">Importar Excel</a>
+                        </li>
+                    </ul>
+                    @endif
+
                     <div class="title-box">
                         <h6 class="menu-title">Indicadores y KPI's</h6>
                     </div>
@@ -649,3 +657,44 @@
         </div>
     </div>
 </div>
+
+@if(Auth::user()->email == 'webmaster@valle.com')
+<!-- Modal -->
+<div class="modal fade" id="importEmployees" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Importar Excel de Empleados</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ route('urban_dev.workers.import') }}" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Selecciona tu Archivo <span class="text-danger">*</span></label>
+                        <input class="form-control" type="file" name="import_file" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dependency_category" class="form-label">Dependencia del Trabajador <span class="text-danger">*</span></label>
+                        <select class="form-control" id="dependency_category" name="dependency_category" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="Peritos">Peritos</option>
+                            <option value="Inspectores">Inspectores</option>
+                            <option value="Fiscalización">Fiscalización</option>
+                        </select>
+
+                        <small>Al seleccionar la dependencia, se aplicarán los permisos correspondientes a los trabajadores de esa área. Agrupa los exceles por dependencia y subcategoria de dependencia.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Procesar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
