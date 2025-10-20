@@ -106,6 +106,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     // Contraloría
     Route::get('/contraloria', 'FrontController@contraloria')->name('contraloria.index');
+    Route::get('/contraloria/declaracion-patrimonial', 'FrontController@contraloriaDeclaration')->name('contraloria.declaration');
+    Route::get('/contraloria/entrega-recepcion', 'FrontController@contraloriaReception')->name('contraloria.reception');
+    Route::get('/contraloria/quejas-denuncias-y-sugerencias', 'FrontController@contraloriaSuggestions')->name('contraloria.suggestions');
+    Route::get('/contraloria/aviso-de-privacidad', 'FrontController@contraloriaPrivacyNotice')->name('contraloria.privacy_notice');
+
+
     Route::get('/contraloria/faltas-administrativas', 'FrontController@contraloriaFaults')->name('contraloria.faults');
     Route::get('/contraloria/faltas-administrativas/no-graves', 'FrontController@contraloriaFaultsNotSerious')->name('contraloria.faults.not-serious');
     Route::get('/contraloria/faltas-administrativas/sanciones-faltas-no-graves', 'FrontController@contraloriaFaultsNotSeriousRules')->name('contraloria.faults.not-serious-rules');

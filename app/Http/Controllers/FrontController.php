@@ -537,6 +537,27 @@ class FrontController extends Controller
         return view('front.contraloria.faults_serious');
     }
 
+    public function contraloriaDeclaration()
+    {
+        return view('front.contraloria.declaration');
+    }
+
+    public function contraloriaReception()
+    {
+        return view('front.contraloria.reception');
+    }
+
+    public function contraloriaSuggestions()
+    {
+        return view('front.contraloria.suggestions');
+    }
+
+    public function contraloriaPrivacyNotice()
+    {
+        return view('front.contraloria.privacy_notice');
+    }
+    
+
     // Pantallas DenunciaNet
     public function denunciaNet()
     {
