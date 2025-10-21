@@ -130,7 +130,7 @@
                                 </div>
 
                                 <div class="position-absolute drop-search p-3 pt-1 @if ($searchCitizen == null) d-none @endif"
-                                    style="height: 400px; overflow:scroll;">
+                                    style="max-height: 400px; overflow:scroll;">
                                     <!-- Cities dependent select menu... -->
 
                                     <label for="provisional_integer_id" class="col-form-label mb-1">Ciudadano</label>
@@ -153,6 +153,12 @@
                                         @endforeach
                                     @else
                                         <p>No existe</p>
+
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#userModal" style="width: fit-content">
+                                            Crear ciudadano
+                                        </button>
                                     @endif
                                 </div>
                             </div>
@@ -182,7 +188,7 @@
                                 </div>
 
                                 <div class="position-absolute drop-search p-3 pt-1 @if ($searchWorker == null) d-none @endif"
-                                    style="height: 400px; overflow:scroll;">
+                                    style="max-height: 400px; overflow:scroll;">
                                     <!-- Cities dependent select menu... -->
 
                                     <label for="provisional_integer_id" class="col-form-label mb-1">Inspector</label>
@@ -263,6 +269,20 @@
                     @endif
                 </div>
             </form>
+        </div>
+    </div>
+
+
+    <!-- Modal Create User-->
+    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="userModalLabel">Crear Cliente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <livewire:citizen.quick-crud />
+            </div>
         </div>
     </div>
 

@@ -51,6 +51,22 @@ class Crud extends Component
     public $followup_type = '';
     public $followup_comment = '';
 
+    #[On('user-created')]
+    public function updateCitizen($id)
+    {
+        $this->citizen_id = $id;
+
+        $citizen = \App\Models\Citizen::find($id);
+        if ($citizen) {
+            $this->full_name = $citizen->name . ' ' . $citizen->first_name . ' ' . $citizen->last_name;
+        }
+
+        $this->selectedCitizen = $citizen;
+
+        $this->searchCitizen = '';
+    }
+
+
     public function mount()
     {
         if ($this->summon != null) {
