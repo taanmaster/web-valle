@@ -30,7 +30,7 @@
                             <h3 class="mb-3">Visión</h3>
                             <div class="d-flex align-items-center" style="gap: 12px">
                                 <img style="height: 80px" src="{{ asset('images/implan/vision-1.png') }}" alt="vision">
-                                <p class="mb-0">Ser un instituto técnica, líder  en planeación estratégica municipal, reconocido por su innovación y compromiso con el desarrollo sustentable y ordenado de Valle de Santiago. Aspiramos a consolidanos como un referente en Guanajuato y en México en inversiones materia de planeación se realicen integral, garantizando que las políticas públicas, proyectos e con visión de futuro, justicia social, equilibrio ambiental y participación ciudadana efectiva.</p>
+                                <p class="mb-0">Ser un instituto líder en planeación estratégica municipal, reconocido por su innovación y compromiso con el desarrollo sustentable y ordenado de Valle de Santiago. Aspiramos a consolidarnos como un referente en Guanajuato y en México en inversiones materia de planeación se realicen integral, garantizando que las políticas públicas, proyectos e con visión de futuro, justicia social, equilibrio ambiental y participación ciudadana efectiva.</p>
                             </div>
                         </div>
                     </div>
