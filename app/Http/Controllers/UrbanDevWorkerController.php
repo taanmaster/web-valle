@@ -27,6 +27,7 @@ class UrbanDevWorkerController extends Controller
     {
         $workers = UrbanDevWorker::inspectors()
             ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return view('urban_dev.workers.inspectors')
@@ -40,6 +41,7 @@ class UrbanDevWorkerController extends Controller
     {
         $workers = UrbanDevWorker::experts()
             ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return view('urban_dev.workers.experts')
@@ -53,6 +55,7 @@ class UrbanDevWorkerController extends Controller
     {
         $workers = UrbanDevWorker::auditors()
             ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return view('urban_dev.workers.auditors')
