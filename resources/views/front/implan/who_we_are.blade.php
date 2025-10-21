@@ -43,14 +43,7 @@
                 <div class="card-body">
                     <h3>Organigrama</h3>
 
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <h3 class="text-danger">Escanea nuestro QR y <br> conoce nuestro organigrama</h3>
-                        </div>
-                        <div class="col-md-6">
-                             <img src="{{ asset('images/implan/org_implan_qr.png') }}" alt="" width="100%">
-                        </div>
-                    </div>
+                    <img src="{{ asset('images/implan/org_implan.png') }}" alt="" width="100%" class="mt-4">
                 </div>
             </div>
         </div>
