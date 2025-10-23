@@ -50,7 +50,7 @@ class RegulationsTable extends Component
 
     public function render()
     {
-
+        dd($this->is_admin);
 
         if ($this->is_admin == false) {
             $query = RegulatoryAgendaRegulation::query()
