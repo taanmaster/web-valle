@@ -69,8 +69,6 @@ class RegulationsTable extends Component
             $query->where('semester', $this->semester);
         }
 
-
-
         if ($this->type !== '') {
             $query->where('type', $this->type);
         }
