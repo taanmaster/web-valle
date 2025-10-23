@@ -31,14 +31,16 @@
                 </select>
             </div>
 
-            <div class="col">
-                <label for="is_active" class="form-label">Activo</label>
-                <select id="is_active" class="form-select" wire:model.live="is_active">
-                    <option value="">Todos</option>
-                    <option value="1">Sí</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
+            @if ($is_admin == true)
+                <div class="col">
+                    <label for="is_active" class="form-label">Activo</label>
+                    <select id="is_active" class="form-select" wire:model.live="is_active">
+                        <option value="">Todos</option>
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+            @endif
 
             <div class="col">
                 <label for="type" class="form-label">Tipo</label>
