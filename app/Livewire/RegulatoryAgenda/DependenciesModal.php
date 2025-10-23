@@ -21,6 +21,7 @@ class DependenciesModal extends Component
 
     public $name = '';
     public $description = '';
+    public $in_index = false;
 
     public $fullname_connection = '';
     public $title_connection = '';
@@ -34,6 +35,7 @@ class DependenciesModal extends Component
 
         $this->name = '';
         $this->description = '';
+        $this->in_index = false;
         $this->fullname_connection = '';
         $this->title_connection = '';
         $this->fullname_lider = '';
@@ -47,6 +49,7 @@ class DependenciesModal extends Component
 
         $this->name = $this->dependency->name;
         $this->description = $this->dependency->description;
+        $this->in_index = (bool) $this->dependency->in_index;
         $this->fullname_connection = $this->dependency->fullname_connection;
         $this->title_connection = $this->dependency->title_connection;
         $this->fullname_lider = $this->dependency->fullname_lider;
@@ -59,6 +62,7 @@ class DependenciesModal extends Component
             $this->dependency->update([
                 'name' => $this->name,
                 'description' => $this->description,
+                'in_index' => $this->in_index,
                 'fullname_connection' => $this->fullname_connection,
                 'title_connection' => $this->title_connection,
                 'fullname_lider' => $this->fullname_lider,
@@ -66,7 +70,7 @@ class DependenciesModal extends Component
             ]);
 
             // Mensaje de sesión
-            Session::flash('success', 'Dependencia creada correctamente.');
+            Session::flash('success', 'Dependencia actualizada correctamente.');
 
             // Redirigir
             return redirect()->route('regulatory_agenda.index');
@@ -74,6 +78,7 @@ class DependenciesModal extends Component
             RegulatoryAgendaDependency::create([
                 'name' => $this->name,
                 'description' => $this->description,
+                'in_index' => $this->in_index,
                 'fullname_connection' => $this->fullname_connection,
                 'title_connection' => $this->title_connection,
                 'fullname_lider' => $this->fullname_lider,

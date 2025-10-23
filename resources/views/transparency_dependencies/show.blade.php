@@ -123,8 +123,6 @@
 
                         </div>
 
-
-
                         <hr>
 
                         <div class="col-md-12">
@@ -427,12 +425,54 @@
                 })
             });
 
-            function copyToClipboard(elementId) {
-                var copyText = document.getElementById(elementId);
-                copyText.select();
-                copyText.setSelectionRange(0, 99999); // For mobile devices
-                document.execCommand("copy");
-                alert("Ruta copiada: " + copyText.value);
+            async function copyToClipboard(elementId) {
+                try {
+                    const copyText = document.getElementById(elementId);
+                    const textToCopy = copyText.value;
+                    
+                    // Usar la API moderna del portapapeles
+                    await navigator.clipboard.writeText(textToCopy);
+                    
+                    // Mostrar toast de éxito
+                    showToast('Ruta copiada exitosamente', 'success');
+                } catch (err) {
+                    // Fallback para navegadores antiguos
+                    try {
+                        const copyText = document.getElementById(elementId);
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999);
+                        document.execCommand("copy");
+                        showToast('Ruta copiada exitosamente', 'success');
+                    } catch (e) {
+                        showToast('Error al copiar la ruta', 'error');
+                    }
+                }
+            }
+
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                const bgColor = type === 'success' ? 'bg-success' : 'bg-danger';
+                const icon = type === 'success' ? '<i class="fas fa-check-circle me-2"></i>' : '<i class="fas fa-exclamation-circle me-2"></i>';
+                
+                toast.className = `alert ${bgColor} text-white alert-dismissible fade show position-fixed`;
+                toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
+                toast.innerHTML = `
+                    ${icon}
+                    <span>${message}</span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                // Auto-remover después de 3 segundos
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.remove();
+                        }
+                    }, 150);
+                }, 3000);
             }
         </script>
     @endpush

@@ -320,7 +320,7 @@ class FrontController extends Controller
     // Módulo Agenda Regulatoria
     public function regulatoryAgenda()
     {
-        $dependencies = RegulatoryAgendaDependency::all();
+        $dependencies = RegulatoryAgendaDependency::where('in_index', true)->orderBy('name', 'asc')->get();
 
         return view('front.regulatory_agenda.index')->with('dependencies', $dependencies);
     }

@@ -12,6 +12,10 @@ class RegulatoryAgendaDependency extends Model
     protected $table = 'regulatory_agenda_dependencies';
     protected $guarded = [];
 
+    protected $casts = [
+        'in_index' => 'boolean',
+    ];
+
     public function regulations()
     {
         return $this->hasMany(RegulatoryAgendaRegulation::class, 'dependency_id');

@@ -25,6 +25,15 @@
                     <textarea class="form-control" wire:model="description" name="description" rows="3"></textarea>
                 </div>
 
+                <div class="col-md-12 mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" wire:model.boolean="in_index" name="in_index" id="in_index" value="1">
+                        <label class="form-check-label" for="in_index">
+                            Mostrar en el índice público (front)
+                        </label>
+                    </div>
+                </div>
+
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="name" class="form-label">Nombre de Enlace de Mejora Regulatoria</label>
