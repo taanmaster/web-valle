@@ -60,6 +60,9 @@ class RegulationsTable extends Component
         } else {
             $query = RegulatoryAgendaRegulation::query()
                 ->where('dependency_id', $this->dependency->id);
+
+
+            dd('no');
         }
 
 
