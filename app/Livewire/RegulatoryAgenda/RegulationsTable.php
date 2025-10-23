@@ -50,8 +50,16 @@ class RegulationsTable extends Component
 
     public function render()
     {
-        $query = RegulatoryAgendaRegulation::query()
-            ->where('dependency_id', $this->dependency->id);
+
+
+        if ($this->is_admin == true) {
+            $query = RegulatoryAgendaRegulation::query()
+                ->where('dependency_id', $this->dependency->id)->where('is_active', false);
+        } else {
+            $query = RegulatoryAgendaRegulation::query()
+                ->where('dependency_id', $this->dependency->id);
+        }
+
 
         if ($this->presentation_date) {
             $query->whereDate('presentation_date', $this->presentation_date);
