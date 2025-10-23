@@ -69,10 +69,13 @@
                             <img src="{{ asset('assets/images/empty.svg') }}" class="ml-auto mr-auto"
                                 style="width:30%; margin-bottom: 40px;">
                             <h4>¡No hay Regulaciones guardadas en la base de datos!</h4>
-                            <p class="mb-4">Empieza a cargarlas en la sección correspondiente.</p>
-                            <a href="{{ route('regulatory_agenda_regulation.create', $dependency->id) }}"
-                                class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nueva
-                                Regulación</a>
+
+                            @if ($is_admin == 'true')
+                                <p class="mb-4">Empieza a cargarlas en la sección correspondiente.</p>
+                                <a href="{{ route('regulatory_agenda_regulation.create', $dependency->id) }}"
+                                    class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nueva
+                                    Regulación</a>
+                            @endif
                         </div>
                     </div>
                 </div>
