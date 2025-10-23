@@ -51,10 +51,12 @@ class RegulationsTable extends Component
     public function render()
     {
 
-
         if ($this->is_admin == false) {
             $query = RegulatoryAgendaRegulation::query()
                 ->where('dependency_id', $this->dependency->id)->where('is_active', true);
+
+            dd('si');
+
         } else {
             $query = RegulatoryAgendaRegulation::query()
                 ->where('dependency_id', $this->dependency->id);
