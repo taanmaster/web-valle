@@ -3,12 +3,14 @@
         <h3>Regulaciones</h3>
 
         <div class="d-flex align-items-center" style="gap: 12px">
-            <a class="btn btn-secondary" style="max-width: 180px" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <a class="btn btn-secondary" style="max-width: 180px" data-bs-toggle="collapse" href="#collapseExample"
+                role="button" aria-expanded="false" aria-controls="collapseExample">
                 Filtros
             </a>
-            
+
             @if ($is_admin == 'true')
-                <a href="{{ route('regulatory_agenda_regulation.create', $dependency->id) }}" class="btn btn-primary new-fraction" style="min-width: 200px">Nueva Regulación</a>
+                <a href="{{ route('regulatory_agenda_regulation.create', $dependency->id) }}"
+                    class="btn btn-primary new-fraction" style="min-width: 200px">Nueva Regulación</a>
             @endif
         </div>
     </div>
@@ -66,7 +68,9 @@
                                 style="width:30%; margin-bottom: 40px;">
                             <h4>¡No hay Regulaciones guardadas en la base de datos!</h4>
                             <p class="mb-4">Empieza a cargarlas en la sección correspondiente.</p>
-                            <a href="{{ route('regulatory_agenda_regulation.create', $dependency->id) }}" class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nueva Regulación</a>
+                            <a href="{{ route('regulatory_agenda_regulation.create', $dependency->id) }}"
+                                class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nueva
+                                Regulación</a>
                         </div>
                     </div>
                 </div>
@@ -84,7 +88,7 @@
                             <th>Justificación</th>
                             <th>Fecha de presentación</th>
                             <th>Tipo</th>
-                            {{--  
+                            {{--
                             <th>Impacto</th>
                             <th>Beneficiarios</th>
                             --}}
@@ -126,7 +130,7 @@
                                     {{ $regulation->type }}
                                 </td>
 
-                                {{--  
+                                {{--
                                 <td>
                                     {{ $regulation->impact }}
                                 </td>
@@ -140,10 +144,14 @@
                                         {{ $regulation->semester }}
                                     </td>
                                     <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="checkNativeSwitch" switch
                                                 wire:change="toggleActive({{ $regulation->id }})"
                                                 @if ($regulation->is_active) checked @endif>
+                                            <label class="form-check-label" for="checkNativeSwitch">
+                                                Visible
+                                            </label>
                                         </div>
                                     </td>
 
