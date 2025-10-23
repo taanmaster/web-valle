@@ -62,7 +62,7 @@ class RegulationsTable extends Component
             $query->where('semester', $this->semester);
         }
 
-        if ($this->is_admin == true) {
+        if ($this->is_admin == 'true') {
 
             if ($this->is_active !== '') {
                 $query->where('is_active', $this->is_active);
