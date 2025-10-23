@@ -51,15 +51,13 @@ class RegulationsTable extends Component
     public function render()
     {
 
+
         if ($this->is_admin == false) {
             $query = RegulatoryAgendaRegulation::query()
-                ->where('dependency_id', $this->dependency->id);
-
-        } else {
-
-            $query = RegulatoryAgendaRegulation::query()
                 ->where('dependency_id', $this->dependency->id)->where('is_active', true);
-
+        } else {
+            $query = RegulatoryAgendaRegulation::query()
+                ->where('dependency_id', $this->dependency->id);
         }
 
 
@@ -69,6 +67,13 @@ class RegulationsTable extends Component
 
         if ($this->semester !== '') {
             $query->where('semester', $this->semester);
+        }
+
+        if ($this->is_admin == true) {
+
+            if ($this->is_active !== '') {
+                $query->where('is_active', $this->is_active);
+            }
         }
 
         if ($this->type !== '') {
