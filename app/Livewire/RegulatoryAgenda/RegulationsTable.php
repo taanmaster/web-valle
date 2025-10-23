@@ -52,9 +52,9 @@ class RegulationsTable extends Component
     {
 
 
-        if ($this->is_admin == true) {
+        if ($this->is_admin == false) {
             $query = RegulatoryAgendaRegulation::query()
-                ->where('dependency_id', $this->dependency->id)->where('is_active', false);
+                ->where('dependency_id', $this->dependency->id)->where('is_active', true);
         } else {
             $query = RegulatoryAgendaRegulation::query()
                 ->where('dependency_id', $this->dependency->id);
