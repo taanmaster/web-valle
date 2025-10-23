@@ -31,7 +31,7 @@
                 </select>
             </div>
 
-            @if ($is_admin == true)
+            @if ($is_admin == 'true')
                 <div class="col">
                     <label for="is_active" class="form-label">Activo</label>
                     <select id="is_active" class="form-select" wire:model.live="is_active">
