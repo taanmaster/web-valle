@@ -61,7 +61,7 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('all'))
+                    @if (auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('financial_support_helper') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería"
                             data-bs-trigger="hover">
                             <a href="#valleTreasury" id="uikit-tab" class="nav-link">
@@ -300,87 +300,92 @@
                 </div>
             @endif
 
-            @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('all'))
+            @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('financial_support_helper') || auth()->user()->hasRole('all'))
                 <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
-                    <div class="title-box">
-                        <h6 class="menu-title">Cuentas por Pagar</h6>
-                    </div>
+                    
+                    @if(auth()->user()->hasRole('financial_support'))
+                        <div class="title-box">
+                            <h6 class="menu-title">Cuentas por Pagar</h6>
+                        </div>
+    
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('account_payable.index') }}">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="{{ route('treasury_account_payable_suppliers.index') }}">Proveedores</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="{{ route('treasury_account_payable_contractors.index') }}">Contratistas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="{{ route('treasury_account_payable_checklists.index') }}">Checklists</a>
+                            </li>
+                        </ul>
+    
+                        <div class="title-box mt-5">
+                            <h6 class="menu-title">Cuentas por Cobrar</h6>
+                        </div>
+    
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('account_due.dashboard') }}">Dashboard</a>
+                            </li>
+    
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('account_due_profiles.index') }}">Perfiles cuentas por
+                                    cobrar</a>
+                            </li>
+    
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('account_due_provisional_integers.index') }}">Registro
+                                    de Enteros</a>
+                            </li>
+    
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('account_due.cashbox') }}">Caja</a>
+                            </li>
+    
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('account_due_incomes.index') }}">Ingresos a cobro</a>
+                            </li>
+                        </ul>
+    
+                        <div class="title-box mt-5">
+                            <h6 class="menu-title">Tarífas</h6>
+                        </div>
+    
+                        <ul class="nav flex-column mt-4">
+                            <li class="nav-item mb-3">
+                                <a class="nav-link" href="{{ route('trs_admin_revenue_collection.index') }}">Listado de
+                                    disposiciones administrativas de recaudación</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('revenue_law.index') }}">Ley
+                                    de Ingresos</a>
+                            </li>
+    
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('rates_and_costs.index') }}">Tarifas y Costos</a>
+                            </li>
+                        </ul>
+                    @endif
 
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('account_payable.index') }}">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('treasury_account_payable_suppliers.index') }}">Proveedores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('treasury_account_payable_contractors.index') }}">Contratistas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('treasury_account_payable_checklists.index') }}">Checklists</a>
-                        </li>
-                    </ul>
-
-                    <div class="title-box mt-5">
-                        <h6 class="menu-title">Cuentas por Cobrar</h6>
-                    </div>
-
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('account_due.dashboard') }}">Dashboard</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('account_due_profiles.index') }}">Perfiles cuentas por
-                                cobrar</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('account_due_provisional_integers.index') }}">Registro
-                                de Enteros</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('account_due.cashbox') }}">Caja</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('account_due_incomes.index') }}">Ingresos a cobro</a>
-                        </li>
-                    </ul>
-
-                    <div class="title-box mt-5">
-                        <h6 class="menu-title">Tarífas</h6>
-                    </div>
-
-                    <ul class="nav flex-column mt-4">
-                        <li class="nav-item mb-3">
-                            <a class="nav-link" href="{{ route('trs_admin_revenue_collection.index') }}">Listado de
-                                disposiciones administrativas de recaudación</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('revenue_law.index') }}">Ley
-                                de Ingresos</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('rates_and_costs.index') }}">Tarifas y Costos</a>
-                        </li>
-                    </ul>
-
-                    <div class="title-box mt-5">
-                        <h6 class="menu-title">Documentos y Dependencias</h6>
-                    </div>
-
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
-                        </li>
-                    </ul>
+                    @if(auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('financial_support_helper'))
+                        <div class="title-box mt-5">
+                            <h6 class="menu-title">Documentos y Dependencias</h6>
+                        </div>
+    
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
+                            </li>
+                        </ul>
+                    @endif
                 </div>
             @endif
 
