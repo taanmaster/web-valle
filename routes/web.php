@@ -219,6 +219,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     //Route::get('{any}', 'DashboardController@index')->name('index');
 
+    // Módulo Adquisiciones
+    Route::get('/adquisiciones', [
+        'uses' => 'FrontController@acquisitions',
+        'as' => 'acquisitions.index',
+    ]);
+
     /* ------------------- */
     /* ------------------- */
 
@@ -1397,6 +1403,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
         //Rutas para citatorios
         Route::get('/citatorios', 'CitizenProfileController@summons')->name('citizen.summons.index');
         Route::get('/citatorios/{id}', 'CitizenProfileController@showSummon')->name('citizen.summons.show');
+    });
+
+    // Rutas del Perfil Proveedores (Front-End)
+    Route::group(['prefix' => 'proveedores', 'middleware' => ['auth', 'role:supplier'], 'namespace' => 'Front'], function () {
+        Route::get('/perfil', 'SupplierProfileController@index')->name('supplier.profile.index');
+        Route::get('/perfil/editar', 'SupplierProfileController@edit')->name('supplier.profile.edit');
+        Route::put('/perfil/actualizar', 'SupplierProfileController@update')->name('supplier.profile.update');
+        Route::get('/perfil/configuraciones', 'SupplierProfileController@settings')->name('supplier.profile.settings');
     });
 
     Route::get('/reload-captcha', [
