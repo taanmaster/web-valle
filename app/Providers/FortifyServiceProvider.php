@@ -33,7 +33,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::registerView(function () {
-            return view('front.citizen_profile.auth.register');
+            return view('auth.register');
         });
 
         Fortify::requestPasswordResetLinkView(function () {
