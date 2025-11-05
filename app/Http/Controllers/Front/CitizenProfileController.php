@@ -27,7 +27,7 @@ class CitizenProfileController extends Controller
 
     public function index()
     {
-        return view('front.citizen_profile.index');
+        return view('front.user_profiles.citizen.index');
     }
 
     public function edit()
@@ -35,7 +35,7 @@ class CitizenProfileController extends Controller
         $user = Auth::user();
         $citizen = $this->getOrCreateCitizenProfile($user);
 
-        return view('front.citizen_profile.edit', compact('citizen'));
+        return view('front.user_profiles.citizen.edit', compact('citizen'));
     }
 
     public function update(Request $request)
@@ -102,7 +102,7 @@ class CitizenProfileController extends Controller
             ]);
         }
 
-        return view('front.citizen_profile.requests', compact('sareRequests'));
+        return view('front.user_profiles.citizen.requests', compact('sareRequests'));
     }
 
     public function urbanDevRequests(Request $request)
@@ -125,7 +125,7 @@ class CitizenProfileController extends Controller
             ]);
         }
 
-        return view('front.citizen_profile.urban_dev_requests', compact('urbanDevRequests'));
+        return view('front.user_profiles.citizen.urban_dev_requests', compact('urbanDevRequests'));
     }
 
     public function settings()
@@ -133,7 +133,7 @@ class CitizenProfileController extends Controller
         $user = Auth::user();
         $userInfo = $this->getOrCreateUserInfo($user);
 
-        return view('front.citizen_profile.settings', compact('userInfo'));
+        return view('front.user_profiles.citizen.settings', compact('userInfo'));
     }
 
     public function updateNotifications(Request $request)
@@ -203,7 +203,7 @@ class CitizenProfileController extends Controller
      */
     public function createSareRequest()
     {
-        return view('front.citizen_profile.sare_create');
+        return view('front.user_profiles.citizen.sare_create');
     }
 
     /**
@@ -331,7 +331,7 @@ class CitizenProfileController extends Controller
             abort(403, 'No tienes acceso a esta solicitud.');
         }
 
-        return view('front.citizen_profile.sare_show', compact('sareRequest'));
+        return view('front.user_profiles.citizen.sare_show', compact('sareRequest'));
     }
 
     /**
@@ -346,7 +346,7 @@ class CitizenProfileController extends Controller
             abort(403, 'No tienes acceso a esta solicitud.');
         }
 
-        return view('front.citizen_profile.sare_edit', compact('sareRequest'));
+        return view('front.user_profiles.citizen.sare_edit', compact('sareRequest'));
     }
 
     /**
@@ -547,7 +547,7 @@ class CitizenProfileController extends Controller
      */
     public function createUrbanDevRequest()
     {
-        return view('front.citizen_profile.urban_dev_create');
+        return view('front.user_profiles.citizen.urban_dev_create');
     }
 
     /**
@@ -614,7 +614,7 @@ class CitizenProfileController extends Controller
             abort(403, 'No tienes acceso a esta solicitud.');
         }
 
-        return view('front.citizen_profile.urban_dev_show', compact('urbanDevRequest'));
+        return view('front.user_profiles.citizen.urban_dev_show', compact('urbanDevRequest'));
     }
 
     /**
@@ -635,7 +635,7 @@ class CitizenProfileController extends Controller
             return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
         }
 
-        return view('front.citizen_profile.urban_dev_edit', compact('urbanDevRequest'));
+        return view('front.user_profiles.citizen.urban_dev_edit', compact('urbanDevRequest'));
     }
 
     /**
@@ -1162,7 +1162,7 @@ class CitizenProfileController extends Controller
 
         $citizenId = $citizen->id;
 
-        return view('front.citizen_profile.summons.index', [
+        return view('front.user_profiles.citizen.summons.index', [
             'summons' => $summons,
             'mode' => $mode,
             'citizenId' => $citizenId
@@ -1175,6 +1175,6 @@ class CitizenProfileController extends Controller
 
         $mode = 1;
 
-        return view('front.citizen_profile.summons.show')->with('summon', $summon)->with('mode', $mode);
+        return view('front.user_profiles.citizen.summons.show')->with('summon', $summon)->with('mode', $mode);
     }
 }
