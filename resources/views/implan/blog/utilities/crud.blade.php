@@ -69,9 +69,6 @@
                                 @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'tiff']))
                                     <img src="{{ $image }}" alt="Vista previa"
                                         style="max-width: 400px; height: auto;">
-                                @elseif ($extension === 'pdf')
-                                    <iframe src="{{ $image }}" style="width: 100%; height: 500px;"
-                                        frameborder="0"></iframe>
                                 @else
                                     <a href="{{ $image }}" target="_blank" class="btn btn-outline-primary">
                                         Ver archivo
