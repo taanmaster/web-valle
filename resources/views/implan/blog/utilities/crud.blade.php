@@ -61,16 +61,27 @@
                     </div>
                     <div class="col-md">
                         @if ($mode == 1)
-
                             @if ($image)
-                                <img src="{{ $image }}" alt="Imagen de la publicación"
-                                    style="max-width: 400px; height: auto;">
+                                @php
+                                    $extension = strtolower(pathinfo($image, PATHINFO_EXTENSION));
+                                @endphp
+
+                                @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'tiff']))
+                                    <img src="{{ $image }}" alt="Vista previa"
+                                        style="max-width: 400px; height: auto;">
+                                @elseif ($extension === 'pdf')
+                                    <iframe src="{{ $image }}" style="width: 100%; height: 500px;"
+                                        frameborder="0"></iframe>
+                                @else
+                                    <a href="{{ $image }}" target="_blank" class="btn btn-outline-primary">
+                                        Ver archivo
+                                    </a>
+                                @endif
                             @else
-                                <p>No hay imagen disponible.</p>
+                                <p>No hay archivo disponible.</p>
                             @endif
                         @else
-                            <input type="file" wire:model="image" name="image"
-                                @if ($mode == 1) disabled @endif class="form-control">
+                            <input type="file" wire:model="image" name="image" class="form-control">
                         @endif
                     </div>
                 </div>
