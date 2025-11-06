@@ -60,8 +60,18 @@
                         <label for="image" class="col-form-label">Imagen</label>
                     </div>
                     <div class="col-md">
-                        <input type="file" wire:model="image" name="image"
-                            @if ($mode == 1) disabled @endif class="form-control">
+                        @if ($mode == 1)
+
+                            @if ($image)
+                                <img src="{{ $image }}" alt="Imagen de la publicación"
+                                    style="max-width: 400px; height: auto;">
+                            @else
+                                <p>No hay imagen disponible.</p>
+                            @endif
+                        @else
+                            <input type="file" wire:model="image" name="image"
+                                @if ($mode == 1) disabled @endif class="form-control">
+                        @endif
                     </div>
                 </div>
 
