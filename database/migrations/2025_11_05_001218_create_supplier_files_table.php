@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Cada alta de proveedor solicita algunos archivos
+        // Este modulo pera como un repositorio de archivos asociados a cada alta de proveedor
         Schema::create('supplier_files', function (Blueprint $table) {
             $table->id();
 
