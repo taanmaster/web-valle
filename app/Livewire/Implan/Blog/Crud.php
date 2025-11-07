@@ -108,6 +108,15 @@ class Crud extends Component
         return redirect()->route('implan.blog.show', $record->id);
     }
 
+    public function removeImage($id) {
+
+        $record = ImplanBlog::find($id);
+        $record->image = null;
+        $record->save();
+        $this->image = null;
+
+    }
+
     protected function handleUpload($document)
     {
         $originalName = pathinfo($document->getClientOriginalName(), PATHINFO_FILENAME);

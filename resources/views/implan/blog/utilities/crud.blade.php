@@ -78,10 +78,22 @@
                                 <p>No hay archivo disponible.</p>
                             @endif
                         @else
-                            <input type="file" wire:model="image" name="image" class="form-control">
+                            @if ($mode == 2 && $image != null)
+                                <div class="d-flex align-items-center" style="gap: 12px; margin-bottom: 12px;">
 
-                            <div wire:loading wire:target="image">Cargando archivo... por favor espere</div>
+                                    <a href="{{ $image }}" target="_blank" class="btn btn-outline-primary">
+                                        Ver archivo
+                                    </a>
 
+                                    <button type="button" class="btn btn-outline-danger btn-sm"
+                                        wire:click="removeImage{{ $post->id }}">Eliminar
+                                        archivo</button>
+                                </div>
+                            @else
+                                <input type="file" wire:model="image" name="image" class="form-control">
+
+                                <div wire:loading wire:target="image">Cargando archivo... por favor espere</div>
+                            @endif
                         @endif
                     </div>
                 </div>
