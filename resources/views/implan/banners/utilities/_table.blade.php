@@ -37,13 +37,13 @@
                     </td>
 
                     <td class="d-flex gap-3">
-                        <a href="{{ route('banners.show', $banner->id) }}" class="btn btn-primary" data-toggle="tooltip"
-                            data-original-title="Ver Detalle">
+                        <a href="{{ route('implan.banners.show', $banner->id) }}" class="btn btn-primary"
+                            data-toggle="tooltip" data-original-title="Ver Detalle">
                             Ver Detalle
                         </a>
 
-                        <a href="{{ route('banners.edit', $banner->id) }}" class="btn btn-primary" data-toggle="tooltip"
-                            data-original-title="Editar">
+                        <a href="{{ route('implan.banners.edit', $banner->id) }}" class="btn btn-primary"
+                            data-toggle="tooltip" data-original-title="Editar">
                             Editar
                         </a>
 

@@ -88,6 +88,8 @@ class Crud extends Component
                 }
 
                 $file_url = Storage::disk('s3')->url($filepath);
+            } else {
+                $file_url = $this->image;
             }
 
             $slug = Str::slug($this->title);
