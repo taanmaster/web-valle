@@ -78,7 +78,7 @@
                                 <p>No hay archivo disponible.</p>
                             @endif
                         @else
-                            @if ($mode == 2 && $image != null)
+                            @if ($mode == 2 && $post->image != null)
                                 <div class="d-flex align-items-center" style="gap: 12px; margin-bottom: 12px;">
 
                                     <a href="{{ $post->image }}" target="_blank" class="btn btn-outline-primary">
