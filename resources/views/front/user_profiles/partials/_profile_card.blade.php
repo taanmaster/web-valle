@@ -37,6 +37,19 @@
     // Obtener configuración actual o usar ciudadano por defecto
     $config = $profileConfig[$userRole] ?? $profileConfig['citizen'];
     
+    // Verificar estado del refrendo para proveedores
+    $statusBadge = '<span class="status-badge bg-success ms-2">Activo</span>';
+    if ($userRole === 'supplier') {
+        $currentYear = date('Y');
+        $currentEndorsement = App\Models\SupplierEndorsement::where('user_id', auth()->id())
+            ->whereYear('endorsement_date', $currentYear)
+            ->first();
+        
+        if (!$currentEndorsement || !$currentEndorsement->is_approved) {
+            $statusBadge = '<span class="status-badge bg-danger ms-2">Inactivo</span>';
+        }
+    }
+    
     // Información adicional específica por rol
     $extraInfo = '';
     switch ($userRole) {
@@ -80,7 +93,7 @@
                         </p>
                         <p class="text-muted mb-0">
                             <i class="{{ $config['icon'] }} me-1"></i>{{ $config['label'] }}
-                            <span class="status-badge {{ $config['badge_color'] }} ms-2">Activo</span>
+                            {!! $statusBadge !!}
                             {!! $extraInfo !!}
                         </p>
                     </div>

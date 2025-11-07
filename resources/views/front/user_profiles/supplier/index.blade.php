@@ -45,13 +45,13 @@
                                         </div>
                                         <div class="quick-action-content">
                                             <div>
-                                                <h5 class="card-title">Mis Solicitudes</h5>
-                                                <p class="card-text">Gestiona y da seguimiento a tus solicitudes ciudadanas.
+                                                <h5 class="card-title">Mis Altas de Proveedor</h5>
+                                                <p class="card-text">Gestiona y da seguimiento a tus altas de proveedor.
                                                 </p>
                                             </div>
-                                            <a href="{{ route('citizen.profile.requests') }}"
+                                            <a href="{{ route('supplier.alta.index') }}"
                                                 class="btn btn-primary quick-action-btn">
-                                                Ver Solicitudes
+                                                Ver Altas
                                             </a>
                                         </div>
                                     </div>
@@ -66,13 +66,13 @@
                                         </div>
                                         <div class="quick-action-content">
                                             <div>
-                                                <h5 class="card-title">Mi Perfil</h5>
-                                                <p class="card-text">Actualiza tu información personal y datos de contacto.
+                                                <h5 class="card-title">Mis Refrendos</h5>
+                                                <p class="card-text">Actualiza tu información y paga a tiempo para no perder el padrón.
                                                 </p>
                                             </div>
-                                            <a href="{{ route('citizen.profile.edit') }}"
+                                            <a href="{{ route('supplier.endorsement.index') }}"
                                                 class="btn btn-success quick-action-btn">
-                                                Editar Perfil
+                                                Revisar Refrendos
                                             </a>
                                         </div>
                                     </div>
@@ -91,7 +91,7 @@
                                                 <p class="card-text">Ajusta tus preferencias y configuraciones de cuenta.
                                                 </p>
                                             </div>
-                                            <a href="{{ route('citizen.profile.settings') }}"
+                                            <a href="{{ route('supplier.profile.settings') }}"
                                                 class="btn btn-info quick-action-btn">
                                                 Configurar
                                             </a>

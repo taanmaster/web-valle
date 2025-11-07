@@ -1409,8 +1409,28 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::group(['prefix' => 'proveedores', 'middleware' => ['auth', 'role:supplier'], 'namespace' => 'Front'], function () {
         Route::get('/perfil', 'SupplierProfileController@index')->name('supplier.profile.index');
         Route::get('/perfil/editar', 'SupplierProfileController@edit')->name('supplier.profile.edit');
+        Route::get('/perfil/alta-proveedor', 'SupplierProfileController@create')->name('supplier.profile.create');
         Route::put('/perfil/actualizar', 'SupplierProfileController@update')->name('supplier.profile.update');
         Route::get('/perfil/configuraciones', 'SupplierProfileController@settings')->name('supplier.profile.settings');
+        Route::get('/perfil/notificaciones', 'SupplierProfileController@notifications')->name('supplier.profile.notifications');
+    });
+
+    // Rutas para Alta de Proveedores
+    Route::group(['prefix' => 'proveedores', 'middleware' => ['auth', 'role:supplier']], function () {
+        // Altas de Proveedores
+        Route::get('/altas', [App\Http\Controllers\SupplierController::class, 'index'])->name('supplier.alta.index');
+        Route::post('/altas/iniciar', [App\Http\Controllers\SupplierController::class, 'initiate'])->name('supplier.alta.initiate');
+        Route::get('/altas/{id}/formulario', [App\Http\Controllers\SupplierController::class, 'showForm'])->name('supplier.alta.form');
+        Route::put('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'store'])->name('supplier.alta.store');
+        Route::get('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'show'])->name('supplier.alta.show');
+        Route::post('/altas/{id}/archivo', [App\Http\Controllers\SupplierController::class, 'uploadFile'])->name('supplier.alta.uploadFile');
+        Route::delete('/altas/{id}/archivo/{fileId}', [App\Http\Controllers\SupplierController::class, 'deleteFile'])->name('supplier.alta.deleteFile');
+        Route::delete('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'destroy'])->name('supplier.alta.destroy');
+
+        // Refrendos
+        Route::get('/refrendos', [App\Http\Controllers\SupplierEndorsementController::class, 'index'])->name('supplier.endorsement.index');
+        Route::post('/refrendos', [App\Http\Controllers\SupplierEndorsementController::class, 'store'])->name('supplier.endorsement.store');
+        Route::delete('/refrendos/{id}', [App\Http\Controllers\SupplierEndorsementController::class, 'destroy'])->name('supplier.endorsement.destroy');
     });
 
     Route::get('/reload-captcha', [
