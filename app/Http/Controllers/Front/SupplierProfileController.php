@@ -47,6 +47,34 @@ class SupplierProfileController extends Controller
     }
 
     /**
+     * Mostrar listado de notificaciones para el proveedor
+     */
+    public function notifications()
+    {
+        $user = Auth::user();
+        $userInfo = $this->getOrCreateUserInfo($user);
+        
+        // Obtener datos adicionales del proveedor desde JSON
+        $supplierData = $userInfo->additional_data ?? [];
+
+        return view('front.user_profiles.supplier.notifications', compact('user', 'userInfo', 'supplierData'));
+    }
+
+    /**
+     * Mostrar listado general de alta de proveedor
+     */
+    public function create()
+    {
+        $user = Auth::user();
+        $userInfo = $this->getOrCreateUserInfo($user);
+        
+        // Obtener datos adicionales del proveedor desde JSON
+        $supplierData = $userInfo->additional_data ?? [];
+
+        return view('front.user_profiles.supplier.create', compact('user', 'userInfo', 'supplierData'));
+    }
+
+    /**
      * Actualizar perfil del proveedor
      */
     public function update(Request $request)
