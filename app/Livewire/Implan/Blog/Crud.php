@@ -87,6 +87,8 @@ class Crud extends Component
                     fclose($stream);
                 }
 
+                dd($filepath);
+
                 $file_url = Storage::disk('s3')->url($filepath);
             }
 
@@ -121,6 +123,8 @@ class Crud extends Component
         if (is_resource($stream)) {
             fclose($stream);
         }
+
+        dd($filepath);
 
         return Storage::disk('s3')->url($filepath);
     }
