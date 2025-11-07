@@ -80,10 +80,12 @@
                         @else
                             <input type="file" wire:model="image" name="image" class="form-control">
 
-                            <div wire:loading wire:target="image" class="d-flex align-items-center gap-2 mt-2">
-                                <div class="spinner-border spinner-border-sm" role="status"></div>
-                                <span>Subiendo archivo...</span>
-                            </div>
+                            @if ($image != null)
+                                <div wire:loading wire:target="image" class="d-flex align-items-center gap-2 mt-2">
+                                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                                    <span>Subiendo archivo...</span>
+                                </div>
+                            @endif
                         @endif
                     </div>
                 </div>
