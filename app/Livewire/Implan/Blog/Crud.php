@@ -43,9 +43,15 @@ class Crud extends Component
     {
         $this->title = $this->post->title;
         $this->slug = $this->post->slug;
-        $this->image = $this->post->image;
         $this->type = $this->post->type;
         $this->published_at = $this->post->published_at ? Carbon::parse($this->post->published_at)->format('Y-m-d') : null;
+
+        if ($this->mode == 1) {
+            $this->image = $this->post->image;
+        } else {
+            $this->image = null;
+        }
+
     }
 
     public function save()

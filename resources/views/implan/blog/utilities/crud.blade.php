@@ -81,12 +81,12 @@
                             @if ($mode == 2 && $image != null)
                                 <div class="d-flex align-items-center" style="gap: 12px; margin-bottom: 12px;">
 
-                                    <a href="{{ $image }}" target="_blank" class="btn btn-outline-primary">
+                                    <a href="{{ $post->image }}" target="_blank" class="btn btn-outline-primary">
                                         Ver archivo
                                     </a>
 
                                     <button type="button" class="btn btn-outline-danger btn-sm"
-                                        wire:click="removeImage{{ $post->id }}">Eliminar
+                                        wire:click="removeImage({{ $post->id }})">Eliminar
                                         archivo</button>
                                 </div>
                             @else
