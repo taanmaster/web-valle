@@ -80,7 +80,7 @@
                         @else
                             <input type="file" wire:model="image" name="image" class="form-control">
 
-                            <div wire:loading wire:target="image">Uploading...</div>
+                            <div wire:loading wire:target="image">Cargando archivo... por favor espere</div>
 
                         @endif
                     </div>
