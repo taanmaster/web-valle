@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Esta es la tabla de aprobaciones de proveedores
+        // Vinculada a los registros de alta de proveedores
         Schema::create('supplier_approvals', function (Blueprint $table) {
             $table->id();
 

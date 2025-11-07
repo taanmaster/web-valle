@@ -65,17 +65,19 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" href="#" id="documentos-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'supplier.alta.index' || $currentRoute === 'supplier.alta.form' || $currentRoute === 'supplier.alta.show' ? 'active' : '' }}" 
+                   href="{{ route('supplier.alta.index') }}" 
+                   id="altas-tab" role="tab">
                     <ion-icon name="document-attach-outline"></ion-icon> Altas Proveedor
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" href="#" id="documentos-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'supplier.endorsement.index' ? 'active' : '' }}" href="{{ route('supplier.endorsement.index') }}" id="refrendo-tab" role="tab">
                     <ion-icon name="receipt-outline"></ion-icon> Refrendo
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" href="#" id="notificaciones-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'supplier.profile.notifications' ? 'active' : '' }}" href="{{ route('supplier.profile.notifications') }}" id="notificaciones-tab" role="tab">
                     <ion-icon name="notifications-outline"></ion-icon> Notificaciones
                 </a>
             </li>
