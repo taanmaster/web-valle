@@ -60,8 +60,26 @@
                         <label for="image" class="col-form-label">Imagen</label>
                     </div>
                     <div class="col-md">
-                        <input type="file" wire:model="image" name="image"
-                            @if ($mode == 1) disabled @endif class="form-control">
+                        @if ($mode == 1)
+                            @if ($image)
+                                @php
+                                    $extension = strtolower(pathinfo($image, PATHINFO_EXTENSION));
+                                @endphp
+
+                                @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'tiff']))
+                                    <img src="{{ $image }}" alt="Vista previa"
+                                        style="max-width: 400px; height: auto;">
+                                @else
+                                    <a href="{{ $image }}" target="_blank" class="btn btn-outline-primary">
+                                        Ver archivo
+                                    </a>
+                                @endif
+                            @else
+                                <p>No hay archivo disponible.</p>
+                            @endif
+                        @else
+                            <input type="file" wire:model="image" name="image" class="form-control">
+                        @endif
                     </div>
                 </div>
 
