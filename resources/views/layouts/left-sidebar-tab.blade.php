@@ -97,6 +97,15 @@
                         </li>
                     @endif
 
+                    @if (auth()->user()->hasRole('acquisitions') || auth()->user()->hasRole('all'))
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Adquisiciones"
+                            data-bs-trigger="hover">
+                            <a href="#valleAcquisitions" id="acquisitions-tab" class="nav-link">
+                                <i class="ti ti-shopping-cart menu-icon"></i>
+                            </a>
+                        </li>
+                    @endif
+
                     @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="DIF"
                             data-bs-trigger="hover">
@@ -598,6 +607,30 @@
                             <a class="nav-link" href="{{ route('dif.banners.index') }}">Banners</a>
                         </li>
                     </ul>
+                </div>
+            @endif
+
+            @if (auth()->user()->hasRole('acquisitions') || auth()->user()->hasRole('all'))
+                <div id="valleAcquisitions" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dif-tab"
+                    style="padding-bottom: 120px;">
+                    <div class="title-box">
+                        <h6 class="menu-title">Adquisiciones Municipal</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.suppliers.index') }}">Solicitudes a Proveedor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.suppliers.sin_padron') }}">Proveedores Sin Padrón</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.suppliers.con_padron') }}">Padrones Activos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.endorsements.index') }}">Refrendos</a>
+                        </li>
+                    </ul>
+
                 </div>
             @endif
 

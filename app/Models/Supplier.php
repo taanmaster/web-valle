@@ -85,6 +85,14 @@ class Supplier extends Model
     }
 
     /**
+     * Relación con la aprobación
+     */
+    public function approval()
+    {
+        return $this->hasOne(SupplierApproval::class);
+    }
+
+    /**
      * Genera un número de alta automático
      */
     public static function generateRegistrationNumber()

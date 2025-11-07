@@ -43,6 +43,11 @@ use App\Http\Controllers\UrbanDevRequestFileController;
 use App\Http\Controllers\UrbanDevWorkerController;
 use App\Http\Controllers\UrbanDevKPIsController;
 
+// Adquisiciones
+use App\Http\Controllers\AcquisitionEndorsementController;
+use App\Http\Controllers\AcquisitionApprovalController;
+use App\Http\Controllers\AcquisitionSupplierController;
+
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -792,6 +797,44 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ]);
         });
 
+        /* Adquisiciones */
+        Route::group(['prefix' => 'acquisitions'], function () {
+            // Solicitudes de Alta de Proveedor
+            Route::resource('suppliers', AcquisitionSupplierController::class)->names([
+                'index' => 'acquisitions.suppliers.index',
+                'create' => 'acquisitions.suppliers.create',
+                'store' => 'acquisitions.suppliers.store',
+                'show' => 'acquisitions.suppliers.show',
+                'edit' => 'acquisitions.suppliers.edit',
+                'update' => 'acquisitions.suppliers.update',
+                'destroy' => 'acquisitions.suppliers.destroy',
+            ]);
+
+            // Acciones adicionales para proveedores
+            Route::post('suppliers/{id}/file/{fileId}/status', [AcquisitionSupplierController::class, 'updateFileStatus'])
+                ->name('acquisitions.suppliers.updateFileStatus');
+            Route::post('suppliers/{id}/approvals', [AcquisitionSupplierController::class, 'saveApprovals'])
+                ->name('acquisitions.suppliers.saveApprovals');
+            Route::post('suppliers/{id}/status', [AcquisitionSupplierController::class, 'updateStatus'])
+                ->name('acquisitions.suppliers.updateStatus');
+            Route::post('suppliers/{id}/contact', [AcquisitionSupplierController::class, 'contact'])
+                ->name('acquisitions.suppliers.contact');
+
+            // Proveedores Sin/Con Padrón
+            Route::get('sin_padron', [AcquisitionSupplierController::class, 'sinPadron'])->name('acquisitions.suppliers.sin_padron');
+            Route::get('con_padron', [AcquisitionSupplierController::class, 'conPadron'])->name('acquisitions.suppliers.con_padron');
+
+            // Refrendos
+            Route::get('endorsements', [AcquisitionEndorsementController::class, 'index'])
+                ->name('acquisitions.endorsements.index');
+            Route::get('endorsements/{userId}', [AcquisitionEndorsementController::class, 'show'])
+                ->name('acquisitions.endorsements.show');
+            Route::post('endorsements/{endorsementId}/status', [AcquisitionEndorsementController::class, 'updateStatus'])
+                ->name('acquisitions.endorsements.updateStatus');
+            Route::post('endorsements/{endorsementId}/associate', [AcquisitionEndorsementController::class, 'associateSupplier'])
+                ->name('acquisitions.endorsements.associate');
+        });
+
         /* Transparencia */
         Route::group(['prefix' => 'transparency'], function () {
             Route::resource('dependencies', TransparencyDependencyController::class)->names([
@@ -1249,6 +1292,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'citizen_complain.index',
         ]);
 
+        
         Route::group(['prefix' => 'institucional_development'], function () {
             Route::resource('regulations', MunicipalRegulationController::class)->names([
                 'index' => 'institucional_development.regulations.index',
