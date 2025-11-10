@@ -52,6 +52,13 @@
                                         Mi Perfil
                                     </a>
                                 @endif
+
+                                @if(auth()->user()->hasRole('supplier'))
+                                    <a class="dropdown-item" href="{{ route('supplier.profile.index') }}">
+                                        <ion-icon name="person-circle-outline"></ion-icon>
+                                        Mi Perfil
+                                    </a>
+                                @endif
                                 
                                 @if(auth()->user()->hasRole('admin') || auth()->user()->can('admin_access'))
                                     <a class="dropdown-item" href="{{ route('dashboard') }}">

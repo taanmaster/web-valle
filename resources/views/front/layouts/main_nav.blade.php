@@ -92,6 +92,13 @@
                     <span>DIF</span>
                 </a>
             </li>
+
+            <li>
+                <a href="{{ route('acquisitions.index') }}">
+                    <ion-icon name="hand-left-outline"></ion-icon>
+                    <span>Adquisiciones</span>
+                </a>
+            </li>
             
             <li>
                 <div class="switch">

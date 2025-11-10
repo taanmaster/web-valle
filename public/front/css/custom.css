@@ -2054,13 +2054,20 @@ a:hover {
 
 /* Status Badge */
 .status-badge {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     color: white;
     border: none;
     padding: 5px 12px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 500;
+}
+
+.status-badge.bg-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+}
+
+.status-badge.bg-danger {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
 }
 
 /* Member Since Badge */

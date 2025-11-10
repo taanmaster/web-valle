@@ -53,4 +53,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(MunicipalRegulationLog::class, 'user_id');
     }
+
+    public function userInfo()
+    {
+        return $this->hasOne(UserInfo::class, 'user_id');
+    }
+
+    public function suppliers()
+    {
+        return $this->hasMany(Supplier::class, 'user_id');
+    }
+
+    public function endorsements()
+    {
+        return $this->hasMany(SupplierEndorsement::class, 'user_id');
+    }
 }

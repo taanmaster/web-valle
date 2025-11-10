@@ -43,6 +43,11 @@ use App\Http\Controllers\UrbanDevRequestFileController;
 use App\Http\Controllers\UrbanDevWorkerController;
 use App\Http\Controllers\UrbanDevKPIsController;
 
+// Adquisiciones
+use App\Http\Controllers\AcquisitionEndorsementController;
+use App\Http\Controllers\AcquisitionApprovalController;
+use App\Http\Controllers\AcquisitionSupplierController;
+
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -218,6 +223,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/informacion-legal/{slug}', 'FrontController@legalText')->name('legal.text');
 
     //Route::get('{any}', 'DashboardController@index')->name('index');
+
+    // Módulo Adquisiciones
+    Route::get('/adquisiciones', [
+        'uses' => 'FrontController@acquisitions',
+        'as' => 'acquisitions.index',
+    ]);
 
     /* ------------------- */
     /* ------------------- */
@@ -786,6 +797,44 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ]);
         });
 
+        /* Adquisiciones */
+        Route::group(['prefix' => 'acquisitions'], function () {
+            // Solicitudes de Alta de Proveedor
+            Route::resource('suppliers', AcquisitionSupplierController::class)->names([
+                'index' => 'acquisitions.suppliers.index',
+                'create' => 'acquisitions.suppliers.create',
+                'store' => 'acquisitions.suppliers.store',
+                'show' => 'acquisitions.suppliers.show',
+                'edit' => 'acquisitions.suppliers.edit',
+                'update' => 'acquisitions.suppliers.update',
+                'destroy' => 'acquisitions.suppliers.destroy',
+            ]);
+
+            // Acciones adicionales para proveedores
+            Route::post('suppliers/{id}/file/{fileId}/status', [AcquisitionSupplierController::class, 'updateFileStatus'])
+                ->name('acquisitions.suppliers.updateFileStatus');
+            Route::post('suppliers/{id}/approvals', [AcquisitionSupplierController::class, 'saveApprovals'])
+                ->name('acquisitions.suppliers.saveApprovals');
+            Route::post('suppliers/{id}/status', [AcquisitionSupplierController::class, 'updateStatus'])
+                ->name('acquisitions.suppliers.updateStatus');
+            Route::post('suppliers/{id}/contact', [AcquisitionSupplierController::class, 'contact'])
+                ->name('acquisitions.suppliers.contact');
+
+            // Proveedores Sin/Con Padrón
+            Route::get('sin_padron', [AcquisitionSupplierController::class, 'sinPadron'])->name('acquisitions.suppliers.sin_padron');
+            Route::get('con_padron', [AcquisitionSupplierController::class, 'conPadron'])->name('acquisitions.suppliers.con_padron');
+
+            // Refrendos
+            Route::get('endorsements', [AcquisitionEndorsementController::class, 'index'])
+                ->name('acquisitions.endorsements.index');
+            Route::get('endorsements/{userId}', [AcquisitionEndorsementController::class, 'show'])
+                ->name('acquisitions.endorsements.show');
+            Route::post('endorsements/{endorsementId}/status', [AcquisitionEndorsementController::class, 'updateStatus'])
+                ->name('acquisitions.endorsements.updateStatus');
+            Route::post('endorsements/{endorsementId}/associate', [AcquisitionEndorsementController::class, 'associateSupplier'])
+                ->name('acquisitions.endorsements.associate');
+        });
+
         /* Transparencia */
         Route::group(['prefix' => 'transparency'], function () {
             Route::resource('dependencies', TransparencyDependencyController::class)->names([
@@ -1243,6 +1292,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'citizen_complain.index',
         ]);
 
+        
         Route::group(['prefix' => 'institucional_development'], function () {
             Route::resource('regulations', MunicipalRegulationController::class)->names([
                 'index' => 'institucional_development.regulations.index',
@@ -1397,6 +1447,34 @@ Route::namespace('App\Http\Controllers')->group(function () {
         //Rutas para citatorios
         Route::get('/citatorios', 'CitizenProfileController@summons')->name('citizen.summons.index');
         Route::get('/citatorios/{id}', 'CitizenProfileController@showSummon')->name('citizen.summons.show');
+    });
+
+    // Rutas del Perfil Proveedores (Front-End)
+    Route::group(['prefix' => 'proveedores', 'middleware' => ['auth', 'role:supplier'], 'namespace' => 'Front'], function () {
+        Route::get('/perfil', 'SupplierProfileController@index')->name('supplier.profile.index');
+        Route::get('/perfil/editar', 'SupplierProfileController@edit')->name('supplier.profile.edit');
+        Route::get('/perfil/alta-proveedor', 'SupplierProfileController@create')->name('supplier.profile.create');
+        Route::put('/perfil/actualizar', 'SupplierProfileController@update')->name('supplier.profile.update');
+        Route::get('/perfil/configuraciones', 'SupplierProfileController@settings')->name('supplier.profile.settings');
+        Route::get('/perfil/notificaciones', 'SupplierProfileController@notifications')->name('supplier.profile.notifications');
+    });
+
+    // Rutas para Alta de Proveedores
+    Route::group(['prefix' => 'proveedores', 'middleware' => ['auth', 'role:supplier']], function () {
+        // Altas de Proveedores
+        Route::get('/altas', [App\Http\Controllers\SupplierController::class, 'index'])->name('supplier.alta.index');
+        Route::post('/altas/iniciar', [App\Http\Controllers\SupplierController::class, 'initiate'])->name('supplier.alta.initiate');
+        Route::get('/altas/{id}/formulario', [App\Http\Controllers\SupplierController::class, 'showForm'])->name('supplier.alta.form');
+        Route::put('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'store'])->name('supplier.alta.store');
+        Route::get('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'show'])->name('supplier.alta.show');
+        Route::post('/altas/{id}/archivo', [App\Http\Controllers\SupplierController::class, 'uploadFile'])->name('supplier.alta.uploadFile');
+        Route::delete('/altas/{id}/archivo/{fileId}', [App\Http\Controllers\SupplierController::class, 'deleteFile'])->name('supplier.alta.deleteFile');
+        Route::delete('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'destroy'])->name('supplier.alta.destroy');
+
+        // Refrendos
+        Route::get('/refrendos', [App\Http\Controllers\SupplierEndorsementController::class, 'index'])->name('supplier.endorsement.index');
+        Route::post('/refrendos', [App\Http\Controllers\SupplierEndorsementController::class, 'store'])->name('supplier.endorsement.store');
+        Route::delete('/refrendos/{id}', [App\Http\Controllers\SupplierEndorsementController::class, 'destroy'])->name('supplier.endorsement.destroy');
     });
 
     Route::get('/reload-captcha', [

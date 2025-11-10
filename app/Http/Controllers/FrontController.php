@@ -349,6 +349,12 @@ class FrontController extends Controller
         return view('front.legal')->with('text', $text);
     }
 
+    // Módulo Adquisiciones y Proveedores
+    public function acquisitions()
+    {
+        return view('front.acquisitions.index');
+    }
+
     /* PARA PROPÓSITOS DE DESARROLLO */
     public function building()
     {
