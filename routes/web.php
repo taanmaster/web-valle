@@ -440,6 +440,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             // Rutas para trabajadores de Desarrollo Urbano
             Route::get('workers/inspectors', [UrbanDevWorkerController::class, 'inspectors'])->name('urban_dev.workers.inspectors');
             Route::get('workers/experts', [UrbanDevWorkerController::class, 'experts'])->name('urban_dev.workers.experts');
+            Route::get('workers/civil_defense', [UrbanDevWorkerController::class, 'civilDefense'])->name('urban_dev.workers.civil_defense');
             Route::get('workers/auditors', [UrbanDevWorkerController::class, 'auditors'])->name('urban_dev.workers.auditors');
 
             Route::resource('workers', UrbanDevWorkerController::class)->names([

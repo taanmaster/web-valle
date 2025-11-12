@@ -63,6 +63,20 @@ class UrbanDevWorkerController extends Controller
     }
 
     /**
+     * Mostrar listado de Protección Civil
+     */
+    public function civilDefense()
+    {
+        $workers = UrbanDevWorker::civilDefense()
+            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return view('urban_dev.workers.civil_defense')
+            ->with('workers', $workers);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -286,7 +300,7 @@ class UrbanDevWorkerController extends Controller
     {
         $this->validate($request, [
             'import_file' => 'required|file|mimes:xlsx,xls,csv',
-            'dependency_category' => 'required|in:Peritos,Inspectores,Fiscalización',
+            'dependency_category' => 'required|in:Peritos,Inspectores,Fiscalización,Protección Civil',
         ]);
 
         $archivo = $request->file('import_file');

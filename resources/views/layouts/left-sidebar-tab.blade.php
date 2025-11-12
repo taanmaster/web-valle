@@ -488,6 +488,12 @@
                         </li>
                     </ul>
 
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.workers.civil_defense') }}">Protección Civil</a>
+                        </li>
+                    </ul>
+
                     @if(Auth::user()->email == 'webmaster@valle.com')
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -722,6 +728,7 @@
                             <option value="Peritos">Peritos</option>
                             <option value="Inspectores">Inspectores</option>
                             <option value="Fiscalización">Fiscalización</option>
+                            <option value="Protección Civil">Protección Civil</option>
                         </select>
 
                         <small>Al seleccionar la dependencia, se aplicarán los permisos correspondientes a los trabajadores de esa área. Agrupa los exceles por dependencia y subcategoria de dependencia.</small>

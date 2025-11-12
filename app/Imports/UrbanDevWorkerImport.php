@@ -11,15 +11,84 @@ use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
+/**
+ * Clase para importar trabajadores de Desarrollo Urbano desde archivos Excel
+ * 
+ * Esta clase procesa archivos Excel y crea registros de trabajadores en la base de datos,
+ * asignando automáticamente las categorías y subcategorías de dependencia según el tipo seleccionado.
+ * 
+ * FORMATO DEL ARCHIVO EXCEL:
+ * El archivo debe contener las siguientes columnas en la primera fila (encabezados):
+ * - employee_number: Número de empleado (requerido, único)
+ * - name: Nombre(s) del trabajador (requerido)
+ * - last_name: Apellido(s) del trabajador (requerido)
+ * - issue_date: Fecha de emisión de la credencial (requerido, formato fecha Excel)
+ * - validity_date_start: Fecha de inicio de vigencia (requerido, formato fecha Excel)
+ * - validity_date_end: Fecha de fin de vigencia (opcional, formato fecha Excel)
+ * - position: Puesto/Cargo del trabajador (requerido)
+ * - email: Correo electrónico (opcional)
+ * - phone: Teléfono (opcional)
+ * - extension: Extensión telefónica (opcional)
+ * 
+ * CATEGORÍAS SOPORTADAS:
+ * Al importar, se debe seleccionar una de las siguientes categorías:
+ * 
+ * 1. "Fiscalización"
+ *    - dependency_category: Fiscalización
+ *    - dependency_subcategory: null
+ * 
+ * 2. "Peritos"
+ *    - dependency_category: Desarrollo Urbano
+ *    - dependency_subcategory: Perito
+ * 
+ * 3. "Inspectores"
+ *    - dependency_category: Desarrollo Urbano
+ *    - dependency_subcategory: Inspector
+ * 
+ * 4. "Protección Civil"
+ *    - dependency_category: Protección Civil
+ *    - dependency_subcategory: null
+ * 
+ * VALIDACIÓN DEL FORMULARIO:
+ * El controlador valida que dependency_category sea uno de los siguientes valores exactos:
+ * 'Peritos', 'Inspectores', 'Fiscalización', 'Protección Civil'
+ * 
+ * NOTA: Los valores deben coincidir exactamente con las tildes y mayúsculas.
+ * 
+ * COMPORTAMIENTO:
+ * - Los registros duplicados (por employee_number) son ignorados automáticamente
+ * - Las fechas en formato numérico de Excel se convierten automáticamente a Carbon
+ * - Los campos opcionales pueden dejarse vacíos en el Excel
+ * - Solo se crean registros si todos los campos requeridos tienen valores válidos
+ * 
+ * @package App\Imports
+ */
 class UrbanDevWorkerImport implements ToCollection, WithHeadingRow
 {
+    /**
+     * Categoría de dependencia seleccionada en el formulario de importación
+     * Valores posibles: 'Fiscalización', 'Peritos', 'Inspectores', 'Protección Civil'
+     * 
+     * @var string
+     */
     protected $dependencyCategory;
 
+    /**
+     * Constructor de la clase
+     * 
+     * @param string $dependencyCategory Categoría seleccionada en el formulario
+     */
     public function __construct($dependencyCategory)
     {
         $this->dependencyCategory = $dependencyCategory;
     }
 
+    /**
+     * Procesa las filas del archivo Excel
+     * 
+     * @param Collection $rows Colección de filas del archivo Excel
+     * @return void
+     */
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
@@ -47,6 +116,9 @@ class UrbanDevWorkerImport implements ToCollection, WithHeadingRow
             } elseif ($this->dependencyCategory == 'Inspectores') {
                 $dependency_category = 'Desarrollo Urbano';
                 $dependency_subcategory = 'Inspector';
+            } elseif ($this->dependencyCategory == 'Protección Civil') {
+                $dependency_category = 'Protección Civil';
+                $dependency_subcategory = null;
             }
 
             // Verificar si el trabajador ya existe
@@ -80,6 +152,9 @@ class UrbanDevWorkerImport implements ToCollection, WithHeadingRow
 
     /**
      * Transforma la fecha de Excel a formato Carbon
+     * 
+     * @param mixed $value Valor de fecha (puede ser numérico de Excel o string)
+     * @return Carbon Fecha convertida a Carbon
      */
     private function transformDate($value)
     {
@@ -92,6 +167,11 @@ class UrbanDevWorkerImport implements ToCollection, WithHeadingRow
         return Carbon::parse($value);
     }
 
+    /**
+     * Define la fila donde están los encabezados del Excel
+     * 
+     * @return int Número de fila (1 = primera fila)
+     */
     public function headingRow(): int
     {
         return 1;
