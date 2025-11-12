@@ -1,3 +1,33 @@
+{{-- 
+    Tabla de Documentos de Transparencia con DataTables
+    
+    CARACTERÍSTICAS:
+    - Ordenamiento por defecto: Año DESC, Período DESC (backend)
+    - Ordenamiento interactivo en tiempo real (DataTables)
+    - Búsqueda global en todas las columnas
+    - Paginación de 25 registros por página
+    - Responsive design para dispositivos móviles
+    - Traducción al español (México)
+    - Iconos personalizados con ion-icons
+    
+    COLUMNAS ORDENABLES:
+    - Año: Ordenamiento numérico
+    - Obligación: Ordenamiento alfabético
+    - Nombre: Ordenamiento alfabético
+    - Período: Ordenamiento numérico mediante data-order
+    - Rubro: Ordenamiento alfabético
+    - Documento: No ordenable (columna de acciones)
+    
+    ICONOS DE ORDENAMIENTO (ion-icons):
+    - swap-vertical-outline: Columna ordenable, no ordenada actualmente
+    - arrow-up-outline: Ordenado ascendente (A-Z, 0-9)
+    - arrow-down-outline: Ordenado descendente (Z-A, 9-0)
+    
+    INTEGRACIÓN CON LIVEWIRE:
+    - La tabla se reinicializa automáticamente después de cada actualización de Livewire
+    - Compatible con filtros dinámicos (año, período, obligación)
+    - Los iconos se actualizan dinámicamente al cambiar el ordenamiento
+--}}
 <div>
     <div class="row mb-4 align-items-center">
 
@@ -52,7 +82,7 @@
             <p>Se encontraron <strong>{{ $documents->count() }}</strong> resultados.</p>
 
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table id="transparencyDocumentsTable" class="table table-striped">
                     <thead>
                         <tr>
                             <th>Año</th>
@@ -66,10 +96,10 @@
                     <tbody>
                         @foreach ($documents as $document)
                             <tr>
-                                <td>{{ $document->year }}</td>
+                                <td data-order="{{ $document->year }}">{{ $document->year }}</td>
                                 <td>{{ $document->obligation->name }}</td>
                                 <td>{{ $document->name }}</td>
-                                <td>{{ $document->obligation->update_period }} {{ $document->period }}</td>
+                                <td data-order="{{ $document->period }}">{{ $document->obligation->update_period }} {{ $document->period }}</td>
                                 <td>{{ $document->obligation->type }}</td>
                                 <td>
                                     @if ($document->s3_asset_url != null)
@@ -125,3 +155,150 @@
         @endif
     @endif
 </div>
+
+@push('styles')
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+
+<!-- Estilos personalizados para DataTables con ion-icons -->
+<style>
+    /* Ocultar los iconos de ordenamiento predeterminados de DataTables */
+    table.dataTable thead > tr > th.sorting:before,
+    table.dataTable thead > tr > th.sorting_asc:before,
+    table.dataTable thead > tr > th.sorting_desc:before,
+    table.dataTable thead > tr > th.sorting:after,
+    table.dataTable thead > tr > th.sorting_asc:after,
+    table.dataTable thead > tr > th.sorting_desc:after {
+        display: none;
+    }
+    
+    /* Estilos para los encabezados ordenables */
+    table.dataTable thead > tr > th.sorting,
+    table.dataTable thead > tr > th.sorting_asc,
+    table.dataTable thead > tr > th.sorting_desc {
+        position: relative;
+        padding-right: 35px !important;
+        cursor: pointer;
+    }
+    
+    /* Contenedor para los ion-icons */
+    table.dataTable thead > tr > th.sorting ion-icon,
+    table.dataTable thead > tr > th.sorting_asc ion-icon,
+    table.dataTable thead > tr > th.sorting_desc ion-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        opacity: 0.5;
+    }
+    
+    table.dataTable thead > tr > th.sorting_asc ion-icon,
+    table.dataTable thead > tr > th.sorting_desc ion-icon {
+        opacity: 1;
+    }
+    
+    /* Ocultar la barra de búsqueda y el selector de entradas */
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_length {
+        display: none !important;
+    }
+    
+    /* Estilos para la búsqueda y controles de DataTables */
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 10px;
+        margin-left: 10px;
+    }
+    
+    .dataTables_wrapper .dataTables_length select {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 10px;
+        margin: 0 10px;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        initializeDataTable();
+
+        // Reinicializar DataTable después de actualizaciones de Livewire
+        Livewire.hook('morph.updated', ({el, component}) => {
+            if ($.fn.DataTable.isDataTable('#transparencyDocumentsTable')) {
+                $('#transparencyDocumentsTable').DataTable().destroy();
+            }
+            initializeDataTable();
+        });
+    });
+
+    function initializeDataTable() {
+        if ($('#transparencyDocumentsTable').length) {
+            var table = $('#transparencyDocumentsTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
+                },
+                responsive: true,
+                order: [[0, 'desc'], [3, 'desc']], // Ordenar por Año (desc) y Período (desc)
+                pageLength: 25,
+                columnDefs: [
+                    { 
+                        targets: 5, // Columna Documento
+                        orderable: false // Deshabilitar ordenamiento en la columna de acciones
+                    }
+                ],
+                drawCallback: function() {
+                    // Asegurar que los tooltips funcionen después de redibujar
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                    
+                    // Actualizar iconos después de redibujar
+                    updateSortIcons();
+                },
+                initComplete: function() {
+                    // Agregar ion-icons a los encabezados después de inicializar
+                    updateSortIcons();
+                }
+            });
+            
+            // Actualizar iconos cuando se hace click en un encabezado
+            $('#transparencyDocumentsTable thead').on('click', 'th', function() {
+                setTimeout(updateSortIcons, 50);
+            });
+        }
+    }
+    
+    /**
+     * Actualiza los ion-icons en los encabezados de la tabla según el estado de ordenamiento
+     */
+    function updateSortIcons() {
+        // Remover todos los ion-icons existentes
+        $('#transparencyDocumentsTable thead th ion-icon').remove();
+        
+        // Agregar ion-icons según el estado de ordenamiento
+        $('#transparencyDocumentsTable thead th').each(function() {
+            var $th = $(this);
+            
+            if ($th.hasClass('sorting')) {
+                // No ordenado - mostrar icono swap-vertical
+                $th.append('<ion-icon name="swap-vertical-outline"></ion-icon>');
+            } else if ($th.hasClass('sorting_asc')) {
+                // Ordenado ascendente - mostrar flecha hacia arriba
+                $th.append('<ion-icon name="arrow-up-outline"></ion-icon>');
+            } else if ($th.hasClass('sorting_desc')) {
+                // Ordenado descendente - mostrar flecha hacia abajo
+                $th.append('<ion-icon name="arrow-down-outline"></ion-icon>');
+            }
+        });
+    }
+</script>
+@endpush
