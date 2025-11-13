@@ -236,7 +236,7 @@
     </div>
 </div>
 
-@section('scripts')
+@push('scripts')
 <style>
     /* Estilos personalizados */
     .table {
@@ -244,23 +244,13 @@
     }
     
     .table-dark th {
-        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        background-color: #0d6efd;
         color: white !important;
         font-weight: 600;
         text-align: center;
         vertical-align: middle;
         border: none;
         padding: 1rem 0.75rem;
-    }
-
-    .table tbody tr {
-        transition: all 0.3s ease;
-    }
-
-    .table tbody tr:hover {
-        background-color: rgba(13, 110, 253, 0.05);
-        transform: scale(1.01);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .table td {
@@ -275,18 +265,8 @@
         font-size: 0.8rem;
     }
 
-    .btn {
-        transition: all 0.3s ease;
-    }
-    
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
     .card {
         border-radius: 12px;
-        transition: all 0.3s ease;
     }
 
     .input-group-text {
@@ -295,7 +275,6 @@
 
     .form-control, .form-select {
         border-radius: 8px;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
     
     .form-control:focus, .form-select:focus {
@@ -324,5 +303,5 @@
         });
     });
 </script>
-@endsection
+@endpush
 @endsection

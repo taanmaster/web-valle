@@ -105,7 +105,7 @@
 
     <!-- Gestión de Estatus -->
     <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-gradient bg-warning bg-opacity-10 border-0 py-3">
+        <div class="card-header bg-warning bg-opacity-10 border-0 py-3">
             <h5 class="mb-0 fw-bold text-dark">
                 <i class="fas fa-cog me-2"></i> Gestión de Estatus
             </h5>
@@ -314,7 +314,7 @@
                                 <!-- Autorización Enlace -->
                                 <div class="col-lg-6">
                                     <div class="card border-0 shadow-sm h-100">
-                                        <div class="card-header bg-gradient bg-primary bg-opacity-10 border-0 py-3">
+                                        <div class="card-header bg-primary bg-opacity-10 border-0 py-3">
                                             <h6 class="mb-0 fw-bold text-dark">
                                                 <i class="fas fa-user-tie me-2"></i> Autorización Enlace
                                             </h6>
@@ -392,7 +392,7 @@
                                 <!-- Autorización Director -->
                                 <div class="col-lg-6">
                                     <div class="card border-0 shadow-sm h-100">
-                                        <div class="card-header bg-gradient bg-success bg-opacity-10 border-0 py-3">
+                                        <div class="card-header bg-success bg-opacity-10 border-0 py-3">
                                             <h6 class="mb-0 fw-bold text-dark">
                                                 <i class="fas fa-user-shield me-2"></i> Autorización Director
                                             </h6>
@@ -576,7 +576,7 @@
 <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-gradient bg-primary text-white border-0">
+            <div class="modal-header bg-primary text-white border-0">
                 <h5 class="modal-title fw-bold" id="contactModalLabel">
                     <i class="fas fa-envelope me-2"></i> Contactar al Proveedor
                 </h5>
@@ -629,7 +629,7 @@
 <div class="modal fade" id="messagesModal" tabindex="-1" aria-labelledby="messagesModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-gradient bg-info text-white border-0">
+            <div class="modal-header bg-info text-white border-0">
                 <h5 class="modal-title fw-bold" id="messagesModalLabel">
                     <i class="fas fa-comments me-2"></i> Mensajes Enviados al Proveedor
                 </h5>
@@ -690,13 +690,6 @@
 <link href="{{ asset('libs/signature-pad-main/assets/jquery.signaturepad.css') }}" rel="stylesheet">
 
 <style>
-    /* Estilos personalizados para la vista de alta de proveedor */
-    
-    /* Transiciones suaves */
-    * {
-        transition: all 0.3s ease;
-    }
-    
     /* Estilos para Signature Pad */
     .sigPad-link, .sigPad-director {
         width: 100%;
@@ -736,21 +729,12 @@
         background-color: #f8f9fa;
         border: 1px solid #e9ecef;
         font-weight: 500;
-        transition: all 0.3s ease;
-    }
-    
-    .nav-pills .nav-link:hover {
-        background-color: #e9ecef;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     
     .nav-pills .nav-link.active {
-        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        background-color: #0d6efd;
         color: white;
         border-color: #0d6efd;
-        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
-        transform: translateY(-2px);
     }
     
     .nav-pills .nav-link i {
@@ -772,7 +756,6 @@
         border-radius: 8px;
         border: 1px solid #dee2e6;
         padding: 0.6rem 1rem;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
     
     .form-control:focus, .form-select:focus {
@@ -891,11 +874,6 @@
         width: 2px;
         background-color: #dee2e6;
         opacity: 0.5;
-    }
-    
-    /* Backgrounds con gradientes sutiles */
-    .bg-gradient {
-        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
     }
     
     /* Sombras personalizadas */

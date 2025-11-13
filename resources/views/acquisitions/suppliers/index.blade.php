@@ -90,7 +90,7 @@
     @endif    
 </div>
 
-@section('scripts')
+@push('scripts')
 <style>
     /* Estilos personalizados para tablas */
     .table {
@@ -98,23 +98,13 @@
     }
     
     .table-dark th {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        background-color: #2c3e50;
         color: white;
         font-weight: 600;
         text-align: center;
         vertical-align: middle;
         border: none;
         padding: 1rem 0.75rem;
-    }
-
-    .table tbody tr {
-        transition: all 0.3s ease;
-    }
-
-    .table tbody tr:hover {
-        background-color: rgba(13, 110, 253, 0.05);
-        transform: scale(1.01);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .table td {
@@ -134,23 +124,12 @@
     .progress {
         border-radius: 8px;
         background-color: #e9ecef;
-        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
     }
     
     .progress-bar {
         border-radius: 8px;
         font-size: 0.75rem;
         font-weight: 600;
-    }
-
-    /* Botones */
-    .btn-group .btn {
-        transition: all 0.3s ease;
-    }
-    
-    .btn-group .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
 
     /* Dropdown menus */
@@ -162,12 +141,6 @@
     
     .dropdown-item {
         padding: 0.75rem 1.25rem;
-        transition: all 0.2s ease;
-    }
-    
-    .dropdown-item:hover {
-        background-color: rgba(13, 110, 253, 0.1);
-        padding-left: 1.5rem;
     }
 
     /* Tooltips */
@@ -178,21 +151,6 @@
     /* Cards */
     .card {
         border-radius: 12px;
-        transition: all 0.3s ease;
-    }
-
-    .card:hover {
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
-    }
-
-    /* Empty state */
-    .text-center i.fa-inbox {
-        animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
     }
 
     /* Responsive adjustments */
@@ -221,5 +179,5 @@
         });
     });
 </script>
-@endsection
+@endpush
 @endsection

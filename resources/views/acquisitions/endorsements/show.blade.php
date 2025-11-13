@@ -58,7 +58,7 @@
         <!-- Información del proveedor -->
         @if($user->suppliers->count() > 0)
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">
+                <div class="card-header bg-info">
                     <h5 class="mb-0 text-white">
                         <i class="fas fa-store me-2"></i> Altas de Proveedor Asociadas
                     </h5>
@@ -154,7 +154,7 @@
         <!-- Refrendos agrupados por año -->
         @if($endorsementsByYear->count() > 0)
             <div class="card shadow-sm">
-                <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);">
+                <div class="card-header" style="background-color: #6f42c1;">
                     <h5 class="mb-0 text-white">
                         <i class="fas fa-calendar-alt me-2"></i> Refrendos por Año
                     </h5>
@@ -379,22 +379,16 @@
 </div>
 </div>
 
-@section('scripts')
+@push('scripts')
 <style>
     /* Estilos personalizados */
     .accordion-button {
         font-weight: 600;
-        transition: all 0.3s ease;
     }
     
     .accordion-button:not(.collapsed) {
-        background: linear-gradient(135deg, rgba(111, 66, 193, 0.1) 0%, rgba(90, 50, 163, 0.05) 100%) !important;
+        background-color: rgba(111, 66, 193, 0.1) !important;
         color: #6f42c1;
-        box-shadow: 0 2px 4px rgba(111, 66, 193, 0.1);
-    }
-
-    .accordion-button:hover {
-        background-color: rgba(111, 66, 193, 0.05);
     }
 
     .accordion-item {
@@ -406,31 +400,16 @@
 
     .card {
         border-radius: 12px;
-        transition: all 0.3s ease;
-    }
-
-    .card:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
     }
 
     .table-dark th {
-        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        background-color: #0d6efd;
         color: white !important;
         font-weight: 600;
         text-align: center;
         vertical-align: middle;
         border: none;
         padding: 1rem 0.75rem;
-    }
-
-    .table tbody tr {
-        transition: all 0.3s ease;
-    }
-
-    .table tbody tr:hover {
-        background-color: rgba(13, 110, 253, 0.05);
-        transform: scale(1.01);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .table td {
@@ -445,18 +424,8 @@
         font-size: 0.8rem;
     }
 
-    .btn {
-        transition: all 0.3s ease;
-    }
-    
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
     .form-control, .form-select {
         border-radius: 8px;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
     
     .form-control:focus, .form-select:focus {
@@ -499,5 +468,5 @@
         });
     });
 </script>
-@endsection
+@endpush
 @endsection

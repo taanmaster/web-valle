@@ -222,7 +222,7 @@
     </div>
 </div>
 
-@section('scripts')
+@push('scripts')
 <style>
     /* Estilos personalizados */
     .table {
@@ -230,23 +230,13 @@
     }
     
     .table-dark th {
-        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        background-color: #dc3545;
         color: white;
         font-weight: 600;
         text-align: center;
         vertical-align: middle;
         border: none;
         padding: 1rem 0.75rem;
-    }
-
-    .table tbody tr {
-        transition: all 0.3s ease;
-    }
-
-    .table tbody tr:hover {
-        background-color: rgba(255, 193, 7, 0.05);
-        transform: scale(1.01);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .table td {
@@ -261,15 +251,6 @@
         font-size: 0.8rem;
     }
 
-    .btn-group .btn {
-        transition: all 0.3s ease;
-    }
-    
-    .btn-group .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
     .dropdown-menu {
         border: none;
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
@@ -279,17 +260,10 @@
     
     .dropdown-item {
         padding: 0.75rem 1.25rem;
-        transition: all 0.2s ease;
-    }
-    
-    .dropdown-item:hover {
-        background-color: rgba(13, 110, 253, 0.1);
-        padding-left: 1.5rem;
     }
 
     .card {
         border-radius: 12px;
-        transition: all 0.3s ease;
     }
 
     .input-group-text {
@@ -311,5 +285,5 @@
         }
     }
 </style>
-@endsection
+@endpush
 @endsection
