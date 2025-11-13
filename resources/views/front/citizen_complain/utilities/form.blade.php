@@ -90,6 +90,30 @@
                         <input type="file" name="files" wire:model="files" class="form-control" multiple>
                     </div>
 
+                    <div class="col-md-12 mt-3">
+                        <label for="captcha" class="col-form-label">Captcha <span class="text-danger">*</span></label>
+                        
+                        <div class="captcha d-flex align-items-center gap-2 mb-2">
+                            <span class="me-2" id="captcha-image">{!! captcha_img('flat') !!}</span>
+                            <button type="button" class="btn btn-danger btn-sm reload-captcha">
+                                &#x21bb; Cambiar captcha
+                            </button>
+                        </div>
+
+                        <input type="text" 
+                               name="captcha" 
+                               wire:model="captcha" 
+                               class="form-control @error('captcha') is-invalid @enderror" 
+                               placeholder="Ingrese los caracteres del captcha" 
+                               required>
+                        
+                        @error('captcha')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
                     <div class="col-md-12 d-flex justify-content-end mt-3">
                         <button type="submit" class="btn btn-primary">Enviar</button>
                         <button wire:click="clean" class="btn btn-secondary ms-2">Borrar datos</button>
@@ -109,5 +133,34 @@
         <h1>¡Gracias!</h1>
         <p>Hemos recibido su denuncia, queja o sugerencia.</p> <br> Folio: <strong>{{ $folio }}</strong>
     </div>
+
+    @push('scripts')
+    <script>
+        // Recargar captcha
+        document.addEventListener('DOMContentLoaded', function() {
+            const reloadButton = document.querySelector('.reload-captcha');
+            
+            if (reloadButton) {
+                reloadButton.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    
+                    fetch("{{ route('reload.captcha') }}", {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('captcha-image').innerHTML = data.captcha;
+                    })
+                    .catch(error => {
+                        console.error('Error al recargar captcha:', error);
+                    });
+                });
+            }
+        });
+    </script>
+    @endpush
 
 </div>

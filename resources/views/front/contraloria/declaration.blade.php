@@ -33,7 +33,7 @@
                         <div class="timeline-number">1</div>
                         <div class="timeline-content">
                             <h5 class="mb-2">Declaración inicial</h5>
-                            <p class="mb-0">Dentro de los sesenta días naturales siguientes a la toma de posesión con motivo del: a) Ingreso al servicio público por primera vez; o b) Reingreso al servicio público después de sesenta días naturales de la conclusión de su último encargo.</p>
+                            <p class="justify-p mb-0">Dentro de los sesenta días naturales siguientes a la toma de posesión con motivo del: a) Ingreso al servicio público por primera vez; o b) Reingreso al servicio público después de sesenta días naturales de la conclusión de su último encargo.</p>
                         </div>
                     </div>
 
@@ -41,7 +41,7 @@
                         <div class="timeline-number">2</div>
                         <div class="timeline-content">
                             <h5 class="mb-2">Declaración de modificación patrimonial</h5>
-                            <p class="mb-0">En el mes de mayo de cada año.</p>
+                            <p class="justify-p mb-0">En el mes de mayo de cada año.</p>
                         </div>
                     </div>
 
@@ -49,7 +49,7 @@
                         <div class="timeline-number">3</div>
                         <div class="timeline-content">
                             <h5 class="mb-2">Declaración Final</h5>
-                            <p class="mb-0">Dentro de los sesenta días naturales siguientes a la conclusión del cargo.</p>
+                            <p class="justify-p mb-0">Dentro de los sesenta días naturales siguientes a la conclusión del cargo.</p>
                         </div>
                     </div>
                 </div>
@@ -69,15 +69,15 @@
                         <ion-icon name="warning-outline"></ion-icon>
                     </div>
                     <div class="alert-content">
-                        <p class="mb-0">En caso de que no realices este trámite, se iniciará un procedimiento de responsabilidad administrativa por la omisión a la presentación de tu declaración; una vez realizada la investigación correspondiente y en caso de existir la falta, se substanciará y resolverá conforme a la Ley.</p>
+                        <p class="justify-p mb-0">En caso de que no realices este trámite, se iniciará un procedimiento de responsabilidad administrativa por la omisión a la presentación de tu declaración; una vez realizada la investigación correspondiente y en caso de existir la falta, se substanciará y resolverá conforme a la Ley.</p>
                     </div>
                 </div>
 
                 <div class="card card-normal wow fadeInUp mt-4">
                     <div class="card-content">
                         <h5 class="mb-3">Realiza tu declaración</h5>
-                        <p class="mb-3">Accede al sistema DeclaraNet para realizar tu declaración patrimonial de manera electrónica.</p>
-                        <a href="https://declaranetmunicipios.strc.guanajuato.gob.mx/#login" target="_blank" class="btn btn-primary w-100">
+                        <p class="justify-p mb-3">Accede al sistema DeclaraNet para realizar tu declaración patrimonial de manera electrónica.</p>
+                        <a href="https://declaranetmunicipios.sh.guanajuato.gob.mx/" target="_blank" class="btn btn-primary w-100">
                             <ion-icon name="open-outline" class="me-2"></ion-icon>
                             Ir a DeclaraNet
                         </a>

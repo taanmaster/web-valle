@@ -91,4 +91,8 @@
             margin: 0.5rem !important;
         }
     }
+
+    .justify-p{
+        text-align: justify !important
+    }
 </style>

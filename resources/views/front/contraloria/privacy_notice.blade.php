@@ -22,7 +22,7 @@
             <div class="col-md-8">
                 <div class="card card-normal wow fadeInUp">
 
-                                        <p>El H. Ayuntamiento de Valle de Santiago, Guanajuato, por medio de su Contraloría Municipal, quienes tienen su domicilio el ubicado en Palacio Municipal S/N de la zona centro, de esta ciudad, C.P. 38400, son los responsables del tratamiento de los datos personales que nos proporciona, los cuales serán protegidos conforme a lo dispuesto por la Ley de Protección de Datos Personales en Posesión de los Sujetos Obligados para el estado de Guanajuato y demás normatividad aplicable.
+                                        <p class="justify-p">El H. Ayuntamiento de Valle de Santiago, Guanajuato, por medio de su Contraloría Municipal, quienes tienen su domicilio el ubicado en Palacio Municipal S/N de la zona centro, de esta ciudad, C.P. 38400, son los responsables del tratamiento de los datos personales que nos proporciona, los cuales serán protegidos conforme a lo dispuesto por la Ley de Protección de Datos Personales en Posesión de los Sujetos Obligados para el estado de Guanajuato y demás normatividad aplicable.
 
 Los datos personales que nos proporciones servirán para informarle sobre el inicio y la conclusión de la atención ciudadana, para fines estadísticos y, en su caso para solicitar la información adicional que nos permita brindarte una mejor atención. Estos datos tendrán carácter confidencial y no podrán cederse a otra instancia, salvo que otorgue expresamente su consentimiento, o en los casos que prevé el artículo 17 de la Ley de Protección de Datos Personales para el Estado de Guanajuato.
 

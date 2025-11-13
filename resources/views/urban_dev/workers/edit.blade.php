@@ -204,6 +204,7 @@
                                             <option value="">Seleccionar...</option>
                                             <option value="Desarrollo Urbano" {{ old('dependency_category', $worker->dependency_category) == 'Desarrollo Urbano' ? 'selected' : '' }}>Desarrollo Urbano</option>
                                             <option value="Fiscalización" {{ old('dependency_category', $worker->dependency_category) == 'Fiscalización' ? 'selected' : '' }}>Fiscalización</option>
+                                            <option value="Protección Civil" {{ old('dependency_category', $worker->dependency_category) == 'Protección Civil' ? 'selected' : '' }}>Protección Civil</option>
                                         </select>
                                         @error('dependency_category')
                                             <div class="invalid-feedback">{{ $message }}</div>
