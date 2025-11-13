@@ -14,7 +14,7 @@ class Supplier extends Model
         'user_id',
         'person_type',
         'registration_number',
-        
+
         // Campos compartidos
         'rfc',
         'email',
@@ -26,7 +26,7 @@ class Supplier extends Model
         'fax',
         'mobile_phone',
         'nextel_phone',
-        
+
         // Persona Física
         'owner_name',
         'business_name',
@@ -35,7 +35,7 @@ class Supplier extends Model
         'curp',
         'chamber_registration',
         'business_line',
-        
+
         // Persona Moral
         'legal_name',
         'partners_names',
@@ -47,7 +47,7 @@ class Supplier extends Model
         'deed_number',
         'notary_name',
         'predominant_activity',
-        
+
         // Estado
         'status',
         'notes',
@@ -101,14 +101,14 @@ class Supplier extends Model
         $lastSupplier = self::whereYear('created_at', $year)
             ->orderBy('id', 'desc')
             ->first();
-        
+
         if ($lastSupplier && $lastSupplier->registration_number) {
             preg_match('/\d+$/', $lastSupplier->registration_number, $matches);
             $sequence = isset($matches[0]) ? intval($matches[0]) + 1 : 1;
         } else {
             $sequence = 1;
         }
-        
+
         return 'PROV-' . $year . '-' . str_pad($sequence, 5, '0', STR_PAD_LEFT);
     }
 
@@ -120,7 +120,7 @@ class Supplier extends Model
         if ($this->person_type === 'moral') {
             return $this->legal_name ?? 'Sin nombre';
         }
-        
+
         return $this->owner_name ?? $this->business_name ?? 'Sin nombre';
     }
 
@@ -152,7 +152,7 @@ class Supplier extends Model
             'pago_pendiente' => '<span class="badge bg-primary">Pago Pendiente</span>',
             'padron_activo' => '<span class="badge bg-success">Padrón Activo</span>',
         ];
-        
+
         return $badges[$this->status] ?? '<span class="badge bg-secondary">Desconocido</span>';
     }
 
@@ -171,20 +171,20 @@ class Supplier extends Model
     {
         $requiredDocuments = $this->getRequiredDocuments();
         $totalRequired = count($requiredDocuments);
-        
+
         if ($totalRequired === 0) {
             return 0;
         }
-        
+
         $uploadedTypes = $this->files->pluck('file_type')->unique()->toArray();
         $uploadedCount = 0;
-        
+
         foreach ($requiredDocuments as $doc) {
             if (in_array($doc['slug'], $uploadedTypes)) {
                 $uploadedCount++;
             }
         }
-        
+
         return round(($uploadedCount / $totalRequired) * 100);
     }
 
@@ -195,13 +195,13 @@ class Supplier extends Model
     {
         $commonDocs = [
             [
-                'name' => 'Formato de Alta', 
+                'name' => 'Formato de Alta',
                 'slug' => 'formato-de-alta',
                 'has_resource' => true,
                 'resource_file' => 'formato_alta.docx'
             ],
             [
-                'name' => 'Formato de Datos Fiscales', 
+                'name' => 'Formato de Datos Fiscales',
                 'slug' => 'formato-de-datos-fiscales',
                 'has_resource' => true,
                 'resource_file' => 'formato_datos_fiscales.docx'
@@ -262,5 +262,11 @@ class Supplier extends Model
                 $supplier->registration_number = self::generateRegistrationNumber();
             }
         });
+    }
+
+    /*Licitaciones*/
+    public function proposals()
+    {
+        return $this->hasMany(BiddingProposal::class, 'supplier_id');
     }
 }
