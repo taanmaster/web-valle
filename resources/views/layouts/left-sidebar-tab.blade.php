@@ -647,6 +647,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('acquisitions.biddings.index') }}">Licitaciones</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.biddings.index') }}">Contratos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.biddings.index') }}">Contratos
+                                cerrados</a>
+                        </li>
                     </ul>
 
                 </div>
