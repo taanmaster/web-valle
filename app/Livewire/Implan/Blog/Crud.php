@@ -60,9 +60,12 @@ class Crud extends Component
             // --- Subida de archivos si hay nuevos ---
             $file_url = $this->image ? $this->handleUpload($this->image) : $this->post->image;
 
+            $slug = Str::slug($this->title);
+
             $record = ImplanBlog::find($this->post->id);
 
             $record->title = $this->title;
+            $record->slug = $slug;
             $record->published_at = $this->published_at;
             $record->type = $this->type;
 
