@@ -93,6 +93,14 @@ class Supplier extends Model
     }
 
     /**
+     * Relación con los mensajes
+     */
+    public function messages()
+    {
+        return $this->hasMany(SupplierMessage::class);
+    }
+
+    /**
      * Genera un número de alta automático
      */
     public static function generateRegistrationNumber()

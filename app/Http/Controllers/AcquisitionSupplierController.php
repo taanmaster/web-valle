@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Models\SupplierFile;
 use App\Models\SupplierApproval;
+use App\Models\SupplierMessage;
 use App\Models\User;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
@@ -55,11 +56,11 @@ class AcquisitionSupplierController extends Controller
     }
 
     /**
-     * Muestra el detalle de una solicitud para validación
+     * Muestra el detalle de una solicitud
      */
     public function show($id)
     {
-        $supplier = Supplier::with(['user', 'files', 'approval'])
+        $supplier = Supplier::with(['user', 'files', 'approval', 'messages'])
             ->findOrFail($id);
 
         $requiredDocuments = $supplier->getRequiredDocuments();
@@ -99,8 +100,10 @@ class AcquisitionSupplierController extends Controller
     {
         $request->validate([
             'link_approval' => 'nullable|boolean',
+            'link_name' => 'nullable|string|max:255',
             'link_approval_signature' => 'nullable|string',
             'director_approval' => 'nullable|boolean',
+            'director_name' => 'nullable|string|max:255',
             'director_approval_signature' => 'nullable|string',
             'comments' => 'nullable|string',
             'approval_file' => 'nullable|file|mimes:pdf|max:10240',
@@ -111,8 +114,12 @@ class AcquisitionSupplierController extends Controller
         // Buscar o crear aprobación
         $approval = SupplierApproval::firstOrNew(['supplier_id' => $supplier->id]);
 
-        // Subir archivo de aprobación si existe
-        if ($request->hasFile('approval_file')) {
+        // Verificar si ya está bloqueada alguna aprobación
+        $linkLocked = $approval->exists && $approval->link_approval && $approval->link_approval_signature;
+        $directorLocked = $approval->exists && $approval->director_approval && $approval->director_approval_signature;
+
+        // Subir archivo de aprobación si existe y no está bloqueado
+        if ($request->hasFile('approval_file') && !$linkLocked && !$directorLocked) {
             $file = $request->file('approval_file');
             $filename = 'aprobacion_' . $supplier->registration_number . '.pdf';
             $filepath = 'suppliers/' . $supplier->id . '/approvals/' . $filename;
@@ -125,11 +132,25 @@ class AcquisitionSupplierController extends Controller
 
         $approval->supplier_id = $supplier->id;
         $approval->approved_by = Auth::id();
-        $approval->link_approval = $request->link_approval ?? false;
-        $approval->link_approval_signature = $request->link_approval_signature;
-        $approval->director_approval = $request->director_approval ?? false;
-        $approval->director_approval_signature = $request->director_approval_signature;
-        $approval->comments = $request->comments;
+        
+        // Solo actualizar si no está bloqueado
+        if (!$linkLocked) {
+            $approval->link_approval = $request->link_approval ?? false;
+            $approval->link_name = $request->link_name;
+            $approval->link_approval_signature = $request->link_approval_signature;
+        }
+        
+        if (!$directorLocked) {
+            $approval->director_approval = $request->director_approval ?? false;
+            $approval->director_name = $request->director_name;
+            $approval->director_approval_signature = $request->director_approval_signature;
+        }
+        
+        // Solo actualizar comentarios si ninguno está bloqueado
+        if (!$linkLocked && !$directorLocked) {
+            $approval->comments = $request->comments;
+        }
+        
         $approval->save();
 
         // Si ambas aprobaciones están marcadas, cambiar estado a 'aprobacion'
@@ -137,7 +158,7 @@ class AcquisitionSupplierController extends Controller
             $supplier->update(['status' => 'pago_pendiente']);
             Session::flash('success', 'El alta de proveedor ha sido aprobada. Ahora debe realizarse el pago.');
         } else {
-            Session::flash('success', 'Las autorizaciones se guardaron correctamente.');
+            Session::flash('success', 'Las autorizaciones se guardaron correctamente y han sido bloqueadas.');
         }
 
         return back();
@@ -225,10 +246,18 @@ class AcquisitionSupplierController extends Controller
 
         $supplier = Supplier::with('user')->findOrFail($id);
 
-        // Aquí puedes implementar el envío de email o notificación
+        // Guardar el mensaje en la base de datos
+        SupplierMessage::create([
+            'user_id' => $supplier->user_id,
+            'supplier_id' => $supplier->id,
+            'message' => $request->message,
+            'status' => 'unread',
+        ]);
+
+        // Idea a futuro: Se puede implementar el envío de email o notificación adicional
         // Mail::to($supplier->user->email)->send(new SupplierContactMail($request->message));
 
-        Session::flash('success', 'El mensaje ha sido enviado al proveedor.');
+        Session::flash('success', 'El mensaje ha sido enviado y guardado correctamente.');
 
         return back();
     }

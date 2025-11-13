@@ -15,6 +15,14 @@
                     <span>Inicio</span>
                 </a>
             </li>
+
+            <li>
+                <a href="{{ route('blog.index') }}">
+                    <ion-icon name="newspaper-outline"></ion-icon>
+                    <span>Noticias</span>
+                </a>
+            </li>
+
             <li>
                 <a href="{{ route('dependency.list') }}">
                     <ion-icon name="people-outline"></ion-icon>
@@ -59,30 +67,16 @@
             </li>
 
             <li>
+                <a href="{{ route('urban_dev.contacts', 'civil_defense') }}">
+                    <ion-icon name="radio-outline"></ion-icon>
+                    <span>Protección Civil</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('implan.index') }}">
                     <ion-icon name="bulb-outline"></ion-icon>
                     <span>IMPLAN</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('sare.index') }}">
-                    <ion-icon name="layers-outline"></ion-icon>
-                    <span>S.A.R.E</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('blog.index') }}">
-                    <ion-icon name="newspaper-outline"></ion-icon>
-                    <span>Noticias</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('contraloria.index') }}">
-                    <ion-icon name="library-outline"></ion-icon>
-                    <span>Contraloría</span>
                 </a>
             </li>
 
@@ -94,11 +88,25 @@
             </li>
 
             <li>
+                <a href="{{ route('sare.index') }}">
+                    <ion-icon name="layers-outline"></ion-icon>
+                    <span>S.A.R.E</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('acquisitions.index') }}">
                     <ion-icon name="hand-left-outline"></ion-icon>
                     <span>Adquisiciones</span>
                 </a>
             </li>
+
+            <li>
+                <a href="{{ route('contraloria.index') }}">
+                    <ion-icon name="library-outline"></ion-icon>
+                    <span>Contraloría</span>
+                </a>
+            </li>            
             
             <li>
                 <div class="switch">

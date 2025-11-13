@@ -16,8 +16,10 @@ class SupplierApproval extends Model
         'filepath',
         'comments',
         'link_approval',
+        'link_name',
         'link_approval_signature',
         'director_approval',
+        'director_name',
         'director_approval_signature',
     ];
 

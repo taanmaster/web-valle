@@ -420,6 +420,19 @@ class FrontController extends Controller
                 ]);
                 break;
 
+            case 'civil_defense':
+                $workers = \App\Models\UrbanDevWorker::civilDefense()
+                    ->orderBy('name', 'asc')
+                    ->get();
+                $title = 'Protección Civil';
+                
+                return view('front.urban_dev.civil_defense_detail')->with([
+                    'type' => $type,
+                    'workers' => $workers,
+                    'title' => $title
+                ]);
+                break;
+
             case 'experts':
                 $workers = \App\Models\UrbanDevWorker::experts()
                     ->orderBy('name', 'asc')
