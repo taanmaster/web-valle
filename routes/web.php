@@ -47,6 +47,7 @@ use App\Http\Controllers\UrbanDevKPIsController;
 use App\Http\Controllers\AcquisitionEndorsementController;
 use App\Http\Controllers\AcquisitionApprovalController;
 use App\Http\Controllers\AcquisitionSupplierController;
+use App\Http\Controllers\BiddingContractController;
 use App\Http\Controllers\BiddingController;
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
@@ -843,6 +844,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'edit' => 'acquisitions.biddings.edit',
                 'destroy' => 'acquisitions.biddings.destroy',
             ]);
+
+            //Contratos
+            Route::get('contracts', [BiddingContractController::class, 'index'])->name('acquisitions.bidding.contract');
+            Route::get('close_contracts', [BiddingContractController::class, 'closed'])->name('acquisitions.bidding.contract_closed');
         });
 
         /* Transparencia */

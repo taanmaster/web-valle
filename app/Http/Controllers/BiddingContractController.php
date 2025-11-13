@@ -15,6 +15,11 @@ class BiddingContractController extends Controller
         //
     }
 
+    public function closed()
+    {
+
+    }
+
     /**
      * Show the form for creating a new resource.
      */

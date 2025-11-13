@@ -648,10 +648,10 @@
                             <a class="nav-link" href="{{ route('acquisitions.biddings.index') }}">Licitaciones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('acquisitions.biddings.index') }}">Contratos</a>
+                            <a class="nav-link" href="{{ route('acquisitions.bidding.contract') }}">Contratos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('acquisitions.biddings.index') }}">Contratos
+                            <a class="nav-link" href="{{ route('acquisitions.bidding.contract_closed') }}">Contratos
                                 cerrados</a>
                         </li>
                     </ul>
