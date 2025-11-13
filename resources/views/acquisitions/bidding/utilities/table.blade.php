@@ -33,7 +33,7 @@
                             <td>
                                 <a href="{{ route('acquisitions.biddings.show', $bidding->id) }}"
                                     class="btn btn-sm btn-outline-primary mb-2">
-                                    Editar
+                                    Ver
                                 </a>
 
                                 <a href="{{ route('acquisitions.biddings.edit', $bidding->id) }}"
@@ -42,7 +42,7 @@
                                 </a>
 
                                 <form action="{{ route('acquisitions.biddings.destroy', $bidding->id) }}" method="POST"
-                                    style="display: inline;">
+                                    style="display: inline;" class="mb-0">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip"

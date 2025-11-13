@@ -13,6 +13,8 @@ use Livewire\WithFileUploads;
 
 //Modelo
 use App\Models\Bidding;
+use App\Models\BiddingFile;
+use App\Models\TransparencyDependency;
 
 use Livewire\Component;
 
@@ -26,7 +28,7 @@ class Crud extends Component
     public $mode = 0;
 
     public $tab;
-    public $addFile = false;
+    public $fileUpload = false;
 
     //Campos
     public $folio = '';
@@ -40,9 +42,16 @@ class Crud extends Component
     public $request_file = '';
     public $bidding_type = '';
 
+    public $file_name = '';
+    public $file = '';
+
+    public $dependencies = [];
 
     public function mount()
     {
+
+        $this->dependencies = TransparencyDependency::where('belongs_to_treasury', 1)->get();
+
         if ($this->mode == 0) {
             // Guardar datos en la base de datos
             $bidding = new Bidding;
@@ -70,6 +79,93 @@ class Crud extends Component
         $this->requirement_file = $this->bidding->requirement_file;
         $this->request_file = $this->bidding->request_file;
         $this->bidding_type = $this->bidding->bidding_type;
+    }
+
+    public function addFile()
+    {
+        $this->fileUpload = true;
+    }
+
+    public function saveFile()
+    {
+        $file = new BiddingFile;
+        $file->bidding_id = $this->bidding->id;
+        $file->file_name = $this->file_name;
+        $file->file = $this->file;
+        $file->save();
+
+        $this->fileUpload = false;
+
+        $this->file_name = '';
+        $this->file = '';
+    }
+
+    public function deleteFile($id)
+    {
+        $file = BiddingFile::findOrFail($id);
+        $file->delete();
+    }
+
+    public function clear()
+    {
+        // Eliminamos todos los archivos de una
+        BiddingFile::where('bidding_id', $this->bidding->id)->delete();
+
+        // Eliminamos la licitación (bidding)
+        Bidding::where('id', $this->bidding->id)->delete();
+
+        return redirect()->route('acquisitions.biddings.index');
+    }
+
+    public function return()
+    {
+       return redirect()->route('acquisitions.biddings.index');
+    }
+
+    public function save()
+    {
+        $bidding = Bidding::find($this->bidding->id);
+
+        $bidding->title = $this->title;
+        $bidding->dependency_name = $this->dependency_name;
+        $bidding->ammount = $this->ammount;
+        $bidding->service = $this->service;
+        $bidding->justification = $this->justification;
+        $bidding->bidding_type = $this->bidding_type;
+
+        // --- Request File ---
+        $bidding->request_file = $this->request_file
+            ? $this->handleUpload($this->request_file)
+            : $bidding->request_file;
+
+        // --- Requirement File ---
+        $bidding->requirement_file = $this->requirement_file
+            ? $this->handleUpload($this->requirement_file)
+            : $bidding->requirement_file;
+
+        $bidding->save();
+
+        return redirect()->route('acquisitions.biddings.show', $bidding->id);
+    }
+
+
+    protected function handleUpload($document)
+    {
+        $originalName = pathinfo($document->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $document->getClientOriginalExtension();
+
+        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+        $filename = $cleanName . '.' . $extension;
+
+        $filepath = 'acquisitions/biddings/' . $filename;
+
+        $stream = fopen($document->getRealPath(), 'r+');
+        Storage::disk('s3')->put($filepath, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        return Storage::disk('s3')->url($filepath);
     }
 
     public function render()
