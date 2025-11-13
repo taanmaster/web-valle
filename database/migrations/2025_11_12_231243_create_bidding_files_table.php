@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('bidding_files', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('bidding_id');
+
+            $table->string('file_name')->nullable();
+            $table->string('file')->nullable();
+
             $table->timestamps();
         });
     }
