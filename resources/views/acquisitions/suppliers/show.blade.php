@@ -307,7 +307,7 @@
                         <h5 class="fw-bold text-success border-bottom pb-3 mb-4">
                             <i class="fas fa-shield-alt me-2"></i> Autorización y Firmas
                         </h5>
-                        <form action="{{ route('acquisitions.suppliers.saveApprovals', $supplier->id) }}" method="POST" enctype="multipart/form-data">
+                        <form id="formApprovals" action="{{ route('acquisitions.suppliers.saveApprovals', $supplier->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             
                             <div class="row g-4 mb-4">
@@ -320,6 +320,18 @@
                                             </h6>
                                         </div>
                                         <div class="card-body p-4">
+                                            @php
+                                                $linkApprovalLocked = $supplier->approval && $supplier->approval->link_approval && $supplier->approval->link_approval_signature;
+                                            @endphp
+                                            
+                                            @if($linkApprovalLocked)
+                                                <div class="alert alert-success border-0 mb-3">
+                                                    <i class="fas fa-lock me-2"></i>
+                                                    <strong>Autorización Completada y Bloqueada</strong>
+                                                    <p class="mb-0 mt-2 small">Esta autorización ya fue firmada y no puede ser modificada.</p>
+                                                </div>
+                                            @endif
+                                            
                                             <div class="mb-4">
                                                 <div class="form-check form-switch">
                                                     <input type="checkbox" 
@@ -328,7 +340,8 @@
                                                            id="linkApproval"
                                                            class="form-check-input"
                                                            style="width: 3rem; height: 1.5rem;"
-                                                           {{ $supplier->approval && $supplier->approval->link_approval ? 'checked' : '' }}>
+                                                           {{ $supplier->approval && $supplier->approval->link_approval ? 'checked' : '' }}
+                                                           {{ $linkApprovalLocked ? 'disabled' : '' }}>
                                                     <label class="form-check-label ms-2 fw-semibold" for="linkApproval">
                                                         <i class="fas fa-check-circle text-success me-1"></i> Autorizo el alta de proveedor
                                                     </label>
@@ -338,10 +351,39 @@
                                                 <label class="form-label fw-semibold">
                                                     <i class="fas fa-signature me-2"></i> Firma Digital:
                                                 </label>
-                                                <textarea name="link_approval_signature" 
-                                                          class="form-control" 
-                                                          rows="4" 
-                                                          placeholder="Ingrese su firma digital o nombre completo...">{{ $supplier->approval->link_approval_signature ?? '' }}</textarea>
+                                                
+                                                <!-- Campo de nombre completo -->
+                                                <div class="form-group mb-3">
+                                                    <label for="link_name" class="form-label">
+                                                        <i class="fas fa-user me-1"></i> Nombre completo:
+                                                    </label>
+                                                    <input type="text" 
+                                                           id="link_name" 
+                                                           name="link_name" 
+                                                           class="form-control" 
+                                                           placeholder="Escriba su nombre completo..." 
+                                                           value="{{ $supplier->approval->link_name ?? '' }}"
+                                                           {{ $linkApprovalLocked ? 'readonly' : 'required' }}>
+                                                </div>
+                                                
+                                                <div class="sigPad-link {{ $linkApprovalLocked ? 'signature-locked' : '' }}">
+                                                    @if(!$linkApprovalLocked)
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <p class="mb-0 text-muted small">
+                                                            <i class="fas fa-info-circle me-1"></i> Dibuje su firma en el recuadro
+                                                        </p>
+                                                        <div class="text-end">
+                                                            <a href="#clear-link" class="clearButton btn btn-sm btn-outline-danger">
+                                                                <i class="fas fa-eraser me-1"></i> Limpiar
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    <div class="sig sigWrapper border rounded p-2 bg-white" style="height: 200px;">
+                                                        <canvas class="pad" style="width: 100%; height: 100%;"></canvas>
+                                                        <input type="hidden" name="link_approval_signature" class="output">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -356,6 +398,18 @@
                                             </h6>
                                         </div>
                                         <div class="card-body p-4">
+                                            @php
+                                                $directorApprovalLocked = $supplier->approval && $supplier->approval->director_approval && $supplier->approval->director_approval_signature;
+                                            @endphp
+                                            
+                                            @if($directorApprovalLocked)
+                                                <div class="alert alert-success border-0 mb-3">
+                                                    <i class="fas fa-lock me-2"></i>
+                                                    <strong>Autorización Completada y Bloqueada</strong>
+                                                    <p class="mb-0 mt-2 small">Esta autorización ya fue firmada y no puede ser modificada.</p>
+                                                </div>
+                                            @endif
+                                            
                                             <div class="mb-4">
                                                 <div class="form-check form-switch">
                                                     <input type="checkbox" 
@@ -364,7 +418,8 @@
                                                            id="directorApproval"
                                                            class="form-check-input"
                                                            style="width: 3rem; height: 1.5rem;"
-                                                           {{ $supplier->approval && $supplier->approval->director_approval ? 'checked' : '' }}>
+                                                           {{ $supplier->approval && $supplier->approval->director_approval ? 'checked' : '' }}
+                                                           {{ $directorApprovalLocked ? 'disabled' : '' }}>
                                                     <label class="form-check-label ms-2 fw-semibold" for="directorApproval">
                                                         <i class="fas fa-check-circle text-success me-1"></i> Autorizo el alta de proveedor
                                                     </label>
@@ -374,10 +429,39 @@
                                                 <label class="form-label fw-semibold">
                                                     <i class="fas fa-signature me-2"></i> Firma Digital:
                                                 </label>
-                                                <textarea name="director_approval_signature" 
-                                                          class="form-control" 
-                                                          rows="4" 
-                                                          placeholder="Ingrese su firma digital o nombre completo...">{{ $supplier->approval->director_approval_signature ?? '' }}</textarea>
+                                                
+                                                <!-- Campo de nombre completo -->
+                                                <div class="form-group mb-3">
+                                                    <label for="director_name" class="form-label">
+                                                        <i class="fas fa-user me-1"></i> Nombre completo:
+                                                    </label>
+                                                    <input type="text" 
+                                                           id="director_name" 
+                                                           name="director_name" 
+                                                           class="form-control" 
+                                                           placeholder="Escriba su nombre completo..." 
+                                                           value="{{ $supplier->approval->director_name ?? '' }}"
+                                                           {{ $directorApprovalLocked ? 'readonly' : 'required' }}>
+                                                </div>
+                                                
+                                                <div class="sigPad-director {{ $directorApprovalLocked ? 'signature-locked' : '' }}">
+                                                    @if(!$directorApprovalLocked)
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <p class="mb-0 text-muted small">
+                                                            <i class="fas fa-info-circle me-1"></i> Dibuje su firma en el recuadro
+                                                        </p>
+                                                        <div class="text-end">
+                                                            <a href="#clear-director" class="clearButton btn btn-sm btn-outline-danger">
+                                                                <i class="fas fa-eraser me-1"></i> Limpiar
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    <div class="sig sigWrapper border rounded p-2 bg-white" style="height: 200px;">
+                                                        <canvas class="pad" style="width: 100%; height: 100%;"></canvas>
+                                                        <input type="hidden" name="director_approval_signature" class="output">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -386,20 +470,31 @@
 
                             <div class="card border-0 shadow-sm mb-4">
                                 <div class="card-body p-4">
+                                    @php
+                                        $anyApprovalLocked = ($supplier->approval && $supplier->approval->link_approval && $supplier->approval->link_approval_signature) ||
+                                                            ($supplier->approval && $supplier->approval->director_approval && $supplier->approval->director_approval_signature);
+                                    @endphp
+                                    
                                     <div class="mb-4">
                                         <label class="form-label fw-semibold">
                                             <i class="fas fa-comments me-2"></i> Comentarios Generales:
                                         </label>
-                                        <textarea name="comments" class="form-control" rows="4" placeholder="Agregar comentarios adicionales sobre la autorización...">{{ $supplier->approval->comments ?? '' }}</textarea>
+                                        <textarea name="comments" 
+                                                  class="form-control" 
+                                                  rows="4" 
+                                                  placeholder="Agregar comentarios adicionales sobre la autorización..."
+                                                  {{ $anyApprovalLocked ? 'readonly' : '' }}>{{ $supplier->approval->comments ?? '' }}</textarea>
                                     </div>
 
                                     <div class="mb-0">
                                         <label class="form-label fw-semibold">
                                             <i class="fas fa-file-pdf me-2"></i> Documento de Formato de Aprobación Firmado (PDF):
                                         </label>
-                                        <input type="file" name="approval_file" class="form-control form-control-lg" accept=".pdf">
+                                        @if(!$anyApprovalLocked)
+                                            <input type="file" name="approval_file" class="form-control form-control-lg" accept=".pdf">
+                                        @endif
                                         @if($supplier->approval && $supplier->approval->filepath)
-                                            <div class="alert alert-info border-0 mt-3 mb-0">
+                                            <div class="alert alert-info border-0 {{ $anyApprovalLocked ? '' : 'mt-3' }} mb-0">
                                                 <i class="fas fa-paperclip me-2"></i>
                                                 <strong>Archivo actual:</strong> 
                                                 <a href="{{ Storage::disk('s3')->url($supplier->approval->filepath) }}" 
@@ -415,13 +510,63 @@
                             </div>
 
                             <div class="text-center">
-                                <button type="submit" class="btn btn-success btn-lg px-5 py-3">
-                                    <i class="fas fa-save me-2"></i> Guardar Autorizaciones
-                                </button>
+                                @if(!$anyApprovalLocked)
+                                    <button type="button" id="btnSaveApprovals" class="btn btn-success btn-lg px-5 py-3">
+                                        <i class="fas fa-save me-2"></i> Guardar Autorizaciones
+                                    </button>
+                                @else
+                                    <div class="alert alert-warning border-0 d-inline-block">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Las autorizaciones ya están guardadas y bloqueadas.</strong>
+                                    </div>
+                                @endif
                             </div>
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Confirmación Guardar Autorizaciones -->
+<div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-labelledby="confirmSaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-warning text-dark border-0">
+                <h5 class="modal-title fw-bold" id="confirmSaveModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i> Confirmación de Guardado
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="alert alert-warning border-0 mb-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Importante:</strong>
+                </div>
+                <p class="mb-3">
+                    Al guardar las autorizaciones y firmas, estos campos quedarán <strong>bloqueados permanentemente</strong> y no podrán ser modificados.
+                </p>
+                <p class="mb-0 text-muted">
+                    <i class="fas fa-lock me-2"></i> Esto incluye:
+                </p>
+                <ul class="text-muted mb-3">
+                    <li>Firmas digitales del Enlace y Director</li>
+                    <li>Nombres completos</li>
+                    <li>Comentarios generales</li>
+                    <li>Documento de formato de aprobación</li>
+                </ul>
+                <p class="fw-bold text-center mb-0">
+                    ¿Está seguro que desea continuar?
+                </p>
+            </div>
+            <div class="modal-footer border-0 bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i> Cancelar
+                </button>
+                <button type="button" id="btnConfirmSave" class="btn btn-success">
+                    <i class="fas fa-check me-2"></i> Sí, Guardar Autorizaciones
+                </button>
             </div>
         </div>
     </div>
@@ -540,13 +685,49 @@
     </div>
 </div>
 
-@section('scripts')
+@push('scripts')
+<!-- Signature Pad CSS -->
+<link href="{{ asset('libs/signature-pad-main/assets/jquery.signaturepad.css') }}" rel="stylesheet">
+
 <style>
     /* Estilos personalizados para la vista de alta de proveedor */
     
     /* Transiciones suaves */
     * {
         transition: all 0.3s ease;
+    }
+    
+    /* Estilos para Signature Pad */
+    .sigPad-link, .sigPad-director {
+        width: 100%;
+    }
+    
+    .sigPad-link .sigWrapper,
+    .sigPad-director .sigWrapper {
+        position: relative;
+        background: #ffffff;
+        border: 2px solid #dee2e6 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .sigPad-link canvas.pad,
+    .sigPad-director canvas.pad {
+        display: block;
+        cursor: crosshair;
+        border: none;
+    }
+    
+    /* Estilos para firmas bloqueadas */
+    .signature-locked .sigWrapper {
+        background-color: #f8f9fa !important;
+        opacity: 0.8;
+        pointer-events: none;
+    }
+    
+    .signature-locked canvas.pad {
+        cursor: not-allowed !important;
     }
     
     /* Estilo para las tabs */
@@ -580,12 +761,6 @@
     .card {
         border-radius: 12px;
         overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
     }
     
     .card-header {
@@ -637,12 +812,6 @@
         border-radius: 8px;
         padding: 0.5rem 1.5rem;
         font-weight: 500;
-        transition: all 0.3s ease;
-    }
-    
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     
     .btn-lg {
@@ -702,13 +871,6 @@
     /* Mensajes en el modal */
     .list-group-item {
         border-left: 3px solid transparent;
-        transition: all 0.3s ease;
-    }
-
-    .list-group-item:hover {
-        background-color: #f8f9fa;
-        border-left-color: #0dcaf0;
-        transform: translateX(3px);
     }
 
     .message-content {
@@ -750,11 +912,6 @@
     /* Hover en enlaces */
     a {
         text-decoration: none;
-        transition: color 0.3s ease;
-    }
-    
-    a:hover {
-        opacity: 0.8;
     }
     
     /* Responsive adjustments */
@@ -772,5 +929,171 @@
         }
     }
 </style>
-@endsection
+
+<!-- jQuery (required for signature pad) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Signature Pad JS -->
+<!--[if lt IE 9]><script src="{{ asset('libs/signature-pad-main/assets/flashcanvas.js') }}"></script><![endif]-->
+<script src="{{ asset('libs/signature-pad-main/assets/json2.min.js') }}"></script>
+<script src="{{ asset('libs/signature-pad-main/jquery.signaturepad.js') }}"></script>
+
+<script>
+$(document).ready(function() {
+    // Función para ajustar el tamaño del canvas al contenedor
+    function resizeCanvas(canvas, wrapper) {
+        var container = $(wrapper);
+        var width = container.width();
+        var height = container.height();
+        
+        // Ajustar dimensiones del canvas
+        canvas.attr('width', width);
+        canvas.attr('height', height);
+    }
+    
+    // Esperar a que el tab de autorización esté visible antes de inicializar
+    function initSignaturePads() {
+        // Ajustar canvas para Enlace
+        var linkCanvas = $('.sigPad-link canvas.pad');
+        var linkWrapper = $('.sigPad-link .sigWrapper');
+        resizeCanvas(linkCanvas, linkWrapper);
+        
+        // Ajustar canvas para Director
+        var directorCanvas = $('.sigPad-director canvas.pad');
+        var directorWrapper = $('.sigPad-director .sigWrapper');
+        resizeCanvas(directorCanvas, directorWrapper);
+        
+        // Inicializar signature pad para Enlace (solo modo dibujar)
+        $('.sigPad-link').signaturePad({
+            drawOnly: true,
+            validateFields: false,
+            lineWidth: 0,
+            penWidth: 2,
+            penColour: '#145394',
+            bgColour: '#ffffff'
+        });
+
+        // Inicializar signature pad para Director (solo modo dibujar)
+        $('.sigPad-director').signaturePad({
+            drawOnly: true,
+            validateFields: false,
+            lineWidth: 0,
+            penWidth: 2,
+            penColour: '#145394',
+            bgColour: '#ffffff'
+        });
+
+        // Regenerar firmas existentes si hay datos guardados
+        @if($supplier->approval && $supplier->approval->link_approval_signature)
+        try {
+            var linkSignature = {!! json_encode($supplier->approval->link_approval_signature) !!};
+            if (linkSignature) {
+                if (typeof linkSignature === 'string') {
+                    linkSignature = JSON.parse(linkSignature);
+                }
+                $('.sigPad-link').signaturePad().regenerate(linkSignature);
+            }
+        } catch(e) {
+            console.log('Error al cargar firma del enlace:', e);
+        }
+        @endif
+
+        @if($supplier->approval && $supplier->approval->director_approval_signature)
+        try {
+            var directorSignature = {!! json_encode($supplier->approval->director_approval_signature) !!};
+            if (directorSignature) {
+                if (typeof directorSignature === 'string') {
+                    directorSignature = JSON.parse(directorSignature);
+                }
+                $('.sigPad-director').signaturePad().regenerate(directorSignature);
+            }
+        } catch(e) {
+            console.log('Error al cargar firma del director:', e);
+        }
+        @endif
+    }
+
+    // Inicializar cuando se muestre el tab de autorización
+    var sigPadsInitialized = false;
+
+    $('a[href="#autorizacion"]').on('shown.bs.tab', function() {
+        if (!sigPadsInitialized) {
+            setTimeout(function() {
+                initSignaturePads();
+                sigPadsInitialized = true;
+            }, 200);
+        }
+    });
+
+    // Si el tab de autorización está activo al cargar la página
+    if ($('#autorizacion').hasClass('show active')) {
+        setTimeout(function() {
+            initSignaturePads();
+            sigPadsInitialized = true;
+        }, 200);
+    }
+    
+    // Reajustar canvas al cambiar tamaño de ventana
+    $(window).on('resize', function() {
+        if (sigPadsInitialized) {
+            var linkCanvas = $('.sigPad-link canvas.pad');
+            var linkWrapper = $('.sigPad-link .sigWrapper');
+            resizeCanvas(linkCanvas, linkWrapper);
+            
+            var directorCanvas = $('.sigPad-director canvas.pad');
+            var directorWrapper = $('.sigPad-director .sigWrapper');
+            resizeCanvas(directorCanvas, directorWrapper);
+        }
+    });
+
+    // Manejar click del botón Guardar Autorizaciones (mostrar modal)
+    $('#btnSaveApprovals').on('click', function(e) {
+        e.preventDefault();
+        
+        var linkOutput = $('.sigPad-link .output').val();
+        var directorOutput = $('.sigPad-director .output').val();
+        var linkName = $('#link_name').val().trim();
+        var directorName = $('#director_name').val().trim();
+        
+        // Verificar que al menos una firma esté completa con su nombre
+        var hasLinkSignature = linkOutput && linkName;
+        var hasDirectorSignature = directorOutput && directorName;
+        
+        if (!hasLinkSignature && !hasDirectorSignature) {
+            alert('Por favor, complete al menos un nombre y firma antes de guardar.');
+            return false;
+        }
+        
+        // Mostrar modal de confirmación
+        $('#confirmSaveModal').modal('show');
+    });
+    
+    // Manejar confirmación del modal
+    $('#btnConfirmSave').on('click', function() {
+        // Cerrar el modal
+        $('#confirmSaveModal').modal('hide');
+        
+        // Enviar el formulario usando el ID único
+        document.getElementById('formApprovals').submit();
+    });
+
+    // Deshabilitar signature pads bloqueados
+    @php
+        $linkLocked = $supplier->approval && $supplier->approval->link_approval && $supplier->approval->link_approval_signature;
+        $directorLocked = $supplier->approval && $supplier->approval->director_approval && $supplier->approval->director_approval_signature;
+    @endphp
+    
+    @if($linkLocked)
+    $('.sigPad-link canvas.pad').css('pointer-events', 'none');
+    $('.sigPad-link .clearButton').hide();
+    @endif
+    
+    @if($directorLocked)
+    $('.sigPad-director canvas.pad').css('pointer-events', 'none');
+    $('.sigPad-director .clearButton').hide();
+    @endif
+});
+</script>
+
+@endpush
 @endsection
