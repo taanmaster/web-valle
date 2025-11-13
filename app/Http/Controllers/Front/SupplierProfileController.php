@@ -54,10 +54,23 @@ class SupplierProfileController extends Controller
         $user = Auth::user();
         $userInfo = $this->getOrCreateUserInfo($user);
         
+        // Obtener mensajes del usuario agrupados por estado
+        $messages = $user->messages()
+            ->with('supplier')
+            ->where('status', '!=', 'archived')
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        $archivedMessages = $user->messages()
+            ->with('supplier')
+            ->where('status', 'archived')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
         // Obtener datos adicionales del proveedor desde JSON
         $supplierData = $userInfo->additional_data ?? [];
 
-        return view('front.user_profiles.supplier.notifications', compact('user', 'userInfo', 'supplierData'));
+        return view('front.user_profiles.supplier.notifications', compact('user', 'userInfo', 'supplierData', 'messages', 'archivedMessages'));
     }
 
     /**

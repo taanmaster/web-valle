@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Models\SupplierFile;
 use App\Models\SupplierApproval;
+use App\Models\SupplierMessage;
 use App\Models\User;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
@@ -55,11 +56,11 @@ class AcquisitionSupplierController extends Controller
     }
 
     /**
-     * Muestra el detalle de una solicitud para validación
+     * Muestra el detalle de una solicitud
      */
     public function show($id)
     {
-        $supplier = Supplier::with(['user', 'files', 'approval'])
+        $supplier = Supplier::with(['user', 'files', 'approval', 'messages'])
             ->findOrFail($id);
 
         $requiredDocuments = $supplier->getRequiredDocuments();
@@ -225,10 +226,18 @@ class AcquisitionSupplierController extends Controller
 
         $supplier = Supplier::with('user')->findOrFail($id);
 
-        // Aquí puedes implementar el envío de email o notificación
+        // Guardar el mensaje en la base de datos
+        SupplierMessage::create([
+            'user_id' => $supplier->user_id,
+            'supplier_id' => $supplier->id,
+            'message' => $request->message,
+            'status' => 'unread',
+        ]);
+
+        // Idea a futuro: Se puede implementar el envío de email o notificación adicional
         // Mail::to($supplier->user->email)->send(new SupplierContactMail($request->message));
 
-        Session::flash('success', 'El mensaje ha sido enviado al proveedor.');
+        Session::flash('success', 'El mensaje ha sido enviado y guardado correctamente.');
 
         return back();
     }

@@ -47,6 +47,7 @@ use App\Http\Controllers\UrbanDevKPIsController;
 use App\Http\Controllers\AcquisitionEndorsementController;
 use App\Http\Controllers\AcquisitionApprovalController;
 use App\Http\Controllers\AcquisitionSupplierController;
+use App\Http\Controllers\SupplierMessageController;
 
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
@@ -811,6 +812,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'destroy' => 'acquisitions.suppliers.destroy',
             ]);
 
+            Route::resource('supplier_messages', SupplierMessageController::class)->names([
+                'index' => 'acquisitions.supplier_messages.index',
+                'create' => 'acquisitions.supplier_messages.create',
+                'store' => 'acquisitions.supplier_messages.store',
+                'show' => 'acquisitions.supplier_messages.show',
+                'edit' => 'acquisitions.supplier_messages.edit',
+                'update' => 'acquisitions.supplier_messages.update',
+                'destroy' => 'acquisitions.supplier_messages.destroy',
+            ]);
+
             // Acciones adicionales para proveedores
             Route::post('suppliers/{id}/file/{fileId}/status', [AcquisitionSupplierController::class, 'updateFileStatus'])
                 ->name('acquisitions.suppliers.updateFileStatus');
@@ -1459,6 +1470,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil/configuraciones', 'SupplierProfileController@settings')->name('supplier.profile.settings');
         Route::get('/perfil/notificaciones', 'SupplierProfileController@notifications')->name('supplier.profile.notifications');
     });
+
+    // Rutas para mensajes
+    Route::post('/mensajes/{id}/marcar-leido', 'SupplierMessageController@markAsRead')->name('supplier.messages.mark_read');
+    Route::post('/mensajes/{id}/archivar', 'SupplierMessageController@archive')->name('supplier.messages.archive');
+    Route::post('/mensajes/{id}/desarchivar', 'SupplierMessageController@unarchive')->name('supplier.messages.unarchive');
 
     // Rutas para Alta de Proveedores
     Route::group(['prefix' => 'proveedores', 'middleware' => ['auth', 'role:supplier']], function () {
