@@ -82,6 +82,14 @@ class UrbanDevWorker extends Model
         return $query->where('dependency_category', 'Fiscalización');
     }
 
+    /**
+     * Scope para fiscalización (Fiscalización)
+     */
+    public function scopeCivilDefense($query)
+    {
+        return $query->where('dependency_category', 'Protección Civil');
+    }
+
     public function summons()
     {
         return $this->hasMany(Summon::class, 'worker_id');

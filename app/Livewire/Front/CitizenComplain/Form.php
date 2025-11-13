@@ -29,6 +29,7 @@ class Form extends Component
     public $address = '';
     public $complain = '';
     public $subject = '';
+    public $captcha = '';
 
     public $files = [];
 
@@ -42,6 +43,13 @@ class Form extends Component
 
     public function save()
     {
+        // Validar captcha
+        $this->validate([
+            'captcha' => 'required|captcha',
+        ], [
+            'captcha.required' => 'El captcha es obligatorio.',
+            'captcha.captcha' => 'El captcha es incorrecto. Por favor, inténtelo de nuevo.',
+        ]);
 
         $savedFiles = collect($this->files)->map(function ($file) {
             $originalName = $file->getClientOriginalName();
@@ -84,6 +92,9 @@ class Form extends Component
         $this->state = 'completed';
         $this->folio = CitizenComplain::latest()->first()->id;
 
+        // Limpiar captcha después de envío exitoso
+        $this->captcha = '';
+
         session()->flash('message', 'Su queja ha sido registrada con éxito. Gracias por su colaboración.');
     }
 
@@ -95,6 +106,7 @@ class Form extends Component
         $this->address = '';
         $this->complain = '';
         $this->subject = '';
+        $this->captcha = '';
 
         $this->files = [];
         $this->state = '';

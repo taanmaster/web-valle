@@ -49,6 +49,8 @@ use App\Http\Controllers\AcquisitionApprovalController;
 use App\Http\Controllers\AcquisitionSupplierController;
 use App\Http\Controllers\BiddingContractController;
 use App\Http\Controllers\BiddingController;
+use App\Http\Controllers\SupplierMessageController;
+
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -441,6 +443,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             // Rutas para trabajadores de Desarrollo Urbano
             Route::get('workers/inspectors', [UrbanDevWorkerController::class, 'inspectors'])->name('urban_dev.workers.inspectors');
             Route::get('workers/experts', [UrbanDevWorkerController::class, 'experts'])->name('urban_dev.workers.experts');
+            Route::get('workers/civil_defense', [UrbanDevWorkerController::class, 'civilDefense'])->name('urban_dev.workers.civil_defense');
             Route::get('workers/auditors', [UrbanDevWorkerController::class, 'auditors'])->name('urban_dev.workers.auditors');
 
             Route::resource('workers', UrbanDevWorkerController::class)->names([
@@ -809,6 +812,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'edit' => 'acquisitions.suppliers.edit',
                 'update' => 'acquisitions.suppliers.update',
                 'destroy' => 'acquisitions.suppliers.destroy',
+            ]);
+
+            Route::resource('supplier_messages', SupplierMessageController::class)->names([
+                'index' => 'acquisitions.supplier_messages.index',
+                'create' => 'acquisitions.supplier_messages.create',
+                'store' => 'acquisitions.supplier_messages.store',
+                'show' => 'acquisitions.supplier_messages.show',
+                'edit' => 'acquisitions.supplier_messages.edit',
+                'update' => 'acquisitions.supplier_messages.update',
+                'destroy' => 'acquisitions.supplier_messages.destroy',
             ]);
 
             // Acciones adicionales para proveedores
@@ -1473,6 +1486,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil/configuraciones', 'SupplierProfileController@settings')->name('supplier.profile.settings');
         Route::get('/perfil/notificaciones', 'SupplierProfileController@notifications')->name('supplier.profile.notifications');
     });
+
+    // Rutas para mensajes
+    Route::post('/mensajes/{id}/marcar-leido', 'SupplierMessageController@markAsRead')->name('supplier.messages.mark_read');
+    Route::post('/mensajes/{id}/archivar', 'SupplierMessageController@archive')->name('supplier.messages.archive');
+    Route::post('/mensajes/{id}/desarchivar', 'SupplierMessageController@unarchive')->name('supplier.messages.unarchive');
 
     // Rutas para Alta de Proveedores
     Route::group(['prefix' => 'proveedores', 'middleware' => ['auth', 'role:supplier']], function () {

@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-8">
                             <div class="card-content p-5 d-flex align-items-center h-100">
-                                <p class="mb-0">Verifica que las dependencias de la administración pública que reciben, manejan y administran o ejercen recursos públicos lo hagan conforme a la normatividad aplicable</p>
+                                <p class="justify-p mb-0">Verifica que las dependencias de la administración pública que reciben, manejan y administran o ejercen recursos públicos lo hagan conforme a la normatividad aplicable</p>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="col-8">
                             <div class="card-content p-5 d-flex align-items-center h-100">
-                                <p class="mb-0">A través de su unidad de investigación, instrucción y resolución investiga, sustancia y en su caso sanciona los actos u omisiones que pueden derivar en responsabilidades administrativas</p>
+                                <p class="justify-p mb-0">A través de su unidad de investigación, instrucción y resolución investiga, sustancia y en su caso sanciona los actos u omisiones que pueden derivar en responsabilidades administrativas</p>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="col-8">
                             <div class="card-content p-5 d-flex align-items-center h-100">
-                                <p class="mb-0">Vigila el cumplimiento de las disposiciones legales en materia administrativa</p>
+                                <p class="justify-p mb-0">Vigila el cumplimiento de las disposiciones legales en materia administrativa</p>
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         </div>
                         <div class="col-8">
                             <div class="card-content p-5 d-flex align-items-center h-100">
-                                <p class="mb-0">Recibe y brinda el seguimiento correspondiente a las quejas, denuncias y sugerencias presentadas por los ciudadanos relativos al actuar de los funcionarios en el desempeño de sus facultades y atribuciones</p>
+                                <p class="justify-p mb-0">Recibe y brinda el seguimiento correspondiente a las quejas, denuncias y sugerencias presentadas por los ciudadanos relativos al actuar de los funcionarios en el desempeño de sus facultades y atribuciones</p>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
             <div class="col-md-4 mb-3">
                 <div class="card card-normal h-100 wow fadeInUp">
                     <div class="card-content align-items-center d-flex text-center">
-                        <p class="mb-0">La Contraloría Municipal es un Órgano interno de control encargado de vigilar el actuar de los servidores públicos.</p>
+                        <p class="justify-p mb-0">La Contraloría Municipal es un Órgano interno de control encargado de vigilar el actuar de los servidores públicos.</p>
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
             <div class="col-md-4 mb-3">
                 <div class="card card-normal h-100 wow fadeInUp">
                     <div class="card-content align-items-center d-flex text-center">
-                        <p class="mb-0">Busca prevenir, investigar, detectar y sancionar en el ámbito de su competencia, conductas que constituyan faltas administrativas de los servidores públicos y particulares</p>
+                        <p class="justify-p mb-0">Busca prevenir, investigar, detectar y sancionar en el ámbito de su competencia, conductas que constituyan faltas administrativas de los servidores públicos y particulares</p>
                     </div>
                 </div>
             </div>
@@ -121,7 +121,7 @@
             <div class="col-md-4 mb-3">
                 <div class="card card-normal h-100 wow fadeInUp">
                     <div class="card-content align-items-center d-flex text-center">
-                        <p class="mb-0">Promoviendo la participación ciudadana en la toma de decisiones de la administración</p>
+                        <p class="justify-p mb-0">Promoviendo la participación ciudadana en la toma de decisiones de la administración</p>
                     </div>
                 </div>
             </div>
@@ -168,7 +168,7 @@
                         </div>
                         <h4 class="mb-0">Misión</h4>
                     </div>
-                    <p class="mb-0">Ser reconocido como un órgano interno de control con capital humano que ayude a prevenir y corregir irregularidades para transparentar los recursos públicos por medio de auditorías y revisiones administrativas que fomenten la rendición de cuentas sanas que ayuden a evitar posibles observaciones Estatales y Federales así como vigilar que el desempeño de los servidores públicos se realice apegado a la normatividad establecida con el fin de brindar una mejor atención a la ciudadanía de Valle de Santiago.</p>
+                    <p class="justify-pmb-0">Ser reconocido como un órgano interno de control con capital humano que ayude a prevenir y corregir irregularidades para transparentar los recursos públicos por medio de auditorías y revisiones administrativas que fomenten la rendición de cuentas sanas que ayuden a evitar posibles observaciones Estatales y Federales así como vigilar que el desempeño de los servidores públicos se realice apegado a la normatividad establecida con el fin de brindar una mejor atención a la ciudadanía de Valle de Santiago.</p>
                 </div>
             </div>
 
@@ -180,7 +180,7 @@
                         </div>
                         <h4 class="mb-0">Visión</h4>
                     </div>
-                    <p class="mb-0">Realizar a corto plazo un mejor desempeño de labores que caracterice a este órgano interno de control, como un departamento que contribuya en conjunto con las direcciones de la administración a lograr un Gobierno Eficaz, Transparente y sin Corrupción.</p>
+                    <p class="justify-p mb-0">Realizar a corto plazo un mejor desempeño de labores que caracterice a este órgano interno de control, como un departamento que contribuya en conjunto con las direcciones de la administración a lograr un Gobierno Eficaz, Transparente y sin Corrupción.</p>
                 </div>
             </div>
         </div>
@@ -197,7 +197,71 @@
             </div>
             
             <div class="col-md-12 mb-4 text-center wow fadeInUp">
-                <img src="{{ asset('front/img/map-contralory.png') }}" alt="" class="img-fluid">
+                <img src="{{ asset('front/img/map-contralory.png') }}" class="mx-auto" alt="" width="80%">
+            </div>
+
+            <div class="col-md-12 mt-5">
+                <div class="d-flex align-items-center mb-4 wow fadeInUp" style="gap: 12px">
+                    <div class="icon bg-danger">
+                        <ion-icon name="download-outline"></ion-icon>
+                    </div>
+                    <h3 class="mb-0">Lee Más de Nuestro Marco Normativo</h3>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-4 wow fadeInUp">
+
+                <div class="row justify-content-center g-3">
+                    <div class="col-md-6 col-lg-4">
+                        <a href="{{ asset('front/files/reglamento-de-contraloria.pdf') }}" 
+                           class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-between p-3 download-btn" 
+                           download
+                           style="text-align: left;">
+                            <span class="flex-grow-1">Reglamento de Contraloría</span>
+                            <ion-icon name="download-outline" class="download-icon" style="font-size: 24px;"></ion-icon>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <a href="{{ asset('front/files/codigo-de-etica.pdf') }}" 
+                           class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-between p-3 download-btn" 
+                           download
+                           style="text-align: left;">
+                            <span class="flex-grow-1">Código de Ética</span>
+                            <ion-icon name="download-outline" class="download-icon" style="font-size: 24px;"></ion-icon>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <a href="{{ asset('front/files/codigo-de-conducta.pdf') }}" 
+                           class="btn btn-warning btn-lg w-100 d-flex align-items-center justify-content-between p-3 download-btn" 
+                           download
+                           style="text-align: left;">
+                            <span class="flex-grow-1">Código de Conducta</span>
+                            <ion-icon name="download-outline" class="download-icon" style="font-size: 24px;"></ion-icon>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <a href="{{ asset('front/files/ley-para-el-gobierno-y-la-administracion-del-estado-de-guanajuato.pdf') }}" 
+                           class="btn btn-info btn-lg w-100 d-flex align-items-center justify-content-between p-3 download-btn" 
+                           download
+                           style="text-align: left;">
+                            <span class="flex-grow-1">Ley para el Gobierno y la Administración del Estado de Guanajuato</span>
+                            <ion-icon name="download-outline" class="download-icon" style="font-size: 24px;"></ion-icon>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <a href="{{ asset('front/files/ley-de-responsabilidades-administrativas-para-el-estado-de-guanajuato.pdf') }}" 
+                           class="btn btn-danger btn-lg w-100 d-flex align-items-center justify-content-between p-3 download-btn" 
+                           download
+                           style="text-align: left;">
+                            <span class="flex-grow-1">Ley de Responsabilidades Administrativas para el Estado de Guanajuato</span>
+                            <ion-icon name="download-outline" class="download-icon" style="font-size: 24px;"></ion-icon>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -241,6 +305,57 @@
     .word-item:hover {
         transform: scale(1.15);
         opacity: 1;
+    }
+
+    /* Estilos para botones de descarga */
+    .download-btn {
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .download-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: left 0.4s ease;
+    }
+
+    .download-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .download-btn:hover::before {
+        left: 100%;
+    }
+
+    .download-btn .download-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .download-btn:hover .download-icon {
+        transform: translateY(3px);
+        animation: bounce-download 0.6s ease infinite;
+    }
+
+    @keyframes bounce-download {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(5px);
+        }
+    }
+
+    .download-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 </style>
 @endpush

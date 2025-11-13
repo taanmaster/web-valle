@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(SupplierEndorsement::class, 'user_id');
     }
+
+    public function messages()
+    {
+        return $this->hasMany(SupplierMessage::class, 'user_id');
+    }
 }
