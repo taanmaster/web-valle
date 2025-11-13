@@ -61,7 +61,9 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('financial_support_helper') || auth()->user()->hasRole('all'))
+                    @if (auth()->user()->hasRole('financial_support') ||
+                            auth()->user()->hasRole('financial_support_helper') ||
+                            auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería"
                             data-bs-trigger="hover">
                             <a href="#valleTreasury" id="uikit-tab" class="nav-link">
@@ -309,15 +311,18 @@
                 </div>
             @endif
 
-            @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('financial_support_helper') || auth()->user()->hasRole('all'))
+            @if (auth()->user()->hasRole('dif') ||
+                    auth()->user()->hasRole('financial_support') ||
+                    auth()->user()->hasRole('financial_support_helper') ||
+                    auth()->user()->hasRole('all'))
                 <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
-                    
-                    @if(auth()->user()->hasRole('financial_support'))
+
+                    @if (auth()->user()->hasRole('financial_support'))
                         <div class="title-box">
                             <h6 class="menu-title">Cuentas por Pagar</h6>
                         </div>
-    
+
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('account_payable.index') }}">Dashboard</a>
@@ -335,63 +340,68 @@
                                     href="{{ route('treasury_account_payable_checklists.index') }}">Checklists</a>
                             </li>
                         </ul>
-    
+
                         <div class="title-box mt-5">
                             <h6 class="menu-title">Cuentas por Cobrar</h6>
                         </div>
-    
+
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('account_due.dashboard') }}">Dashboard</a>
                             </li>
-    
+
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('account_due_profiles.index') }}">Perfiles cuentas por
+                                <a class="nav-link" href="{{ route('account_due_profiles.index') }}">Perfiles cuentas
+                                    por
                                     cobrar</a>
                             </li>
-    
+
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('account_due_provisional_integers.index') }}">Registro
+                                <a class="nav-link"
+                                    href="{{ route('account_due_provisional_integers.index') }}">Registro
                                     de Enteros</a>
                             </li>
-    
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('account_due.cashbox') }}">Caja</a>
                             </li>
-    
+
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('account_due_incomes.index') }}">Ingresos a cobro</a>
+                                <a class="nav-link" href="{{ route('account_due_incomes.index') }}">Ingresos a
+                                    cobro</a>
                             </li>
                         </ul>
-    
+
                         <div class="title-box mt-5">
                             <h6 class="menu-title">Tarífas</h6>
                         </div>
-    
+
                         <ul class="nav flex-column mt-4">
                             <li class="nav-item mb-3">
-                                <a class="nav-link" href="{{ route('trs_admin_revenue_collection.index') }}">Listado de
+                                <a class="nav-link" href="{{ route('trs_admin_revenue_collection.index') }}">Listado
+                                    de
                                     disposiciones administrativas de recaudación</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('revenue_law.index') }}">Ley
                                     de Ingresos</a>
                             </li>
-    
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('rates_and_costs.index') }}">Tarifas y Costos</a>
                             </li>
                         </ul>
                     @endif
 
-                    @if(auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('financial_support_helper'))
+                    @if (auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('financial_support_helper'))
                         <div class="title-box mt-5">
                             <h6 class="menu-title">Documentos y Dependencias</h6>
                         </div>
-    
+
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
+                                <a class="nav-link"
+                                    href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
                             </li>
                         </ul>
                     @endif
@@ -488,12 +498,14 @@
                         </li>
                     </ul>
 
-                    @if(Auth::user()->email == 'webmaster@valle.com')
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#importEmployees" class="btn btn-outline-primary">Importar Excel</a>
-                        </li>
-                    </ul>
+                    @if (Auth::user()->email == 'webmaster@valle.com')
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#importEmployees" class="btn btn-outline-primary">Importar
+                                    Excel</a>
+                            </li>
+                        </ul>
                     @endif
 
                     <div class="title-box">
@@ -611,23 +623,29 @@
             @endif
 
             @if (auth()->user()->hasRole('acquisitions') || auth()->user()->hasRole('all'))
-                <div id="valleAcquisitions" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dif-tab"
-                    style="padding-bottom: 120px;">
+                <div id="valleAcquisitions" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="dif-tab" style="padding-bottom: 120px;">
                     <div class="title-box">
                         <h6 class="menu-title">Adquisiciones Municipal</h6>
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('acquisitions.suppliers.index') }}">Solicitudes a Proveedor</a>
+                            <a class="nav-link" href="{{ route('acquisitions.suppliers.index') }}">Solicitudes a
+                                Proveedor</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('acquisitions.suppliers.sin_padron') }}">Proveedores Sin Padrón</a>
+                            <a class="nav-link" href="{{ route('acquisitions.suppliers.sin_padron') }}">Proveedores
+                                Sin Padrón</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('acquisitions.suppliers.con_padron') }}">Padrones Activos</a>
+                            <a class="nav-link" href="{{ route('acquisitions.suppliers.con_padron') }}">Padrones
+                                Activos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('acquisitions.endorsements.index') }}">Refrendos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.biddings.index') }}">Licitaciones</a>
                         </li>
                     </ul>
 
@@ -696,43 +714,49 @@
     </div>
 </div>
 
-@if(Auth::user()->email == 'webmaster@valle.com')
-<!-- Modal -->
-<div class="modal fade" id="importEmployees" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Importar Excel de Empleados</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+@if (Auth::user()->email == 'webmaster@valle.com')
+    <!-- Modal -->
+    <div class="modal fade" id="importEmployees" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Importar Excel de Empleados</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route('urban_dev.workers.import') }}" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Selecciona tu Archivo <span class="text-danger">*</span></label>
+                            <input class="form-control" type="file" name="import_file" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dependency_category" class="form-label">Dependencia del Trabajador <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-control" id="dependency_category" name="dependency_category"
+                                required>
+                                <option value="">Seleccionar...</option>
+                                <option value="Peritos">Peritos</option>
+                                <option value="Inspectores">Inspectores</option>
+                                <option value="Fiscalización">Fiscalización</option>
+                            </select>
+
+                            <small>Al seleccionar la dependencia, se aplicarán los permisos correspondientes a los
+                                trabajadores de esa área. Agrupa los exceles por dependencia y subcategoria de
+                                dependencia.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Procesar</button>
+                    </div>
+                </form>
             </div>
-            <form method="POST" action="{{ route('urban_dev.workers.import') }}" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label>Selecciona tu Archivo <span class="text-danger">*</span></label>
-                        <input class="form-control" type="file" name="import_file" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="dependency_category" class="form-label">Dependencia del Trabajador <span class="text-danger">*</span></label>
-                        <select class="form-control" id="dependency_category" name="dependency_category" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="Peritos">Peritos</option>
-                            <option value="Inspectores">Inspectores</option>
-                            <option value="Fiscalización">Fiscalización</option>
-                        </select>
-
-                        <small>Al seleccionar la dependencia, se aplicarán los permisos correspondientes a los trabajadores de esa área. Agrupa los exceles por dependencia y subcategoria de dependencia.</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Procesar</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
 @endif

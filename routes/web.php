@@ -47,7 +47,7 @@ use App\Http\Controllers\UrbanDevKPIsController;
 use App\Http\Controllers\AcquisitionEndorsementController;
 use App\Http\Controllers\AcquisitionApprovalController;
 use App\Http\Controllers\AcquisitionSupplierController;
-
+use App\Http\Controllers\BiddingController;
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -833,6 +833,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 ->name('acquisitions.endorsements.updateStatus');
             Route::post('endorsements/{endorsementId}/associate', [AcquisitionEndorsementController::class, 'associateSupplier'])
                 ->name('acquisitions.endorsements.associate');
+
+
+            //Licitaciones
+            Route::resource('biddings', BiddingController::class)->names([
+                'index' => 'acquisitions.biddings.index',
+                'create' => 'acquisitions.biddings.create',
+                'show' => 'acquisitions.biddings.show',
+                'edit' => 'acquisitions.biddings.edit',
+                'destroy' => 'acquisitions.biddings.destroy',
+            ]);
         });
 
         /* Transparencia */
@@ -1292,7 +1302,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'citizen_complain.index',
         ]);
 
-        
+
         Route::group(['prefix' => 'institucional_development'], function () {
             Route::resource('regulations', MunicipalRegulationController::class)->names([
                 'index' => 'institucional_development.regulations.index',

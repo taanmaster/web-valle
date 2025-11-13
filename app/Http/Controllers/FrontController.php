@@ -135,10 +135,19 @@ class FrontController extends Controller
                 return Carbon::createFromFormat('Y-m', $date);
             });
 
-        return view('front.gazette.index')
-            ->with('gazettes', $gazettes)
-            ->with('type', $type)
-            ->with('dates', $dates);
+        $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
+        $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
+        $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
+
+
+        return view('front.gazette.index')->with([
+            'gazettes' => $gazettes,
+            'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
+            'solemn_gazette_sessions' => $solemn_gazette_sessions,
+            'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
+            'dates' => $dates,
+            'type' => $type,
+        ]);
     }
 
     public function gazetteDetail($type, $slug)
@@ -568,7 +577,7 @@ class FrontController extends Controller
     {
         return view('front.contraloria.privacy_notice');
     }
-    
+
 
     // Pantallas DenunciaNet
     public function denunciaNet()
