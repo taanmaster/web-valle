@@ -36,7 +36,7 @@
                         <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
                             <h2 class="mb-0 text-white">1</h2>
                         </div>
-                        <p class="mb-0">Para los servidores públicos salientes, liberarlos de responsabilidad administrativa respecto de la entrega-recepción, más no de las faltas en que hubiesen incurrido en el ejercicio de sus funciones al frente de la responsabilidad encomendada</p>
+                        <p class="justify-p mb-0">Para los servidores públicos salientes, liberarlos de responsabilidad administrativa respecto de la entrega-recepción, más no de las faltas en que hubiesen incurrido en el ejercicio de sus funciones al frente de la responsabilidad encomendada</p>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                         <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
                             <h2 class="mb-0 text-white">2</h2>
                         </div>
-                        <p class="mb-0">Para los servidores públicos entrantes, constituir el punto de partida de su actuación al frente de su nueva responsabilidad.</p>
+                        <p class="justify-p mb-0">Para los servidores públicos entrantes, constituir el punto de partida de su actuación al frente de su nueva responsabilidad.</p>
                     </div>
                 </div>
             </div>

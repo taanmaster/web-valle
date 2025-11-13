@@ -32,14 +32,14 @@
             <div class="col-md-12 mb-3">
                 <div class="card card-normal wow fadeInUp">
                     <div class="card-content">
-                        <p class="mb-3">El área de quejas, denuncias y sugerencias, tiene como objetivo principal recibir, tramitar y dar seguimiento a las quejas, denuncias y sugerencias que se presentan en contra de servidores públicos municipales y que estén relacionadas con el ejercicio de las funciones o cargos que desempeñan. Con ese proceso se busca garantir la participación ciudadana, brindándoles a los mismos, cerca de un trabajamos procurando mejorar la calidad, legalidad y transparencia en el ejercicio de la gestión administrativa del municipio, así como la protección de los intereses de sus intereses, estableciendo las medidas preventivas necesarias para la comisión o repetición de acciones irregulares o violatorias de la ley y sentando las bases suficientes para que en aquellos casos en los que sean detectadas probables responsabilidades administrativas, se tengan los suficientes elementos para que el área de investigación, instrucción y resolución inicie los procesos administrativos correspondientes.</p>
+                        <p class="justify-p mb-3">El área de quejas, denuncias y sugerencias, tiene como objetivo principal recibir, tramitar y dar seguimiento a las quejas, denuncias y sugerencias que se presentan en contra de servidores públicos municipales y que estén relacionadas con el ejercicio de las funciones o cargos que desempeñan. Con este proceso se busca fomentar la participación ciudadana, brindándoles a los mismos la certeza de que trabajamos procurando mejorar la calidad, legalidad y transparencia en el ejercicio de la gestión administrativa del municipio, así como la protección de sus intereses, estableciendo las medidas preventivas necesarias para la comisión o repetición de acciones irregulares o violatorias de la ley y sentando las bases suficientes para que en aquellos casos en los que sean detectadas probables responsabilidades administrativas, se tengan los suficientes elementos para que el área de investigación, instrucción y resolución inicie los procesos administrativos correspondientes.</p>
                         
                         <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 30px; border-radius: 12px; border-left: 4px solid #2196f3;">
-                            <p class="mb-0" style="font-size: 1.05rem; line-height: 1.8;">Con la finalidad de proporcionar un medio de contacto efectivo y permanente, se encuentra a su disposición este buzón de denuncias ciudadanas, al cual puede enviar las Quejas, Denuncias o Sugerencias, que tengan relación con la actuación de las dependencias y servidores públicos de la Administración Municipal.</p>
+                            <p class="justify-p text-dark p mb-0" style="font-size: 1.05rem; line-height: 1.8;">Con la finalidad de proporcionar un medio de contacto efectivo y permanente, se encuentra a su disposición este buzón de denuncias ciudadanas, al cual puede enviar las Quejas, Denuncias o Sugerencias, que tengan relación con la actuación de las dependencias y servidores públicos de la Administración Municipal.</p>
                             
                             <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #ff9800;">
                                 <p class="mb-2"><strong style="color: #ff5722;">IMPORTANTE</strong></p>
-                                <p class="mb-0" style="font-size: 0.95rem;">¿Pasa algo en tu colonia, barrio o fraccionamiento?, ¿Ocupas reportar algún servicio?, ¿Ves fallas en el alumbrado, desperdicio o fugas de agua, mucha basura en la vía pública? Entonces para agilizar la atención de su reporte, debe presentarlo de manera directa en la dependencia correspondiente.</p>
+                                <p class="justify-p text-dark p mb-0" style="font-size: 0.95rem;">¿Pasa algo en tu colonia, barrio o fraccionamiento?, ¿Ocupas reportar algún servicio?, ¿Ves fallas en el alumbrado, desperdicio o fugas de agua, mucha basura en la vía pública? Entonces para agilizar la atención de su reporte, debe presentarlo de manera directa en la dependencia correspondiente.</p>
                             </div>
                         </div>
                     </div>
@@ -61,8 +61,8 @@
             <div class="col-md-4 mb-3">
                 <div class="card card-normal wow fadeInUp h-100" style="background: linear-gradient(135deg, #e8d5f0 0%, #f3e5f5 100%); border-left: 4px solid #9c27b0;">
                     <div class="card-content">
-                        <h4 class="mb-3" style="color: #7b1fa2;">Queja</h4>
-                        <p class="mb-0">Es el planteamiento derivado de una molestia causada por el actuar de un servidor público que perjudica de forma directa a los intereses de la ciudadanía.</p>
+                        <h4 class="mb-3" style="color: #7b1fa2 !important;">Queja</h4>
+                        <p class="justify-p text-dark mb-0">Es el planteamiento derivado de una molestia causada por el actuar de un servidor público que perjudica de forma directa a los intereses de la ciudadanía.</p>
                     </div>
                 </div>
             </div>
@@ -70,8 +70,8 @@
             <div class="col-md-4 mb-3">
                 <div class="card card-normal wow fadeInUp h-100" style="background: linear-gradient(135deg, #ffe8d5 0%, #fff3e0 100%); border-left: 4px solid #ff9800;">
                     <div class="card-content">
-                        <h4 class="mb-3" style="color: #e65100;">Denuncia</h4>
-                        <p class="mb-0">Es el planteamiento derivado del actuar de un servidor público que afecta directamente a la administración pública.</p>
+                        <h4 class="mb-3" style="color: #e65100 !important;">Denuncia</h4>
+                        <p class="justify-p text-dark mb-0">Es el planteamiento derivado del actuar de un servidor público que afecta directamente a la administración pública.</p>
                     </div>
                 </div>
             </div>
@@ -79,8 +79,8 @@
             <div class="col-md-4 mb-3">
                 <div class="card card-normal wow fadeInUp h-100" style="background: linear-gradient(135deg, #d5f0f0 0%, #e0f7fa 100%); border-left: 4px solid #00bcd4;">
                     <div class="card-content">
-                        <h4 class="mb-3" style="color: #00838f;">Sugerencia</h4>
-                        <p class="mb-0">Es la propuesta o recomendación que el ciudadano presenta a la administración pública con el objetivo de mejorar un servicio o procedimiento.</p>
+                        <h4 class="mb-3" style="color: #00838f !important;">Sugerencia</h4>
+                        <p class="justify-p text-dark mb-0">Es la propuesta o recomendación que el ciudadano presenta a la administración pública con el objetivo de mejorar un servicio o procedimiento.</p>
                     </div>
                 </div>
             </div>
@@ -100,9 +100,9 @@
             <div class="col-md-6 mb-3">
                 <div class="card card-normal wow fadeInUp h-100" style="background: linear-gradient(135deg, #d5f5e3 0%, #e8f5e9 100%); border-left: 4px solid #4caf50;">
                     <div class="card-content">
-                        <h4 class="mb-3 text-center" style="color: #2e7d32; font-size: 2rem; font-weight: bold;">¡Sí!</h4>
-                        <p class="mb-3"><strong>Faltas administrativas, que involucren a:</strong></p>
-                        <ol class="mb-0" style="line-height: 2;">
+                        <h4 class="mb-3 text-center" style="color: #2e7d32 !important; font-size: 2rem; font-weight: bold;">¡Sí!</h4>
+                        <p class="mb-3 text-dark"><strong>Faltas administrativas, que involucren a:</strong></p>
+                        <ol class="mb-0 text-dark" style="line-height: 2;">
                             <li>Servidores públicos municipales en ejercicio de sus funciones</li>
                             <li>Personas físicas o morales que:
                                 <ul>
@@ -119,9 +119,9 @@
             <div class="col-md-6 mb-3">
                 <div class="card card-normal wow fadeInUp h-100" style="background: linear-gradient(135deg, #ffd5d5 0%, #ffebee 100%); border-left: 4px solid #f44336;">
                     <div class="card-content">
-                        <h4 class="mb-3 text-center" style="color: #c62828; font-size: 2rem; font-weight: bold;">¡No!</h4>
-                        <p class="mb-3"><strong>Quejas o denuncias relacionadas con:</strong></p>
-                        <ol class="mb-0" style="line-height: 2;">
+                        <h4 class="mb-3 text-center" style="color: #c62828 !important; font-size: 2rem; font-weight: bold;">¡No!</h4>
+                        <p class="mb-3 text-dark"><strong>Quejas o denuncias relacionadas con:</strong></p>
+                        <ol class="mb-0 text-dark" style="line-height: 2;">
                             <li>Asuntos laborales cuando no tengan que ver con la administración del municipio</li>
                             <li>Autoridades Estatales o Federales</li>
                             <li>Conflictos entre particulares</li>
@@ -230,7 +230,7 @@
             </div>
 
             <div class="col-md-12 mb-3">
-                <div class="card card-normal wow fadeInUp" style="background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);">
+                <div class="card card-normal wow fadeInUp">
                     <div class="card-content">
                         <p class="mb-4" style="font-size: 1.05rem; line-height: 1.8; text-align: justify;">Cuando durante la investigación inicial de los hechos denunciados por la ciudadanía se encuentren los elementos necesarios que acrediten la presunta comisión de hechos u omisiones que pudieran derivar en probables faltas administrativas, los expedientes se canalizan al Área de Investigación, Instrucción y Resolución de la Contraloría Municipal.</p>
                         
@@ -415,7 +415,7 @@
             <div class="col-md-12">
                 <div class="card card-normal wow fadeInUp" style="background: linear-gradient(135deg, #fff3cd 0%, #fff8e1 100%); border-left: 4px solid #ff5722;">
                     <div class="card-content">
-                        <p class="mb-0" style="font-size: 1rem; line-height: 1.8; text-align: justify;"><strong>¡Atención!</strong> "Previo a continuar con su registro, se le informa que el hecho de proporcionar información que no corresponda con la identidad de su persona, o que dicha información no este actualizada, tendrá como consecuencia tener por no admitida su queja, denuncia o sugerencia y que, esta sea desechada de plano. Ya que al presentar información que no coincida con la realidad (falsa) se considera que usted está intentando presentar una queja, denuncia o sugerencia maliciosa. Lo anterior de conformidad con el Reglamento de la Contraloría Municipal de Valle de Santiago, artículo 19 y 20 del artículo 19 y 20 y Ley de Responsabilidades administrativas para el estado de Guanajuato, artículos 90, 91, 92 y 93."</p>
+                        <p class="mb-0 text-dark" style="font-size: 1rem; line-height: 1.8; text-align: justify;"><strong>¡Atención!</strong> Previo a continuar con su registro, se le informa que el hecho de proporcionar información que no corresponda con la identidad de su persona, o que dicha información no este actualizada, tendrá como consecuencia tener por no admitida su queja, denuncia o sugerencia y que, esta sea desechada de plano. Ya que al presentar información que no coincida con la realidad (falsa) se considera que usted está intentando presentar una queja, denuncia o sugerencia maliciosa. Lo anterior de conformidad con el Reglamento de la Contraloría Municipal de Valle de Santiago, artículo 19 y 20 y Ley de Responsabilidades administrativas para el estado de Guanajuato, artículos 90, 91, 92 y 93.</p>
                     </div>
                 </div>
             </div>
