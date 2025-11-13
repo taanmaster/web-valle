@@ -78,6 +78,13 @@
                     <button type="button" class="btn btn-warning mb-2 mb-lg-0 me-2" data-bs-toggle="modal" data-bs-target="#contactModal">
                         <i class="fas fa-envelope me-2"></i> Contactar
                     </button>
+                    <button type="button" class="btn btn-info mb-2 mb-lg-0 me-2" data-bs-toggle="modal" data-bs-target="#messagesModal">
+                        <i class="fas fa-comments me-2"></i> 
+                        Ver Mensajes
+                        @if($supplier->messages->count() > 0)
+                            <span class="badge bg-danger ms-1">{{ $supplier->messages->count() }}</span>
+                        @endif
+                    </button>
                     <a href="{{ route('acquisitions.suppliers.index') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-2"></i> Volver
                     </a>
@@ -473,6 +480,66 @@
     </div>
 </div>
 
+<!-- Modal Ver Mensajes -->
+<div class="modal fade" id="messagesModal" tabindex="-1" aria-labelledby="messagesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-gradient bg-info text-white border-0">
+                <h5 class="modal-title fw-bold" id="messagesModalLabel">
+                    <i class="fas fa-comments me-2"></i> Mensajes Enviados al Proveedor
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                @if($supplier->messages->count() > 0)
+                    <div class="list-group list-group-flush">
+                        @foreach($supplier->messages->sortByDesc('created_at') as $message)
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between align-items-start mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-info bg-opacity-10 rounded-circle p-2 me-2">
+                                            <i class="fas fa-user-shield text-info"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">Administrador</h6>
+                                            <small class="text-muted">
+                                                <i class="far fa-clock me-1"></i>
+                                                {{ $message->created_at->format('d/m/Y H:i') }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <span class="badge {{ $message->status === 'read' ? 'bg-success' : 'bg-warning' }}">
+                                        <i class="fas {{ $message->status === 'read' ? 'fa-check-double' : 'fa-envelope' }} me-1"></i>
+                                        {{ $message->status === 'read' ? 'Leído' : 'No leído' }}
+                                    </span>
+                                </div>
+                                <div class="message-content ps-5">
+                                    <p class="mb-0 text-muted">{{ $message->message }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-inbox fa-5x text-muted opacity-50"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">No hay mensajes</h5>
+                        <p class="text-muted mb-0">
+                            Aún no se han enviado mensajes a este proveedor.
+                        </p>
+                    </div>
+                @endif
+            </div>
+            <div class="modal-footer border-0 bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i> Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section('scripts')
 <style>
     /* Estilos personalizados para la vista de alta de proveedor */
@@ -630,6 +697,26 @@
     
     .modal-header {
         border-radius: 15px 15px 0 0;
+    }
+
+    /* Mensajes en el modal */
+    .list-group-item {
+        border-left: 3px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+        border-left-color: #0dcaf0;
+        transform: translateX(3px);
+    }
+
+    .message-content {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+        border-left: 3px solid #0dcaf0;
     }
     
     /* Iconos con mejor espaciado */
