@@ -132,6 +132,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'gazette.list',
     ]);
 
+    // Módulo Convocatorias de Transparencia
+    Route::get('/convocatorias', [
+        'uses' => 'FrontController@proposalsList',
+        'as' => 'proposals.list',
+    ]);
+
     Route::get('/gaceta-municipal/{type}/{slug}', [
         'uses' => 'FrontController@gazetteDetail',
         'as' => 'gazette.detail',
@@ -326,6 +332,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'uses' => 'SearchController@gazetteQuery',
             'as' => 'back.gazette.query',
         ]);
+
+        /* ------------------- */
+        /* ------------------- */
+
+        /* Convocatorias */
+        Route::resource('trn_proposals', TrnProposalController::class);
 
         /* ------------------- */
         /* ------------------- */
