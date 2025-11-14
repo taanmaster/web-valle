@@ -25,7 +25,6 @@
                     <th>Anónimo</th>
                     <th>Seguimiento</th>
                     <th>Nombre</th>
-                    <th>Teléfono</th>
                     <th>Asunto</th>
                     <th>Acción</th>
                     <th>Estatus</th>
@@ -36,40 +35,40 @@
                     <tr>
                         <td>{{ $complain->id }}</td>
                         <td>
-                            {{ $complain->name ?? 'N/A' }}<br>
+                            @if ($complain->anonymus == true)
+                                Si
+                            @else
+                                No
+                            @endif
                         </td>
                         <td>
-                            {{ $complain->address ?? 'N/A' }}
+                            @if ($complain->notification_email == true)
+                                Correo
+                            @endif
+                            @if ($complain->notification_home == true)
+                                Domicilio
+                            @endif
                         </td>
                         <td>
-                            {{ $complain->phone ?? 'N/A' }}
-                        </td>
-                        <td>
-                            {{ $complain->email ?? 'N/A' }}
+                            {{ $complain->name ?? 'N/A' }}
                         </td>
                         <td>
                             {{ $complain->subject ?? 'N/A' }}
-                        </td>
-                        <td>
-                            @if ($complain->files)
-                                <ul>
-                                    @foreach ($complain->files as $file)
-                                        <li>
-                                            <a href="{{ $file->filename }}" target="_blank">
-                                                {{ $file->name }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                N/A
-                            @endif
                         </td>
                         <td>
                             <button class="btn btn-link btn-sm" wire:click="downloadFile('{{ $complain->id }}')">
                                 Descargar
                             </button>
                         </td>
+                        <td>
+                            <select wire:model="status.{{ $complain->id }}"
+                                wire:change="updateStatus({{ $complain->id }})" class="form-control">
+                                <option value="">Selecciona una opción</option>
+                                <option value="En proceso">En proceso</option>
+                                <option value="Concluida">Concluida</option>
+                            </select>
+                        </td>
+
                     </tr>
                 @endforeach
             </tbody>

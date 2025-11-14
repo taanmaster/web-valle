@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('town')->nullable();
             $table->boolean('notification_email')->default(false)->nullable();
             $table->boolean('notification_home')->default(false)->nullable();
+            $table->string('status')->nullable();
 
         });
     }
@@ -31,10 +32,17 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('citizen_complains', function (Blueprint $table) {
-
-            $table->dropColumn('is_agree');
-            $table->dropColumn('is_aware');
-
+            $table->dropColumn([
+                'is_agree',
+                'is_aware',
+                'ine',
+                'anonymus',
+                'suburb',
+                'town',
+                'notification_email',
+                'notification_home',
+                'status'
+            ]);
         });
     }
 };

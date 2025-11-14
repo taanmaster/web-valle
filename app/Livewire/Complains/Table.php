@@ -27,6 +27,8 @@ class Table extends Component
     public $start_date = '';
     public $end_date = '';
 
+    public $status = [];
+
     public function mount() {}
 
     public function resetFilters()
@@ -57,6 +59,14 @@ class Table extends Component
         Session::flash('success', 'Denuncia descargada exitosamente.');
 
         return response()->download($directory . $filename);
+    }
+
+    public function updateStatus($id)
+    {
+        $complain = CitizenComplain::findOrFail($id);
+
+        $complain->status = $this->status[$id] ?? null;
+        $complain->save();
     }
 
     public function render()
