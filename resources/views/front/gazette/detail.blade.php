@@ -30,22 +30,64 @@
                     </div>
                 </div>
                 
-                <div class="w-100">
-                    <h5 class="mb-3">Listado de Archivos</h5>
+                <div class="w-100 mt-4">
+                    <h5 class="mb-1 fw-bold">Archivos Disponibles</h5>
+                    <p class="text-muted small mb-3">Descarga los documentos oficiales de esta sesión</p>
                     <hr>
-                    <div class="row">
-                        @foreach($gazette->files as $file)
-                        <div class="col-md-3">
-                            <div class="card p-4 mb-0">
-                                @if($file->s3_asset_url != null)
-                                <a target="_blank" href="{{ $file->s3_asset_url }}">Descargar Archivo: {{ $file->name }}</a>
-                                @else
-                                <a target="_blank" href="{{ asset('files/gazettes/' . $file->filename) }}">Descargar Archivo: {{ $file->name }}</a>
-                                @endif
-                            </div>
-                        </div>
-                        @endforeach
+                    
+                    @if($gazette->files->count() > 0)
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="fw-semibold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px;">Documento</th>
+                                    <th class="fw-semibold text-uppercase text-center" style="font-size: 0.75rem; letter-spacing: 0.5px;">Tipo</th>
+                                    <th class="fw-semibold text-uppercase text-center" style="font-size: 0.75rem; letter-spacing: 0.5px;">Tamaño</th>
+                                    <th class="fw-semibold text-uppercase text-center" style="font-size: 0.75rem; letter-spacing: 0.5px;">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($gazette->files as $file)
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <ion-icon name="document-text-outline" style="font-size: 1.5rem; color: #6c757d;"></ion-icon>
+                                            <div>
+                                                <p class="mb-0 fw-semibold">{{ $file->name }}</p>
+                                                <small class="text-muted">{{ $file->filename }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary text-uppercase">{{ $file->file_extension ?? 'PDF' }}</span>
+                                    </td>
+                                    <td class="text-center text-muted">
+                                        {{ $file->filesize ? number_format($file->filesize / 1024 / 1024, 2) . ' MB' : 'N/A' }}
+                                    </td>
+                                    <td class="text-center">
+                                        @if($file->s3_asset_url != null)
+                                        <a target="_blank" href="{{ $file->s3_asset_url }}" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2">
+                                            <ion-icon name="download-outline"></ion-icon>
+                                            Descargar
+                                        </a>
+                                        @else
+                                        <a target="_blank" href="{{ asset('files/gazettes/' . $file->filename) }}" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2">
+                                            <ion-icon name="download-outline"></ion-icon>
+                                            Descargar
+                                        </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
+                    @else
+                    <div class="text-center py-5">
+                        <ion-icon name="folder-open-outline" style="font-size: 3rem; color: #dee2e6;"></ion-icon>
+                        <p class="text-muted mt-3 mb-0">No hay archivos disponibles para esta sesión</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

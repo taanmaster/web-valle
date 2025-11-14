@@ -307,6 +307,11 @@
                                 <a class="nav-link" href="{{ route('gazettes.index') }}">Gaceta Municipal</a>
                             </li>
                         </ul>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('trn_proposals.index') }}">Convocatorias</a>
+                            </li>
+                        </ul>
                     @endif
                 </div>
             @endif

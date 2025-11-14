@@ -2127,3 +2127,457 @@ a:hover {
 @media only screen and (max-width : 320px) {
 
 }
+
+/* GACETA MUNICIPAL Y CONVOCATORIAS - TABLAS Y DATATABLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+/* Navegación Pills - Modo Claro */
+.light-mode .nav-pills {
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.light-mode .nav-pills .nav-link {
+    color: #495057;
+    background: transparent;
+    border: none;
+    padding: 0.625rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.light-mode .nav-pills .nav-link:hover {
+    color: #212529;
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+.light-mode .nav-pills .nav-link.active {
+    color: #fff;
+    background: #0d6efd;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.25);
+}
+
+.light-mode .nav-pills .nav-link.active:hover {
+    background: #0b5ed7;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* Navegación Pills - Modo Oscuro */
+.dark-mode .nav-pills {
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #262626;
+    border-radius: 12px;
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.dark-mode .nav-pills .nav-link {
+    color: #a3a3a3;
+    background: transparent;
+    border: none;
+    padding: 0.625rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark-mode .nav-pills .nav-link:hover {
+    color: #d4d4d4;
+    background: #404040;
+    transform: translateY(-1px);
+}
+
+.dark-mode .nav-pills .nav-link.active {
+    color: #fff;
+    background: #3b82f6;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+.dark-mode .nav-pills .nav-link.active:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
+}
+
+/* Tablas - Estilos Base */
+#gazettesTable,
+#proposalsTable,
+.table-responsive .table {
+    font-size: 0.95rem;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Tablas - Modo Claro */
+.light-mode #gazettesTable,
+.light-mode #proposalsTable {
+    border: 1px solid #e9ecef;
+}
+
+.light-mode #gazettesTable thead th,
+.light-mode #proposalsTable thead th,
+.light-mode .table thead th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 1rem 0.75rem;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.light-mode #gazettesTable tbody tr,
+.light-mode #proposalsTable tbody tr,
+.light-mode .table tbody tr {
+    border-bottom: 1px solid #f1f3f5;
+    transition: background-color 0.15s ease;
+}
+
+.light-mode #gazettesTable tbody tr:hover,
+.light-mode #proposalsTable tbody tr:hover,
+.light-mode .table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.light-mode #gazettesTable tbody td,
+.light-mode #proposalsTable tbody td,
+.light-mode .table tbody td {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+    color: #495057;
+}
+
+.light-mode #gazettesTable tbody td:first-child a,
+.light-mode #proposalsTable tbody td:first-child p {
+    color: #212529;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.light-mode #gazettesTable tbody td:first-child a:hover {
+    color: #0d6efd;
+}
+
+.light-mode #gazettesTable tbody td:nth-child(2),
+.light-mode #proposalsTable tbody td:nth-child(2) {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.light-mode #gazettesTable tbody td:nth-child(3),
+.light-mode #proposalsTable tbody td:nth-child(4) {
+    color: #495057;
+    font-weight: 500;
+}
+
+.light-mode .table tbody td p.fw-semibold {
+    color: #212529;
+}
+
+/* Tablas - Modo Oscuro */
+.dark-mode #gazettesTable,
+.dark-mode #proposalsTable {
+    border: 1px solid #404040;
+}
+
+.dark-mode #gazettesTable thead th,
+.dark-mode #proposalsTable thead th,
+.dark-mode .table thead th {
+    background-color: #262626;
+    color: #d4d4d4;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 1rem 0.75rem;
+    border-bottom: 2px solid #404040;
+}
+
+.dark-mode #gazettesTable tbody tr,
+.dark-mode #proposalsTable tbody tr,
+.dark-mode .table tbody tr {
+    border-bottom: 1px solid #404040;
+    transition: background-color 0.15s ease;
+}
+
+.dark-mode #gazettesTable tbody tr:hover,
+.dark-mode #proposalsTable tbody tr:hover,
+.dark-mode .table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode #gazettesTable tbody td,
+.dark-mode #proposalsTable tbody td,
+.dark-mode .table tbody td {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+    color: #d4d4d4;
+}
+
+.dark-mode #gazettesTable tbody td:first-child a,
+.dark-mode #proposalsTable tbody td:first-child p,
+.dark-mode .table tbody td p.fw-semibold {
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.dark-mode #gazettesTable tbody td:first-child a:hover {
+    color: #3b82f6;
+}
+
+.dark-mode #gazettesTable tbody td:nth-child(2),
+.dark-mode #proposalsTable tbody td:nth-child(2) {
+    color: #a3a3a3;
+    font-size: 0.9rem;
+}
+
+.dark-mode #gazettesTable tbody td:nth-child(3),
+.dark-mode #proposalsTable tbody td:nth-child(4) {
+    color: #d4d4d4;
+    font-weight: 500;
+}
+
+.dark-mode .table tbody td .text-muted {
+    color: #a3a3a3 !important;
+}
+
+/* Tablas - Estilos Comunes */
+#gazettesTable tbody tr:last-child,
+#proposalsTable tbody tr:last-child,
+.table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* Botones en Tablas */
+#gazettesTable .btn-primary,
+#proposalsTable .btn-primary,
+.table .btn-primary {
+    background: #0d6efd;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#gazettesTable .btn-primary:hover,
+#proposalsTable .btn-primary:hover,
+.table .btn-primary:hover {
+    background: #0b5ed7;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(13, 110, 253, 0.2);
+}
+
+#gazettesTable .btn-primary:active,
+#proposalsTable .btn-primary:active,
+.table .btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Badges en Tablas */
+#proposalsTable .badge,
+.table .badge {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* DataTables - Controles Modo Claro */
+.light-mode .dataTables_wrapper .dataTables_length,
+.light-mode .dataTables_wrapper .dataTables_filter {
+    margin-bottom: 1.25rem;
+}
+
+.light-mode .dataTables_wrapper .dataTables_length label,
+.light-mode .dataTables_wrapper .dataTables_filter label {
+    font-size: 0.9rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.light-mode .dataTables_wrapper .dataTables_length select,
+.light-mode .dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: #ffffff;
+    color: #212529;
+}
+
+.light-mode .dataTables_wrapper .dataTables_filter input:focus,
+.light-mode .dataTables_wrapper .dataTables_length select:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.light-mode .dataTables_wrapper .dataTables_info {
+    padding-top: 1.5rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-weight: 400;
+}
+
+/* DataTables - Controles Modo Oscuro */
+.dark-mode .dataTables_wrapper .dataTables_length,
+.dark-mode .dataTables_wrapper .dataTables_filter {
+    margin-bottom: 1.25rem;
+}
+
+.dark-mode .dataTables_wrapper .dataTables_length label,
+.dark-mode .dataTables_wrapper .dataTables_filter label {
+    font-size: 0.9rem;
+    color: #d4d4d4;
+    font-weight: 500;
+}
+
+.dark-mode .dataTables_wrapper .dataTables_length select,
+.dark-mode .dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #404040;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: #262626;
+    color: #d4d4d4;
+}
+
+.dark-mode .dataTables_wrapper .dataTables_filter input:focus,
+.dark-mode .dataTables_wrapper .dataTables_length select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.dark-mode .dataTables_wrapper .dataTables_info {
+    padding-top: 1.5rem;
+    font-size: 0.875rem;
+    color: #a3a3a3;
+    font-weight: 400;
+}
+
+/* Paginación - Estilos Base */
+.dataTables_wrapper .dataTables_paginate .pagination,
+.pagination {
+    margin-top: 1.5rem;
+    gap: 0.25rem;
+}
+
+/* Paginación - Modo Claro */
+.light-mode .dataTables_wrapper .dataTables_paginate .page-link,
+.light-mode .pagination .page-link {
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    color: #495057;
+    background-color: #ffffff;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.light-mode .dataTables_wrapper .dataTables_paginate .page-link:hover,
+.light-mode .pagination .page-link:hover {
+    background: #f8f9fa;
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.light-mode .dataTables_wrapper .dataTables_paginate .page-item.active .page-link,
+.light-mode .pagination .page-item.active .page-link {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
+}
+
+/* Paginación - Modo Oscuro */
+.dark-mode .dataTables_wrapper .dataTables_paginate .page-link,
+.dark-mode .pagination .page-link {
+    border-radius: 6px;
+    border: 1px solid #404040;
+    color: #d4d4d4;
+    background-color: #262626;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.dark-mode .dataTables_wrapper .dataTables_paginate .page-link:hover,
+.dark-mode .pagination .page-link:hover {
+    background: #404040;
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+.dark-mode .dataTables_wrapper .dataTables_paginate .page-item.active .page-link,
+.dark-mode .pagination .page-item.active .page-link {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Títulos y Separadores - Modo Claro */
+.light-mode .card-normal h5.fw-bold {
+    color: #212529;
+    font-size: 1.25rem;
+}
+
+.light-mode .card-normal hr {
+    margin: 0.75rem 0 1.25rem 0;
+    opacity: 0.1;
+}
+
+/* Títulos y Separadores - Modo Oscuro */
+.dark-mode .card-normal h5.fw-bold {
+    color: #ffffff;
+    font-size: 1.25rem;
+}
+
+.dark-mode .card-normal hr {
+    margin: 0.75rem 0 1.25rem 0;
+    opacity: 0.2;
+    border-color: #404040;
+}
+
+/* Responsive Pills */
+@media (max-width: 768px) {
+    .nav-pills {
+        width: 100%;
+    }
+    
+    .nav-pills .nav-link {
+        flex: 1;
+        text-align: center;
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+    }
+}

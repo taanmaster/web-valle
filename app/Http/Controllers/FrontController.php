@@ -16,6 +16,7 @@ use App\Models\DIFBanner;
 
 // Modelos Gaceta Municipal
 use App\Models\Gazette;
+use App\Models\TrnProposal as Proposal;
 
 // Modelos Transparencia
 use App\Models\TransparencyDependency;
@@ -139,15 +140,24 @@ class FrontController extends Controller
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
 
+        return view('front.gazette.index')
+            ->with('gazettes', $gazettes)
+            ->with('type', $type)
+            ->with('dates', $dates)
+            ->with('ordinary_gazette_sessions', $ordinary_gazette_sessions)
+            ->with('solemn_gazette_sessions', $solemn_gazette_sessions)
+            ->with('extraordinary_gazette_sessions', $extraordinary_gazette_sessions);
+    }
 
-        return view('front.gazette.index')->with([
-            'gazettes' => $gazettes,
-            'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
-            'solemn_gazette_sessions' => $solemn_gazette_sessions,
-            'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
-            'dates' => $dates,
-            'type' => $type,
-        ]);
+    // Modulo Convocatorias de Transparencia
+    public function proposalsList()
+    {
+       $proposals = Proposal::where('in_index', true)
+           ->orderBy('id', 'desc')
+           ->paginate(10);
+
+        return view('front.proposals.index')
+        ->with('proposals', $proposals);
     }
 
     public function gazetteDetail($type, $slug)
@@ -176,6 +186,9 @@ class FrontController extends Controller
                 ->get();
         }
 
+        $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
+        $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
+        $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
 
         $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
             ->groupBy('date')
@@ -189,7 +202,12 @@ class FrontController extends Controller
         return view('front.gazette.index')->with([
             'gazettes' => $gazettes,
             'type' => $type,
-            'dates' => $dates
+            'dates' => $dates,
+            'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
+            'solemn_gazette_sessions' => $solemn_gazette_sessions,
+            'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
+            'is_filtered' => true,
+            'selected_date' => $date
         ]);
     }
 
