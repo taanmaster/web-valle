@@ -13,6 +13,10 @@
             border-right: 1px solid rgba(0, 0, 0, 0.09);
             padding: 0 12px;
         }
+
+        .nav-link.disabled {
+            opacity: .5;
+        }
     </style>
 
     <div class="row layout-spacing">
@@ -412,81 +416,41 @@
                                     cotizaciones</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                                    data-bs-target="#profile-tab-pane" type="button" role="tab"
-                                    aria-controls="profile-tab-pane" aria-selected="false">Adjudicación</button>
+                                @php
+                                    $hasAwardedProposal = $bidding
+                                        ->proposals()
+                                        ->where('status', 'Adjudicada')
+                                        ->exists();
+                                @endphp
+
+                                <button class="nav-link {{ !$hasAwardedProposal ? 'disabled' : '' }}"
+                                    id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                                    type="button" role="tab" aria-controls="profile-tab-pane"
+                                    aria-selected="false"
+                                    aria-disabled="{{ !$hasAwardedProposal ? 'true' : 'false' }}"
+                                    @disabled(!$hasAwardedProposal)>
+                                    Adjudicación
+                                </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
-                                    data-bs-target="#contact-tab-pane" type="button" role="tab"
-                                    aria-controls="contact-tab-pane" aria-selected="false">Entregables</button>
+                                {{--
+
+
+                                <button class="nav-link {{ !$hasDeliverables ? 'disabled' : '' }}" id="contact-tab"
+                                    data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button"
+                                    role="tab" aria-controls="contact-tab-pane" aria-selected="false"
+                                    aria-disabled="{{ !$hasDeliverables ? 'true' : 'false' }}"
+                                    @disabled(!$hasDeliverables)>
+                                    Entregables
+                                </button>
+                                --}}
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active py-4" id="home-tab-pane" role="tabpanel"
                                 aria-labelledby="home-tab" tabindex="0">
 
-                                <div class="d-flex justify-content-end">
-                                    <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                        class="btn btn-sm btn-primary btn-uppercase new-proposal"
-                                        style="max-width: fit-content" data-id="{{ $bidding->id }}"><i
-                                            class="fas fa-plus"></i> Agregar propuesta</button>
-                                </div>
-
-                                @if ($bidding->proposals->count() != null)
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Propuesta</th>
-                                                    <th>No. Proveedor</th>
-                                                    <th>Nombre de Proveedor</th>
-                                                    <th>Tipo de proveedor</th>
-                                                    <th>Fecha</th>
-                                                    <th>Archivo</th>
-                                                    <th>Dictamen</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($bidding->proposals as $index => $proposal)
-                                                    <tr>
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $proposal->supplier->registration_number }}</td>
-                                                        <td>{{ $proposal->supplier->owner_name }}</td>
-                                                        <td>{{ $proposal->supplier->person_type }}</td>
-                                                        <td>{{ $proposal->updated_at }}</td>
-                                                        <td>{{ $proposal->file_name }}</td>
-                                                        <td>
-
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                @else
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="box">
-                                                <div class="box-body">
-                                                    <div class="text-center" style="padding:80px 0px 100px 0px;">
-                                                        <h4>¡No hay propuestas guardadas en la base de datos!</h4>
-                                                        <p class="mb-4">Empieza a cargar propuestas en tu
-                                                            plataforma usando el botón superior.
-                                                        </p>
-                                                        <button data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop"
-                                                            class="btn btn-sm btn-primary btn-uppercase new-proposal"
-                                                            data-id="{{ $bidding->id }}"><i class="fas fa-plus"></i>
-                                                            Crear nueva
-                                                            Propuesta/Cotización</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-
+                                <livewire:bidding.proposal.table :bidding="$bidding" />
                             </div>
                             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
                                 aria-labelledby="profile-tab" tabindex="0">...</div>
@@ -496,17 +460,6 @@
                     </div>
                 </div>
             @endif
-        </div>
-    </div>
-
-
-    <!-- Modal Propuestas-->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <livewire:bidding.proposal.crud :bidding="$bidding->id" />
-            </div>
         </div>
     </div>
 </div>

@@ -190,7 +190,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" wire:click="saveSupplier">Guardar
+                        <button type="button" class="btn btn-secondary" wire:click="cancelSupplier">Volver</button>
+                        <button class="btn btn-primary" wire:click="saveSupplier" type="button">Guardar
                             proveedor</button>
                     </div>
                 @else
@@ -232,7 +233,7 @@
                                             'like',
                                             '%' . $searchSupplier . '%',
                                         )
-                                            ->where('business_name', 'like', '%' . $searchSupplier . '%')
+                                            ->orWhere('business_name', 'like', '%' . $searchSupplier . '%')
                                             ->get();
                                     @endphp
 
@@ -246,7 +247,7 @@
                                     @else
                                         <button class="btn btn-sm btn-link" type="button"
                                             wire:click="createSupplier">
-                                            <i class="fas fa-plus"></i> Crear provedor
+                                            <i class="fas fa-plus"></i> Crear proveedor
                                         </button>
                                     @endif
                                 </div>
@@ -278,20 +279,22 @@
                                 <h4>Cotización y/o Propuesta</h4>
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label class="col-form-label">Nombre del documento</label>
+                                        <label class="col-form-label">Nombre del documento *</label>
                                     </div>
                                     <div class="col-md">
                                         <input type="text" name="file_name" id="file_name" wire:model="file_name"
-                                            @if ($mode == 1) disabled @endif class="form-control">
+                                            @if ($mode == 1) disabled @endif class="form-control"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label class="col-form-label">Archivo</label>
+                                        <label class="col-form-label">Archivo *</label>
                                     </div>
                                     <div class="col-md">
                                         <input type="file" name="file" id="file" wire:model="file"
-                                            @if ($mode == 1) disabled @endif class="form-control">
+                                            @if ($mode == 1) disabled @endif class="form-control"
+                                            required>
                                     </div>
                                 </div>
                             </div>
@@ -303,9 +306,11 @@
         @if ($newSupplier != true)
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar
+                <button type="submit" class="btn btn-primary">Guardar
                     Propuesta</button>
             </div>
         @endif
     </form>
+
+
 </div>

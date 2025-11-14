@@ -166,7 +166,13 @@ class Crud extends Component
 
         $supplier->save();
 
-        $this->selectSupplier($supplier->id);
+        $this->selectedSupplier = $supplier;
+        $this->supplier_id = $supplier->id;
+        $this->supplier_name = $supplier->owner_name;
+        $this->supplier_num = $supplier->registration_number;
+        $this->supplier_type = $supplier->person_type;
+
+        $this->searchSupplier = '';
 
         $this->newSupplier = false;
     }
@@ -181,19 +187,76 @@ class Crud extends Component
         return $roleMap[$userType] ?? 'citizen';
     }
 
+    public function cancelSupplier()
+    {
+        $this->newSupplier = false;
+        $this->searchSupplier = '';
+
+        $this->supplier_id = '';
+        $this->supplier_name = '';
+        $this->supplier_num = '';
+        $this->supplier_type = '';
+        $this->selectedSupplier = '';
+
+        $this->name = '';
+        $this->email = '';
+        $this->password = '';
+        $this->password_confirmation = '';
+        $this->person_type = '';
+        $this->padron_status = '';
+        $this->company_name = '';
+    }
+
     public function save()
     {
+        $this->dispatch('closeModal');
+
+        // Validación
+        $this->validate([
+            'file_name' => 'required|string|max:255',
+            'file' => $this->file ? 'required|file|mimes:pdf,doc,docx|max:102400' : 'required|file|mimes:pdf,doc,docx|max:102400',
+        ], [
+            'name.required' => 'El nombre de archivo es obligatorio.',
+            'file.required' => 'Debes subir un archivo.',
+            'file.mimes' => 'El archivo debe ser PDF, DOC o DOCX.',
+        ]);
+
         $proposal = new BiddingProposal;
 
         $proposal->bidding_id = $this->bidding;
         $proposal->supplier_id = $this->supplier_id;
         $proposal->file_name = $this->file_name;
-        $proposal->file = $this->file;
+        // --- Request File ---
+        $proposal->file = $this->file
+            ? $this->handleUpload($this->file)
+            : $proposal->file;
+
         $proposal->save();
 
         $proposal->bidding->updateStatus();
         // Emitir evento global
         $this->dispatch('proposalSaved', id: $this->bidding);
+
+
+    }
+
+    protected function handleUpload($document)
+    {
+        $originalName = pathinfo($document->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $document->getClientOriginalExtension();
+
+        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+        $filename = $cleanName . '.' . $extension;
+
+        $filepath = 'acquisitions/biddings/proposals' . $filename;
+
+        $stream = fopen($document->getRealPath(), 'r+');
+        Storage::disk('s3')->put($filepath, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        return Storage::disk('s3')->url($filepath);
     }
 
     public function clearAll()
@@ -207,6 +270,14 @@ class Crud extends Component
         $this->supplier_type = '';
         $this->searchSupplier = '';
         $this->selectedSupplier = '';
+
+        $this->name = '';
+        $this->email = '';
+        $this->password = '';
+        $this->password_confirmation = '';
+        $this->person_type = '';
+        $this->padron_status = '';
+        $this->company_name = '';
     }
 
     public function render()
