@@ -103,7 +103,10 @@ class Crud extends Component
         $file = new BiddingFile;
         $file->bidding_id = $this->bidding->id;
         $file->file_name = $this->file_name;
-        $file->file = $this->file;
+        // --- Request File ---
+        $file->file = $this->file
+            ? $this->handleUpload($this->file)
+            : $file->file;
         $file->save();
 
         $this->fileUpload = false;

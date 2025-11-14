@@ -191,6 +191,7 @@ class Crud extends Component
         $proposal->file = $this->file;
         $proposal->save();
 
+        $proposal->bidding->updateStatus();
         // Emitir evento global
         $this->dispatch('proposalSaved', id: $this->bidding);
     }
