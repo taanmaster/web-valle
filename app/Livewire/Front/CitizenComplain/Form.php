@@ -14,6 +14,7 @@ use Intervention\Image\Facades\Image as Image;
 use Livewire\WithFileUploads;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 //Modelos
 use App\Models\CitizenComplain;
