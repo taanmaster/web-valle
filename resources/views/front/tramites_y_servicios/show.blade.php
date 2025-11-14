@@ -22,10 +22,33 @@
                         <p>{{ $request->requirements }}</p>
                     </div>
 
+                    {{--
                     <div class="my-4">
                         <h4>Costo</h4>
                         <p>$ {{ $request->cost }}</p>
                     </div>
+                     --}}
+
+                    @if ($request != null && $request->costs->count() != 0)
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Valor</th>
+                                        <th>Descripción del valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($request->costs as $cost)
+                                        <tr>
+                                            <td>$ {{ $cost->ammount }}</td>
+                                            <td>{{ $cost->description }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
 
                     <div class="d-flex align-items-center justify-content-center" style="gap: 12px">
                         @if ($request->steps_filename)

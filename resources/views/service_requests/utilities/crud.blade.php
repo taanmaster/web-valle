@@ -73,6 +73,7 @@
                     </div>
                 </div>
 
+                {{--
                 <div class="row align-items-center m-3">
                     <div class="col-md-2">
                         <label for="cost" class="col-form-label">Costo</label>
@@ -82,6 +83,7 @@
                             @if ($mode == 1) disabled @endif>
                     </div>
                 </div>
+                 --}}
 
                 <div class="row align-items-center m-3">
                     <div class="col-md-2">
@@ -114,6 +116,62 @@
                     @endif
                 </div>
             </form>
+
+
+            <div class="row m-3">
+                <h5>Costos</h5>
+                <div class="col-md-4">
+                    <input type="number" class="form-control" @if ($mode == 1) disabled @endif
+                        name="ammount" wire:model="ammount" placeholder="Valor">
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="ammount_description" id="ammount_description"
+                        wire:model="ammount_description" class="form-control"
+                        @if ($mode == 1) disabled @endif placeholder="Descripción del costo">
+                </div>
+                <div class="col-md-2 d-flex justify-content-end align-items-center text-end">
+                    <button class="btn btn-sm btn-primary" type="button" wire:click="saveCost"
+                        style="max-width: fit-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff"
+                            viewBox="0 0 256 256">
+                            <path
+                                d="M208,32H83.31A15.86,15.86,0,0,0,72,36.69L36.69,72A15.86,15.86,0,0,0,32,83.31V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM88,48h80V80H88ZM208,208H48V83.31l24-24V80A16,16,0,0,0,88,96h80a16,16,0,0,0,16-16V48h24Zm-80-96a40,40,0,1,0,40,40A40,40,0,0,0,128,112Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,176Z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            @if ($request != null && $request->costs->count() != 0)
+                <div class="table-responsive m-3">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Valor</th>
+                                <th>Descripción del valor</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($request->costs as $cost)
+                                <tr>
+                                    <td>$ {{ $cost->ammount }}</td>
+                                    <td>{{ $cost->description }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                            data-original-title="Eliminar"
+                                            wire:click="deleteCost({{ $cost->id }})">
+                                            Eliminar costo
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+
+
         </div>
     </div>
 </div>
