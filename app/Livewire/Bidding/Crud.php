@@ -24,6 +24,8 @@ class Crud extends Component
 
     public $bidding;
 
+    public $proposals;
+
     //Modes: 0: create, 1 show, 2 edit
     public $mode = 0;
 
@@ -47,6 +49,17 @@ class Crud extends Component
 
     public $dependencies = [];
 
+    #[On('proposalSaved')]
+    public function refreshTable($id)
+    {
+        $this->mode = 1;
+
+        $bidding = Bidding::findOrFail($id);
+        $this->bidding = $bidding;
+
+        $this->mount();
+    }
+
     public function mount()
     {
 
@@ -64,7 +77,6 @@ class Crud extends Component
         if ($this->bidding != null) {
             $this->fetchBidding();
         }
-
     }
 
     public function fetchBidding()

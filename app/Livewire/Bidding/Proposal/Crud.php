@@ -30,6 +30,7 @@ class Crud extends Component
     use WithFileUploads;
 
     public $proposal;
+    public $bidding = '';
 
     //Modes: 0: create, 1 show, 2 edit
     public $mode = 0;
@@ -55,29 +56,29 @@ class Crud extends Component
 
 
     public $selectedSupplier = '';
-
+    public $supplier_id = '';
+    public $supplier_name = '';
+    public $supplier_num = '';
+    public $supplier_type = '';
 
     public $searchSupplier = '';
-    public $supplier_id = '';
-    public $worker_name = '';
 
-    public function mount()
+    public function mount($bidding)
     {
+        $this->clearAll();
 
-    }
 
-    public function save()
-    {
-
+        $this->bidding = $bidding;
     }
 
     public function selectSupplier($supplier_id)
     {
-        $this->supplier_id = $supplier_id;
-
         $supplier = \App\Models\Supplier::find($supplier_id);
-
-        $this->searchSupplier = $supplier;
+        $this->selectedSupplier = $supplier;
+        $this->supplier_id = $supplier->id;
+        $this->supplier_name = $supplier->owner_name;
+        $this->supplier_num = $supplier->registration_number;
+        $this->supplier_type = $supplier->person_type;
 
         $this->searchSupplier = '';
     }
@@ -91,6 +92,8 @@ class Crud extends Component
     {
         $this->supplier_id = '';
         $this->searchSupplier = '';
+        $this->selectedSupplier = '';
+        $this->supplier_name = '';
     }
 
     public function saveSupplier()
@@ -164,6 +167,8 @@ class Crud extends Component
         $supplier->save();
 
         $this->selectSupplier($supplier->id);
+
+        $this->newSupplier = false;
     }
 
     private function getRoleNameByUserType(string $userType): string
@@ -174,6 +179,33 @@ class Crud extends Component
         ];
 
         return $roleMap[$userType] ?? 'citizen';
+    }
+
+    public function save()
+    {
+        $proposal = new BiddingProposal;
+
+        $proposal->bidding_id = $this->bidding;
+        $proposal->supplier_id = $this->supplier_id;
+        $proposal->file_name = $this->file_name;
+        $proposal->file = $this->file;
+        $proposal->save();
+
+        // Emitir evento global
+        $this->dispatch('proposalSaved', id: $this->bidding);
+    }
+
+    public function clearAll()
+    {
+        $this->bidding = '';
+        $this->file_name = '';
+        $this->file = '';
+        $this->supplier_id = '';
+        $this->supplier_name = '';
+        $this->supplier_num = '';
+        $this->supplier_type = '';
+        $this->searchSupplier = '';
+        $this->selectedSupplier = '';
     }
 
     public function render()

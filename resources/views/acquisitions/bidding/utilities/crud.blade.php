@@ -428,7 +428,8 @@
 
                                 <div class="d-flex justify-content-end">
                                     <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                        class="btn btn-sm btn-primary btn-uppercase" style="max-width: fit-content"><i
+                                        class="btn btn-sm btn-primary btn-uppercase new-proposal"
+                                        style="max-width: fit-content" data-id="{{ $bidding->id }}"><i
                                             class="fas fa-plus"></i> Agregar propuesta</button>
                                 </div>
 
@@ -449,9 +450,9 @@
                                             <tbody>
                                                 @foreach ($bidding->proposals as $index => $proposal)
                                                     <tr>
-                                                        <td>{{ $index }}</td>
+                                                        <td>{{ $index + 1 }}</td>
                                                         <td>{{ $proposal->supplier->registration_number }}</td>
-                                                        <td>{{ $proposal->supplier->legal_name }}</td>
+                                                        <td>{{ $proposal->supplier->owner_name }}</td>
                                                         <td>{{ $proposal->supplier->person_type }}</td>
                                                         <td>{{ $proposal->updated_at }}</td>
                                                         <td>{{ $proposal->file_name }}</td>
@@ -475,21 +476,10 @@
                                                         </p>
                                                         <button data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop"
-                                                            class="btn btn-sm btn-primary btn-uppercase"><i
-                                                                class="fas fa-plus"></i> Crear nueva
+                                                            class="btn btn-sm btn-primary btn-uppercase new-proposal"
+                                                            data-id="{{ $bidding->id }}"><i class="fas fa-plus"></i>
+                                                            Crear nueva
                                                             Propuesta/Cotización</button>
-
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="staticBackdrop"
-                                                            data-bs-backdrop="static" data-bs-keyboard="false"
-                                                            tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                                <div class="modal-content">
-                                                                    <livewire:bidding.proposal.crud />
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -506,6 +496,17 @@
                     </div>
                 </div>
             @endif
+        </div>
+    </div>
+
+
+    <!-- Modal Propuestas-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <livewire:bidding.proposal.crud :bidding="$bidding->id" />
+            </div>
         </div>
     </div>
 </div>
