@@ -1,10 +1,12 @@
 <div>
 
-    <div class="d-flex justify-content-end">
-        <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-            class="btn btn-sm btn-primary btn-uppercase new-proposal" style="max-width: fit-content"
-            data-id="{{ $bidding->id }}"><i class="fas fa-plus"></i> Agregar propuesta</button>
-    </div>
+    @if ($mode != 3)
+        <div class="d-flex justify-content-end">
+            <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                class="btn btn-sm btn-primary btn-uppercase new-proposal" style="max-width: fit-content"
+                data-id="{{ $bidding->id }}"><i class="fas fa-plus"></i> Agregar propuesta</button>
+        </div>
+    @endif
 
     @if ($proposals->count() != null)
         <div class="table-responsive">

@@ -21,25 +21,27 @@
 
     <div class="row layout-spacing">
         <div class="main-content">
-            <div class="row align-items-center mb-4">
-                <div class="col text-start">
-                    @if ($bidding != null)
-                        @switch($mode)
-                            @case(1)
-                                <h2>Ver Licitación</h2>
-                            @break
+            @if ($mode != 3)
+                <div class="row align-items-center mb-4">
+                    <div class="col text-start">
+                        @if ($bidding != null)
+                            @switch($mode)
+                                @case(1)
+                                    <h2>Ver Licitación</h2>
+                                @break
 
-                            @case(2)
-                                <h2>Editar licitación</h2>
-                            @break
-                        @endswitch
-                    @else
-                        <h2>Nueva Licitación</h2>
-                    @endif
+                                @case(2)
+                                    <h2>Editar licitación</h2>
+                                @break
+                            @endswitch
+                        @else
+                            <h2>Nueva Licitación</h2>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @endif
 
-            @if ($mode != 1)
+            @if ($mode == 0 && $mode == 2)
                 <form method="POST" wire:submit="save" enctype="multipart/form-data">
                     {{ csrf_field() }}
 
@@ -450,7 +452,7 @@
                             <div class="tab-pane fade show active py-4" id="home-tab-pane" role="tabpanel"
                                 aria-labelledby="home-tab" tabindex="0">
 
-                                <livewire:bidding.proposal.table :bidding="$bidding" />
+                                <livewire:bidding.proposal.table :bidding="$bidding" :mode="$mode" />
                             </div>
                             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
                                 aria-labelledby="profile-tab" tabindex="0">...</div>

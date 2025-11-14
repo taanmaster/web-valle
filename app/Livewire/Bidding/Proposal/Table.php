@@ -24,6 +24,7 @@ class Table extends Component
 
     public $bidding;
 
+    public $mode = 0;
 
     #[On('proposalSaved')]
     public function refreshTable()

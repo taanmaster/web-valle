@@ -18,7 +18,7 @@
 
                     <div class="card-body">
                         <!-- Contenido de la pestaña Inicio de Licitaciones-->
-
+                        <livewire:bidding.crud :mode="$mode" :bidding="$bidding" />
                     </div>
                 </div>
             </div>

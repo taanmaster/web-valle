@@ -22,6 +22,8 @@ class Table extends Component
 {
     use WithPagination;
 
+    public $mode = 0;
+
     public function mount()
     {
         $biddings = Bidding::whereNull('title')

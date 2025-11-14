@@ -1,8 +1,11 @@
 <div>
     <div class="row mb-3 align-items-center justify-content-end">
         <div class="col-md-2 text-end">
-            <a href="{{ route('acquisitions.biddings.create') }}" class="btn btn-primary btn-sm"
-                wire:click="resetFilters">Nueva Licitación</a>
+
+            @if ($mode != 1)
+                <a href="{{ route('acquisitions.biddings.create') }}" class="btn btn-primary btn-sm"
+                    wire:click="resetFilters">Nueva Licitación</a>
+            @endif
         </div>
     </div>
 
@@ -31,26 +34,35 @@
                             <td>{{ $bidding->ammount }}</td>
                             <td>{{ $bidding->status }}</td>
                             <td>
-                                <a href="{{ route('acquisitions.biddings.show', $bidding->id) }}"
-                                    class="btn btn-sm btn-outline-primary mb-2">
-                                    Ver
-                                </a>
+                                @if ($mode == 0)
+                                    <a href="{{ route('acquisitions.biddings.show', $bidding->id) }}"
+                                        class="btn btn-sm btn-outline-primary mb-2">
+                                        Ver
+                                    </a>
+                                @else
+                                    <a href="{{ route('supplier.bidding.show', $bidding->id) }}"
+                                        class="btn btn-sm btn-primary mb-2">
+                                        Ver
+                                    </a>
+                                @endif
 
-                                <a href="{{ route('acquisitions.biddings.edit', $bidding->id) }}"
-                                    class="btn btn-sm btn-outline-secondary mb-2">
-                                    Editar
-                                </a>
+                                @if ($mode != 1)
+                                    <a href="{{ route('acquisitions.biddings.edit', $bidding->id) }}"
+                                        class="btn btn-sm btn-outline-secondary mb-2">
+                                        Editar
+                                    </a>
 
-                                <form action="{{ route('acquisitions.biddings.destroy', $bidding->id) }}" method="POST"
-                                    style="display: inline;" class="mb-0">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip"
-                                        data-original-title="Eliminar"
-                                        onclick="return confirm('¿Estás seguro de que deseas eliminar esta licitación?')">
-                                        Eliminar
-                                    </button>
-                                </form>
+                                    <form action="{{ route('acquisitions.biddings.destroy', $bidding->id) }}"
+                                        method="POST" style="display: inline;" class="mb-0">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip"
+                                            data-original-title="Eliminar"
+                                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta licitación?')">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
