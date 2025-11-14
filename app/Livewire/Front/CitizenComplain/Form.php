@@ -106,6 +106,26 @@ class Form extends Component
             ];
         });
 
+        // Imagen responsiva en Banner
+        $ineFilename = null;
+
+        if ($this->ine) {
+            $image = $this->ine;
+
+            // Nombre del archivo
+            $ineFilename = 'ine_' . time() . '.' . $image->getClientOriginalExtension();
+
+            // Ruta en public/
+            $location = public_path('ine/' . $ineFilename);
+
+            // Redimensionar y guardar (opcional)
+            Image::make($image)
+                ->resize(1280, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })
+                ->save($location);
+        }
+
         $complain = CitizenComplain::create([
             // Paso 1
             'is_agree' => $this->is_agree,
@@ -113,7 +133,7 @@ class Form extends Component
             'subject' => $this->subject,
 
             // Paso 2
-            'ine' => $this->ine,
+            'ine' => $ineFilename, // archivo guardado
             'anonymus' => $this->anonymus,
             'name' => $this->name,
             'address' => $this->address,
