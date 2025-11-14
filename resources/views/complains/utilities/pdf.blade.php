@@ -77,6 +77,7 @@
             <td colspan="3" class="center">
                 <h2>VALLE DE SANTIAGO</h2>
                 <p>Contraloría Municipal</p>
+                <p>Estatus: {{ $complain->status }}</p>
             </td>
         </tr>
         <tr>
