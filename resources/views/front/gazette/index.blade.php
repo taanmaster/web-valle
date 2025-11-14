@@ -71,7 +71,10 @@
                         <ul class="nav nav-pills">
                             @foreach($dates as $date)
                                 <li class="nav-item">
-                                    <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="{{ route('gazette.filter', [$type, 'date' => $date->format('Y-m')]) }}">{{ $date->translatedFormat('F Y') }}</a>
+                                    <a class="nav-link {{ (isset($selected_date) && $date->format('Y-m') == $selected_date) || (!isset($selected_date) && $loop->first) ? 'active' : '' }}" 
+                                       href="{{ route('gazette.filter', [$type, 'date' => $date->format('Y-m')]) }}">
+                                        {{ $date->translatedFormat('F Y') }}
+                                    </a>
                                 </li>
                             @endforeach
                         </ul>

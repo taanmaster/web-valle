@@ -206,7 +206,8 @@ class FrontController extends Controller
             'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
             'solemn_gazette_sessions' => $solemn_gazette_sessions,
             'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
-            'is_filtered' => true
+            'is_filtered' => true,
+            'selected_date' => $date
         ]);
     }
 
