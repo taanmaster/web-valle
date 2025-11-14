@@ -49,6 +49,7 @@ use App\Http\Controllers\AcquisitionApprovalController;
 use App\Http\Controllers\AcquisitionSupplierController;
 use App\Http\Controllers\BiddingContractController;
 use App\Http\Controllers\BiddingController;
+use App\Http\Controllers\SupplierBiddingController;
 use App\Http\Controllers\SupplierMessageController;
 
 // Modelos
@@ -1503,6 +1504,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/altas/{id}/archivo', [App\Http\Controllers\SupplierController::class, 'uploadFile'])->name('supplier.alta.uploadFile');
         Route::delete('/altas/{id}/archivo/{fileId}', [App\Http\Controllers\SupplierController::class, 'deleteFile'])->name('supplier.alta.deleteFile');
         Route::delete('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'destroy'])->name('supplier.alta.destroy');
+
+        // Licitaciones
+        Route::get('/licitaciones', [SupplierBiddingController::class, 'index'])->name('supplier.bidding.index');
+        Route::get('/licitaciones/{id}', [SupplierBiddingController::class, 'show'])->name('supplier.bidding.show');
 
         // Refrendos
         Route::get('/refrendos', [App\Http\Controllers\SupplierEndorsementController::class, 'index'])->name('supplier.endorsement.index');
