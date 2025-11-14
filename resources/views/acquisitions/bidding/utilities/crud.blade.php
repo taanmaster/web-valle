@@ -423,8 +423,14 @@
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
+                            <div class="tab-pane fade show active py-4" id="home-tab-pane" role="tabpanel"
                                 aria-labelledby="home-tab" tabindex="0">
+
+                                <div class="d-flex justify-content-end">
+                                    <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                        class="btn btn-sm btn-primary btn-uppercase" style="max-width: fit-content"><i
+                                            class="fas fa-plus"></i> Agregar propuesta</button>
+                                </div>
 
                                 @if ($bidding->proposals->count() != null)
                                     <div class="table-responsive">
