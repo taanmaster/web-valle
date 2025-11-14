@@ -22,14 +22,13 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Anónimo</th>
+                    <th>Seguimiento</th>
                     <th>Nombre</th>
-                    <th>Dirección</th>
                     <th>Teléfono</th>
-                    <th>Correo</th>
                     <th>Asunto</th>
-                    <th>Denuncia</th>
-                    <th>Pruebas</th>
                     <th>Acción</th>
+                    <th>Estatus</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,9 +49,6 @@
                         </td>
                         <td>
                             {{ $complain->subject ?? 'N/A' }}
-                        </td>
-                        <td>
-                            {{ $complain->message ?? 'N/A' }}
                         </td>
                         <td>
                             @if ($complain->files)

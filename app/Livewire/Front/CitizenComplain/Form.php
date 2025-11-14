@@ -23,12 +23,30 @@ class Form extends Component
 {
 
     use WithFileUploads;
+
+    //Pasos
+    public $step = 1;
+
+    //Paso 1
+    public $is_agree;
+    public $is_aware;
+    public $subject = '';
+
+    //Paso 2
+    public $ine = '';
+    public $anonymus = '';
     public $name = '';
+    public $address = '';
+    public $suburb = '';
+    public $town = '';
     public $email = '';
     public $phone = '';
-    public $address = '';
+
+    public $notification_email = '';
+    public $notification_home = '';
+
+    //Paso 3
     public $complain = '';
-    public $subject = '';
     public $captcha = '';
 
     public $files = [];
@@ -39,6 +57,23 @@ class Form extends Component
     public function removeFile($index)
     {
         unset($this->files[$index]);
+    }
+
+    public function nextStep()
+    {
+        $this->step = $this->step + 1;
+    }
+
+    public $captchaHtml;
+
+    public function mount()
+    {
+        $this->captchaHtml = captcha_img('flat');
+    }
+
+    public function reloadCaptcha()
+    {
+        $this->captchaHtml = captcha_img('flat');
     }
 
     public function save()
@@ -72,12 +107,27 @@ class Form extends Component
         });
 
         $complain = CitizenComplain::create([
+            // Paso 1
+            'is_agree' => $this->is_agree,
+            'is_aware' => $this->is_aware,
+            'subject' => $this->subject,
+
+            // Paso 2
+            'ine' => $this->ine,
+            'anonymus' => $this->anonymus,
             'name' => $this->name,
+            'address' => $this->address,
+            'suburb' => $this->suburb,
+            'town' => $this->town,
             'email' => $this->email,
             'phone' => $this->phone,
-            'address' => $this->address,
+
+            // Notificaciones
+            'notification_email' => $this->notification_email,
+            'notification_home' => $this->notification_home,
+
+            // Mensaje
             'message' => $this->complain,
-            'subject' => $this->subject,
         ]);
 
         foreach ($savedFiles as $file) {
@@ -98,16 +148,43 @@ class Form extends Component
         session()->flash('message', 'Su queja ha sido registrada con éxito. Gracias por su colaboración.');
     }
 
+    public function getStep2CompleteProperty()
+    {
+        return
+            !empty($this->ine) &&
+            !empty($this->name) &&
+            !empty($this->address) &&
+            !empty($this->suburb) &&
+            !empty($this->town) &&
+            !empty($this->email) &&
+            !empty($this->phone);
+    }
+
     public function clean()
     {
+        // Paso 1
+        $this->is_agree = '';
+        $this->is_aware = '';
+        $this->subject = '';
+
+        // Paso 2
+        $this->ine = '';
+        $this->anonymus = '';
         $this->name = '';
+        $this->address = '';
+        $this->suburb = '';
+        $this->town = '';
         $this->email = '';
         $this->phone = '';
-        $this->address = '';
-        $this->complain = '';
-        $this->subject = '';
-        $this->captcha = '';
 
+        // Notificaciones
+        $this->notification_email = '';
+        $this->notification_home = '';
+
+        // Mensaje
+        $this->complain = '';
+
+        $this->captcha = '';
         $this->files = [];
         $this->state = '';
         $this->folio = '';

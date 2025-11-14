@@ -434,7 +434,7 @@ class FrontController extends Controller
                     ->orderBy('name', 'asc')
                     ->get();
                 $title = 'Protección Civil';
-                
+
                 return view('front.urban_dev.civil_defense_detail')->with([
                     'type' => $type,
                     'workers' => $workers,
@@ -596,6 +596,11 @@ class FrontController extends Controller
     public function denunciaNet()
     {
         return view('front.citizen_complain.index');
+    }
+
+    public function denunciaNetShow()
+    {
+        return view('front.citizen_complain.show');
     }
 
     public function reloadCaptcha()

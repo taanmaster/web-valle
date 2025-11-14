@@ -128,6 +128,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     /*Denuncia NET*/
     Route::get('/denuncia-net', 'FrontController@denunciaNet')->name('denuncia.net');
+    Route::get('/denuncia-net/estatus', 'FrontController@denunciaNetShow')->name('denuncia.net.show');
 
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
