@@ -39,6 +39,8 @@
                         @endif
                     </div>
                 </div>
+            @else
+                <a href="{{ route('supplier.bidding.index') }}" class="btn btn-secondary">Regresar a listado</a>
             @endif
 
             @if ($mode == 0 && $mode == 2)
@@ -435,8 +437,9 @@
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                {{--
-
+                                @php
+                                    $hasDeliverables = $bidding->deliverables()->exists();
+                                @endphp
 
                                 <button class="nav-link {{ !$hasDeliverables ? 'disabled' : '' }}" id="contact-tab"
                                     data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button"
@@ -445,7 +448,7 @@
                                     @disabled(!$hasDeliverables)>
                                     Entregables
                                 </button>
-                                --}}
+
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
