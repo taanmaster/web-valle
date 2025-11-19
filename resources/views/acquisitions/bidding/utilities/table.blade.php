@@ -31,7 +31,7 @@
                             <td>{{ $bidding->title }}</td>
                             <td>{{ $bidding->dependency_name }}</td>
                             <td>{{ $bidding->bidding_type }}</td>
-                            <td>{{ $bidding->ammount }}</td>
+                            <td>$ {{ $bidding->ammount }}</td>
                             <td>{{ $bidding->status }}</td>
                             <td>
                                 @if ($mode == 0)

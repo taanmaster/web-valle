@@ -22,6 +22,8 @@ class Table extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
     public $bidding;
 
     public $mode = 0;
@@ -29,12 +31,7 @@ class Table extends Component
     #[On('proposalSaved')]
     public function refreshTable()
     {
-        $this->render();
-    }
-
-    public function mount()
-    {
-
+        $this->dispatch('$refresh');
     }
 
 
@@ -43,9 +40,9 @@ class Table extends Component
         $query = BiddingProposal::query();
 
         if ($this->mode == 3) {
-            $proposals = $query->where('bidding_id', $this->bidding->id)->where('supplier_id', Auth::user()->supplier->id)->paginate(4);
+            $proposals = $query->where('bidding_id', $this->bidding->id)->where('supplier_id', Auth::user()->supplier->id)->paginate(8);
         } else {
-            $proposals = $query->where('bidding_id', $this->bidding->id)->paginate(4);
+            $proposals = $query->where('bidding_id', $this->bidding->id)->paginate(8);
         }
 
 

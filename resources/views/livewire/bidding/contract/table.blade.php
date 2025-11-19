@@ -3,7 +3,7 @@
         <h3>Contratos y Modificatorios</h3>
         <button data-bs-toggle="modal" data-bs-target="#contractModal"
             class="btn btn-sm btn-primary btn-uppercase new-proposal" style="max-width: fit-content"
-            data-id="{{ $bidding->id }}"><i class="fas fa-plus"></i> Agregar propuesta</button>
+            data-id="{{ $bidding->id }}"><i class="fas fa-plus"></i> Agregar contrato</button>
     </div>
 
 
@@ -88,26 +88,11 @@
                                         </div>
                                     @endforeach
                                 @endif
-
-                                <!-- Modal Propuestas-->
-                                <div class="modal fade" id="checkModal" data-bs-backdrop="static"
-                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="checkModalLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-                                            <livewire:bidding.checklist.crud :bidding="$bidding" />
-                                        </div>
-                                    </div>
-                                </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-        </div>
-
-        <div class="align-items-center mt-4">
-            {{ $contracts->links('pagination::bootstrap-5') }}
         </div>
     @else
         <div class="row">
@@ -137,6 +122,16 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <livewire:bidding.contract.crud :bidding="$bidding" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Propuestas-->
+    <div class="modal fade" id="checkModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="checkModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <livewire:bidding.checklist.crud :bidding="$bidding" />
             </div>
         </div>
     </div>

@@ -36,7 +36,13 @@ class Table extends Component
     #[On('closeModalContract')]
     public function refreshTable()
     {
-        $this->render();
+        $this->dispatch('$refresh');
+    }
+
+    #[On('checklistDone')]
+    public function refreshCheck()
+    {
+        $this->dispatch('$refresh');
     }
 
     public function deleteCheck($id)
@@ -49,7 +55,7 @@ class Table extends Component
     {
         $query = BiddingContract::query();
 
-        $contracts = $query->where('bidding_id', $this->bidding->id)->paginate(4);
+        $contracts = $query->where('bidding_id', $this->bidding->id)->get();
 
         return view('livewire.bidding.contract.table', [
             'contracts' => $contracts

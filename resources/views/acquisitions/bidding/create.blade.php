@@ -18,7 +18,7 @@
 
     <div class="row layout-spacing">
         <div class="main-content">
-            <livewire:bidding.crud :mode="$mode" />
+            <livewire:bidding.create :mode="$mode" />
         </div>
     </div>
 @endsection

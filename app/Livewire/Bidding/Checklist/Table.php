@@ -35,6 +35,12 @@ class Table extends Component
     public $files = [];
     public $checklist_id = '';
 
+    #[On('refresh-checklist')]
+    public function refreshMe()
+    {
+        $this->dispatch('$refresh'); // Fuerza refresh real del componente
+    }
+
     public function save($id)
     {
         $item = BiddingDeliverable::findOrFail($id);
@@ -44,14 +50,14 @@ class Table extends Component
 
             $uploaded = $this->handleUpload($this->files[$id]);
 
-            $item->file = $uploaded;
-
             $item->upload_date = now()->format('Y-m-d');
         }
 
         $item->save();
 
-        $this->render();
+        $item->bidding->updateStatus();
+
+        $this->dispatch($refresh);
     }
 
     protected function handleUpload($document)

@@ -55,7 +55,7 @@ class Bidding extends Model
             $this->status = 'Adjudicación';
         }
 
-        // ADJUDICACIÓN → CONTRATO (automático)
+        // ADJUDICACIÓN → CONTRATO
         if ($this->contracts()->count() > 0) {
             $this->status = 'Contrato';
         }
@@ -66,9 +66,10 @@ class Bidding extends Model
         }
 
         // PROCESO DE ENTREGABLES → CIERRE
+        // Se cierra solo si TODOS los checklists tienen archivo
         if (
             $this->checklists()->count() > 0 &&
-            $this->checklists()->whereDoesntHave('files')->count() === 0
+            $this->checklists()->whereNull('file')->count() === 0
         ) {
             $this->status = 'Cierre';
         }

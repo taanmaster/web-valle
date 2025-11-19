@@ -28,7 +28,17 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $proposal->supplier->registration_number }}</td>
                             <td>{{ $proposal->supplier->owner_name }}</td>
-                            <td>{{ $proposal->supplier->person_type }}</td>
+                            <td>
+                                @switch($proposal->supplier->person_type)
+                                    @case('fisica')
+                                        Persona física
+                                    @break
+
+                                    @case('moral')
+                                        Persona Moral
+                                    @break
+                                @endswitch
+                            </td>
                             <td>{{ $proposal->updated_at->format('Y-m-d') }}</td>
                             <td>
 
@@ -71,20 +81,10 @@
                                         </a>
                                     @endif
                                 @else
-                                    <button data-bs-toggle="modal" data-bs-target="#dictamenModal"
-                                        class="btn btn-sm btn-primary btn-uppercase dictamen-btn"
-                                        data-id="{{ $proposal->id }}">Dictamen</button>
+                                    <a href="javascript:void(0)"
+                                        class="btn btn-sm btn-primary btn-uppercase dictamen-btn dictum-btn"
+                                        data-id="{{ $proposal->id }}">Dictamen</a>
                                 @endif
-                                <!-- Modal Propuestas-->
-                                <div class="modal fade" id="dictamenModal" data-bs-backdrop="static"
-                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="dictamenModalLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-                                            <livewire:bidding.proposal.dictum :proposal="$proposal" />
-                                        </div>
-                                    </div>
-                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -93,7 +93,7 @@
         </div>
 
         <div class="align-items-center mt-4">
-            {{ $proposals->links('pagination::bootstrap-5') }}
+            {{ $proposals->links() }}
         </div>
     @else
         <div class="row">
@@ -128,14 +128,36 @@
         </div>
     </div>
 
+
+    <!-- Modal Propuestas-->
+    <div class="modal fade" id="dictamenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="dictamenModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <livewire:bidding.proposal.dictum />
+            </div>
+        </div>
+    </div>
+
     @push('scripts')
         <script>
             Livewire.on('closeModal', () => {
-
-                alert('hi');
-
                 const modal = document.getElementById('staticBackdrop');
                 bootstrap.Modal.getInstance(modal).hide();
+            });
+
+            var dictamenModal = new bootstrap.Modal(document.getElementById('dictamenModal'), {
+                keyboard: false
+            });
+
+            document.querySelectorAll('.dictum-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const proposalId = this.getAttribute('data-id');
+                    dictamenModal.show();
+                    Livewire.dispatch('selectProposal', {
+                        id: proposalId
+                    });
+                });
             });
         </script>
     @endpush

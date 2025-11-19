@@ -14,11 +14,11 @@
         <div class="modal-body">
             <div class="row">
                 <div class="mb-3">
-                    <label for="file_name" class="form-label">Nombre del documento</label>
+                    <label for="file_name" class="form-label">Nombre del documento *</label>
                     <input type="text" class="form-control" id="file_name" wire:model="file_name" required>
                 </div>
                 <div class="mb-3">
-                    <label for="due_date" class="form-label">Fecha de Inicio</label>
+                    <label for="due_date" class="form-label">Fecha de Inicio *</label>
                     <input type="date" class="form-control" id="due_date" wire:model="due_date" required>
                 </div>
             </div>

@@ -34,6 +34,16 @@ class Dictum extends Component
     public $dictum_file = '';
 
 
+    //Supplier
+
+
+    #[On('selectProposal')]
+    public function showModal($id)
+    {
+        $this->proposal = BiddingProposal::find($id);
+
+    }
+
     public function save()
     {
         // Validación Livewire 3.x
@@ -72,6 +82,8 @@ class Dictum extends Component
         $proposal->bidding->updateStatus();
         // Emitir evento global
         $this->dispatch('proposalSaved', id: $this->proposal->bidding_id);
+
+        $this->clearModal();
     }
 
     protected function handleUpload($document)
