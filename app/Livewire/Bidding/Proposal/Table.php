@@ -42,7 +42,13 @@ class Table extends Component
     {
         $query = BiddingProposal::query();
 
-        $proposals = $query->where('bidding_id', $this->bidding->id)->paginate(4);
+        if ($this->mode == 3) {
+            $proposals = $query->where('bidding_id', $this->bidding->id)->where('supplier_id', Auth::user()->supplier->id)->paginate(4);
+        } else {
+            $proposals = $query->where('bidding_id', $this->bidding->id)->paginate(4);
+        }
+
+
 
         return view('livewire.bidding.proposal.table', [
             'proposals' => $proposals
