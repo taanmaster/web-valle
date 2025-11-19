@@ -16,7 +16,7 @@ class BiddingContract extends Model
         return $this->belongsTo(Bidding::class, 'bidding_id');
     }
 
-    public function deliverables()
+    public function checklists()
     {
         return $this->hasMany(BiddingDeliverable::class, 'contract_id');
     }

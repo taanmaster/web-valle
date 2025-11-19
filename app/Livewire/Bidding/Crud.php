@@ -47,6 +47,8 @@ class Crud extends Component
     public $file_name = '';
     public $file = '';
 
+    public $statusUp = '';
+
     public $dependencies = [];
 
     #[On('proposalSaved')]
@@ -161,6 +163,13 @@ class Crud extends Component
         $bidding->save();
 
         return redirect()->route('acquisitions.biddings.show', $bidding->id);
+    }
+
+    public function updatedStatusUp()
+    {
+        $bidding = Bidding::find($this->bidding->id);
+
+        $bidding->status = $this->statusUp;
     }
 
 

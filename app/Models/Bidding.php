@@ -21,7 +21,7 @@ class Bidding extends Model
         return $this->hasMany(BiddingContract::class, 'bidding_id');
     }
 
-    public function deliverables()
+    public function checklists()
     {
         return $this->hasMany(BiddingDeliverable::class, 'bidding_id');
     }
@@ -31,7 +31,7 @@ class Bidding extends Model
         return $this->hasMany(BiddingFile::class, 'bidding_id');
     }
 
-    public function awards()
+    public function award()
     {
         return $this->hasOne(BiddingAward::class, 'bidding_id');
     }
@@ -61,14 +61,14 @@ class Bidding extends Model
         }
 
         // CONTRATO → PROCESO DE ENTREGABLES
-        if ($this->deliverables()->exists()) {
+        if ($this->checklists()->exists()) {
             $this->status = 'Proceso entregables';
         }
 
         // PROCESO DE ENTREGABLES → CIERRE
         if (
-            $this->deliverables()->count() > 0 &&
-            $this->deliverables()->whereDoesntHave('files')->count() === 0
+            $this->checklists()->count() > 0 &&
+            $this->checklists()->whereDoesntHave('files')->count() === 0
         ) {
             $this->status = 'Cierre';
         }

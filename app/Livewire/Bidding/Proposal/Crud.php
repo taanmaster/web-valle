@@ -248,7 +248,7 @@ class Crud extends Component
         $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
         $filename = $cleanName . '.' . $extension;
 
-        $filepath = 'acquisitions/biddings/proposals' . $filename;
+        $filepath = 'acquisitions/biddings/proposals/' . $filename;
 
         $stream = fopen($document->getRealPath(), 'r+');
         Storage::disk('s3')->put($filepath, $stream);

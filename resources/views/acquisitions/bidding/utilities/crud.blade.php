@@ -262,7 +262,16 @@
                             <div class="d-flex elements">
                                 <div class="element">
                                     <p class="col-form-label">Estatus</p>
-                                    <span class="badge rounded-pill text-bg-secondary">{{ $bidding->status }}</span>
+                                    @if ($bidding->status === 'Adjudicada')
+                                        <select name="status" id="status" wire:model.live="statusUp"
+                                            class="form-control">
+                                            <option selected disabled>{{ $bidding->stauts }}</option>
+                                            <option value="Validación jurídica">Validación jurídica</option>
+                                        </select>
+                                    @else
+                                        <span
+                                            class="badge rounded-pill text-bg-secondary">{{ $bidding->status }}</span>
+                                    @endif
                                 </div>
                                 <div class="element">
                                     <label class="col-form-label">Tipo</label>
@@ -438,7 +447,7 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 @php
-                                    $hasDeliverables = $bidding->deliverables()->exists();
+                                    $hasDeliverables = $bidding->checklists()->exists();
                                 @endphp
 
                                 <button class="nav-link {{ !$hasDeliverables ? 'disabled' : '' }}" id="contact-tab"
@@ -458,9 +467,16 @@
                                 <livewire:bidding.proposal.table :bidding="$bidding" :mode="$mode" />
                             </div>
                             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
-                                aria-labelledby="profile-tab" tabindex="0">...</div>
+                                aria-labelledby="profile-tab" tabindex="0">
+
+                                <livewire:bidding.award.crud :bidding="$bidding" />
+
+                            </div>
                             <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel"
-                                aria-labelledby="contact-tab" tabindex="0">...</div>
+                                aria-labelledby="contact-tab" tabindex="0">
+
+                                <livewire:bidding.checklist.table :bidding="$bidding" />
+                            </div>
                         </div>
                     </div>
                 </div>
