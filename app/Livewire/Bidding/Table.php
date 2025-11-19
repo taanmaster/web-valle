@@ -22,6 +22,8 @@ class Table extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
     public $mode = 0;
 
     public function mount()

@@ -28,6 +28,9 @@ use App\Models\BiddingDeliverable;
 class Table extends Component
 {
     use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     use WithFileUploads;
 
     public $bidding;

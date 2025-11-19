@@ -71,7 +71,7 @@
         </div>
 
         <div class="align-items-center mt-4">
-            {{ $biddings->links('pagination::bootstrap-5') }}
+            {{ $biddings->links() }}
         </div>
     @else
         <div class="row">

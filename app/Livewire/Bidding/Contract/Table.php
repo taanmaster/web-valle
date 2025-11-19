@@ -29,6 +29,8 @@ class Table extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
     public $bidding;
     public $award;
     public $proposal;
