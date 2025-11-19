@@ -50,8 +50,8 @@ class Table extends Component
 
         // si existe archivo, subirlo
         if (isset($this->files[$id]) && $this->files[$id]) {
-
             $uploaded = $this->handleUpload($this->files[$id]);
+            $item->file = $uploaded;
 
             $item->upload_date = now()->format('Y-m-d');
         }
@@ -60,7 +60,7 @@ class Table extends Component
 
         $item->bidding->updateStatus();
 
-        $this->dispatch($refresh);
+        $this->dispatch('$refresh');
     }
 
     protected function handleUpload($document)

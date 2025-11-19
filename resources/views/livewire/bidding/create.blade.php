@@ -13,7 +13,7 @@
                 <label class="col-form-label">Título de Licitación</label>
             </div>
             <div class="col-md">
-                <input type="text" name="title" wire:model="title" class="form-control">
+                <input type="text" name="title" wire:model="title" class="form-control" required>
             </div>
         </div>
 
@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md">
                         <input type="file" name="request_file" id="request_file" wire:model="request_file"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                         <label for="ammount" class="col-form-label" required>Monto</label>
                     </div>
                     <div class="col-md">
-                        <input type="number" name="ammount" wire:model="ammount" class="form-control">
+                        <input type="number" name="ammount" wire:model="ammount" class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                         <label for="service" class="col-form-label">Bien o servicio</label>
                     </div>
                     <div class="col-md">
-                        <input type="text" name="service" wire:model="service" class="form-control">
+                        <input type="text" name="service" wire:model="service" class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="col-md">
                 <textarea class="form-control" name="justification" id="justification" cols="10" rows="6"
-                    wire:model="justification"></textarea>
+                    wire:model="justification" required></textarea>
             </div>
         </div>
 
@@ -88,7 +88,7 @@
             </div>
             <div class="col-md">
                 <input type="file" name="requirement_file" id="requirement_file" wire:model="requirement_file"
-                    class="form-control">
+                    class="form-control" required>
             </div>
         </div>
 

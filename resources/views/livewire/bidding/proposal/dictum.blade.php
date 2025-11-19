@@ -59,7 +59,7 @@
                     </div>
                 @endif
                 <div class="col-md-6 h-100">
-                    <h3>Dictame</h3>
+                    <h3>Dictamen</h3>
                     <div class="row my-4">
                         <div class="col-md-4">
                             <label class="col-form-label">Resultado</label>

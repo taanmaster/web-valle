@@ -76,9 +76,9 @@ class Crud extends Component
             $checklist->due_date = $this->due_date;
 
             $checklist->save();
-
-            $checklist->bidding->updateStatus();
         }
+
+        $checklist->bidding->updateStatus();
 
         $this->dispatch('checklistDone');
     }
