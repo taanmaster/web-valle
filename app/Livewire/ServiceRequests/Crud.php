@@ -56,12 +56,17 @@ class Crud extends Component
 
     public function updatedName()
     {
-        $request = new ServiceRequest;
-        $request->name = $this->name;
-        $request->save();
+        if ($this->mode == 0) {
+            $request = new ServiceRequest;
+            $request->name = $this->name;
+            $request->save();
+        } else {
+            $request = ServiceRequest::findOrFail($this->request->id);
+            $request->name = $this->name;
+            $request->save();
+        }
 
         $this->request = $request;
-
         $this->fetchRequestData();
     }
 
