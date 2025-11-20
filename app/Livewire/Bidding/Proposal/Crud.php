@@ -223,7 +223,7 @@ class Crud extends Component
 
         $proposal = new BiddingProposal;
 
-        $proposal->bidding_id = $this->bidding;
+        $proposal->bidding_id = $this->bidding->id;
         $proposal->supplier_id = $this->supplier_id;
         $proposal->file_name = $this->file_name;
         // --- Request File ---
