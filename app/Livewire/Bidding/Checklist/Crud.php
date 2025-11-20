@@ -66,6 +66,8 @@ class Crud extends Component
 
             $checklist->save();
 
+            Session::flash('message', 'Entregable creado correctamente.');
+
         } else {
 
             $checklist = new BiddingDeliverable;
@@ -76,11 +78,15 @@ class Crud extends Component
             $checklist->due_date = $this->due_date;
 
             $checklist->save();
+
+            Session::flash('message', 'Entregable actualizado correctamente.');
         }
 
         $checklist->bidding->updateStatus();
 
         $this->dispatch('checklistDone');
+
+        return route('acquisitions.biddings.show', $proposal->bidding->id);
     }
 
     #[On('checklistDone')]

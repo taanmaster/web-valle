@@ -73,6 +73,8 @@ class Crud extends Component
             $contract->save();
 
             $contract->bidding->updateStatus();
+
+            Session::flash('message', 'Contrato creado correctamente.');
         } else {
 
             $contract = new BiddingContract;
@@ -91,9 +93,13 @@ class Crud extends Component
             $contract->save();
 
             $contract->bidding->updateStatus();
+
+            Session::flash('message', 'Contrato actualizado correctamente.');
         }
 
         $this->dispatch('closeModalContract');
+
+        return route('acquisitions.biddings.show', $proposal->bidding->id);
     }
 
     protected function handleUpload($document)

@@ -61,6 +61,10 @@ class Table extends Component
         $item->bidding->updateStatus();
 
         $this->dispatch('$refresh');
+
+        Session::flash('message', 'Entreble subido correctamente.');
+
+        return route('acquisitions.biddings.show', $proposal->bidding->id);
     }
 
     protected function handleUpload($document)

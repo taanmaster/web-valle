@@ -234,10 +234,15 @@ class Crud extends Component
         $proposal->save();
 
         $proposal->bidding->updateStatus();
+
         // Emitir evento global
         $this->dispatch('proposalSaved', id: $this->bidding);
 
         $this->clearAll();
+
+        Session::flash('message', 'Propuesta creada correctamente.');
+
+        return route('acquisitions.biddings.show', $proposal->bidding->id);
 
     }
 
