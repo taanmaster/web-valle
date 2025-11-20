@@ -86,7 +86,7 @@ class Crud extends Component
 
         $this->dispatch('checklistDone');
 
-        return route('acquisitions.biddings.show', $proposal->bidding->id);
+        return redirect()->route('acquisitions.biddings.show', $checklist->bidding->id);
     }
 
     #[On('checklistDone')]
