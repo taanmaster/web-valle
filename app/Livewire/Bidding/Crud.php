@@ -170,6 +170,10 @@ class Crud extends Component
         $bidding = Bidding::find($this->bidding->id);
 
         $bidding->status = $this->statusUp;
+
+        $bidding->updateStatus();
+
+        return redirect()->route('acquisitions.biddings.show', $bidding->id);
     }
 
 
