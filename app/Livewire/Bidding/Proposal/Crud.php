@@ -30,7 +30,7 @@ class Crud extends Component
     use WithFileUploads;
 
     public $proposal;
-    public $bidding = '';
+    public $bidding;
 
     //Modes: 0: create, 1 show, 2 edit
     public $mode = 0;
@@ -267,7 +267,6 @@ class Crud extends Component
 
     public function clearAll()
     {
-        $this->bidding = '';
         $this->file_name = '';
         $this->file = '';
         $this->supplier_id = '';

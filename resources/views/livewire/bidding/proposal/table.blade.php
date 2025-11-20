@@ -123,7 +123,7 @@
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <livewire:bidding.proposal.crud :bidding="$bidding->id" />
+                <livewire:bidding.proposal.crud :bidding="$bidding" />
             </div>
         </div>
     </div>
