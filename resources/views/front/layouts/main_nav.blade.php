@@ -5,6 +5,7 @@
         </a>
 
         <button class="toggle-mob-menu" aria-expanded="false" aria-label="open menu">
+            <span>Menú</span>
             <ion-icon name="menu"></ion-icon>
         </button>
 
