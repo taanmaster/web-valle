@@ -83,7 +83,9 @@ class Dictum extends Component
         // Emitir evento global
         $this->dispatch('proposalSaved', id: $this->proposal->bidding_id);
 
-        return route('acquisitions.biddings.edit', $proposal->bidding->id);
+        Session::flash('message', 'Dictamen creado correctamente.');
+
+        return redirect()->route('acquisitions.biddings.show', $proposal->bidding->id);
     }
 
     protected function handleUpload($document)

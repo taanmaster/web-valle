@@ -240,10 +240,6 @@ class Crud extends Component
 
         $this->clearAll();
 
-        Session::flash('message', 'Propuesta creada correctamente.');
-
-        return route('acquisitions.biddings.show', $proposal->bidding->id);
-
     }
 
     protected function handleUpload($document)
