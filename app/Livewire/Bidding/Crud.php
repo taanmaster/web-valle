@@ -15,6 +15,7 @@ use Livewire\WithFileUploads;
 use App\Models\Bidding;
 use App\Models\BiddingFile;
 use App\Models\TransparencyDependency;
+use App\Models\RegulatoryAgendaDependency;
 
 use Livewire\Component;
 
@@ -65,7 +66,7 @@ class Crud extends Component
     public function mount()
     {
 
-        $this->dependencies = TransparencyDependency::where('belongs_to_treasury', 1)->get();
+        $this->dependencies = RegulatoryAgendaDependency::get();
 
         if ($this->mode == 0) {
             // Guardar datos en la base de datos
