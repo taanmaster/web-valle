@@ -99,7 +99,7 @@ class Crud extends Component
 
         $this->dispatch('closeModalContract');
 
-        return route('acquisitions.biddings.show', $proposal->bidding->id);
+        return redirect()->route('acquisitions.biddings.show', $contract->bidding->id);
     }
 
     protected function handleUpload($document)
