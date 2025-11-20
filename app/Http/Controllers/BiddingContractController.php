@@ -12,12 +12,16 @@ class BiddingContractController extends Controller
      */
     public function index()
     {
-        //
+        $mode = 0;
+
+        return view('acquisitions.contracts.index')->with('mode', $mode);
     }
 
     public function closed()
     {
+        $mode = 1;
 
+        return view('acquisitions.contracts.closed')->with('mode', $mode);
     }
 
     /**
