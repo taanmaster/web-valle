@@ -15,7 +15,7 @@ use Livewire\WithFileUploads;
 
 use App\Models\ServiceRequest;
 use App\Models\TransparencyDependency;
-use App\Models\RegulatoryAgendaRegulation;
+use App\Models\RegulatoryAgendaDependency;
 use App\Models\ServiceRequestCost;
 
 
@@ -83,7 +83,7 @@ class Crud extends Component
 
     public function fetchDependencies()
     {
-        $this->dependencies = RegulatoryAgendaRegulation::get();
+        $this->dependencies = RegulatoryAgendaDependency::get();
     }
 
     public function save()
