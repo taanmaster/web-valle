@@ -36,13 +36,16 @@
                                     $percentage = $total > 0 ? ($withFile / $total) * 100 : 0;
                                 @endphp
                                 <td>
-                                    <div style="width: 150px; border-radius:10px; background:#dcdcdc;" class="d-flex p-1">
-                                        <div
-                                            style="width: {{ $percentage }}%; height: 6px;border-radius: 10px; background: #62C764;">
+                                    <div class="d-flex align-items-center" style="gap: 12px">
+                                        <div style="width: 150px; border-radius:10px; background:#dcdcdc;"
+                                            class="d-flex p-1">
+                                            <div
+                                                style="width: {{ $percentage }}%; height: 6px;border-radius: 10px; background: #62C764;">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <small>{{ $percentage }} %</small>
+                                        <small>{{ $percentage }} %</small>
+                                    </div>
                                 </td>
                             @endif
 
