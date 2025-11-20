@@ -48,7 +48,7 @@
                             @endswitch
                         </div>
                     </div>
-                    <div class="row justify-content-center mb-4">
+                    <div class="row justify-content-center mb-4 w-100">
                         <div class="col-md-12">
                             <div class="card card-image card-image-banner justify-content-center wow fadeInUp">
                                 <img class="card-img-top" src="{{ asset('front/img/placeholder-5.jpg') }}" alt="">
