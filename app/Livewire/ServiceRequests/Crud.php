@@ -15,6 +15,8 @@ use Livewire\WithFileUploads;
 
 use App\Models\ServiceRequest;
 use App\Models\TransparencyDependency;
+use App\Models\RegulatoryAgendaRegulation;
+use App\Models\ServiceRequestCost;
 
 
 /* Este componente maneja la creación y edición de solicitudes de Desarrollo Institucional */
@@ -39,6 +41,10 @@ class Crud extends Component
     public $steps_filename = '';
     public $procedure_filename = '';
 
+    //Costos
+    public $ammount = '';
+    public $ammount_description = '';
+
     public function mount()
     {
         if ($this->request != null) {
@@ -61,7 +67,7 @@ class Crud extends Component
 
     public function fetchDependencies()
     {
-        $this->dependencies = TransparencyDependency::get();
+        $this->dependencies = RegulatoryAgendaRegulation::get();
     }
 
     public function save()
@@ -157,6 +163,25 @@ class Crud extends Component
     {
         $this->request->is_favorite = !$this->request->is_favorite;
         $this->request->save();
+    }
+
+    public function saveCost()
+    {
+        $cost = new ServiceRequestCost;
+        $cost->service_request_id = $this->request->id;
+        $cost->ammount = $this->ammount;
+        $cost->description = $this->ammount_description;
+
+        $cost->save();
+
+        $this->ammount = '';
+        $this->ammount_description = '';
+    }
+
+    public function deleteCost($id)
+    {
+        $cost = ServiceRequestCost::findOrFail($id);
+        $cost->delete();
     }
 
     public function render()

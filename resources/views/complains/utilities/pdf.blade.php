@@ -77,6 +77,7 @@
             <td colspan="3" class="center">
                 <h2>VALLE DE SANTIAGO</h2>
                 <p>Contraloría Municipal</p>
+                <p>Estatus: {{ $complain->status }}</p>
             </td>
         </tr>
         <tr>
@@ -98,7 +99,9 @@
             <td class="label">TELÉFONO</td>
             <td><input type="text" value="{{ $complain->phone }}"></td>
             <td class="label">CORREO</td>
-            <td><input type="email" value="{{ $complain->email }}"></td>
+            <td>
+                <p>{{ $complain->email ?? 'N/A' }}</p>
+            </td>
         </tr>
 
         <tr>

@@ -47,6 +47,9 @@ use App\Http\Controllers\UrbanDevKPIsController;
 use App\Http\Controllers\AcquisitionEndorsementController;
 use App\Http\Controllers\AcquisitionApprovalController;
 use App\Http\Controllers\AcquisitionSupplierController;
+use App\Http\Controllers\BiddingContractController;
+use App\Http\Controllers\BiddingController;
+use App\Http\Controllers\SupplierBiddingController;
 use App\Http\Controllers\SupplierMessageController;
 
 // Modelos
@@ -125,6 +128,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     /*Denuncia NET*/
     Route::get('/denuncia-net', 'FrontController@denunciaNet')->name('denuncia.net');
+    Route::get('/denuncia-net/estatus', 'FrontController@denunciaNetShow')->name('denuncia.net.show');
 
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
@@ -857,6 +861,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 ->name('acquisitions.endorsements.updateStatus');
             Route::post('endorsements/{endorsementId}/associate', [AcquisitionEndorsementController::class, 'associateSupplier'])
                 ->name('acquisitions.endorsements.associate');
+
+
+            //Licitaciones
+            Route::resource('biddings', BiddingController::class)->names([
+                'index' => 'acquisitions.biddings.index',
+                'create' => 'acquisitions.biddings.create',
+                'show' => 'acquisitions.biddings.show',
+                'edit' => 'acquisitions.biddings.edit',
+                'destroy' => 'acquisitions.biddings.destroy',
+            ]);
+
+            //Contratos
+            Route::get('contracts', [BiddingContractController::class, 'index'])->name('acquisitions.bidding.contract');
+            Route::get('close_contracts', [BiddingContractController::class, 'closed'])->name('acquisitions.bidding.contract_closed');
         });
 
         /* Transparencia */
@@ -1316,7 +1334,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'citizen_complain.index',
         ]);
 
-        
+
         Route::group(['prefix' => 'institucional_development'], function () {
             Route::resource('regulations', MunicipalRegulationController::class)->names([
                 'index' => 'institucional_development.regulations.index',
@@ -1499,6 +1517,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/altas/{id}/archivo', [App\Http\Controllers\SupplierController::class, 'uploadFile'])->name('supplier.alta.uploadFile');
         Route::delete('/altas/{id}/archivo/{fileId}', [App\Http\Controllers\SupplierController::class, 'deleteFile'])->name('supplier.alta.deleteFile');
         Route::delete('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'destroy'])->name('supplier.alta.destroy');
+
+        // Licitaciones
+        Route::get('/licitaciones', [SupplierBiddingController::class, 'index'])->name('supplier.bidding.index');
+        Route::get('/licitaciones/{id}', [SupplierBiddingController::class, 'show'])->name('supplier.bidding.show');
 
         // Refrendos
         Route::get('/refrendos', [App\Http\Controllers\SupplierEndorsementController::class, 'index'])->name('supplier.endorsement.index');

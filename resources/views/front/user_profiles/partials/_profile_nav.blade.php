@@ -3,7 +3,7 @@
     if (auth()->check()) {
         $userRole = auth()->user()->roles->first()?->name ?? 'citizen';
     }
-    
+
     // Obtener la ruta actual para marcar el tab activo
     $currentRoute = request()->route()->getName();
 @endphp
@@ -12,38 +12,38 @@
     @case('citizen')
         <ul class="nav nav-tabs card-header-tabs" id="citizenProfileTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'citizen.profile.index' ? 'active' : '' }}" 
-                   href="{{ route('citizen.profile.index') }}" id="inicio-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'citizen.profile.index' ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.index') }}" id="inicio-tab" role="tab">
                     <ion-icon name="home-outline"></ion-icon> Inicio
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'citizen.profile.edit' ? 'active' : '' }}" 
-                   href="{{ route('citizen.profile.edit') }}" id="perfil-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'citizen.profile.edit' ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.edit') }}" id="perfil-tab" role="tab">
                     <ion-icon name="create-outline"></ion-icon> Editar Perfil
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'citizen.profile.requests' ? 'active' : '' }}" 
-                   href="{{ route('citizen.profile.requests') }}" id="solicitudes-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'citizen.profile.requests' ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.requests') }}" id="solicitudes-tab" role="tab">
                     <ion-icon name="file-tray-full-outline"></ion-icon> Solicitudes S.A.R.E
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'citizen.profile.urban_dev_requests' ? 'active' : '' }}" 
-                   href="{{ route('citizen.profile.urban_dev_requests') }}" id="solicitudes-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'citizen.profile.urban_dev_requests' ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.urban_dev_requests') }}" id="solicitudes-tab" role="tab">
                     <ion-icon name="file-tray-full-outline"></ion-icon> Trámites Desarrollo Urbano
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'citizen.summons.index' ? 'active' : '' }}" 
-                   href="{{ route('citizen.summons.index') }}" id="citatorios-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'citizen.summons.index' ? 'active' : '' }}"
+                    href="{{ route('citizen.summons.index') }}" id="citatorios-tab" role="tab">
                     <ion-icon name="document-text-outline"></ion-icon> Citatorios
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'citizen.profile.settings' ? 'active' : '' }}" 
-                   href="{{ route('citizen.profile.settings') }}" id="configuraciones-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'citizen.profile.settings' ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.settings') }}" id="configuraciones-tab" role="tab">
                     <ion-icon name="cog-outline"></ion-icon> Configuraciones
                 </a>
             </li>
@@ -53,37 +53,44 @@
     @case('supplier')
         <ul class="nav nav-tabs card-header-tabs" id="supplierProfileTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'supplier.profile.index' ? 'active' : '' }}" 
-                   href="{{ route('supplier.profile.index') }}" id="inicio-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'supplier.profile.index' ? 'active' : '' }}"
+                    href="{{ route('supplier.profile.index') }}" id="inicio-tab" role="tab">
                     <ion-icon name="home-outline"></ion-icon> Inicio
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'supplier.profile.edit' ? 'active' : '' }}" 
-                   href="{{ route('supplier.profile.edit') }}" id="perfil-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'supplier.profile.edit' ? 'active' : '' }}"
+                    href="{{ route('supplier.profile.edit') }}" id="perfil-tab" role="tab">
                     <ion-icon name="create-outline"></ion-icon> Editar Perfil
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'supplier.alta.index' || $currentRoute === 'supplier.alta.form' || $currentRoute === 'supplier.alta.show' ? 'active' : '' }}" 
-                   href="{{ route('supplier.alta.index') }}" 
-                   id="altas-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'supplier.alta.index' || $currentRoute === 'supplier.alta.form' || $currentRoute === 'supplier.alta.show' ? 'active' : '' }}"
+                    href="{{ route('supplier.alta.index') }}" id="altas-tab" role="tab">
                     <ion-icon name="document-attach-outline"></ion-icon> Altas Proveedor
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'supplier.endorsement.index' ? 'active' : '' }}" href="{{ route('supplier.endorsement.index') }}" id="refrendo-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'supplier.bidding.index' || $currentRoute === 'supplier.bidding.show' ? 'active' : '' }}"
+                    href="{{ route('supplier.bidding.index') }}" id="altas-tab" role="tab">
+                    <ion-icon name="document-attach-outline"></ion-icon> Mis Licitaciones
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link {{ $currentRoute === 'supplier.endorsement.index' ? 'active' : '' }}"
+                    href="{{ route('supplier.endorsement.index') }}" id="refrendo-tab" role="tab">
                     <ion-icon name="receipt-outline"></ion-icon> Refrendo
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'supplier.profile.notifications' ? 'active' : '' }}" href="{{ route('supplier.profile.notifications') }}" id="notificaciones-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'supplier.profile.notifications' ? 'active' : '' }}"
+                    href="{{ route('supplier.profile.notifications') }}" id="notificaciones-tab" role="tab">
                     <ion-icon name="notifications-outline"></ion-icon> Notificaciones
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'supplier.profile.settings' ? 'active' : '' }}" 
-                   href="{{ route('supplier.profile.settings') }}" id="configuraciones-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'supplier.profile.settings' ? 'active' : '' }}"
+                    href="{{ route('supplier.profile.settings') }}" id="configuraciones-tab" role="tab">
                     <ion-icon name="cog-outline"></ion-icon> Configuraciones
                 </a>
             </li>
@@ -94,14 +101,14 @@
         {{-- Navegación por defecto si no tiene rol o no está autenticado --}}
         <ul class="nav nav-tabs card-header-tabs" id="defaultProfileTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'citizen.profile.index' ? 'active' : '' }}" 
-                   href="{{ route('citizen.profile.index') }}" id="inicio-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'citizen.profile.index' ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.index') }}" id="inicio-tab" role="tab">
                     <ion-icon name="home-outline"></ion-icon> Inicio
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'citizen.profile.settings' ? 'active' : '' }}" 
-                   href="{{ route('citizen.profile.settings') }}" id="configuraciones-tab" role="tab">
+                <a class="nav-link {{ $currentRoute === 'citizen.profile.settings' ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.settings') }}" id="configuraciones-tab" role="tab">
                     <ion-icon name="cog-outline"></ion-icon> Configuraciones
                 </a>
             </li>

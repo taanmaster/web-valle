@@ -105,6 +105,7 @@
                     </div>
                 </div>
 
+                {{--
                 <div class="row align-items-center m-3">
                     <div class="col-md-2">
                         <label for="word_file" class="col-form-label">Archivo Word</label>
@@ -114,6 +115,7 @@
                             @if ($mode == 1) disabled @endif>
                     </div>
                 </div>
+                 --}}
 
                 <div class="d-flex align-items-center justify-content-end" style="gap: 12px">
 

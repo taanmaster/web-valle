@@ -18,4 +18,9 @@ class ServiceRequest extends Model
         'steps_filename',
         'procedure_filename',
     ];
+
+    public function costs()
+    {
+        return $this->hasMany(ServiceRequestCost::class, 'service_request_id');
+    }
 }
