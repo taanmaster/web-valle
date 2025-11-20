@@ -9,6 +9,8 @@ class ServiceRequest extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     protected $fillable = [
         'name',
         'dependency_name',

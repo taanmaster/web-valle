@@ -106,7 +106,7 @@
                             @if ($mode === 0)
                                 <th>Descripción</th>
                                 <th>Requisitos</th>
-                                <th>Costo</th>
+                                <th>Costos</th>
                                 <th>Archivos</th>
                             @endif
                             <th>Acciones</th>
@@ -147,10 +147,12 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($request->cost)
-                                            ${{ number_format($request->cost, 2) }}
+                                        @if ($request->costs->count() != null)
+                                            @foreach ($request->costs as $cost)
+                                                ${{ number_format($cost->ammount, 2) }}
+                                            @endforeach
                                         @else
-                                            <span class="text-muted">Sin costo</span>
+                                            <span class="text-muted">Sin costos</span>
                                         @endif
                                     </td>
                                     <td>

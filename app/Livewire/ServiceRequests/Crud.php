@@ -54,6 +54,17 @@ class Crud extends Component
         $this->fetchDependencies();
     }
 
+    public function updatedName()
+    {
+        $request = new ServiceRequest;
+        $request->name = $this->name;
+        $request->save();
+
+        $this->request = $request;
+
+        $this->fetchRequestData();
+    }
+
     public function fetchRequestData()
     {
         $this->name = $this->request->name;

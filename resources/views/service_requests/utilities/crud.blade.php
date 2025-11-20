@@ -34,7 +34,7 @@
                         <label for="name" class="col-form-label">Título</label>
                     </div>
                     <div class="col-md">
-                        <input type="text" name="name" wire:model="name" class="form-control"
+                        <input type="text" name="name" wire:model.live="name" class="form-control"
                             @if ($mode == 1) disabled @endif>
                     </div>
                 </div>
