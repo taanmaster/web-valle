@@ -38,11 +38,6 @@ class Bidding extends Model
 
     public function updateStatus()
     {
-        // No actualizar si está en Validación Jurídica (estado manual)
-        if ($this->status === 'Validación jurídica') {
-            return;
-        }
-
         // NUEVA LICITACIÓN (default)
         if ($this->status === null || $this->status === 'Nueva Licitación') {
             if ($this->proposals()->count() > 0) {
