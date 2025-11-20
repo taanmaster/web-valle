@@ -203,10 +203,15 @@
                     </div>
                 </div>
 
-                <div class="text-center">
-                    <button class="btn btn-primary" wire:click="nextStep" @disabled(!$this->step2Complete)>
-                        Siguiente
-                    </button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" wire:click="back" class="btn btn-secondary">Regresar</button>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button class="btn btn-primary" wire:click="nextStep" @disabled(!$this->step2Complete)>
+                            Siguiente
+                        </button>
+                    </div>
                 </div>
             @break
 
@@ -248,7 +253,10 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-12 d-flex justify-content-end mt-3">
+                            <div class="col-md-6">
+                                <button type="button" wire:click="back" class="btn btn-secondary">Regresar</button>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end mt-3">
                                 <button type="submit" class="btn btn-primary">Enviar</button>
                                 <button wire:click="clean" class="btn btn-secondary ms-2">Borrar datos</button>
                             </div>

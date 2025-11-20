@@ -181,6 +181,11 @@ class Form extends Component
             !empty($this->phone);
     }
 
+    public function back()
+    {
+        $this->step = $this->step - 1;
+    }
+
     public function clean()
     {
         // Paso 1
