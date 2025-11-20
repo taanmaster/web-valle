@@ -41,6 +41,8 @@
                                             style="width: {{ $percentage }}%; height: 6px;border-radius: 10px; background: #62C764;">
                                         </div>
                                     </div>
+
+                                    <small>{{ $percentage }} %</small>
                                 </td>
                             @endif
 
