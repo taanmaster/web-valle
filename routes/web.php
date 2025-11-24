@@ -46,6 +46,7 @@ use App\Http\Controllers\UrbanDevKPIsController;
 // Adquisiciones
 use App\Http\Controllers\AcquisitionEndorsementController;
 use App\Http\Controllers\AcquisitionApprovalController;
+use App\Http\Controllers\AcquisitionMaterialController;
 use App\Http\Controllers\AcquisitionSupplierController;
 use App\Http\Controllers\BiddingContractController;
 use App\Http\Controllers\BiddingController;
@@ -875,6 +876,19 @@ Route::namespace('App\Http\Controllers')->group(function () {
             //Contratos
             Route::get('contracts', [BiddingContractController::class, 'index'])->name('acquisitions.bidding.contract');
             Route::get('close_contracts', [BiddingContractController::class, 'closed'])->name('acquisitions.bidding.contract_closed');
+
+
+            Route::resource('materials', AcquisitionMaterialController::class)->names([
+                'index' => 'acquisitions.materials.index',
+                'create' => 'acquisitions.materials.create',
+                'show' => 'acquisitions.materials.show',
+                'edit' => 'acquisitions.materials.edit',
+                'destroy' => 'acquisitions.materials.destroy',
+            ]);
+
+            Route::get('inventory', [AcquisitionInventoryController::class, 'index'])->name('acquisitions.inventory.index');
+            Route::get('inventory_entrance', [AcquisitionInventoryController::class, 'entrance'])->name('acquisitions.inventory.entrance');
+            Route::get('inventory_exit', [AcquisitionInventoryController::class, 'exit'])->name('acquisitions.inventory.exit');
         });
 
         /* Transparencia */
