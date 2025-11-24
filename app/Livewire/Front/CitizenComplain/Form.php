@@ -42,6 +42,7 @@ class Form extends Component
     public $town = '';
     public $email = '';
     public $phone = '';
+    public $captchaHtml;
 
     public $notification_email = '';
     public $notification_home = '';
@@ -58,14 +59,22 @@ class Form extends Component
     public function removeFile($index)
     {
         unset($this->files[$index]);
+        $this->files = array_values($this->files); // reindexa correctamente
     }
 
     public function nextStep()
     {
-        $this->step = $this->step + 1;
-    }
+        try {
+            $this->validate($this->rulesForStep());
+        } catch (\Illuminate\Validation\ValidationException $e) {
 
-    public $captchaHtml;
+            $this->dispatch('issue', message: 'Completa los campos requeridos antes de continuar.');
+
+            throw $e;
+        }
+
+        $this->step++;
+    }
 
     public function mount()
     {
@@ -82,10 +91,13 @@ class Form extends Component
         // Validar captcha
         $this->validate([
             'captcha' => 'required|captcha',
+            'complain' => 'required|string|min:10',
         ], [
             'captcha.required' => 'El captcha es obligatorio.',
             'captcha.captcha' => 'El captcha es incorrecto. Por favor, inténtelo de nuevo.',
         ]);
+
+
 
         $savedFiles = collect($this->files)->map(function ($file) {
             $originalName = $file->getClientOriginalName();
@@ -127,29 +139,33 @@ class Form extends Component
                 ->save($location);
         }
 
-        $complain = CitizenComplain::create([
-            // Paso 1
-            'is_agree' => $this->is_agree,
-            'is_aware' => $this->is_aware,
-            'subject' => $this->subject,
+        $complain = new CitizenComplain;
 
-            // Paso 2
-            'ine' => $ineFilename, // archivo guardado
-            'anonymus' => $this->anonymus,
-            'name' => $this->name,
-            'address' => $this->address,
-            'suburb' => $this->suburb,
-            'town' => $this->town,
-            'email' => $this->email,
-            'phone' => $this->phone,
+        // Paso 1
+        $complain->is_agree = $this->is_agree;
+        $complain->is_aware = $this->is_aware;
+        $complain->subject = $this->subject;
 
-            // Notificaciones
-            'notification_email' => $this->notification_email,
-            'notification_home' => $this->notification_home,
+        // Paso 2
+        $complain->ine = $this->ine
+            ? $this->handleUpload($this->ine)
+            : $complain->ine;
+        $complain->anonymus = $this->anonymus;
+        $complain->name = $this->name;
+        $complain->address = $this->address;
+        $complain->suburb = $this->suburb;
+        $complain->town = $this->town;
+        $complain->email = $this->email;
+        $complain->phone = $this->phone;
 
-            // Mensaje
-            'message' => $this->complain,
-        ]);
+        // Notificaciones
+        $complain->notification_email = $this->notification_email;
+        $complain->notification_home = $this->notification_home;
+
+        //Mensaje
+        $complain->message = $this->complain;
+
+        $complain->save();
 
         foreach ($savedFiles as $file) {
             CitizenComplainFile::create([
@@ -169,16 +185,39 @@ class Form extends Component
         session()->flash('message', 'Su queja ha sido registrada con éxito. Gracias por su colaboración.');
     }
 
-    public function getStep2CompleteProperty()
+    public function rulesForStep()
     {
-        return
-            !empty($this->ine) &&
-            !empty($this->name) &&
-            !empty($this->address) &&
-            !empty($this->suburb) &&
-            !empty($this->town) &&
-            !empty($this->email) &&
-            !empty($this->phone);
+        switch ($this->step) {
+
+            case 1:
+                return [
+                    'is_agree' => 'required|accepted',
+                    'is_aware' => 'required|accepted',
+                    'subject'  => 'required|string|min:5',
+                ];
+
+            case 2:
+                return [
+                    'name'    => 'required|string|min:3',
+                    'email'   => 'required|email',
+                    'phone'   => 'required|string|min:10',
+
+                    // Campos que también pides en Step 2
+                    'address' => 'required|string',
+                    'suburb'  => 'required|string',
+                    'town'    => 'required|string',
+
+                    'ine'     => 'required',
+                ];
+
+            case 3:
+                return [
+                    'complain' => 'required|string|min:10',
+                ];
+
+            default:
+                return [];
+        }
     }
 
     public function back()
@@ -214,6 +253,25 @@ class Form extends Component
         $this->files = [];
         $this->state = '';
         $this->folio = '';
+    }
+
+    protected function handleUpload($document)
+    {
+        $originalName = pathinfo($document->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $document->getClientOriginalExtension();
+
+        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+        $filename = $cleanName . '.' . $extension;
+
+        $filepath = 'acquisitions/biddings/' . $filename;
+
+        $stream = fopen($document->getRealPath(), 'r+');
+        Storage::disk('s3')->put($filepath, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        return Storage::disk('s3')->url($filepath);
     }
 
     public function render()

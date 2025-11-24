@@ -18,6 +18,8 @@ class CitizenComplain extends Model
         'subject',
     ];
 
+    protected $guarded = [];
+
     public function files()
     {
         return $this->hasMany(CitizenComplainFile::class, 'complain_id');

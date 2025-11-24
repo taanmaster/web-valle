@@ -1,6 +1,8 @@
 <div class="col-md-12">
 
     @push('styles')
+        @livewireStyles
+
         <style>
             .alert-modal {
                 position: fixed;
@@ -176,30 +178,6 @@
                                 Notificación en domicilio
                             </label>
                         </div>
-
-                        <div class="col-md-12 mt-3">
-                            <label for="captcha" class="col-form-label">
-                                Captcha <span class="text-danger">*</span>
-                            </label>
-
-                            <div class="captcha d-flex align-items-center gap-2 mb-2">
-                                <span class="me-2" id="captcha-image">{!! $captchaHtml !!}</span>
-
-                                <button type="button" class="btn btn-danger btn-sm" wire:click="reloadCaptcha">
-                                    &#x21bb; Cambiar captcha
-                                </button>
-                            </div>
-
-                            <input type="text" name="captcha" wire:model.live="captcha"
-                                class="form-control @error('captcha') is-invalid @enderror"
-                                placeholder="Ingrese los caracteres del captcha" required>
-
-                            @error('captcha')
-                                <span class="invalid-feedback d-block" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
                     </div>
                 </div>
 
@@ -208,7 +186,7 @@
                         <button type="button" wire:click="back" class="btn btn-secondary">Regresar</button>
                     </div>
                     <div class="col-md-6 text-end">
-                        <button class="btn btn-primary" wire:click="nextStep" @disabled(!$this->step2Complete)>
+                        <button class="btn btn-primary" wire:click="nextStep">
                             Siguiente
                         </button>
                     </div>
@@ -252,7 +230,31 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="col-md-12 mt-3">
+                            <label for="captcha" class="col-form-label">
+                                Captcha <span class="text-danger">*</span>
+                            </label>
+
+                            <div class="captcha d-flex align-items-center gap-2 mb-2">
+                                <span class="me-2" id="captcha-image">{!! $captchaHtml !!}</span>
+
+                                <button type="button" class="btn btn-danger btn-sm" wire:click="reloadCaptcha">
+                                    &#x21bb; Cambiar captcha
+                                </button>
+                            </div>
+
+                            <input type="text" name="captcha" wire:model="captcha"
+                                class="form-control @error('captcha') is-invalid @enderror"
+                                placeholder="Ingrese los caracteres del captcha" required>
+
+                            @error('captcha')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="row mt-4">
                             <div class="col-md-6">
                                 <button type="button" wire:click="back" class="btn btn-secondary">Regresar</button>
                             </div>
@@ -281,6 +283,8 @@
     </div>
 
     @push('scripts')
+        @livewireScripts
+
         <script>
             // Recargar captcha
             document.addEventListener('DOMContentLoaded', function() {
@@ -305,6 +309,10 @@
                             });
                     });
                 }
+            });
+
+            Livewire.on('issue', data => {
+                alert(data.message); // Puedes usar cualquier UI: toast, modal, etc.
             });
         </script>
     @endpush
