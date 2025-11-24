@@ -889,6 +889,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('inventory', [AcquisitionInventoryController::class, 'index'])->name('acquisitions.inventory.index');
             Route::get('inventory_entrance', [AcquisitionInventoryController::class, 'entrance'])->name('acquisitions.inventory.entrance');
             Route::get('inventory_exit', [AcquisitionInventoryController::class, 'exit'])->name('acquisitions.inventory.exit');
+            Route::get('inventory/movement', [AcquisitionInventoryController::class, 'create'])->name('acquisitions.inventory.movement');
 
             Route::resource('movements', AcquisitionInventoryMovement::class)->names([
                 'index' => 'acquisitions.movements.index',

@@ -12,13 +12,13 @@
             Adquisiciones
         @endslot
         @slot('title')
-            Materiales y servicio
+            Entradas
         @endslot
     @endcomponent
 
     <div class="row layout-spacing">
         <div class="main-content">
-            <livewire:acquisitions.materials.table />
+            <livewire:acquisitions.inventory.table />
         </div>
     </div>
 @endsection

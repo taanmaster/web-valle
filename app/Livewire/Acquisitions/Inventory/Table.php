@@ -8,6 +8,6 @@ class Table extends Component
 {
     public function render()
     {
-        return view('livewire.acquisitions.inventory.table');
+        return view('acquisitions.inventory.utilities.table');
     }
 }

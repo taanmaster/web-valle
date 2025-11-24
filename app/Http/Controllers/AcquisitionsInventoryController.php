@@ -14,4 +14,6 @@ class AcquisitionsInventoryController extends Controller
     public function entrance() {}
 
     public function exit() {}
+
+    public function create() {}
 }
