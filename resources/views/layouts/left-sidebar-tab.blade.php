@@ -666,6 +666,13 @@
                             <a class="nav-link" href="{{ route('acquisitions.bidding.contract_closed') }}">Contratos
                                 cerrados</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.materials.index') }}">Materiales y
+                                servicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.inventory.index') }}">Inventario</a>
+                        </li>
                     </ul>
 
                 </div>

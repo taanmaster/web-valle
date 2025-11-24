@@ -52,7 +52,7 @@ use App\Http\Controllers\BiddingContractController;
 use App\Http\Controllers\BiddingController;
 use App\Http\Controllers\SupplierBiddingController;
 use App\Http\Controllers\SupplierMessageController;
-
+use App\Models\AcquisitionInventoryMovement;
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -889,6 +889,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('inventory', [AcquisitionInventoryController::class, 'index'])->name('acquisitions.inventory.index');
             Route::get('inventory_entrance', [AcquisitionInventoryController::class, 'entrance'])->name('acquisitions.inventory.entrance');
             Route::get('inventory_exit', [AcquisitionInventoryController::class, 'exit'])->name('acquisitions.inventory.exit');
+
+            Route::resource('movements', AcquisitionInventoryMovement::class)->names([
+                'index' => 'acquisitions.movements.index',
+                'create' => 'acquisitions.movements.create',
+                'show' => 'acquisitions.movements.show',
+                'edit' => 'acquisitions.movements.edit',
+                'destroy' => 'acquisitions.movements.destroy',
+            ]);
         });
 
         /* Transparencia */
