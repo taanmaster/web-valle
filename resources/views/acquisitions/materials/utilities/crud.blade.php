@@ -1,8 +1,8 @@
 <div>
     @if ($mode != 0)
-        <div class="row justify-content-end">
-            <div class="col-md-4">
-
+        <div class="row justify-content-end mb-4">
+            <div class="col-md-2 d-inline-block">
+                <input type="text" wire:model="sku" class="form-control disabled" disabled>
             </div>
         </div>
     @endif
@@ -16,7 +16,7 @@
                     </div>
                     <div class="row card-body">
                         <div class="col-md-12 mb-3">
-                            <label for="title" class="form-label">Nombre genérico <span
+                            <label for="title" class="form-label">Nombre <span
                                     class="text-danger tx-12">*</span></label>
                             <input type="text" class="form-control" id="title" name="title" required
                                 wire:model="title" @if ($mode == 1) disabled @endif>
@@ -31,13 +31,20 @@
 
                     </div>
                 </div>
-                @if ($mode != 0)
+                @if ($mode == 1)
                     <div class="card">
                         <div class="card-header">
                             <h4>Inventario</h4>
                         </div>
                         <div class="card-body">
-
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Cantidad</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" disabled wire:model="current_stock">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 @endif
@@ -51,7 +58,8 @@
                                 <div class="col-md-12 mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
-                                            value="1" checked>
+                                            value="1" wire:model="is_active"
+                                            @if ($mode == 1) disabled @endif>
                                         <label class="form-check-label" for="is_active">Activo</label>
                                     </div>
                                 </div>
@@ -62,15 +70,78 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Organización</h4>
-                        <div class="card-body"></div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Categoría <span
+                                        class="text-danger tx-12">*</span></label>
+                                <select name="category" id="category" wire:model="category" class="form-control"
+                                    required @if ($mode == 1) disabled @endif>
+                                    <option selected>Selecciona una opción</option>
+                                    <option value="Material">Material</option>
+                                    <option value="Servicio">Servicio</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dependency_name" class="form-label">Dependencia <span
+                                        class="text-danger tx-12">*</span></label>
+                                <select name="dependency_name" id="dependency_name" wire:model="dependency_name"
+                                    class="form-control" required @if ($mode == 1) disabled @endif>
+                                    <option selected>Selecciona una opción</option>
+                                    @foreach ($dependencies as $dependency)
+                                        <option value="{{ $dependency->name }}">{{ $dependency->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        @if ($mode == 1)
+            <div class="row my-4">
+
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-0">Movimiento de inventario</h5>
+                    <a href="{{ route('acquisitions.inventory.create') }}" class="btn btn-primary btn-sm"
+                        style="max-width: fit-content">Registrar
+                        Movimiento</a>
+                </div>
+
+                @if ($material->movements->count() != null)
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Movimiento</th>
+                                    <th>Cantidad</th>
+                                    <th>Proveedor</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($materil->movements as $movement)
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        @endif
+
         <div class="row">
-            <div class="col-12">
-                <button type="submit" class="btn btn-dark btn-sm">Guardar Medicamento</button>
-                <a href="{{ route('acquisitions.materials.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
+            <div class="col-12 text-end">
+                @switch($mode)
+                    @case(0)
+                        <button type="submit" class="btn btn-dark btn-sm">Guardar</button>
+                    @break
+
+                    @case(2)
+                        <button type="submit" class="btn btn-dark btn-sm">Guardar</button>
+                    @break
+                @endswitch
+                <a href="{{ route('acquisitions.materials.index') }}" class="btn btn-secondary btn-sm">Regresar</a>
             </div>
         </div>
     </form>

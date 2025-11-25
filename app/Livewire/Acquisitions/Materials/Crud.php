@@ -49,22 +49,44 @@ class Crud extends Component
 
     public function fetchMaterialData()
     {
-        $this->title = $this->achievement->title;
-        $this->description = $this->achievement->description;
-        $this->image = $this->achievement->image;
-        $this->file = $this->achievement->file;
-        $this->hex = $this->achievement->hex;
-        $this->published_at = $this->achievement->published_at ? Carbon::parse($this->achievement->published_at)->format('Y-m-d') : null;
-        $this->is_active = $this->achievement->is_active;
+        $this->title = $this->material->title;
+        $this->description = $this->material->description;
+        $this->sku = $this->material->sku;
+        $this->dependency_name = $this->material->dependency_name;
+        $this->is_active = $this->material->is_active;
+        $this->category = $this->material->category;
+        $this->current_stock = $this->material->current_stock;
     }
 
     public function save()
     {
         if ($this->material != null) {
 
+            $material = AcquisitionMaterial::findOrFail($this->material->id);
+
+            $material->title = $this->title;
+            $material->description = $this->description;
+            $material->is_active = $this->is_active;
+            $material->category = $this->category;
+            $material->dependency_name = $this->dependency_name;
+
+            $material->save();
 
             Session::flash('success', 'El material se actualizo correctamente.');
         } else {
+
+            $material = new AcquisitionMaterial;
+
+            $material->sku = 'MAT-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(4));
+
+            $material->title = $this->title;
+            $material->description = $this->description;
+            $material->category = $this->category;
+            $material->dependency_name = $this->dependency_name;
+
+            $material->save();
+
+            $this->material = $material;
 
             Session::flash('success', 'El material se creo correctamente.');
         }

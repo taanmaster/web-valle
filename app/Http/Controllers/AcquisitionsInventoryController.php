@@ -20,7 +20,11 @@ class AcquisitionsInventoryController extends Controller
         return view('acquisitions.inventory.exits');
     }
 
-    public function create() {
+    public function create()
+    {
+        $mode = $mode;
+
+
         return view('acquisitions.inventory.create');
     }
 }

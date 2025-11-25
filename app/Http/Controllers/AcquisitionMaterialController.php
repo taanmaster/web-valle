@@ -20,12 +20,26 @@ class AcquisitionMaterialController extends Controller
 
     public function show($id)
     {
-        return view('acquisitions.materials.show');
+        $mode = 1;
+
+        $material = AcquisitionMaterial::findOrFail($id);
+
+        return view('acquisitions.materials.show', [
+            'mode' => $mode,
+            'material' => $material
+        ]);
     }
 
     public function edit($id)
     {
-        return view('acquisitions.materials.edit');
+        $mode = 2;
+
+        $material = AcquisitionMaterial::findOrFail($id);
+
+        return view('acquisitions.materials.edit', [
+            'mode' => $mode,
+            'material' => $material
+        ]);
     }
 
     public function destroy($id)

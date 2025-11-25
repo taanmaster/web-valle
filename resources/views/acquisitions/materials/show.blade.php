@@ -18,7 +18,7 @@
 
     <div class="row layout-spacing">
         <div class="main-content">
-            <livewire:acquisitions.materials.crud />
+            <livewire:acquisitions.materials.crud :mode="$mode" :material="$material" />
         </div>
     </div>
 @endsection

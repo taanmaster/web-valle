@@ -18,6 +18,14 @@
 
     <div class="row layout-spacing">
         <div class="main-content">
+
+            <div class="row justify-content-end mb-4">
+                <div class="col-md-2 text-end">
+                    <a href="{{ route('acquisitions.materials.create') }}" class="btn btn-primary">Ingresar material o
+                        servicio</a>
+                </div>
+            </div>
+
             <livewire:acquisitions.materials.table />
         </div>
     </div>
