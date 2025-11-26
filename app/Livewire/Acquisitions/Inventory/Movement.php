@@ -290,7 +290,6 @@ class Movement extends Component
             }
 
             // --- reception File ---
-            /*
             $movement->reception_file = $this->reception_file
                 ? $this->handleUpload($this->reception_file)
                 : $movement->reception_file;
@@ -304,7 +303,6 @@ class Movement extends Component
             $movement->approval_file = $this->approval_file
                 ? $this->handleUpload($this->approval_file)
                 : $movement->approval_file;
-                */
 
             $movement->destiny = $this->destiny;
             $movement->responsable = $this->responsable;
@@ -330,7 +328,6 @@ class Movement extends Component
                 $movement->description = $this->description_exit;
             }
             // --- reception File ---
-            /*
             $movement->reception_file = $this->reception_file
                 ? $this->handleUpload($this->reception_file)
                 : $movement->reception_file;
@@ -344,7 +341,6 @@ class Movement extends Component
             $movement->approval_file = $this->approval_file
                 ? $this->handleUpload($this->approval_file)
                 : $movement->approval_file;
-                */
 
             $movement->destiny = $this->destiny;
             $movement->responsable = $this->responsable;
