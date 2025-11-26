@@ -277,4 +277,9 @@ class Supplier extends Model
     {
         return $this->hasMany(BiddingProposal::class, 'supplier_id');
     }
+
+    public function movements()
+    {
+        return $this->hasMany(AcquisitionInventoryMovement::class, 'supplier_id');
+    }
 }

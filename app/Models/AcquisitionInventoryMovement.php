@@ -15,4 +15,9 @@ class AcquisitionInventoryMovement extends Model
     {
         return $this->belongsTo(AcquisitionMaterial::class, 'material_id');
     }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
 }

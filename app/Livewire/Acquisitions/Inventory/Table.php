@@ -16,7 +16,7 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Illuminate\Http\Request;
 
-use App\Models\AcquisitionMaterial;
+use App\Models\AcquisitionInventoryMovement;
 class Table extends Component
 {
     use WithPagination;
@@ -27,12 +27,12 @@ class Table extends Component
 
     public function render()
     {
-        $query = AcquisitionMaterial::query();
+        $query = AcquisitionInventoryMovement::query();
 
-        $materials = $query->latest()->paginate(10);
+        $movements = $query->latest()->paginate(10);
 
         return view('acquisitions.inventory.utilities.table', [
-            'materials' => $materials,
+            'movements' => $movements,
         ]);
     }
 }

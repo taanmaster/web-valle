@@ -22,7 +22,7 @@ class AcquisitionsInventoryController extends Controller
 
     public function create()
     {
-        $mode = $mode;
+
 
 
         return view('acquisitions.inventory.create');

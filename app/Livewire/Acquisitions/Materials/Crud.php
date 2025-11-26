@@ -25,7 +25,7 @@ class Crud extends Component
     public $material;
 
     //Modes: 0: create, 1 show, 2 edit
-    public $mode;
+    public $mode = 0;
 
     public $sku = '';
     public $title = '';
