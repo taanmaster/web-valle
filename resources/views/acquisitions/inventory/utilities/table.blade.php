@@ -31,12 +31,28 @@
                     </button>
                 @endif
                 @if ($view != '')
-                    <button type="button" wire:click="showAll" class="btn btn-outline-secondary btn-sm"
+                    <button type="button" wire:click="showAll" class="btn btn-secondary btn-sm"
                         style="max-width: fit-content">
                         Ver Todos
                     </button>
                 @endif
                 @if ($movements->count() != 0)
+                    <button type="button" wire:click="export" class="btn btn-outline-primary btn-sm"
+                        style="max-width: fit-content">
+                        Exportar
+                        @switch($mode)
+                            @case(1)
+                                Ingresos
+                            @break
+
+                            @case(2)
+                                Egresos
+                            @break
+
+                            @default
+                                Inventario
+                        @endswitch
+                    </button>
                     <a href="{{ route('acquisitions.inventory.create') }}" class="btn btn-primary btn-sm"
                         style="max-width: fit-content">
                         Crear Movimiento

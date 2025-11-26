@@ -16,6 +16,11 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Illuminate\Http\Request;
 
+use App\Exports\InventoryExport;
+use App\Exports\IncomeInventoryExport;
+use App\Exports\OutcomeInventoryExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Models\AcquisitionInventoryMovement;
 use App\Models\AcquisitionMaterial;
 
@@ -47,6 +52,23 @@ class Table extends Component
         $this->view = '';
 
         $this->mode = 0;
+    }
+
+    public function export()
+    {
+        switch ($this->mode) {
+            case 0:
+                return Excel::download(new InventoryExport, 'inventario.xlsx');
+            break;
+
+            case 1:
+                return Excel::download(new IncomeInventoryExport, 'inventario_entradas.xlsx');
+                break;
+
+            case 2:
+                return Excel::download(new OutcomeInventoryExport, 'inventario_salidas.xlsx');
+                break;
+        }
     }
 
     public function render()
