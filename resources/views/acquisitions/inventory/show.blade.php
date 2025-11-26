@@ -12,13 +12,13 @@
             Adquisiciones
         @endslot
         @slot('title')
-            Entradas
+            Movimientos
         @endslot
     @endcomponent
 
     <div class="row layout-spacing">
         <div class="main-content">
-            <livewire:acquisitions.inventory.movement :material="$material" />
+            <livewire:acquisitions.inventory.movement :movement="$movement" :mode="$mode" />
         </div>
     </div>
 @endsection

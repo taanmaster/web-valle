@@ -46,7 +46,7 @@
                                 <div class="mb-3">
                                     <label for="material" class="form-label">Materio y/o Servicio</label>
                                     <select name="material" id="material" wire:model.live="materialId"
-                                        class="form-control">
+                                        class="form-control" @if (request()->route('id')) disabled @endif>
                                         <option selected>Selecciona una opción</option>
                                         @foreach ($materials as $mat)
                                             <option value="{{ $mat->id }}">{{ $mat->title }}</option>
@@ -163,8 +163,8 @@
                                             <label for="movement_type" class="form-label">Tipo de Movimiento <span
                                                     class="text-danger">*</span></label>
                                             <select class="form-select" id="movement_type" name="movement_type" required
-                                                wire:model.live="type"
-                                                @if ($material == null) disabled @endif>
+                                                wire:model.live="type" @if ($material == null) disabled @endif
+                                                @if ($mode == 1) disabled @endif>
                                                 <option>Seleccionar...</option>
                                                 <option value="Entrada">
                                                     <i class="fas fa-arrow-down text-success"></i> Entrada (Recepción)
@@ -182,6 +182,7 @@
                                                     class="text-danger">*</span></label>
                                             <input type="number" class="form-control" id="quantity"
                                                 name="quantity" wire:model="quantity" required
+                                                @if ($mode == 1) disabled @endif
                                                 @if ($material == null) disabled @endif
                                                 @if ($material != null && $type == 'Salida') max="{{ $material->current_stock }}" @endif
                                                 @if ($material != null && $type == 'Entrada') min="1" @endif>
@@ -199,7 +200,8 @@
                                             <div class="col-md-12">
                                                 <label for="description" class="form-label">Descripción de
                                                     solicitud</label>
-                                                <textarea class="form-control" name="description" wire:model="description" id="description" rows="3"></textarea>
+                                                <textarea @if ($mode == 1) disabled @endif class="form-control" name="description"
+                                                    wire:model="description" id="description" rows="3"></textarea>
                                             </div>
                                         </div>
                                         <div class="row align-items-center mb-3">
@@ -214,7 +216,8 @@
                                                     <label for="reception_file" class="form-label">Subir formato de
                                                         recepción</label>
                                                     <input type="file" class="form-control" id="reception_file"
-                                                        name="reception_file" wire:model="reception_file">
+                                                        name="reception_file" wire:model="reception_file"
+                                                        @if ($mode == 1) disabled @endif>
                                                 </div>
                                             </div>
                                         </div>
@@ -223,7 +226,8 @@
                                         <div class="mb-4">
                                             <label for="validation" class="form-label">Escribe aquí resultado de validación de
                                                 calidad</label>
-                                            <textarea class="form-control" name="validation" wire:model="validation" id="validation" rows="3"></textarea>
+                                            <textarea @if ($mode == 1) disabled @endif class="form-control" name="validation"
+                                                wire:model="validation" id="validation" rows="3"></textarea>
                                         </div>
                                     @break
 
@@ -231,23 +235,25 @@
                                         <h4>Solicitud de Material o Servicio</h4>
                                         <div class="row my-3">
                                             <div class="col-md-12">
-                                                <label for="description" class="form-label">Descripción de
+                                                <label for="description_exit" class="form-label">Descripción de
                                                     solicitud</label>
-                                                <textarea class="form-control" name="description" wire:model="description" id="description" rows="3"></textarea>
+                                                <textarea @if ($mode == 1) disabled @endif class="form-control" name="description_exit"
+                                                    wire:model="description_exit" id="description_exit" rows="3"></textarea>
                                             </div>
                                         </div>
                                         <div class="my-2">
                                             <label for="request_file" class="form-label">Subir Oficio de
                                                 solicitud</label>
                                             <input type="file" class="form-control" id="request_file" name="request_file"
-                                                wire:model="request_file">
+                                                wire:model="request_file" @if ($mode == 1) disabled @endif>
                                         </div>
                                         <h4>Aprobación de salida</h4>
                                         <div class="my-2">
                                             <label for="approval_file" class="form-label">Subir aprovación de
                                                 salida</label>
                                             <input type="file" class="form-control" id="approval_file"
-                                                name="approval_file" wire:model="approval_file">
+                                                name="approval_file" wire:model="approval_file"
+                                                @if ($mode == 1) disabled @endif>
                                         </div>
                                         <h4>Destino</h4>
                                         <div class="row mb-3">
@@ -256,7 +262,7 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <input type="text" class="form-control" name="destiny" id="destiny"
-                                                    wire:model="destiny">
+                                                    wire:model="destiny" @if ($mode == 1) disabled @endif>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -265,17 +271,28 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <input type="text" class="form-control" name="responsable"
-                                                    id="responsable" wire:model="responsable">
+                                                    id="responsable" wire:model="responsable"
+                                                    @if ($mode == 1) disabled @endif>
                                             </div>
                                         </div>
                                     @break
                                 @endswitch
 
                                 <div class="d-flex gap-2">
-                                    <button type="submit" class="btn btn-primary"
-                                        @if ($material == null) disabled @endif>Registrar Movimiento</button>
-                                    <a href="{{ route('acquisitions.inventory.index') }}"
-                                        class="btn btn-outline-danger">Cancelar</a>
+                                    @if ($mode != 1)
+                                        <button type="submit" class="btn btn-primary"
+                                            @if ($material == null) disabled @endif>Registrar
+                                            Movimiento</button>
+                                    @endif
+
+                                    @if (request()->route('id'))
+                                        <a href="{{ url()->previous() }}" class="btn btn-outline-danger">Cancelar</a>
+                                    @else
+                                        <a href="{{ route('acquisitions.inventory.index') }}"
+                                            class="btn btn-outline-danger">Cancelar</a>
+                                    @endif
+
+
                                 </div>
 
                             </div>

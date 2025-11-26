@@ -26,7 +26,6 @@
                         <th>Título</th>
                         <th>Dependencia</th>
                         <th>Tipo</th>
-                        <th>Proveedor</th>
                         <th>Cantidad</th>
                         <th>Estatus</th>
                         <th scope="col">Acciones</th>
@@ -45,9 +44,6 @@
                             </td>
                             <td>
                                 {{ $material->category }}
-                            </td>
-                            <td>
-
                             </td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">

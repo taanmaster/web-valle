@@ -34,13 +34,14 @@ class Movement extends Component
     public $movement;
     public $supplier;
 
-    //Modos: 0 Sin material seleccionado, 1 Creado desde el material
+    //Modos: 0 crear, 1 show
     public $mode = 0;
 
     public $type = '';
     public $quantity = '';
 
     public $description = '';
+    public $description_exit = '';
     public $reception_file = '';
     public $validation = '';
     public $request_file = '';
@@ -78,11 +79,38 @@ class Movement extends Component
 
     public function mount()
     {
-        if ($this->material == null) {
-            $this->fetchMaterials();
-        } else {
+        if ($this->material != null) {
             $this->fetchMaterial();
         }
+
+        if ($this->movement != null) {
+            $this->fetchMovement();
+        }
+
+        $this->fetchMaterials();
+    }
+
+    public function fetchMovement()
+    {
+        $this->material = $this->movement->material;
+        $this->materialId = $this->material->id;
+
+        $this->supplier = $this->movement->supplier;
+        $this->selectedSupplier = $this->supplier;
+        $this->supplier_id = $this->supplier->id;
+        $this->supplier_name = $this->supplier->owner_name;
+        $this->supplier_num = $this->supplier->registration_number;
+        $this->supplier_type = $this->supplier->person_type;
+
+        $this->type = $this->movement->type;
+        $this->quantity = $this->movement->quantity;
+        $this->description = $this->movement->description;
+        $this->reception_file = $this->movement->type;
+        $this->validation = $this->movement->validation;
+        $this->request_file = $this->movement->request_file;
+        $this->approval_file = $this->movement->approval_file;
+        $this->destiny = $this->movement->destiny;
+        $this->responsable = $this->movement->responsable;
     }
 
     public function fetchMaterials()
@@ -92,7 +120,7 @@ class Movement extends Component
 
     public function fetchMaterial()
     {
-        $this->material_id = $this->material->id;
+        $this->materialId = $this->material->id;
     }
 
     public function updatedMaterialId($id)
@@ -255,6 +283,12 @@ class Movement extends Component
             $movement->type = $this->type;
             $movement->quantity = $this->quantity;
 
+            if ($this->type == 'Entrada') {
+                $movement->description = $this->description;
+            } else {
+                $movement->description = $this->description_exit;
+            }
+
             // --- reception File ---
             /*
             $movement->reception_file = $this->reception_file
@@ -275,6 +309,10 @@ class Movement extends Component
             $movement->destiny = $this->destiny;
             $movement->responsable = $this->responsable;
 
+            // --- Aplicar inventario sólo aquí
+            app(\App\Services\InventoryService::class)
+                ->applyToStock($this->movement);
+
             $movement->save();
         } else {
             $movement = new AcquisitionInventoryMovement;
@@ -285,6 +323,12 @@ class Movement extends Component
             $movement->type = $this->type;
             $movement->quantity = $this->quantity;
 
+
+            if ($this->type == 'Entrada') {
+                $movement->description = $this->description;
+            } else {
+                $movement->description = $this->description_exit;
+            }
             // --- reception File ---
             /*
             $movement->reception_file = $this->reception_file
@@ -308,6 +352,10 @@ class Movement extends Component
             $movement->save();
 
             $this->movement = $movement;
+
+            // --- Aplicar inventario sólo aquí
+            app(\App\Services\InventoryService::class)
+                ->applyToStock($this->movement);
         }
 
         return redirect()->route('acquisitions.inventory.index');

@@ -17,6 +17,8 @@ use Livewire\WithPagination;
 use Illuminate\Http\Request;
 
 use App\Models\AcquisitionInventoryMovement;
+use App\Models\AcquisitionMaterial;
+
 class Table extends Component
 {
     use WithPagination;
@@ -25,9 +27,39 @@ class Table extends Component
 
     public $mode = 0;
 
+    public $view = '';
+
+    public function income()
+    {
+        $this->view = 'Entrada';
+
+        $this->mode = 1;
+    }
+
+    public function outcome()
+    {
+        $this->view = 'Salida';
+        $this->mode = 2;
+    }
+
+    public function showAll()
+    {
+        $this->view = '';
+
+        $this->mode = 0;
+    }
+
     public function render()
     {
+        if ($this->mode != 0) {
         $query = AcquisitionInventoryMovement::query();
+
+        if (in_array($this->view, ['Entrada', 'Salida'])) {
+            $query->where('type', $this->view);
+        }
+        } else {
+            $query = AcquisitionMaterial::query();
+        }
 
         $movements = $query->latest()->paginate(10);
 

@@ -101,9 +101,9 @@
         @if ($mode == 1)
             <div class="row my-4">
 
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between mb-3">
                     <h5 class="mb-0">Movimiento de inventario</h5>
-                    <a href="{{ route('acquisitions.inventory.create') }}" class="btn btn-primary btn-sm"
+                    <a href="{{ route('acquisitions.inventory.create', $material->id) }}" class="btn btn-primary btn-sm"
                         style="max-width: fit-content">Registrar
                         Movimiento</a>
                 </div>
@@ -121,7 +121,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($materil->movements as $movement)
+                                @foreach ($material->movements as $movement)
+                                    <tr>
+                                        <td>{{ $movement->created_at->format('Y-m-d') }}</td>
+                                        <td>{{ $movement->type }}</td>
+                                        <td>
+                                            @if ($movement->type == 'Entrada')
+                                                +
+                                            @else
+                                                -
+                                            @endif
+                                            {{ $movement->quantity }}
+                                        </td>
+                                        <td>{{ $movement->supplier->owner_name }}</td>
+                                        <td>
+                                            <a href="{{ route('acquisitions.inventory.show', $movement->id) }}"
+                                                class="btn btn-secondary btn-sm">
+                                                Ver movimiento
+                                            </a>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -141,7 +160,7 @@
                         <button type="submit" class="btn btn-dark btn-sm">Guardar</button>
                     @break
                 @endswitch
-                <a href="{{ route('acquisitions.materials.index') }}" class="btn btn-secondary btn-sm">Regresar</a>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary btn-sm">Regresar</a>
             </div>
         </div>
     </form>
