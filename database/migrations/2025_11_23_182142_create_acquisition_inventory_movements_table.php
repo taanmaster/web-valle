@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer('quantity');
             $table->text('description')->nullable();
 
-            $table->string('file')->nullable();
+            $table->string('reception_file')->nullable();
+            $table->string('request_file')->nullable();
             $table->string('approval_file')->nullable();
 
             $table->text('validation')->nullable();

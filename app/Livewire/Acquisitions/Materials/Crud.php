@@ -79,6 +79,7 @@ class Crud extends Component
 
             $material->sku = 'MAT-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(4));
 
+            $material->is_active = 1;
             $material->title = $this->title;
             $material->description = $this->description;
             $material->category = $this->category;

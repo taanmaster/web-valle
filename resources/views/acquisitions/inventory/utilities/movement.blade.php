@@ -205,19 +205,27 @@
                                             </div>
                                         </div>
                                         <div class="row align-items-center mb-3">
-                                            <div class="col-md-4">
-                                                <button type="button" wire:click="inFile"
-                                                    class="w-100 btn btn-outline-secondary btn-sm">Formato
-                                                    de
-                                                    recepción</button>
-                                            </div>
+                                            @if ($mode != 1)
+                                                <div class="col-md-4">
+                                                    <button type="button" wire:click="inFile"
+                                                        class="w-100 btn btn-outline-secondary btn-sm">Formato
+                                                        de
+                                                        recepción</button>
+                                                </div>
+                                            @endif
                                             <div class="col-md-8">
                                                 <div>
-                                                    <label for="reception_file" class="form-label">Subir formato de
-                                                        recepción</label>
-                                                    <input type="file" class="form-control" id="reception_file"
-                                                        name="reception_file" wire:model="reception_file"
-                                                        @if ($mode == 1) disabled @endif>
+                                                    @if ($mode == 1 && $movement->reception_file != null)
+                                                        <a href="{{ $movement->reception_file }}" target="_black"
+                                                            class="w-100 btn btn-outline-secondary btn-sm">Archivo de
+                                                            recepción</a>
+                                                    @else
+                                                        <label for="reception_file" class="form-label">Subir formato de
+                                                            recepción</label>
+                                                        <input type="file" class="form-control" id="reception_file"
+                                                            name="reception_file" wire:model="reception_file"
+                                                            @if ($mode == 1) disabled @endif>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -242,18 +250,31 @@
                                             </div>
                                         </div>
                                         <div class="my-2">
-                                            <label for="request_file" class="form-label">Subir Oficio de
-                                                solicitud</label>
-                                            <input type="file" class="form-control" id="request_file" name="request_file"
-                                                wire:model="request_file" @if ($mode == 1) disabled @endif>
+                                            @if ($mode == 1 && $movement->request_file != null)
+                                                <a href="{{ $movement->request_file }}" target="_black"
+                                                    class="w-100 btn btn-outline-secondary btn-sm">Archivo de
+                                                    solicitud</a>
+                                            @else
+                                                <label for="request_file" class="form-label">Subir Oficio de
+                                                    solicitud</label>
+                                                <input type="file" class="form-control" id="request_file"
+                                                    name="request_file" wire:model="request_file"
+                                                    @if ($mode == 1) disabled @endif>
+                                            @endif
                                         </div>
                                         <h4>Aprobación de salida</h4>
                                         <div class="my-2">
-                                            <label for="approval_file" class="form-label">Subir aprovación de
-                                                salida</label>
-                                            <input type="file" class="form-control" id="approval_file"
-                                                name="approval_file" wire:model="approval_file"
-                                                @if ($mode == 1) disabled @endif>
+                                            @if ($mode == 1 && $movement->approval_file != null)
+                                                <a href="{{ $movement->approval_file }}" target="_black"
+                                                    class="w-100 btn btn-outline-secondary btn-sm">Archivo de
+                                                    aprovación de salida</a>
+                                            @else
+                                                <label for="approval_file" class="form-label">Subir aprovación de
+                                                    salida</label>
+                                                <input type="file" class="form-control" id="approval_file"
+                                                    name="approval_file" wire:model="approval_file"
+                                                    @if ($mode == 1) disabled @endif>
+                                            @endif
                                         </div>
                                         <h4>Destino</h4>
                                         <div class="row mb-3">
@@ -276,6 +297,7 @@
                                             </div>
                                         </div>
                                     @break
+
                                 @endswitch
 
                                 <div class="d-flex gap-2">

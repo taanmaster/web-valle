@@ -58,8 +58,8 @@
                                 <div class="col-md-12 mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
-                                            value="1" wire:model="is_active"
-                                            @if ($mode == 1) disabled @endif>
+                                            wire:model="is_active" @if ($mode == 1) disabled @endif
+                                            @if ($material != null && $material->is_active == 1) checked @endif>
                                         <label class="form-check-label" for="is_active">Activo</label>
                                     </div>
                                 </div>

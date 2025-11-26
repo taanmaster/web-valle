@@ -36,10 +36,12 @@
                         Ver Todos
                     </button>
                 @endif
-                <a href="{{ route('acquisitions.inventory.create') }}" class="btn btn-primary btn-sm"
-                    style="max-width: fit-content">
-                    Crear Movimiento
-                </a>
+                @if ($movements->count() != 0)
+                    <a href="{{ route('acquisitions.inventory.create') }}" class="btn btn-primary btn-sm"
+                        style="max-width: fit-content">
+                        Crear Movimiento
+                    </a>
+                @endif
             </div>
         </div>
     </div>
@@ -51,11 +53,7 @@
                         <div class="text-center" style="padding:80px 0px 100px 0px;">
                             <img src="{{ asset('assets/images/empty.svg') }}" class="ml-auto mr-auto"
                                 style="width:30%; margin-bottom: 40px;">
-                            <h4>¡No hay medicamentos guardados en la base de datos!</h4>
-                            <p class="mb-4">Empieza a cargarlos en la sección correspondiente.</p>
-                            <a href="{{ route('acquisitions.materials.create') }}"
-                                class="btn btn-sm btn-primary btn-uppercase"><i class="fas fa-plus"></i> Nuevo
-                                Medicamento</a>
+                            <h4>¡No hay inventario en la base de datos!</h4>
                         </div>
                     </div>
                 </div>
