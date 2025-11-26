@@ -71,6 +71,29 @@ class Table extends Component
         }
     }
 
+    public function download($id)
+    {
+        $movement = AcquisitionInventoryMovement::findOrFail($id);
+
+        $pdf = PDF::loadView('acquisitions.inventory.utilities.pdf_income', [
+            'movement' => $movement
+        ]);
+        // Guardar archivo temporal
+        $fileName = 'ingreso-' . $movement->id . '.pdf';
+        $filePath = storage_path('app/temp/' . $fileName);
+
+        // Asegurar carpeta
+        if (!file_exists(storage_path('app/temp'))) {
+            mkdir(storage_path('app/temp'), 0777, true);
+        }
+
+        // Guardar PDF
+        $pdf->save($filePath);
+
+        // Descargar archivo y eliminarlo después
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
     public function render()
     {
         if ($this->mode != 0) {

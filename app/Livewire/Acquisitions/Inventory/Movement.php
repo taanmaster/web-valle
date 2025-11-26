@@ -5,6 +5,7 @@ namespace App\Livewire\Acquisitions\Inventory;
 use Livewire\Component;
 
 // Ayudantes
+use PDF;
 use Str;
 use Auth;
 use Session;
@@ -348,6 +349,27 @@ class Movement extends Component
             $movement->save();
 
             $this->movement = $movement;
+
+            if ($this->movement->type == 'Entrada') {
+
+                $pdf = PDF::loadView('acquisitions.inventory.utilities.pdf_income', [
+                    'movement' => $this->movement
+                ]);
+                // Guardar archivo temporal
+                $fileName = 'ingreso-' . $this->movement->id . '.pdf';
+                $filePath = storage_path('app/temp/' . $fileName);
+
+                // Asegurar carpeta
+                if (!file_exists(storage_path('app/temp'))) {
+                    mkdir(storage_path('app/temp'), 0777, true);
+                }
+
+                // Guardar PDF
+                $pdf->save($filePath);
+
+                // Descargar archivo y eliminarlo después
+                return response()->download($filePath)->deleteFileAfterSend(true);
+            }
 
             // --- Aplicar inventario sólo aquí
             app(\App\Services\InventoryService::class)
