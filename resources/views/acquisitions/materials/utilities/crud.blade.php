@@ -160,7 +160,7 @@
                         <button type="submit" class="btn btn-dark btn-sm">Guardar</button>
                     @break
                 @endswitch
-                <a href="{{ url()->previous() }}" class="btn btn-secondary btn-sm">Regresar</a>
+                <a href="{{ route('acquisitions.materials.index') }}" class="btn btn-secondary btn-sm">Regresar</a>
             </div>
         </div>
     </form>
