@@ -1,5 +1,11 @@
 @extends('layouts.master')
 @section('title')Intranet @endsection
+
+@push('stylesheets')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+@endpush
+
 @section('content')
 <!-- this is breadcrumbs -->
 @component('components.breadcrumb')
@@ -187,12 +193,13 @@
                                 <input type="password" class="form-control" id="editAdminPassword" name="password">
                             </div>
                             <div class="mb-3">
-                                <label for="editAdminRole" class="form-label">Rol</label>
-                                <select class="form-control" id="editAdminRole" name="rol" required>
+                                <label for="editAdminRole" class="form-label">Roles</label>
+                                <select class="form-control" id="editAdminRole" name="roles[]" multiple required>
                                     @foreach($roles as $rol)
                                         <option value="{{ $rol->name }}">{{ $rol->name }}</option>
                                     @endforeach
                                 </select>
+                                <small class="text-muted">Puedes seleccionar múltiples roles</small>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -294,13 +301,35 @@
             </div>
         </div>
 
+        @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
-            function openEditAdminModal(user) {
+            // Inicializar Select2 cuando el DOM esté listo
+            $(document).ready(function() {
+                $('#editAdminRole').select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                    placeholder: 'Selecciona uno o más roles',
+                    allowClear: false,
+                    dropdownParent: $('#modalEditAdmin')
+                });
+            });
+
+            function openEditAdminModal(element) {
+                const userId = element.getAttribute('data-user-id');
+                const userName = element.getAttribute('data-user-name');
+                const userEmail = element.getAttribute('data-user-email');
+                const userRoles = JSON.parse(element.getAttribute('data-user-roles'));
+                
                 const form = document.getElementById('editAdminForm');
-                form.action = `{{ route('users.update', '') }}/${user.id}`;
-                document.getElementById('editAdminName').value = user.name;
-                document.getElementById('editAdminEmail').value = user.email;
-                document.getElementById('editAdminRole').value = user.role;
+                form.action = `{{ route('users.update', '') }}/${userId}`;
+                document.getElementById('editAdminName').value = userName;
+                document.getElementById('editAdminEmail').value = userEmail;
+                document.getElementById('editAdminPassword').value = '';
+                
+                // Seleccionar múltiples roles con Select2
+                $('#editAdminRole').val(userRoles).trigger('change');
+                
                 new bootstrap.Modal(document.getElementById('modalEditAdmin')).show();
             }
 
@@ -313,13 +342,14 @@
             }
 
             // Activar pestaña de ciudadanos si viene de un redirect
-            document.addEventListener('DOMContentLoaded', function() {
+            $(document).ready(function() {
                 if (window.location.hash === '#citizens') {
                     const citizensTab = new bootstrap.Tab(document.getElementById('citizens-tab'));
                     citizensTab.show();
                 }
             });
         </script>
+        @endpush
     </div>
 </div>
 

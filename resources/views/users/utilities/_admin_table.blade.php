@@ -59,12 +59,12 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" onclick="openEditAdminModal({
-                                        id: {{ $user->id }},
-                                        name: '{{ $user->name }}',
-                                        email: '{{ $user->email }}',
-                                        role: '{{ $user->roles->first()->name ?? '' }}'
-                                    })">
+                                    <a class="dropdown-item" href="javascript:void(0)" 
+                                       data-user-id="{{ $user->id }}"
+                                       data-user-name="{{ $user->name }}"
+                                       data-user-email="{{ $user->email }}"
+                                       data-user-roles="{{ json_encode($user->roles->pluck('name')->toArray()) }}"
+                                       onclick="openEditAdminModal(this)">
                                         <i class="bx bx-edit me-2"></i>Editar
                                     </a>
                                 </li>

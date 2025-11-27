@@ -86,6 +86,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'email|required',
             'password' => 'nullable|min:4',
+            'roles' => 'required|array|min:1',
         ]);
 
         $user = User::find($id);
@@ -96,11 +97,10 @@ class UserController extends Controller
             $user->password = bcrypt($request->input('password'));
         }
 
-        $rol = Role::findByName($request->rol);
-
         $user->save();
 
-        $user->syncRoles([$rol->name]);
+        // Sincronizar múltiples roles
+        $user->syncRoles($request->input('roles'));
 
         Session::flash('success', 'El usuario se actualizó exitosamente.');
 
