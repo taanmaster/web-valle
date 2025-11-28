@@ -100,7 +100,7 @@
         <tr>
             <td class="label">Dependencia</td>
             <td colspan="3">
-                <p>{{ $movement->category->dependency_name }}</p>
+                <p>{{ $movement->material->dependency_name }}</p>
             </td>
         </tr>
 
