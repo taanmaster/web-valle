@@ -137,7 +137,7 @@
                                 </td>
                                 <td>
                                     @if ($movement->file)
-                                        <a href="{{ $movement->file }}" target="_blank">
+                                        <a href="{{ $movement->file }}" target="_blank" class="btn btn-sm btn-link">
                                             Ver PDF
                                         </a>
                                     @endif
