@@ -136,10 +136,11 @@
                                     {{ $movement->quantity }}
                                 </td>
                                 <td>
-                                    <button type="button" wire:click="download({{ $movement->id }})"
-                                        class="btn btn-secondary btn-sm">
-                                        Descargar
-                                    </button>
+                                    @if ($movement->file)
+                                        <a href="{{ $movement->file }}" target="_blank">
+                                            Ver PDF
+                                        </a>
+                                    @endif
                                     <div class="dropdown">
                                         <button class="btn btn-primary dropdown-toggle" type="button"
                                             id="dropdownMenuButton{{ $movement->material->id }}"
