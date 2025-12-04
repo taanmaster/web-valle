@@ -675,6 +675,15 @@
                         </li>
                     </ul>
 
+                    <div class="title-box">
+                        <h6 class="menu-title">Indicadores y KPI's</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('acquisitions.kpis.index') }}">Gráficas</a>
+                        </li>
+                    </ul>
                 </div>
             @endif
 

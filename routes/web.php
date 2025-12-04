@@ -53,6 +53,8 @@ use App\Http\Controllers\BiddingController;
 use App\Http\Controllers\SupplierBiddingController;
 use App\Http\Controllers\SupplierMessageController;
 use App\Http\Controllers\AcquisitionsInventoryController;
+use App\Http\Controllers\AcquisitionsKPIsController;
+
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -899,6 +901,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'edit' => 'acquisitions.movements.edit',
                 'destroy' => 'acquisitions.movements.destroy',
             ]);
+
+            // Ruta para KPIs de Adquisiciones
+            Route::get('kpis', [AcquisitionsKPIsController::class, 'index'])->name('acquisitions.kpis.index');
         });
 
         /* Transparencia */
