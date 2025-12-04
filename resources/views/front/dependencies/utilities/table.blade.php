@@ -5,6 +5,7 @@
     - Ordenamiento por defecto: Año DESC, Período DESC (backend)
     - Ordenamiento interactivo en tiempo real (DataTables)
     - Búsqueda global en todas las columnas
+    - Filtros dinámicos por Año y Período (basados en datos disponibles)
     - Paginación de 25 registros por página
     - Responsive design para dispositivos móviles
     - Traducción al español (México)
@@ -18,6 +19,12 @@
     - Rubro: Ordenamiento alfabético
     - Documento: No ordenable (columna de acciones)
     
+    FILTROS DINÁMICOS:
+    - Año: Se puebla automáticamente con los años disponibles en $documents
+    - Período: Se puebla automáticamente con los períodos disponibles en $documents
+    - Los filtros se aplican en tiempo real sin recargar la página
+    - Botón "Limpiar filtros" para resetear todos los filtros de DataTable
+    
     ICONOS DE ORDENAMIENTO (ion-icons):
     - swap-vertical-outline: Columna ordenable, no ordenada actualmente
     - arrow-up-outline: Ordenado ascendente (A-Z, 0-9)
@@ -27,6 +34,7 @@
     - La tabla se reinicializa automáticamente después de cada actualización de Livewire
     - Compatible con filtros dinámicos (año, período, obligación)
     - Los iconos se actualizan dinámicamente al cambiar el ordenamiento
+    - Los filtros de DataTable se repoblan al actualizar los datos
 --}}
 <div>
     <div class="row mb-4 align-items-center">
@@ -42,32 +50,31 @@
                     @endforeach
                 </select>
             </div>
+            
+            <div class="col-md-3">
+                <label for="year" class="col-form-label">Año</label>
+                <select name="year" id="year" wire:model.live="year" class="form-control">
+                    <option value="" disabled selected>Seleccione un año</option>
+                    @foreach ($years as $y)
+                        <option value="{{ $y }}">{{ $y }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="period" class="col-form-label">Periodo</label>
+                <select name="period" id="period" wire:model.live="period" class="form-control">
+                    <option value="" disabled selected>Seleccione un periodo</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+            <div class="col-md-3 text-end">
+                <button wire:click="resetFilters" class="btn btn-outline-secondary btn-sm">Restablecer Filtros</button>
+            </div>
         @endif
-
-
-
-        <div class="col-md-3">
-            <label for="year" class="col-form-label">Año</label>
-            <select name="year" id="year" wire:model.live="year" class="form-control">
-                <option value="" disabled selected>Seleccione un año</option>
-                @foreach ($years as $y)
-                    <option value="{{ $y }}">{{ $y }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-3">
-            <label for="period" class="col-form-label">Periodo</label>
-            <select name="period" id="period" wire:model.live="period" class="form-control">
-                <option value="" disabled selected>Seleccione un periodo</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
-        </div>
-        <div class="col-md-3 text-end">
-            <button wire:click="resetFilters" class="btn btn-outline-secondary btn-sm">Restablecer Filtros</button>
-        </div>
     </div>
 
     @if ($period != null || $selectedObligation != null || $year != null)
@@ -79,7 +86,26 @@
                 </div>
             </div>
         @else
-            <p>Se encontraron <strong>{{ $documents->count() }}</strong> resultados.</p>
+            <p>Se encontraron <strong>{{ $documents->count() }}</strong> resultados en documentos.</p>
+
+            <!-- Filtros de DataTable -->
+            <div id="datatableFilters" class="row mb-3">
+                <div class="col-md-3">
+                    <label for="datatableYearFilter" class="form-label">Filtrar por Año</label>
+                    <select id="datatableYearFilter" class="form-select form-select-sm">
+                        <option value="">Todos los años</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="datatablePeriodFilter" class="form-label">Filtrar por Período</label>
+                    <select id="datatablePeriodFilter" class="form-select form-select-sm">
+                        <option value="">Todos los períodos</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button id="resetDatatableFilters" class="btn btn-outline-secondary btn-sm">Limpiar filtros</button>
+                </div>
+            </div>
 
             <div class="table-responsive">
                 <table id="transparencyDocumentsTable" class="table table-striped">
@@ -219,6 +245,13 @@
         padding: 5px 10px;
         margin: 0 10px;
     }
+    
+    /* Estilos para los filtros de DataTable */
+    #datatableFilters .form-select {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 10px;
+    }
 </style>
 @endpush
 
@@ -267,12 +300,36 @@
                 initComplete: function() {
                     // Agregar ion-icons a los encabezados después de inicializar
                     updateSortIcons();
+                    
+                    // Poblar los filtros dinámicamente desde los datos de la tabla
+                    populateFilters(this.api());
                 }
             });
             
             // Actualizar iconos cuando se hace click en un encabezado
             $('#transparencyDocumentsTable thead').on('click', 'th', function() {
                 setTimeout(updateSortIcons, 50);
+            });
+            
+            // Manejar cambios en el filtro de Año
+            $('#datatableYearFilter').on('change', function() {
+                var year = $(this).val();
+                table.column(0).search(year ? '^' + year + '$' : '', true, false).draw();
+            });
+            
+            // Manejar cambios en el filtro de Período
+            $('#datatablePeriodFilter').on('change', function() {
+                var period = $(this).val();
+                // Buscar en la columna de período (índice 3)
+                // Usamos regex para buscar solo el número del período
+                table.column(3).search(period ? period + '$' : '', true, false).draw();
+            });
+            
+            // Botón para resetear filtros
+            $('#resetDatatableFilters').on('click', function() {
+                $('#datatableYearFilter').val('').trigger('change');
+                $('#datatablePeriodFilter').val('').trigger('change');
+                table.search('').columns().search('').draw();
             });
         }
     }
@@ -298,6 +355,62 @@
                 // Ordenado descendente - mostrar flecha hacia abajo
                 $th.append('<ion-icon name="arrow-down-outline"></ion-icon>');
             }
+        });
+    }
+    
+    /**
+     * Puebla los selectores de filtro con valores únicos de la tabla
+     * @param {DataTable.Api} api - Instancia de la API de DataTables
+     */
+    function populateFilters(api) {
+        // Obtener años únicos de la columna 0 (Año)
+        var years = [];
+        api.column(0, {search: 'applied'}).data().each(function(value) {
+            if (value && years.indexOf(value) === -1) {
+                years.push(value);
+            }
+        });
+        
+        // Ordenar años de mayor a menor
+        years.sort(function(a, b) { return b - a; });
+        
+        // Poblar el selector de años
+        var $yearSelect = $('#datatableYearFilter');
+        $yearSelect.find('option:not(:first)').remove();
+        $.each(years, function(index, year) {
+            $yearSelect.append($('<option></option>').val(year).text(year));
+        });
+        
+        // Obtener períodos únicos de la columna 3 (Período)
+        var periods = [];
+        var periodLabels = {}; // Almacenar el label completo para cada período
+        
+        api.column(3, {search: 'applied'}).data().each(function(value) {
+            if (value) {
+                // Extraer el tipo de período (ej: "Trimestre", "Semestre") y el número
+                var match = value.match(/^(.+?)\s+(\d+)$/);
+                if (match) {
+                    var periodType = match[1].trim();
+                    var periodNumber = match[2];
+                    
+                    if (periods.indexOf(periodNumber) === -1) {
+                        periods.push(periodNumber);
+                        // Guardar el label completo para este período
+                        periodLabels[periodNumber] = periodType + ' ' + periodNumber;
+                    }
+                }
+            }
+        });
+        
+        // Ordenar períodos numéricamente
+        periods.sort(function(a, b) { return a - b; });
+        
+        // Poblar el selector de períodos
+        var $periodSelect = $('#datatablePeriodFilter');
+        $periodSelect.find('option:not(:first)').remove();
+        $.each(periods, function(index, period) {
+            var label = periodLabels[period] || 'Período ' + period;
+            $periodSelect.append($('<option></option>').val(period).text(label));
         });
     }
 </script>
