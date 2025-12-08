@@ -44,7 +44,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label for="material" class="form-label">Materio y/o Servicio</label>
+                                    <label for="material" class="form-label">Material y/o Servicio</label>
                                     <select name="material" id="material" wire:model.live="materialId"
                                         class="form-control" @if (request()->route('id')) disabled @endif>
                                         <option selected>Selecciona una opción</option>

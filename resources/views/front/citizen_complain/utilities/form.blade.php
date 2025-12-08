@@ -231,6 +231,7 @@
                         </div>
 
                         <div class="col-md-12 mt-3">
+                            {{--
                             <label for="captcha" class="col-form-label">
                                 Captcha <span class="text-danger">*</span>
                             </label>
@@ -243,6 +244,7 @@
                                 </button>
                             </div>
 
+
                             <input type="text" name="captcha" wire:model="captcha"
                                 class="form-control @error('captcha') is-invalid @enderror"
                                 placeholder="Ingrese los caracteres del captcha" required wire:ignore>
@@ -251,6 +253,15 @@
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
+                            @enderror
+                             --}}
+
+                            <div id="captcha" class="mt-4" wire:ignore></div>
+
+                            @error('captcha')
+                                <p class="mt-3 text-sm text-red-600 text-left">
+                                    {{ $message }}
+                                </p>
                             @enderror
                         </div>
 
