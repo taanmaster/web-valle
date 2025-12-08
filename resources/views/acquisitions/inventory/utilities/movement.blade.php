@@ -269,7 +269,7 @@
                                                     class="w-100 btn btn-outline-secondary btn-sm">Archivo de
                                                     aprobación de salida</a>
                                             @else
-                                                <label for="approval_file" class="form-label">Subir aprovación de
+                                                <label for="approval_file" class="form-label">Subir aprobación de
                                                     salida</label>
                                                 <input type="file" class="form-control" id="approval_file"
                                                     name="approval_file" wire:model="approval_file"
