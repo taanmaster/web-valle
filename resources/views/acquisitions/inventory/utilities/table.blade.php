@@ -97,7 +97,7 @@
                                 @break
 
                                 @case(2)
-                                    Cantidad Egresaa
+                                    Cantidad Egresada
                                 @break
 
                                 @default
@@ -143,16 +143,16 @@
                                     @endif
                                     <div class="dropdown">
                                         <button class="btn btn-primary dropdown-toggle" type="button"
-                                            id="dropdownMenuButton{{ $movement->material->id }}"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            id="dropdownMenuButton{{ $movement->id }}" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
                                             <i class="fas fa-cog"></i> Acciones
                                         </button>
                                         <ul class="dropdown-menu"
-                                            aria-labelledby="dropdownMenuButton{{ $movement->material->id }}">
+                                            aria-labelledby="dropdownMenuButton{{ $movement->id }}">
                                             <!-- Ver medicamento -->
                                             <li>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('acquisitions.inventory.show', $movement->material->id) }}">
+                                                    href="{{ route('acquisitions.inventory.show', $movement->id) }}">
                                                     <i class="fas fa-eye text-primary me-2"></i>
                                                     <span class="fw-medium">Ver Movimiento</span>
                                                 </a>

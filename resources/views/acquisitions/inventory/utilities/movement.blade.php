@@ -44,7 +44,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label for="material" class="form-label">Materio y/o Servicio</label>
+                                    <label for="material" class="form-label">Material y/o Servicio</label>
                                     <select name="material" id="material" wire:model.live="materialId"
                                         class="form-control" @if (request()->route('id')) disabled @endif>
                                         <option selected>Selecciona una opción</option>
@@ -267,9 +267,9 @@
                                             @if ($mode == 1 && $movement->approval_file != null)
                                                 <a href="{{ $movement->approval_file }}" target="_black"
                                                     class="w-100 btn btn-outline-secondary btn-sm">Archivo de
-                                                    aprovación de salida</a>
+                                                    aprobación de salida</a>
                                             @else
-                                                <label for="approval_file" class="form-label">Subir aprovación de
+                                                <label for="approval_file" class="form-label">Subir aprobación de
                                                     salida</label>
                                                 <input type="file" class="form-control" id="approval_file"
                                                     name="approval_file" wire:model="approval_file"
@@ -303,7 +303,8 @@
                                 <div class="d-flex gap-2">
                                     @if ($mode != 1)
                                         <button type="submit" class="btn btn-primary"
-                                            @if ($material == null) disabled @endif>Registrar
+                                            @if ($material == null) disabled @endif
+                                            @if ($selectedSupplier == null) disabled @endif>Registrar
                                             Movimiento</button>
                                     @endif
 

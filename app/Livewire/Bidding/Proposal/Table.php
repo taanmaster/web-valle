@@ -40,7 +40,13 @@ class Table extends Component
         $query = BiddingProposal::query();
 
         if ($this->mode == 3) {
-            $proposals = $query->where('bidding_id', $this->bidding->id)->where('supplier_id', Auth::user()->supplier->id)->paginate(8);
+
+            $supplierIds = Auth::user()->suppliers->pluck('id');
+
+            $proposals = $query
+                ->where('bidding_id', $this->bidding->id)
+                ->whereIn('supplier_id', $supplierIds)
+                ->paginate(8);
         } else {
             $proposals = $query->where('bidding_id', $this->bidding->id)->paginate(8);
         }

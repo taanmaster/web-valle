@@ -49,7 +49,9 @@ class Form extends Component
 
     //Paso 3
     public $complain = '';
-    public $captcha = '';
+
+    #[Validate('required')]
+    public $captcha = null;
 
     public $files = [];
 
@@ -85,6 +87,26 @@ class Form extends Component
     {
         $this->captchaHtml = captcha_img('flat');
     }
+
+    public function updatedCaptcha($token)
+    {
+        $response = Http::post(
+            'https://www.google.com/recaptcha/api/siteverify?secret=' .
+                config('services.recaptcha.secret_key') .
+                '&response=' . $token
+        );
+
+        $success = $response->json()['success'];
+
+        if (! $success) {
+            throw ValidationException::withMessages([
+                'captcha' => __('Refresca la pantalla e intenta de nuevo!'),
+            ]);
+        } else {
+            $this->captcha = true;
+        }
+    }
+
 
     public function save()
     {
