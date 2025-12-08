@@ -14,7 +14,7 @@ class IncomeInventoryExport implements FromCollection, WithHeadings, WithMapping
 
     public function collection()
     {
-        return AcquisitionInventoryMovement::with(['material.supplier'])
+        return AcquisitionInventoryMovement::with(['material', 'supplier'])
             ->where('type', 'Entrada')
             ->get();
     }
@@ -38,7 +38,7 @@ class IncomeInventoryExport implements FromCollection, WithHeadings, WithMapping
             $row->sku,
             $row->title,
             $row->dependency_name,
-            optional($row->material->supplier)->owner_name ?? 'N/A',
+            optional($row->supplier)->owner_name ?? 'N/A',
             $row->quantity,
         ];
     }

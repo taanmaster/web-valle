@@ -245,7 +245,7 @@
 
                             <input type="text" name="captcha" wire:model="captcha"
                                 class="form-control @error('captcha') is-invalid @enderror"
-                                placeholder="Ingrese los caracteres del captcha" required>
+                                placeholder="Ingrese los caracteres del captcha" required wire:ignore>
 
                             @error('captcha')
                                 <span class="invalid-feedback d-block" role="alert">
@@ -315,6 +315,21 @@
                 alert(data.message); // Puedes usar cualquier UI: toast, modal, etc.
             });
         </script>
-    @endpush
 
-</div>
+        <script src="https://www.google.com/recaptcha/api.js?onload=handle&render=explicit" async defer></script>
+        <script>
+            var handle = function(e) {
+                widget = grecaptcha.render('captcha', {
+                    'sitekey': '{{ config('services.recaptcha.public_key') }}',
+                    'theme': 'light', // you could switch between dark and light mode.
+                    'callback': verify
+                });
+
+            }
+            var verify = function(response) {
+                @this.set('captcha', response)
+            }
+        @endpush
+
+            <
+            /div>

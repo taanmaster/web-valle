@@ -267,7 +267,7 @@
                                             @if ($mode == 1 && $movement->approval_file != null)
                                                 <a href="{{ $movement->approval_file }}" target="_black"
                                                     class="w-100 btn btn-outline-secondary btn-sm">Archivo de
-                                                    aprovación de salida</a>
+                                                    aprobación de salida</a>
                                             @else
                                                 <label for="approval_file" class="form-label">Subir aprovación de
                                                     salida</label>
@@ -303,7 +303,8 @@
                                 <div class="d-flex gap-2">
                                     @if ($mode != 1)
                                         <button type="submit" class="btn btn-primary"
-                                            @if ($material == null) disabled @endif>Registrar
+                                            @if ($material == null) disabled @endif
+                                            @if ($selectedSupplier == null) disabled @endif>Registrar
                                             Movimiento</button>
                                     @endif
 
