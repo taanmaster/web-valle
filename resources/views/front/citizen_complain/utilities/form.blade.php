@@ -340,7 +340,6 @@
             var verify = function(response) {
                 @this.set('captcha', response)
             }
-        @endpush
-
-            <
-            /div>
+        </script>
+    @endpush
+</div>

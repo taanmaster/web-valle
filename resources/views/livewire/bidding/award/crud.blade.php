@@ -64,7 +64,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <livewire:bidding.contract.table :bidding="$bidding" />
+            <livewire:bidding.contract.table :bidding="$bidding" :mode="$mode" />
         </div>
     </div>
 

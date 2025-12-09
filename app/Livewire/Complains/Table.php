@@ -15,6 +15,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Illuminate\Http\Request;
+use ZipArchive;
 
 //Modelos
 use App\Models\CitizenComplain;

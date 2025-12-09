@@ -35,6 +35,8 @@ class Table extends Component
     public $award;
     public $proposal;
 
+    public $mode = 0;
+
     #[On('closeModalContract')]
     public function refreshTable()
     {
