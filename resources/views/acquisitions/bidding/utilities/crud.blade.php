@@ -264,7 +264,7 @@
                             aria-labelledby="profile-tab" tabindex="0">
 
                             @if ($hasAwardedProposal != null)
-                                <livewire:bidding.award.crud :bidding="$bidding" />
+                                <livewire:bidding.award.crud :bidding="$bidding" :mode="$mode" />
                             @endif
                         </div>
                         <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel"

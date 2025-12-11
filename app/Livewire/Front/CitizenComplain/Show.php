@@ -27,7 +27,7 @@ class Show extends Component
 
     public function updatedComplain()
     {
-        $complain = CitizenComplain::where('id', 'like', '%' . $this->complain . '%',)->first();
+        $complain = CitizenComplain::where('id', 'like', '%' . $this->complain)->first();
 
         $this->id = $complain->id;
         $this->subject = $complain->subject;

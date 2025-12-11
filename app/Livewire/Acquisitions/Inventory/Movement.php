@@ -351,33 +351,30 @@ class Movement extends Component
 
             $this->movement = $movement;
 
-            if ($this->movement->type == 'Entrada') {
+            // Generar PDF
+            $pdf = PDF::loadView('acquisitions.inventory.utilities.pdf_income', [
+                'movement' => $this->movement
+            ]);
 
-                // Generar PDF
-                $pdf = PDF::loadView('acquisitions.inventory.utilities.pdf_income', [
-                    'movement' => $this->movement
-                ]);
+            // Guardar PDF temporalmente
+            $fileName = 'ingreso-' . $this->movement->id . '.pdf';
+            $filePath = storage_path('app/temp/' . $fileName);
 
-                // Guardar PDF temporalmente
-                $fileName = 'ingreso-' . $this->movement->id . '.pdf';
-                $filePath = storage_path('app/temp/' . $fileName);
-
-                if (!file_exists(storage_path('app/temp'))) {
-                    mkdir(storage_path('app/temp'), 0777, true);
-                }
-
-                $pdf->save($filePath);
-
-                // Subir el PDF a S3
-                $pdfUrl = $this->uploadPdfToS3($filePath, $this->movement);
-
-                // Guardar URL en la columna file
-                $movement->file = $pdfUrl;
-                $movement->save();
-
-                // Opcional: borrar archivo temporal
-                unlink($filePath);
+            if (!file_exists(storage_path('app/temp'))) {
+                mkdir(storage_path('app/temp'), 0777, true);
             }
+
+            $pdf->save($filePath);
+
+            // Subir el PDF a S3
+            $pdfUrl = $this->uploadPdfToS3($filePath, $this->movement);
+
+            // Guardar URL en la columna file
+            $movement->file = $pdfUrl;
+            $movement->save();
+
+            // Opcional: borrar archivo temporal
+            unlink($filePath);
 
             // --- Aplicar inventario sólo aquí
             app(\App\Services\InventoryService::class)
