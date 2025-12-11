@@ -70,7 +70,7 @@
                         <select class="form-select" name="subject" wire:model="subject" required>
                             <option selected>Selecciona una opción</option>
                             <option value="Queja">Queja</option>
-                            <option value="Denuncia">Denunca</option>
+                            <option value="Denuncia">Denuncia</option>
                             <option value="Sugerencia">Sugerencia</option>
                             <option value="Solicitud">Solicitud</option>
                         </select>

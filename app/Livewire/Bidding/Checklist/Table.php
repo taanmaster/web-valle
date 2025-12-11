@@ -62,9 +62,6 @@ class Table extends Component
 
         $this->dispatch('$refresh');
 
-        Session::flash('message', 'Entreble subido correctamente.');
-
-        return redirect()->route('acquisitions.biddings.show', $item->bidding->id);
     }
 
     protected function handleUpload($document)
