@@ -168,7 +168,7 @@
                         </div>
                         <h4 class="mb-0">Misión</h4>
                     </div>
-                    <p class="justify-pmb-0">Ser reconocido como un órgano interno de control con capital humano que ayude a prevenir y corregir irregularidades para transparentar los recursos públicos por medio de auditorías y revisiones administrativas que fomenten la rendición de cuentas sanas que ayuden a evitar posibles observaciones Estatales y Federales así como vigilar que el desempeño de los servidores públicos se realice apegado a la normatividad establecida con el fin de brindar una mejor atención a la ciudadanía de Valle de Santiago.</p>
+                    <p class="justify-p mb-0">Ser reconocido como un órgano interno de control con capital humano que ayude a prevenir y corregir irregularidades para transparentar los recursos públicos por medio de auditorías y revisiones administrativas que fomenten la rendición de cuentas sanas que ayuden a evitar posibles observaciones Estatales y Federales así como vigilar que el desempeño de los servidores públicos se realice apegado a la normatividad establecida con el fin de brindar una mejor atención a la ciudadanía de Valle de Santiago.</p>
                 </div>
             </div>
 
