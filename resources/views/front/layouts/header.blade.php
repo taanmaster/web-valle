@@ -8,10 +8,9 @@
             </div>
             <div class="col-md-7">
                 <div class="d-flex gap-3 justify-content-end flex-column flex-md-row">
-                    {{--
-                    <a href="" class="btn d-flex align-items-center gap-2 btn-success disabled"><ion-icon
-                            name="card-outline"></ion-icon> Pago en Linea</a>
-                             --}}
+                    <a href="{{ route('predial.search') }}" class="btn d-flex align-items-center gap-2 btn-success"><ion-icon
+                            name="card-outline"></ion-icon> Predial en Linea</a>
+                            
                     <a href="{{ route('denuncia.net') }}"
                         class="btn d-flex align-items-center gap-2 btn-primary"><ion-icon name="radio-outline"></ion-icon>
                         Denuncia Ciudadana</a>

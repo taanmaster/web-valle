@@ -10,6 +10,7 @@
 5. **IMPLAN** = Instituto Municipal de Planeación (Municipal Planning Institute)
 6. **SARE** = Sistema de Atención y Registro de Eventos (Event Attention and Registration System)
 7. **URBAN_DEV** = Desarrollo Urbano (Urban Development)
+8. **CTO** = Catastro 
 
 ### Modelos sin prefijo (Generales del Sistema)
 - **Banner** = Banners generales del sistema

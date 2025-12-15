@@ -133,6 +133,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/denuncia-net', 'FrontController@denunciaNet')->name('denuncia.net');
     Route::get('/denuncia-net/estatus', 'FrontController@denunciaNetShow')->name('denuncia.net.show');
 
+    /* Predial en Línea */
+    Route::get('/predial-en-linea', 'FrontController@predialSearch')->name('predial.search');
+    Route::post('/predial-en-linea/resultados', 'FrontController@predialSearchResults')->name('predial.search.results');
+
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
         'uses' => 'FrontController@gazetteList',
@@ -1017,6 +1021,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Tesorería */
         Route::group(['prefix' => 'treasury'], function () {
+
+            /* Predial / Catastro */
+            Route::resource('properties', CTOPropertyController::class); // Listado de Predios
+            Route::post('properties/import', [CTOPropertyController::class, 'import'])->name('properties.import'); // Importar Excel de Predios
+            Route::resource('property_taxes', CTOPropertyTaxController::class); // Recibos de los Predios
+            
+            // Rutas adicionales para recibos de predial
+            Route::patch('property_taxes/{id}/mark-paid', [CTOPropertyTaxController::class, 'markAsPaid'])->name('property_taxes.mark-paid');
+            Route::get('property_taxes/{id}/print', [CTOPropertyTaxController::class, 'print'])->name('property_taxes.print');
+
             /* Apoyos Económicos */
             Route::resource('financial_supports', FinancialSupportController::class);
 

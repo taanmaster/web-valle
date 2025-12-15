@@ -323,6 +323,19 @@
                 <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
 
+                    <div class="title-box mt-5">
+                        <h6 class="menu-title">Predial</h6>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('properties.index') }}">Predios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('property_taxes.index') }}">Recibos</a>
+                        </li>
+                    </ul>
+
                     @if (auth()->user()->hasRole('financial_support'))
                         <div class="title-box">
                             <h6 class="menu-title">Cuentas por Pagar</h6>
