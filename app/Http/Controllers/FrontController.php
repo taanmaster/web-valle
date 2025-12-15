@@ -23,6 +23,10 @@ use App\Models\TransparencyDependency;
 use App\Models\TransparencyObligation;
 use App\Models\TransparencyDocument;
 
+// Modelos Catastro/Predial
+use App\Models\CTOProperty;
+use App\Models\CTOPropertyTax;
+
 // Modelos Textos Legales
 use App\Models\LegalText;
 
@@ -722,5 +726,33 @@ class FrontController extends Controller
     public function actasConsejo()
     {
         return view('front.council_minutes');
+    }
+
+    // Predial en Línea
+    public function predialSearch()
+    {
+        return view('front.predial_search');
+    }
+
+    public function predialSearchResults(Request $request)
+    {
+        $request->validate([
+            'taxpayer_phone' => 'required|string',
+            'location_account' => 'required|string',
+        ]);
+
+        $property = CTOProperty::where('taxpayer_phone', $request->taxpayer_phone)
+            ->where('location_account', $request->location_account)
+            ->first();
+
+        if (!$property) {
+            return redirect()->route('predial.search')
+                ->with('error', 'No se encontró ningún predio con los datos proporcionados. Verifica tu teléfono y cuenta catastral.');
+        }
+
+        // Obtener años únicos de los recibos para las pestañas
+        $years = $property->propertyTaxes()->pluck('tax_year')->unique()->sort()->reverse();
+
+        return view('front.predial_search_results', compact('property', 'years'));
     }
 }

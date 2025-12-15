@@ -133,6 +133,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/denuncia-net', 'FrontController@denunciaNet')->name('denuncia.net');
     Route::get('/denuncia-net/estatus', 'FrontController@denunciaNetShow')->name('denuncia.net.show');
 
+    /* Predial en Línea */
+    Route::get('/predial-en-linea', 'FrontController@predialSearch')->name('predial.search');
+    Route::post('/predial-en-linea/resultados', 'FrontController@predialSearchResults')->name('predial.search.results');
+
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
         'uses' => 'FrontController@gazetteList',
