@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             
             // Relación con la propiedad
-            $table->foreignId('c_t_o_property_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('c_t_o_property_id');
             
             // Información del periodo
             $table->year('tax_year');
@@ -68,7 +68,7 @@ return new class extends Migration
             $table->timestamps();
             
             // Índices
-            $table->index(['c_t_o_property_id', 'tax_year', 'bimonthly_period']);
+            $table->index('c_t_o_property_id');
             $table->index('payment_status');
         });
     }
