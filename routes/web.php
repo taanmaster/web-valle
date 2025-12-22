@@ -55,6 +55,10 @@ use App\Http\Controllers\SupplierMessageController;
 use App\Http\Controllers\AcquisitionsInventoryController;
 use App\Http\Controllers\AcquisitionsKPIsController;
 
+// Perdial y Catastro
+use App\Http\Controllers\CTOPropertyController;
+use App\Http\Controllers\CTOPropertyTaxController;
+
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -67,8 +71,6 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /* Portal Ciudadanos */
     Route::get('/', 'FrontController@index')->name('index');
     Route::get('/en-construccion', 'FrontController@building')->name('building');
-
-    //Route::get('/mod-tesoreria', 'FrontController@treasury')->name('treasury.list');
 
     //Registro Municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
     Route::get('/registro-municipal-de-inspecciones', 'FrontController@municipalInspection')->name('inspeccion_municipal.index');
