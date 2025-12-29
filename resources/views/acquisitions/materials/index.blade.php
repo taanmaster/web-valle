@@ -12,7 +12,7 @@
             Adquisiciones
         @endslot
         @slot('title')
-            Materiales y servicio
+            Productos y servicio
         @endslot
     @endcomponent
 
@@ -21,7 +21,7 @@
 
             <div class="row justify-content-end mb-4">
                 <div class="col-md-2 text-end">
-                    <a href="{{ route('acquisitions.materials.create') }}" class="btn btn-primary">Ingresar material o
+                    <a href="{{ route('acquisitions.materials.create') }}" class="btn btn-primary">Ingresar producto o
                         servicio</a>
                 </div>
             </div>

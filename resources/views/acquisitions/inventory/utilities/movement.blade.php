@@ -158,12 +158,23 @@
 
                             <div class="card-body">
                                 <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="date" class="form-label">Fecha de movimiento <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="date" name="date" id="date" wire:model="date"
+                                                class="form-control" @if ($material == null) disabled @endif>
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="movement_type" class="form-label">Tipo de Movimiento <span
                                                     class="text-danger">*</span></label>
-                                            <select class="form-select" id="movement_type" name="movement_type" required
-                                                wire:model.live="type" @if ($material == null) disabled @endif
+                                            <select class="form-select" id="movement_type" name="movement_type"
+                                                required wire:model.live="type"
+                                                @if ($material == null) disabled @endif
                                                 @if ($mode == 1) disabled @endif>
                                                 <option>Seleccionar...</option>
                                                 <option value="Entrada">

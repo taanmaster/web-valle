@@ -12,7 +12,7 @@
             Adquisiciones
         @endslot
         @slot('title')
-            Materiales y servicio
+            Productos y servicio
         @endslot
     @endcomponent
 
