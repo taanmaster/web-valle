@@ -14,7 +14,7 @@
         <div class="modal-body">
             <div class="row">
                 <div class="mb-3">
-                    <label for="file_name" class="form-label">Nombre del documento *</label>
+                    <label for="file_name" class="form-label">Nombre del entregable *</label>
                     <input type="text" class="form-control" id="file_name" wire:model="file_name" required>
                 </div>
                 <div class="mb-3">

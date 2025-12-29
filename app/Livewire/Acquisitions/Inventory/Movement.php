@@ -40,6 +40,7 @@ class Movement extends Component
 
     public $type = '';
     public $quantity = '';
+    public $date = '';
 
     public $description = '';
     public $description_exit = '';
@@ -101,7 +102,7 @@ class Movement extends Component
         $this->supplier_id = $this->supplier->id;
         $this->supplier_name = $this->supplier->owner_name;
         $this->supplier_num = $this->supplier->registration_number;
-        $this->supplier_type = $this->supplier->person_type;
+        $this->supplier_type = $this->supplier->person_type;;
 
         $this->type = $this->movement->type;
         $this->quantity = $this->movement->quantity;
@@ -112,6 +113,7 @@ class Movement extends Component
         $this->approval_file = $this->movement->approval_file;
         $this->destiny = $this->movement->destiny;
         $this->responsable = $this->movement->responsable;
+        $this->date = $this->movement->date;
     }
 
     public function fetchMaterials()
@@ -308,6 +310,8 @@ class Movement extends Component
             $movement->destiny = $this->destiny;
             $movement->responsable = $this->responsable;
 
+            $movement->date = $this->date;
+
             // --- Aplicar inventario sólo aquí
             app(\App\Services\InventoryService::class)
                 ->applyToStock($this->movement);
@@ -321,6 +325,7 @@ class Movement extends Component
 
             $movement->type = $this->type;
             $movement->quantity = $this->quantity;
+            $movement->date = $this->date;
 
 
             if ($this->type == 'Entrada') {
