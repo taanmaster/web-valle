@@ -230,7 +230,9 @@
                                 <label class="form-label">Estado <span class="text-danger">*</span></label>
                                 <select name="payment_status" class="form-select @error('payment_status') is-invalid @enderror" required>
                                     <option value="pendiente" {{ old('payment_status', 'pendiente') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                    @hasanyrole(['all', 'tesoreria_caja_admin'])
                                     <option value="pagado" {{ old('payment_status') == 'pagado' ? 'selected' : '' }}>Pagado</option>
+                                    @endhasanyrole
                                     <option value="vencido" {{ old('payment_status') == 'vencido' ? 'selected' : '' }}>Vencido</option>
                                 </select>
                                 @error('payment_status')
