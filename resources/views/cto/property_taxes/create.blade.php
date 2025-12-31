@@ -228,13 +228,19 @@
                         <div class="row mb-4">
                             <div class="col-md-4">
                                 <label class="form-label">Estado <span class="text-danger">*</span></label>
+                                
+                                @hasanyrole(['all', 'tesoreria_caja_admin'])
                                 <select name="payment_status" class="form-select @error('payment_status') is-invalid @enderror" required>
                                     <option value="pendiente" {{ old('payment_status', 'pendiente') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                    @hasanyrole(['all', 'tesoreria_caja_admin'])
                                     <option value="pagado" {{ old('payment_status') == 'pagado' ? 'selected' : '' }}>Pagado</option>
-                                    @endhasanyrole
                                     <option value="vencido" {{ old('payment_status') == 'vencido' ? 'selected' : '' }}>Vencido</option>
                                 </select>
+                                @else
+                                <select name="payment_status" class="form-select disabled @error('payment_status') is-invalid @enderror" readonly style="opacity:.5;">
+                                    <option value="pendiente" {{ old('payment_status', 'pendiente') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                </select>
+                                @endhasanyrole
+                                
                                 @error('payment_status')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
