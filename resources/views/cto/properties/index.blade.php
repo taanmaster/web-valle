@@ -29,12 +29,15 @@
                         </div>
                     </div>
                 </div>
+
+                @hasanyrole(['all', 'cto_admin'])
                 <div class="col-lg-4 text-end">
                     <a href="{{ route('properties.create') }}" class="btn btn-primary">
                         <i class="fas fa-plus me-2"></i> Nueva Propiedad
                     </a>
                 </div>
-
+                @endhasanyrole
+                
                 @if(Auth::user()->email == 'webmaster@valle.com')
                 <a data-bs-toggle="modal" data-bs-target="#import" href="#" class="btn btn-outline-primary">Importar Excel</a>
 
@@ -251,12 +254,15 @@
                                                        title="Ver detalles">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
+
+                                                    @hasanyrole(['all', 'cto_admin'])
                                                     <a href="{{ route('properties.edit', $property->id) }}" 
                                                        class="btn btn-sm btn-outline-warning"
                                                        data-bs-toggle="tooltip"
                                                        title="Editar">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
+                                                    
                                                     <form action="{{ route('properties.destroy', $property->id) }}" 
                                                           method="POST" 
                                                           class="d-inline"
@@ -270,6 +276,7 @@
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
+                                                    @endhasanyrole
                                                 </div>
                                             </td>
                                         </tr>
