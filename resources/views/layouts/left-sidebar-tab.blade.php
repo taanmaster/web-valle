@@ -61,16 +61,14 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->hasRole('financial_support') ||
-                            auth()->user()->hasRole('financial_support_helper') ||
-                            auth()->user()->hasRole('all'))
+                    @hasanyrole(['dif', 'financial_support', 'financial_support_helper', 'all', 'tesoreria_caja', 'cto_admin', 'cto_helper'])
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería"
                             data-bs-trigger="hover">
                             <a href="#valleTreasury" id="uikit-tab" class="nav-link">
                                 <i class="ti ti-archive menu-icon"></i>
                             </a>
                         </li>
-                    @endif
+                    @endhasanyrole
 
                     @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -316,7 +314,7 @@
                 </div>
             @endif
 
-            @hasanyrole(['dif', 'financial_support', 'financial_support_helper', 'all', 'tesoreria_caja'])
+            @hasanyrole(['dif', 'financial_support', 'financial_support_helper', 'all', 'tesoreria_caja', 'cto_admin', 'cto_helper'])
                 <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
 
@@ -325,7 +323,7 @@
                     </div>
                     
                     <ul class="nav flex-column">
-                        @hasanyrole(['all', 'financial_support', 'financial_support_helper'])
+                        @hasanyrole(['all', 'financial_support', 'financial_support_helper', 'cto_admin', 'cto_helper'])
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('properties.index') }}">Predios</a>
                         </li>
