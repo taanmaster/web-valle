@@ -7,6 +7,7 @@ use App\Models\CTOProperty;
 use App\Models\Notification;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Session;
 use Auth;
 use DB;
@@ -258,6 +259,11 @@ class CTOPropertyTaxController extends Controller
     public function print($id)
     {
         $propertyTax = CTOPropertyTax::with('property')->findOrFail($id);
-        return view('cto.property_taxes.print', compact('propertyTax'));
+        
+        $pdf = PDF::loadView('cto.property_taxes.print', compact('propertyTax'))->setPaper('A4');
+        
+        $filename = 'recibo_predial_' . ($propertyTax->folio ?? $propertyTax->id) . '.pdf';
+        
+        return $pdf->download($filename);
     }
 }
