@@ -25,6 +25,8 @@
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-home me-2"></i> Información de la Propiedad</h5>
+
+                    @hasanyrole(['all', 'cto_admin'])
                     <div>
                         <a href="{{ route('properties.edit', $property->id) }}" class="btn btn-sm btn-light">
                             <i class="fas fa-edit me-1"></i> Editar
@@ -37,6 +39,7 @@
                             </button>
                         </form>
                     </div>
+                    @endhasanyrole
                 </div>
                 <div class="card-body p-4">
                     <!-- Contribuyente -->
@@ -437,12 +440,15 @@
 
             <!-- Recibos de la Propiedad -->
             <div class="card border-0 shadow-sm">
+                @hasanyrole(['all', 'cto_admin'])
                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-file-invoice me-2"></i> Recibos de Predial</h5>
                     <a href="{{ route('property_taxes.create', ['property_id' => $property->id]) }}" class="btn btn-sm btn-light">
                         <i class="fas fa-plus me-1"></i> Nuevo Recibo
                     </a>
                 </div>
+                @endhasanyrole
+                
                 <div class="card-body p-4">
                     @if($property->propertyTaxes->count() > 0)
                         <div class="table-responsive">

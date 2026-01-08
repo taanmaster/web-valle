@@ -235,6 +235,7 @@
                     <!-- Acciones -->
                     @if($propertyTax->payment_status != 'pagado')
                         <div class="d-flex gap-2 mt-4">
+                            @hasanyrole(['all', 'tesoreria_caja_admin'])
                             <form action="{{ route('property_taxes.mark-paid', $propertyTax->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
@@ -242,6 +243,7 @@
                                     <i class="fas fa-check-circle me-2"></i> Marcar como Pagado
                                 </button>
                             </form>
+                            @endhasanyrole
                             <form action="{{ route('property_taxes.destroy', $propertyTax->id) }}" method="POST" onsubmit="return confirm('¿Está seguro de eliminar este recibo?')">
                                 @csrf
                                 @method('DELETE')

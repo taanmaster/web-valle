@@ -61,16 +61,14 @@
                         </li>
                     @endif
 
-                    @if (auth()->user()->hasRole('financial_support') ||
-                            auth()->user()->hasRole('financial_support_helper') ||
-                            auth()->user()->hasRole('all'))
+                    @hasanyrole(['dif', 'financial_support', 'financial_support_helper', 'all', 'tesoreria_caja', 'cto_admin', 'cto_helper'])
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería"
                             data-bs-trigger="hover">
                             <a href="#valleTreasury" id="uikit-tab" class="nav-link">
                                 <i class="ti ti-archive menu-icon"></i>
                             </a>
                         </li>
-                    @endif
+                    @endhasanyrole
 
                     @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -316,10 +314,7 @@
                 </div>
             @endif
 
-            @if (auth()->user()->hasRole('dif') ||
-                    auth()->user()->hasRole('financial_support') ||
-                    auth()->user()->hasRole('financial_support_helper') ||
-                    auth()->user()->hasRole('all'))
+            @hasanyrole(['dif', 'financial_support', 'financial_support_helper', 'all', 'tesoreria_caja', 'cto_admin', 'cto_helper'])
                 <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
 
@@ -328,15 +323,20 @@
                     </div>
                     
                     <ul class="nav flex-column">
+                        @hasanyrole(['all', 'financial_support', 'financial_support_helper', 'cto_admin', 'cto_helper'])
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('properties.index') }}">Predios</a>
                         </li>
+                        @endhasanyrole
+
+                        @hasanyrole(['all', 'financial_support', 'financial_support_helper', 'tesoreria_caja'])
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('property_taxes.index') }}">Recibos</a>
                         </li>
+                        @endhasanyrole
                     </ul>
 
-                    @if (auth()->user()->hasRole('financial_support'))
+                    @hasanyrole(['all', 'financial_support', 'financial_support_helper'])
                         <div class="title-box">
                             <h6 class="menu-title">Cuentas por Pagar</h6>
                         </div>
@@ -409,9 +409,9 @@
                                 <a class="nav-link" href="{{ route('rates_and_costs.index') }}">Tarifas y Costos</a>
                             </li>
                         </ul>
-                    @endif
+                    @endhasanyrole
 
-                    @if (auth()->user()->hasRole('financial_support') || auth()->user()->hasRole('financial_support_helper'))
+                    @hasanyrole(['all', 'financial_support', 'financial_support_helper'])
                         <div class="title-box mt-5">
                             <h6 class="menu-title">Documentos y Dependencias</h6>
                         </div>
@@ -422,9 +422,9 @@
                                     href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
                             </li>
                         </ul>
-                    @endif
+                    @endhasanyrole
                 </div>
-            @endif
+            @endhasanyrole
 
             @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                 <div id="vallePrivateSecretary" class="main-icon-menu-pane tab-pane" role="tabpanel"

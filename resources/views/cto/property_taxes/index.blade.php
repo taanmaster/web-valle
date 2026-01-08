@@ -320,6 +320,8 @@
                                                            title="Editar">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
+
+                                                        @hasanyrole(['all', 'tesoreria_caja_admin'])
                                                         <form action="{{ route('property_taxes.mark-paid', $tax->id) }}" 
                                                               method="POST" 
                                                               class="d-inline">
@@ -332,6 +334,7 @@
                                                                 <i class="fas fa-check"></i>
                                                             </button>
                                                         </form>
+                                                        @endhasanyrole
                                                     @endif
                                                     <a href="{{ route('property_taxes.print', $tax->id) }}" 
                                                        class="btn btn-sm btn-outline-secondary"
