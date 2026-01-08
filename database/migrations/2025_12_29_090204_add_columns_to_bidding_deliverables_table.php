@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('bidding_deliverables', function (Blueprint $table) {
 
             $table->decimal('quantity', 15, 2)->nullable();
-            $table->decimal('unit', 15, 2)->nullable();
+            $table->string('unit')->nullable();
 
             $table->text('description')->nullable();
             $table->string('name')->nullable();

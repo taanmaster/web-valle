@@ -15,4 +15,9 @@ class AcquisitionMaterial extends Model
     {
         return $this->hasMany(AcquisitionInventoryMovement::class, 'material_id');
     }
+
+    public function movementItems()
+    {
+        return $this->hasMany(AcquisitionInventoryMovementItem::class, 'material_id');
+    }
 }

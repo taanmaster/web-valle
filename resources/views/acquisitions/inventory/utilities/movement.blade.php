@@ -40,11 +40,12 @@
                     <div class="col-md-4">
                         <div class="card mb-2">
                             <div class="card-header">
-                                <h5 class="card-title">Material o Servicio</h5>
+                                <h5 class="card-title">Producto o Servicio</h5>
                             </div>
                             <div class="card-body">
+                                {{--
                                 <div class="mb-3">
-                                    <label for="material" class="form-label">Material y/o Servicio</label>
+                                    <label for="material" class="form-label">Producto y/o Servicio</label>
                                     <select name="material" id="material" wire:model.live="materialId"
                                         class="form-control" @if (request()->route('id')) disabled @endif>
                                         <option selected>Selecciona una opción</option>
@@ -53,102 +54,148 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                 --}}
+
+                                <div class="mb-3 position-relative">
+                                    <div class="col-md">
+                                        <label for="worker_id" class="col-form-label" required>Producto y/o
+                                            Servicio</label>
+                                        <div class="input-group">
+                                            @if ($mode != 1)
+                                                <input type="text" name="searchMaterial"
+                                                    wire:model.live="searchMaterial" class="form-control"
+                                                    placeholder="Buscar por nombre">
+                                            @endif
+                                        </div>
+
+                                        <div class="position-absolute drop-search p-3 pt-1 @if ($searchMaterial == null) d-none @endif"
+                                            style="max-height: 400px; overflow:scroll;">
+                                            <!-- Cities dependent select menu... -->
+
+                                            <label for="provisional_integer_id" class="col-form-label mb-1">Producto
+                                                y/o Servicios</label>
+
+                                            @php
+                                                $selectedIds = collect($selectedMaterials)->pluck('id')->toArray();
+
+                                                $materials = \App\Models\AcquisitionMaterial::where(
+                                                    'title',
+                                                    'like',
+                                                    '%' . $searchMaterial . '%',
+                                                )
+                                                    ->whereNotIn('id', $selectedIds)
+                                                    ->get();
+                                            @endphp
+
+                                            @if ($materials->count() > 0)
+                                                @foreach ($materials as $material)
+                                                    <button type="button"
+                                                        wire:click="selectMaterial({{ $material->id }})" class="btn">
+                                                        {{ $material->title }}
+                                                    </button>
+                                                @endforeach
+                                            @else
+                                                <div class="alert alert-warning" role="alert">
+                                                    No se encontraron productos o servicios.
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if ($selectedMaterials != null)
+                                    <div class="mb-3">
+                                        <label for="selected_materials" class="form-label">Materiales
+                                            seleccionados</label>
+                                        <div>
+
+                                            @foreach ($selectedMaterials as $mat)
+                                                <span class="badge bg-primary mb-1">{{ $mat->title }} <a
+                                                        href="javascript:void(0)" class="text-white ms-1"
+                                                        wire:click="removeMaterial({{ $mat->id }})">x</a></span>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+
+                                @if ($mode == 1)
+                                    <div class="mb-3">
+                                        <label for="selected_materials" class="form-label">Materiales
+                                            seleccionados</label>
+                                        <div>
+
+                                            @foreach ($movement->items as $item)
+                                                <span class="badge bg-primary mb-1">{{ $item->material->title }}</span>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
-                        @if ($material != null)
-                            <div class="card mb-2">
-                                <div class="card-header">
-                                    <h5 class="card-title">Estado</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="is_active"
-                                                name="is_active" @if ($material->is_active == 1) checked @endif
-                                                disabled>
-                                            <label class="form-check-label" for="is_active">Activo</label>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                <h5 class="card-title">Organización</h5>
                             </div>
-
-                            <div class="card mb-2">
-                                <div class="card-header">
-                                    <h5 class="card-title">Organización</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <label for="category" class="form-label">Categoría</label>
-                                        <input type="text" class="form-control" disabled
-                                            value="{{ $material->category }}">
+                            <div class="card-body">
+                                <div class="mb-3 position-relative">
+                                    <div class="col-md-2">
+                                        <label for="worker_id" class="col-form-label" required>Proveedor</label>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label for="dependency_name" class="form-label">Dependencia</label>
-                                        <input type="text" class="form-control" disabled
-                                            value="{{ $material->dependency_name }}">
-                                    </div>
-
-                                    <div class="mb-3 position-relative">
-                                        <div class="col-md-2">
-                                            <label for="worker_id" class="col-form-label" required>Proveedor</label>
+                                    <div class="col-md">
+                                        <div class="input-group">
+                                            @if ($selectedSupplier != null)
+                                                <div class="d-flex w-100">
+                                                    <input type="text" name="supplier_name"
+                                                        wire:model="supplier_name" class="form-control"
+                                                        @if ($mode == 1) disabled @endif
+                                                        placeholder="Nombre completo" disabled>
+                                                    <button type="button" wire:click="clearSupplier"
+                                                        class="btn btn-link btn-sm @if ($mode == 1) d-none @endif">Limpiar</button>
+                                                </div>
+                                            @else
+                                                <input type="text" name="searchSupplier"
+                                                    wire:model.live="searchSupplier" class="form-control"
+                                                    placeholder="Buscar por nombre">
+                                            @endif
                                         </div>
-                                        <div class="col-md">
-                                            <div class="input-group">
-                                                @if ($selectedSupplier != null)
-                                                    <div class="d-flex w-100">
-                                                        <input type="text" name="supplier_name"
-                                                            wire:model="supplier_name" class="form-control"
-                                                            @if ($mode == 1) disabled @endif
-                                                            placeholder="Nombre completo" disabled>
-                                                        <button type="button" wire:click="clearSupplier"
-                                                            class="btn btn-link btn-sm @if ($mode == 1) d-none @endif">Limpiar</button>
-                                                    </div>
-                                                @else
-                                                    <input type="text" name="searchSupplier"
-                                                        wire:model.live="searchSupplier" class="form-control"
-                                                        placeholder="Buscar por nombre">
-                                                @endif
-                                            </div>
 
-                                            <div class="position-absolute drop-search p-3 pt-1 @if ($searchSupplier == null) d-none @endif"
-                                                style="max-height: 400px; overflow:scroll;">
-                                                <!-- Cities dependent select menu... -->
+                                        <div class="position-absolute drop-search p-3 pt-1 @if ($searchSupplier == null) d-none @endif"
+                                            style="max-height: 400px; overflow:scroll;">
+                                            <!-- Cities dependent select menu... -->
 
-                                                <label for="provisional_integer_id"
-                                                    class="col-form-label mb-1">Proveedores</label>
+                                            <label for="provisional_integer_id"
+                                                class="col-form-label mb-1">Proveedores</label>
 
-                                                @php
-                                                    $suppliers = \App\Models\Supplier::where(
-                                                        'owner_name',
-                                                        'like',
-                                                        '%' . $searchSupplier . '%',
-                                                    )
-                                                        ->orWhere('business_name', 'like', '%' . $searchSupplier . '%')
-                                                        ->get();
-                                                @endphp
+                                            @php
+                                                $suppliers = \App\Models\Supplier::where(
+                                                    'owner_name',
+                                                    'like',
+                                                    '%' . $searchSupplier . '%',
+                                                )
+                                                    ->orWhere('business_name', 'like', '%' . $searchSupplier . '%')
+                                                    ->get();
+                                            @endphp
 
-                                                @if ($suppliers->count() > 0)
-                                                    @foreach ($suppliers as $supplier)
-                                                        <button type="button"
-                                                            wire:click="selectSupplier({{ $supplier->id }})"
-                                                            class="btn">
-                                                            {{ $supplier->owner_name }} - {{ $supplier->business_name }}
-                                                        </button>
-                                                    @endforeach
-                                                @else
-                                                    <button class="btn btn-sm btn-link" type="button"
-                                                        wire:click="createSupplier">
-                                                        <i class="fas fa-plus"></i> Crear proveedor
+                                            @if ($suppliers->count() > 0)
+                                                @foreach ($suppliers as $supplier)
+                                                    <button type="button"
+                                                        wire:click="selectSupplier({{ $supplier->id }})" class="btn">
+                                                        {{ $supplier->owner_name }} -
+                                                        {{ $supplier->business_name }}
                                                     </button>
-                                                @endif
-                                            </div>
+                                                @endforeach
+                                            @else
+                                                <button class="btn btn-sm btn-link" type="button"
+                                                    wire:click="createSupplier">
+                                                    <i class="fas fa-plus"></i> Crear proveedor
+                                                </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        </div>
                     </div>
                     <div class="col-md-8 mx-auto">
                         <div class="card">
@@ -164,7 +211,7 @@
                                             <label for="date" class="form-label">Fecha de movimiento <span
                                                     class="text-danger">*</span></label>
                                             <input type="date" name="date" id="date" wire:model="date"
-                                                class="form-control" @if ($material == null) disabled @endif>
+                                                class="form-control" @if ($mode == 1) disabled @endif>
                                         </div>
                                     </div>
 
@@ -172,9 +219,8 @@
                                         <div class="mb-3">
                                             <label for="movement_type" class="form-label">Tipo de Movimiento <span
                                                     class="text-danger">*</span></label>
-                                            <select class="form-select" id="movement_type" name="movement_type"
-                                                required wire:model.live="type"
-                                                @if ($material == null) disabled @endif
+                                            <select class="form-select" id="movement_type" name="movement_type" required
+                                                wire:model.live="type"
                                                 @if ($mode == 1) disabled @endif>
                                                 <option>Seleccionar...</option>
                                                 <option value="Entrada">
@@ -187,21 +233,51 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label for="quantity" class="form-label">Cantidad <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="quantity"
-                                                name="quantity" wire:model="quantity" required
-                                                @if ($mode == 1) disabled @endif
-                                                @if ($material == null) disabled @endif
-                                                @if ($material != null && $type == 'Salida') max="{{ $material->current_stock }}" @endif
-                                                @if ($material != null && $type == 'Entrada') min="1" @endif>
-                                            @if ($material != null && $type == 'Salida')
-                                                <small>{{ $material->current_stock }} disponible</small>
-                                            @endif
+                                    @if ($type != null)
+                                        <div class="col-md-12">
+                                            <h6>Cantidades</h6>
+                                            <div class="row align-items-center mb-2">
+                                                @if ($mode == 1)
+                                                    @foreach ($movement->items as $item)
+                                                        <div class="col-md-4">
+                                                            <label
+                                                                for="{{ $item->material->title }}">{{ $item->material->title }}</label>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <label for="quantity" class="form-label">Cantidad <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="number" class="form-control"
+                                                                id="{{ $item->material->title }}"
+                                                                value="{{ $item->quantity }}" disabled>
+                                                        </div>
+                                                    @endforeach
+                                                @else
+                                                    @foreach ($selectedMaterials as $material)
+                                                        <div class="col-md-4">
+                                                            <label
+                                                                for="{{ $material->title }}">{{ $material->title }}</label>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <label for="quantity" class="form-label">Cantidad <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="number" class="form-control"
+                                                                id="{{ $material->title }}"
+                                                                name="material_{{ $material->id }}"
+                                                                wire:model="quantities.{{ $material->id }}" required
+                                                                @if ($mode == 1) disabled @endif
+                                                                @if ($material->current_stock == 0 && $type == 'Salida') disabled @endif
+                                                                @if ($type == 'Salida') max="{{ $material->current_stock }}" @endif
+                                                                @if ($type == 'Entrada') min="1" @endif>
+                                                            @if ($type == 'Salida')
+                                                                <small>{{ $material->current_stock }}
+                                                                    disponible</small>
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
 
                                 @switch($type)

@@ -36,6 +36,10 @@ class Crud extends Component
 
     public $file_name = '';
     public $due_date = '';
+    public $quantity = '';
+    public $unit = '';
+    public $description = '';
+    public $name = '';
 
     #[On('selectCheck')]
     public function showModal($id)
@@ -44,6 +48,10 @@ class Crud extends Component
 
         $this->file_name = $this->checklist->file_name;
         $this->due_date = $this->checklist->due_date;
+        $this->quantity = $this->checklist->quantity;
+        $this->unit = $this->checklist->unit;
+        $this->description = $this->checklist->description;
+        $this->name = $this->checklist->name;
     }
 
     #[On('newCheckModal')]
@@ -53,6 +61,10 @@ class Crud extends Component
 
         $this->file_name = '';
         $this->due_date = '';
+        $this->quantity = '';
+        $this->unit = '';
+        $this->description = '';
+        $this->name = '';
     }
 
     public function save()
@@ -63,6 +75,10 @@ class Crud extends Component
 
             $checklist->file_name = $this->file_name;
             $checklist->due_date = $this->due_date;
+            $checklist->quantity = $this->quantity;
+            $checklist->unit = $this->unit;
+            $checklist->description = $this->description;
+            $checklist->name = $this->name;
 
             $checklist->save();
 
@@ -76,6 +92,10 @@ class Crud extends Component
 
             $checklist->file_name = $this->file_name;
             $checklist->due_date = $this->due_date;
+            $checklist->quantity = $this->quantity;
+            $checklist->unit = $this->unit;
+            $checklist->description = $this->description;
+            $checklist->name = $this->name;
 
             $checklist->save();
 
@@ -94,6 +114,10 @@ class Crud extends Component
     {
         $this->file_name = '';
         $this->due_date = '';
+        $this->quantity = '';
+        $this->unit = '';
+        $this->description = '';
+        $this->name = '';
     }
 
     public function render()

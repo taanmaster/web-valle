@@ -20,4 +20,9 @@ class AcquisitionInventoryMovement extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
+
+    public function items()
+    {
+        return $this->hasMany(AcquisitionInventoryMovementItem::class, 'movement_id');
+    }
 }

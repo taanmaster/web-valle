@@ -108,7 +108,7 @@
                         Movimiento</a>
                 </div>
 
-                @if ($material->movements->count() != null)
+                @if ($material->movementItems->count() != null)
                     <div class="table-responsive">
                         <table class="table">
                             <thead class="thead-light">
@@ -121,19 +121,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($material->movements as $movement)
+                                @foreach ($material->movementItems as $movement)
                                     <tr>
                                         <td>{{ $movement->created_at->format('Y-m-d') }}</td>
-                                        <td>{{ $movement->type }}</td>
+                                        <td>{{ $movement->movement->type }}</td>
                                         <td>
-                                            @if ($movement->type == 'Entrada')
+                                            @if ($movement->movement->type == 'Entrada')
                                                 +
                                             @else
                                                 -
                                             @endif
                                             {{ $movement->quantity }}
                                         </td>
-                                        <td>{{ $movement->supplier->owner_name }}</td>
+                                        <td>{{ $movement->movement->supplier->owner_name }}</td>
                                         <td>
                                             <a href="{{ route('acquisitions.inventory.show', $movement->id) }}"
                                                 class="btn btn-secondary btn-sm">

@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 //
 use App\Models\AcquisitionMaterial;
 use App\Models\AcquisitionInventoryMovement;
+use App\Models\AcquisitionInventoryMovementItem;
 use App\Models\Supplier;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -77,7 +78,10 @@ class Movement extends Component
 
     public $searchSupplier = '';
 
-    public $materials = [];
+    public $searchMaterial = '';
+
+    public $selectedMaterials = [];
+    public $quantities = [];
 
     public function mount()
     {
@@ -88,14 +92,11 @@ class Movement extends Component
         if ($this->movement != null) {
             $this->fetchMovement();
         }
-
-        $this->fetchMaterials();
     }
 
     public function fetchMovement()
     {
         $this->material = $this->movement->material;
-        $this->materialId = $this->material->id;
 
         $this->supplier = $this->movement->supplier;
         $this->selectedSupplier = $this->supplier;
@@ -116,9 +117,13 @@ class Movement extends Component
         $this->date = $this->movement->date;
     }
 
-    public function fetchMaterials()
+    public function getMaterialsProperty()
     {
-        $this->materials = AcquisitionMaterial::get();
+        $selectedIds = collect($this->selectedMaterials)->pluck('id');
+
+        return AcquisitionMaterial::where('title', 'like', '%' . $this->searchMaterial . '%')
+            ->whereNotIn('id', $selectedIds)
+            ->get();
     }
 
     public function fetchMaterial()
@@ -142,6 +147,31 @@ class Movement extends Component
 
         $this->searchSupplier = '';
     }
+
+    public function selectMaterial($material_id)
+    {
+        $material = \App\Models\AcquisitionMaterial::find($material_id);
+        $this->selectedMaterials[] = $material;
+
+        $this->searchMaterial = '';
+    }
+
+    public function removeMaterial($material_id)
+    {
+        $this->selectedMaterials = collect($this->selectedMaterials)
+            ->reject(function ($item) use ($material_id) {
+                if (is_object($item) && isset($item->id)) {
+                    return (int) $item->id === (int) $material_id;
+                }
+                if (is_array($item) && isset($item['id'])) {
+                    return (int) $item['id'] === (int) $material_id;
+                }
+                return false;
+            })
+            ->values()
+            ->all();
+    }
+
 
     public function createSupplier()
     {
@@ -281,10 +311,7 @@ class Movement extends Component
 
             $movement = AcquisitionInventoryMovement::findOrFail($this->movement->id);
 
-            $movement->material_id = $this->material->id;
-
             $movement->type = $this->type;
-            $movement->quantity = $this->quantity;
 
             if ($this->type == 'Entrada') {
                 $movement->description = $this->description;
@@ -311,20 +338,21 @@ class Movement extends Component
             $movement->responsable = $this->responsable;
 
             $movement->date = $this->date;
+            $movement->save();
+
+
+
 
             // --- Aplicar inventario sólo aquí
             app(\App\Services\InventoryService::class)
                 ->applyToStock($this->movement);
 
-            $movement->save();
         } else {
             $movement = new AcquisitionInventoryMovement;
 
-            $movement->material_id = $this->material->id;
             $movement->supplier_id = $this->supplier_id;
 
             $movement->type = $this->type;
-            $movement->quantity = $this->quantity;
             $movement->date = $this->date;
 
 
@@ -352,6 +380,19 @@ class Movement extends Component
             $movement->responsable = $this->responsable;
 
             $movement->save();
+
+            foreach ($this->selectedMaterials as $material) {
+                $quantity = isset($this->quantities[$material->id]) ? (int) $this->quantities[$material->id] : 0;
+                $movementItem = new AcquisitionInventoryMovementItem();
+                $movementItem->movement_id = $movement->id;
+                $movementItem->material_id = $material->id;
+                $movementItem->quantity = $quantity;
+                $movementItem->save();
+
+                // --- Aplicar inventario sólo aquí
+                app(\App\Services\InventoryService::class)
+                    ->applyToStock($movementItem);
+            }
 
 
             $this->movement = $movement;
@@ -380,11 +421,6 @@ class Movement extends Component
 
             // Opcional: borrar archivo temporal
             unlink($filePath);
-
-            // --- Aplicar inventario sólo aquí
-            app(\App\Services\InventoryService::class)
-                ->applyToStock($this->movement);
-
         }
 
         return redirect()->route('acquisitions.inventory.index');
