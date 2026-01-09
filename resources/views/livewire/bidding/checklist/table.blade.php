@@ -43,11 +43,12 @@
                                     <div class="row my-2">
                                         @php
                                             $hasFile = !empty($item->file);
+                                            $isCompleted = $item->is_completed || $hasFile;
                                             $due = \Carbon\Carbon::parse($item->due_date);
                                             $isOverdue =
-                                                !$hasFile && ($due->isPast() || $due->diffInDays(today()) <= 2);
+                                                !$isCompleted && ($due->isPast() || $due->diffInDays(today()) <= 2);
 
-                                            if ($hasFile) {
+                                            if ($isCompleted) {
                                                 $status = 'completed-upload';
                                             } elseif ($isOverdue) {
                                                 $status = 'overdue-upload';
@@ -116,36 +117,50 @@
                                         <div class="col-md-4">
                                             <div style="border: 1.5px solid #6F71A9; gap:12px"
                                                 class="h-100 d-flex align-items-center p-2">
-                                                @if ($item->file != null)
+                                                @if ($isCompleted)
                                                     <h6>
                                                         <span class="badge text-bg-secondary">
                                                             {{ $item->upload_date }}
                                                         </span>
                                                     </h6>
-                                                    <a href="{{ $item->file }}" class="btn btn-sm btn-light"
-                                                        style="max-width: fit-content; max-height:fit-content"
-                                                        target="_blank">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                            height="16" fill="#000000" viewBox="0 0 256 256">
-                                                            <path
-                                                                d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z">
-                                                            </path>
-                                                        </svg>
-                                                        {{ $item->file_name }}
-                                                    </a>
+                                                    @if ($hasFile)
+                                                        <a href="{{ $item->file }}" class="btn btn-sm btn-light"
+                                                            style="max-width: fit-content; max-height:fit-content"
+                                                            target="_blank">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" fill="#000000" viewBox="0 0 256 256">
+                                                                <path
+                                                                    d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z">
+                                                                </path>
+                                                            </svg>
+                                                            {{ $item->file_name }}
+                                                        </a>
+                                                    @else
+                                                        <span class="badge text-bg-success">Completado</span>
+                                                    @endif
                                                 @else
-                                                    <form method="POST" wire:submit="save({{ $item->id }})"
-                                                        enctype="multipart/form-data" class="w-100">
-                                                        {{ csrf_field() }}
-                                                        <label class="form-label">Entregable</label>
-                                                        <input type="file" class="form-control w-100"
-                                                            wire:model="files.{{ $item->id }}"
-                                                            id="file{{ $item->id }}">
-
-                                                        <button type="submit"
-                                                            class="btn btn-sm btn-primary mt-2">Guardar</button>
-
-                                                    </form>
+                                                    <div class="w-100">
+                                                        <form method="POST" wire:submit="save({{ $item->id }})"
+                                                            enctype="multipart/form-data" class="mb-2">
+                                                            {{ csrf_field() }}
+                                                            <label class="form-label">Entregable (opcional)</label>
+                                                            <div class="d-flex gap-2 align-items-end">
+                                                                <input type="file" class="form-control"
+                                                                    wire:model="files.{{ $item->id }}"
+                                                                    id="file{{ $item->id }}">
+                                                                <button type="submit"
+                                                                    class="btn btn-sm btn-primary">Subir</button>
+                                                            </div>
+                                                        </form>
+                                                        <button type="button"
+                                                            wire:click="markAsCompleted({{ $item->id }})"
+                                                            class="btn btn-sm btn-success w-100">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="me-1">
+                                                                <path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34Z"/>
+                                                            </svg>
+                                                            Marcar como completado
+                                                        </button>
+                                                    </div>
                                                 @endif
                                             </div>
                                         </div>
