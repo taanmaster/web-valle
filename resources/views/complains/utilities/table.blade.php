@@ -56,9 +56,12 @@
                             {{ $complain->subject ?? 'N/A' }}
                         </td>
                         <td>
-                            <button class="btn btn-link btn-sm" wire:click="downloadFile('{{ $complain->id }}')">
+                            <button class="btn btn-link btn-sm text-secondary"
+                                wire:click="downloadFile('{{ $complain->id }}')">
                                 Descargar
                             </button>
+                            <a class="btn btn-link btn-sm"
+                                href="{{ route('citizen_complain.show', $complain->id) }}">Ver</a>
                         </td>
                         <td>
                             <select wire:model="status.{{ $complain->id }}"

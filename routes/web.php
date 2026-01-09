@@ -1028,7 +1028,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::resource('properties', CTOPropertyController::class); // Listado de Predios
             Route::post('properties/import', [CTOPropertyController::class, 'import'])->name('properties.import'); // Importar Excel de Predios
             Route::resource('property_taxes', CTOPropertyTaxController::class); // Recibos de los Predios
-            
+
             // Rutas adicionales para recibos de predial
             Route::patch('property_taxes/{id}/mark-paid', [CTOPropertyTaxController::class, 'markAsPaid'])->name('property_taxes.mark-paid');
             Route::get('property_taxes/{id}/print', [CTOPropertyTaxController::class, 'print'])->name('property_taxes.print');
@@ -1379,6 +1379,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'citizen_complain.index',
         ]);
 
+        Route::get('/citizen-complain/{id}', [
+            'uses' => 'CitizenComplainController@show',
+            'as' => 'citizen_complain.show',
+        ]);
 
         Route::group(['prefix' => 'institucional_development'], function () {
             Route::resource('regulations', MunicipalRegulationController::class)->names([

@@ -46,9 +46,13 @@ class CitizenComplainController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CitizenComplain $citizenComplain)
+    public function show($id)
     {
-        //
+        $complain = CitizenComplain::findOrFail($id);
+
+        return view('complains.show')->with([
+            'complain' => $complain,
+        ]);
     }
 
     /**
