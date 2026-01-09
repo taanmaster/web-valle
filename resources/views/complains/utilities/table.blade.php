@@ -66,7 +66,7 @@
                         <td>
                             <select wire:model="status.{{ $complain->id }}"
                                 wire:change="updateStatus({{ $complain->id }})" class="form-control">
-                                <option value="">Selecciona una opción</option>
+                                <option value="Nueva">Selecciona una opción</option>
                                 <option value="En proceso">En proceso</option>
                                 <option value="Concluida">Concluida</option>
                             </select>
