@@ -1499,6 +1499,19 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'as' => 'implan.banners.status',
             ]);
         });
+
+        /* ------------------- */
+        /* ------------------- */
+        /* Secretaría particular */
+        Route::resource('identification_certificates', IdentificationCertificateController::class)->names([
+            'index' => 'identification_certificates.index',
+            'create' => 'identification_certificates.create',
+            'store' => 'identification_certificates.store',
+            'show' => 'identification_certificates.show',
+            'edit' => 'identification_certificates.edit',
+            'update' => 'identification_certificates.update',
+            'destroy' => 'identification_certificates.destroy',
+        ]);
     });
 
     // Rutas del Perfil Ciudadano (Front-End)
@@ -1510,6 +1523,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil/tramites', 'CitizenProfileController@urbanDevRequests')->name('citizen.profile.urban_dev_requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
         Route::put('/perfil/notificaciones', 'CitizenProfileController@updateNotifications')->name('citizen.profile.notifications');
+
+        // Rutas para constancias de identificación
+        Route::get('/constancias_de_identificacion', 'CitizenProfileController@identificationCertificates')->name('citizen.profile.identification_certificates');
+        Route::get('/constancias_de_identificacion/crear', 'CitizenProfileController@createIdentificationCertificate')->name('citizen.profile.identification_certificates.create');
+        Route::get('/constancias_de_identificacion/{certificate}', 'CitizenProfileController@showIdentificationCertificate')->name('citizen.profile.identification_certificates.show');
 
         // Rutas SARE para ciudadanos
         Route::get('/sare/crear', 'CitizenProfileController@createSareRequest')->name('citizen.sare.create');

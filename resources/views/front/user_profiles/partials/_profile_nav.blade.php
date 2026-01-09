@@ -24,6 +24,12 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
+                <a class="nav-link {{ str_starts_with($currentRoute, 'citizen.profile.identification_certificates') ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.identification_certificates') }}" id="constancias-tab" role="tab">
+                    <ion-icon name="id-card-outline"></ion-icon> Constancias de Identificación
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
                 <a class="nav-link {{ $currentRoute === 'citizen.profile.requests' ? 'active' : '' }}"
                     href="{{ route('citizen.profile.requests') }}" id="solicitudes-tab" role="tab">
                     <ion-icon name="file-tray-full-outline"></ion-icon> Solicitudes S.A.R.E
@@ -62,6 +68,12 @@
                 <a class="nav-link {{ $currentRoute === 'supplier.profile.edit' ? 'active' : '' }}"
                     href="{{ route('supplier.profile.edit') }}" id="perfil-tab" role="tab">
                     <ion-icon name="create-outline"></ion-icon> Editar Perfil
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link {{ str_starts_with($currentRoute, 'citizen.profile.identification_certificates') ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.identification_certificates') }}" id="constancias-tab" role="tab">
+                    <ion-icon name="id-card-outline"></ion-icon> Constancias de Identificación
                 </a>
             </li>
             <li class="nav-item" role="presentation">

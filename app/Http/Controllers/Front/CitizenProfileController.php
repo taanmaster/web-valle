@@ -9,6 +9,7 @@ use App\Models\UserInfo;
 use App\Models\SareRequest;
 use App\Models\SareRequestFile;
 use App\Models\Summon;
+use App\Models\IdentificationCertificate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -1176,5 +1177,24 @@ class CitizenProfileController extends Controller
         $mode = 1;
 
         return view('front.user_profiles.citizen.summons.show')->with('summon', $summon)->with('mode', $mode);
+    }
+
+    public function identificationCertificates()
+    {
+        $user = Auth::user();
+
+        $mode = 1;
+
+        $certificates = IdentificationCertificate::where('user_id', $user->id)->get();
+
+        return view('front.user_profiles.citizen.identification_certificates', [
+            'certificates' => $certificates,
+            'mode' => $mode
+        ]);
+    }
+
+    public function createIdentificationCertificate()
+    {
+        return view('front.user_profiles.citizen.identification_certificates.create');
     }
 }
