@@ -59,6 +59,10 @@ use App\Http\Controllers\AcquisitionsKPIsController;
 use App\Http\Controllers\CTOPropertyController;
 use App\Http\Controllers\CTOPropertyTaxController;
 
+// Backoffice - Oficios
+use App\Http\Controllers\BackofficeDependencyController;
+use App\Http\Controllers\BackofficeDocumentController;
+
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -1333,6 +1337,57 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::resource('dependencies', TreasuryDependencyController::class)->names([
                 'index' => 'treasury_dependencies.index',
             ]);
+        });
+
+        /* ------------------- */
+        /* ------------------- */
+
+        /* Backoffice - Oficios */
+        Route::group(['prefix' => 'backoffice'], function () {
+            
+            /* Dependencias del Backoffice */
+            Route::resource('dependencies', BackofficeDependencyController::class)->names([
+                'index' => 'backoffice.dependencies.index',
+                'create' => 'backoffice.dependencies.create',
+                'store' => 'backoffice.dependencies.store',
+                'show' => 'backoffice.dependencies.show',
+                'edit' => 'backoffice.dependencies.edit',
+                'update' => 'backoffice.dependencies.update',
+                'destroy' => 'backoffice.dependencies.destroy',
+            ]);
+            
+            /* Gestión de usuarios en dependencias */
+            Route::get('dependencies/users/search', [BackofficeDependencyController::class, 'searchUsers'])->name('backoffice.dependencies.search-users');
+            Route::post('dependencies/{id}/attach-user', [BackofficeDependencyController::class, 'attachUser'])->name('backoffice.dependencies.attach-user');
+            Route::delete('dependencies/{dependencyId}/detach-user/{userId}', [BackofficeDependencyController::class, 'detachUser'])->name('backoffice.dependencies.detach-user');
+
+            /* Documentos/Oficios */
+            Route::get('documents/notifications', [BackofficeDocumentController::class, 'notifications'])->name('backoffice.documents.notifications');
+            Route::get('documents/repository', [BackofficeDocumentController::class, 'repository'])->name('backoffice.documents.repository')->middleware('role:webmaster|all');
+            
+            Route::resource('documents', BackofficeDocumentController::class)->names([
+                'index' => 'backoffice.documents.index',
+                'create' => 'backoffice.documents.create',
+                'store' => 'backoffice.documents.store',
+                'show' => 'backoffice.documents.show',
+                'edit' => 'backoffice.documents.edit',
+                'update' => 'backoffice.documents.update',
+                'destroy' => 'backoffice.documents.destroy',
+            ]);
+
+            /* Acciones de flujo de trabajo */
+            Route::post('documents/{id}/send-for-review', [BackofficeDocumentController::class, 'sendForReview'])->name('backoffice.documents.send-review');
+            Route::post('documents/{id}/confirm-receipt', [BackofficeDocumentController::class, 'confirmReceipt'])->name('backoffice.documents.confirm-receipt');
+            Route::post('documents/{id}/request-correction', [BackofficeDocumentController::class, 'requestCorrection'])->name('backoffice.documents.request-correction');
+            Route::post('documents/{id}/validate', [BackofficeDocumentController::class, 'validateDocument'])->name('backoffice.documents.validate');
+            Route::post('documents/{id}/sign', [BackofficeDocumentController::class, 'sign'])->name('backoffice.documents.sign');
+
+            /* Control de versiones */
+            Route::get('documents/{id}/versions', [BackofficeDocumentController::class, 'versions'])->name('backoffice.documents.versions');
+            Route::get('documents/{documentId}/versions/{versionId}', [BackofficeDocumentController::class, 'versionShow'])->name('backoffice.documents.versions.show');
+
+            /* Búsqueda de usuarios para Select2 */
+            Route::get('users/search', [BackofficeDocumentController::class, 'searchUsers'])->name('backoffice.users.search');
         });
 
         /*Agenda regulatoria*/
