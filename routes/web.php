@@ -1386,6 +1386,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('documents/{id}/versions', [BackofficeDocumentController::class, 'versions'])->name('backoffice.documents.versions');
             Route::get('documents/{documentId}/versions/{versionId}', [BackofficeDocumentController::class, 'versionShow'])->name('backoffice.documents.versions.show');
 
+            /* Generación de PDF */
+            Route::get('documents/{id}/pdf', [BackofficeDocumentController::class, 'generatePdf'])->name('backoffice.documents.pdf');
+
             /* Búsqueda de usuarios para Select2 */
             Route::get('users/search', [BackofficeDocumentController::class, 'searchUsers'])->name('backoffice.users.search');
         });

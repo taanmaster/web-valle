@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Storage;
 use Session;
 use Auth;
+use PDF;
 
 class BackofficeDocumentController extends Controller
 {
@@ -620,5 +621,28 @@ class BackofficeDocumentController extends Controller
         $snapshot = $this->versionService->getDocumentAtVersion($version);
 
         return view('backoffice.document_versions.show', compact('document', 'version', 'changes', 'snapshot'));
+    }
+
+    /**
+     * Generar PDF del oficio firmado.
+     */
+    public function generatePdf($id)
+    {
+        $document = BackofficeDocument::with([
+            'dependency',
+            'user',
+            'validations.validator'
+        ])->findOrFail($id);
+
+        // Solo se puede generar PDF de oficios firmados
+        if ($document->status != 'firmado') {
+            Session::flash('error', 'Solo se puede generar PDF de oficios firmados.');
+            return redirect()->back();
+        }
+
+        $pdf = PDF::loadView('backoffice.documents.pdf', compact('document'))
+            ->setPaper('letter', 'portrait');
+
+        return $pdf->stream("Oficio_{$document->folio}.pdf");
     }
 }
