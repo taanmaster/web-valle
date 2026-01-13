@@ -111,11 +111,11 @@ class BackofficeDocument extends Model
     }
 
     /**
-     * Verificar si el documento puede ser firmado (requiere 3 validaciones)
+     * Verificar si el documento puede ser firmado (requiere mínimo 2 validaciones)
      */
     public function canBeSigned()
     {
-        return $this->validations_count >= 3;
+        return $this->validations_count >= 2;
     }
 
     /**

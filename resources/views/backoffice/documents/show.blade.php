@@ -91,10 +91,10 @@
                         
                         <!-- Paso 3: Validaciones -->
                         <div class="text-center flex-fill">
-                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center {{ $document->validations_count >= 3 ? 'bg-success' : ($document->status == 'revision' ? 'bg-primary' : 'bg-secondary') }}" style="width: 50px; height: 50px;">
-                                <span class="text-white fw-bold">{{ $document->validations_count }}/3</span>
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center {{ $document->validations_count >= 2 ? 'bg-success' : ($document->status == 'revision' ? 'bg-primary' : 'bg-secondary') }}" style="width: 50px; height: 50px;">
+                                <span class="text-white fw-bold">{{ $document->validations_count }}{{ $document->validations_count >= 2 ? '✓' : '' }}</span>
                             </div>
-                            <small class="d-block mt-2 {{ $document->validations_count >= 3 ? 'text-success fw-bold' : ($document->status == 'revision' ? 'text-primary' : 'text-muted') }}">Validaciones</small>
+                            <small class="d-block mt-2 {{ $document->validations_count >= 2 ? 'text-success fw-bold' : ($document->status == 'revision' ? 'text-primary' : 'text-muted') }}">Validaciones (mín. 2)</small>
                         </div>
                         
                         <div class="text-muted"><i class="fas fa-arrow-right"></i></div>
@@ -184,7 +184,7 @@
                                 <i class="fas fa-pen-fancy fa-lg me-3"></i>
                                 <div>
                                     <strong>¡Listo para Firmar!</strong><br>
-                                    <small>Este oficio ha alcanzado las 3 validaciones requeridas. Ya puedes proceder a firmarlo.</small>
+                                    <small>Este oficio ha alcanzado las validaciones mínimas requeridas (2). Ya puedes proceder a firmarlo.</small>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +196,7 @@
                                 <i class="fas fa-clock fa-lg me-3 text-muted"></i>
                                 <div>
                                     <strong class="text-muted">Sin Validaciones Aún</strong><br>
-                                    <small class="text-muted">Este oficio aún no ha recibido validaciones. Se requieren 3 para poder firmarse.</small>
+                                    <small class="text-muted">Este oficio aún no ha recibido validaciones. Se requieren mínimo 2 para poder firmarse.</small>
                                 </div>
                             </div>
                         </div>
@@ -296,15 +296,15 @@
                         
                         <!-- Barra de progreso de validaciones -->
                         <div class="mb-4">
-                            <label class="form-label">Progreso de Validaciones: {{ $document->validations_count }}/3</label>
+                            <label class="form-label">Validaciones: {{ $document->validations_count }} (mínimo 2 requeridas)</label>
                             <div class="progress validation-progress">
                                 <div class="progress-bar bg-{{ $document->canBeSigned() ? 'success' : 'primary' }}" 
                                      role="progressbar" 
-                                     style="width: {{ $document->validation_progress }}%"
+                                     style="width: {{ min(($document->validations_count / 2) * 100, 100) }}%"
                                      aria-valuenow="{{ $document->validations_count }}" 
                                      aria-valuemin="0" 
-                                     aria-valuemax="3">
-                                    {{ $document->validations_count }}/3
+                                     aria-valuemax="2">
+                                    {{ $document->validations_count }}{{ $document->canBeSigned() ? ' ✓' : '' }}
                                 </div>
                             </div>
                         </div>
@@ -349,7 +349,7 @@
                                 @else
                                     <button type="button" class="btn btn-secondary w-100 py-3" disabled>
                                         <i class="fas fa-lock fa-2x d-block mb-2"></i>
-                                        Firmar (Requiere 3 validaciones)
+                                        Firmar (Requiere mín. 2 validaciones)
                                     </button>
                                 @endif
                             </div>
@@ -386,8 +386,8 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <span>Validaciones:</span>
-                        <span class="badge bg-{{ $document->validations_count >= 3 ? 'success' : 'secondary' }}">
-                            {{ $document->validations_count }}/3
+                        <span class="badge bg-{{ $document->validations_count >= 2 ? 'success' : 'secondary' }}">
+                            {{ $document->validations_count }} (mín. 2)
                         </span>
                     </div>
                     @if($document->assigned_to)
@@ -465,6 +465,13 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
+                        @if($document->status == 'firmado')
+                            <a href="{{ route('backoffice.documents.pdf', $document->id) }}" 
+                               class="btn btn-danger" 
+                               target="_blank">
+                                <i class="fas fa-file-pdf me-2"></i> Generar PDF
+                            </a>
+                        @endif
                         @if($document->user_id == Auth::id() && $document->status == 'borrador')
                             <a href="{{ route('backoffice.documents.edit', $document->id) }}" class="btn btn-outline-primary">
                                 <i class="fas fa-edit me-2"></i> Editar Oficio
