@@ -156,19 +156,41 @@
         </div>
 
         <div class="menu-body navbar-vertical tab-content" data-simplebar>
-            @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
-                <div id="valleDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
-                    aria-labelledby="dasboard-tab">
-                    <div class="title-box">
-                        <h6 class="menu-title">Vistas Generales</h6>
-                    </div>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
-                        </li>
-                    </ul>
+            <div id="valleDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="dasboard-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Vistas Generales</h6>
                 </div>
-            @endif
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                    </li>
+                </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Oficios</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('backoffice.documents.index') }}">Tus Oficios</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('backoffice.documents.notifications') }}">Notificaciones</a>
+                    </li>
+
+                    @hasanyrole(['webmaster', 'all'])
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('backoffice.documents.repository') }}">Repositorio</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('backoffice.dependencies.index') }}">Dependencias</a>
+                    </li>
+                    @endhasanyrole
+                </ul>
+            </div>
 
             @if (auth()->user()->hasRole('des_Institucional') || auth()->user()->hasRole('all'))
                 <div id="valleInstitutionalDevelopment" class="main-icon-menu-pane tab-pane" role="tabpanel"

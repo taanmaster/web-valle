@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'backoffice_dependency_id',
     ];
 
     /**
@@ -72,5 +73,13 @@ class User extends Authenticatable
     public function messages()
     {
         return $this->hasMany(SupplierMessage::class, 'user_id');
+    }
+
+    /**
+     * Relación: Usuario pertenece a una dependencia de backoffice
+     */
+    public function backofficeDependency()
+    {
+        return $this->belongsTo(BackofficeDependency::class, 'backoffice_dependency_id');
     }
 }
