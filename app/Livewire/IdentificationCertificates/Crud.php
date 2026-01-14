@@ -77,21 +77,6 @@ class Crud extends Component
         }
     }
 
-    public function updateStatus()
-    {
-        $this->validate([
-            'status' => 'required|string',
-        ]);
-
-        $this->certificate->update([
-            'status' => $this->status,
-            'admin_notes' => $this->admin_notes,
-        ]);
-
-        Session::flash('message', 'Estatus actualizado correctamente.');
-        $this->certificate->refresh();
-    }
-
     public function savePayment()
     {
         $this->validate([
@@ -142,13 +127,14 @@ class Crud extends Component
     protected function generatePaymentFolio()
     {
         $year = date('Y');
+        $shortYear = date('y');
         $lastPayment = IdentificationCertificatePayment::whereYear('created_at', $year)
             ->orderBy('id', 'desc')
             ->first();
 
         $nextNumber = $lastPayment ? intval(substr($lastPayment->folio, -4)) + 1 : 1;
 
-        return 'PCI' . $year . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        return 'PCI' . $shortYear . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
     }
 
     protected function handleUpload($document)
@@ -165,6 +151,38 @@ class Crud extends Component
         }
 
         return Storage::disk('s3')->url($filepath);
+    }
+
+    public function updatedStatus()
+    {
+        if ($this->certificate) {
+            $this->certificate->update([
+                'status' => $this->status,
+            ]);
+            $this->certificate->refresh();
+        }
+
+        Session::flash('message', 'Actualizado correctamente.');
+    }
+
+    public function updatedPaymentStatus()
+    {
+        if ($this->payment) {
+            $this->payment->update([
+                'status' => $this->payment_status,
+            ]);
+            $this->payment->refresh();
+        }
+    }
+
+    public function updatedAdminNotes()
+    {
+        if ($this->certificate) {
+            $this->certificate->update([
+                'admin_notes' => $this->admin_notes,
+            ]);
+            $this->certificate->refresh();
+        }
     }
 
     public function render()

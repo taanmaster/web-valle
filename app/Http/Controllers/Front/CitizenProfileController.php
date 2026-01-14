@@ -1197,4 +1197,13 @@ class CitizenProfileController extends Controller
     {
         return view('front.user_profiles.citizen.identification_certificates.create');
     }
+
+    public function showIdentificationCertificate($id)
+    {
+        $certificate = IdentificationCertificate::findOrFail($id);
+
+        $mode = 1;
+
+        return view('front.user_profiles.citizen.identification_certificates.show')->with('certificate', $certificate)->with('mode', $mode);
+    }
 }

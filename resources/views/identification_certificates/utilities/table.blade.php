@@ -1,9 +1,5 @@
 <div>
-    <div class="row justify-content-between mb-3">
-        <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Buscar por folio o nombre..."
-                wire:model.live.debounce.300ms="search">
-        </div>
+    <div class="row mb-3">
         <div class="col-md-2">
             <select class="form-select" wire:model.live="statusFilter">
                 <option value="">Todos los estatus</option>
@@ -23,10 +19,12 @@
         <div class="col-md-2">
             <input type="date" class="form-control" wire:model.live="endDate" placeholder="Hasta">
         </div>
-        <div class="col-md-2 text-end">
-            <button class="btn btn-outline-secondary btn-sm" wire:click="clearFilters">
-                <i class="fas fa-times"></i> Limpiar
-            </button>
+        <div class="col-md text-end">
+            @if (!empty($statusFilter) || !empty($startDate) || !empty($endDate))
+                <button class="btn btn-outline-secondary btn-sm" wire:click="clearFilters">
+                    <i class="fas fa-times"></i> Limpiar
+                </button>
+            @endif
         </div>
     </div>
 

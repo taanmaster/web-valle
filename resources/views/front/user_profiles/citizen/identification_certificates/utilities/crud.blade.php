@@ -72,42 +72,210 @@
             <div class="card mb-4">
                 <div class="card-header bg-info text-white">
                     <h6 class="mb-0"><i class="bx bx-file"></i> Documentos Requeridos</h6>
+                    <p class="mb-0 small">Todos los documentos deben ser legibles y en formato PDF, JPG o PNG. Tamaño
+                        máximo: 5MB por archivo.</p>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-warning">
-                        <i class="bx bx-info-circle"></i> Todos los documentos deben ser legibles y en formato PDF, JPG
-                        o PNG. Tamano maximo: 5MB por archivo.
+                    <!-- Acta de Nacimiento -->
+                    <div class="document-item mb-4 pb-4 border-bottom">
+                        <div class="d-flex align-items-start gap-3">
+                            <!-- Icono de estado -->
+                            <div class="flex-shrink-0">
+                                @if ($birth_certificate_file)
+                                    <div class="status-icon status-completed">
+                                        <ion-icon name="checkmark-circle"
+                                            style="font-size: 32px; color: #198754;"></ion-icon>
+                                    </div>
+                                @else
+                                    <div class="status-icon status-pending">
+                                        <ion-icon name="ellipse-outline"
+                                            style="font-size: 32px; color: #ffc107;"></ion-icon>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h6 class="mb-1 {{ $birth_certificate_file ? 'text-success' : '' }}">
+                                            Acta de Nacimiento <span class="text-danger">*</span>
+                                        </h6>
+                                        <small class="text-muted">
+                                            @if ($birth_certificate_file)
+                                                <span class="text-success">
+                                                    <i class="bx bx-check"></i> Documento cargado exitosamente
+                                                </span>
+                                            @else
+                                                <span class="text-warning">
+                                                    <i class="bx bx-time-five"></i> Pendiente de subir
+                                                </span>
+                                            @endif
+                                        </small>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                            onclick="document.getElementById('birth_certificate_input').click()">
+                                            <i class="bx bx-cloud-upload"></i> Subir Archivo
+                                        </button>
+                                    </div>
+                                    <input type="file" wire:model="birth_certificate_file"
+                                        id="birth_certificate_input" class="d-none" accept=".pdf,.jpg,.jpeg,.png"
+                                        required>
+                                </div>
+                                <div wire:loading wire:target="birth_certificate_file" class="alert alert-info py-2">
+                                    <i class="bx bx-loader-alt bx-spin"></i> Subiendo archivo...
+                                </div>
+                                @if ($birth_certificate_file)
+                                    <div class="file-card">
+                                        <div class="d-flex align-items-center gap-3 p-3 bg-light rounded border">
+                                            <i class="bx bx-file text-primary" style="font-size: 24px;"></i>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-medium">Acta de Nacimiento</div>
+                                                <small
+                                                    class="text-muted">{{ $birth_certificate_file->getClientOriginalName() }}</small>
+                                            </div>
+                                            <button type="button" wire:click="$set('birth_certificate_file', null)"
+                                                class="btn btn-sm btn-outline-danger">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="birth_certificate_file" class="form-label">Acta de Nacimiento <span
-                                    class="text-danger">*</span></label>
-                            <input type="file" wire:model="birth_certificate_file" class="form-control"
-                                accept=".pdf,.jpg,.jpeg,.png" required>
-                            <div wire:loading wire:target="birth_certificate_file" class="text-info mt-1">
-                                <i class="bx bx-loader-alt bx-spin"></i> Subiendo...
+                    <!-- Comprobante de Domicilio -->
+                    <div class="document-item mb-4 pb-4 border-bottom">
+                        <div class="d-flex align-items-start gap-3">
+                            <!-- Icono de estado -->
+                            <div class="flex-shrink-0">
+                                @if ($proof_of_address_file)
+                                    <div class="status-icon status-completed">
+                                        <ion-icon name="checkmark-circle"
+                                            style="font-size: 32px; color: #198754;"></ion-icon>
+                                    </div>
+                                @else
+                                    <div class="status-icon status-pending">
+                                        <ion-icon name="ellipse-outline"
+                                            style="font-size: 32px; color: #ffc107;"></ion-icon>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h6 class="mb-1 {{ $proof_of_address_file ? 'text-success' : '' }}">
+                                            Comprobante de Domicilio <span class="text-danger">*</span>
+                                        </h6>
+                                        <small class="text-muted">
+                                            @if ($proof_of_address_file)
+                                                <span class="text-success">
+                                                    <i class="bx bx-check"></i> Documento cargado exitosamente
+                                                </span>
+                                            @else
+                                                <span class="text-warning">
+                                                    <i class="bx bx-time-five"></i> Pendiente de subir (no mayor a 3
+                                                    meses)
+                                                </span>
+                                            @endif
+                                        </small>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                            onclick="document.getElementById('proof_of_address_input').click()">
+                                            <i class="bx bx-cloud-upload"></i> Subir Archivo
+                                        </button>
+                                    </div>
+                                    <input type="file" wire:model="proof_of_address_file"
+                                        id="proof_of_address_input" class="d-none" accept=".pdf,.jpg,.jpeg,.png"
+                                        required>
+                                </div>
+                                <div wire:loading wire:target="proof_of_address_file" class="alert alert-info py-2">
+                                    <i class="bx bx-loader-alt bx-spin"></i> Subiendo archivo...
+                                </div>
+                                @if ($proof_of_address_file)
+                                    <div class="file-card">
+                                        <div class="d-flex align-items-center gap-3 p-3 bg-light rounded border">
+                                            <i class="bx bx-file text-primary" style="font-size: 24px;"></i>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-medium">Comprobante de Domicilio</div>
+                                                <small
+                                                    class="text-muted">{{ $proof_of_address_file->getClientOriginalName() }}</small>
+                                            </div>
+                                            <button type="button" wire:click="$set('proof_of_address_file', null)"
+                                                class="btn btn-sm btn-outline-danger">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label for="proof_of_address_file" class="form-label">Comprobante de Domicilio <span
-                                    class="text-danger">*</span></label>
-                            <input type="file" wire:model="proof_of_address_file" class="form-control"
-                                accept=".pdf,.jpg,.jpeg,.png" required>
-                            <small class="text-muted">No mayor a 3 meses de antiguedad</small>
-                            <div wire:loading wire:target="proof_of_address_file" class="text-info mt-1">
-                                <i class="bx bx-loader-alt bx-spin"></i> Subiendo...
+                    <!-- Fotografía -->
+                    <div class="document-item">
+                        <div class="d-flex align-items-start gap-3">
+                            <!-- Icono de estado -->
+                            <div class="flex-shrink-0">
+                                @if ($photo_file)
+                                    <div class="status-icon status-completed">
+                                        <ion-icon name="checkmark-circle"
+                                            style="font-size: 32px; color: #198754;"></ion-icon>
+                                    </div>
+                                @else
+                                    <div class="status-icon status-pending">
+                                        <ion-icon name="ellipse-outline"
+                                            style="font-size: 32px; color: #ffc107;"></ion-icon>
+                                    </div>
+                                @endif
                             </div>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="photo_file" class="form-label">Fotografia</label>
-                            <input type="file" wire:model="photo_file" class="form-control"
-                                accept=".jpg,.jpeg,.png">
-                            <small class="text-muted">Foto reciente, fondo blanco (opcional)</small>
-                            <div wire:loading wire:target="photo_file" class="text-info mt-1">
-                                <i class="bx bx-loader-alt bx-spin"></i> Subiendo...
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h6 class="mb-1 {{ $photo_file ? 'text-success' : '' }}">
+                                            Fotografía <span class="badge bg-secondary">Opcional</span>
+                                        </h6>
+                                        <small class="text-muted">
+                                            @if ($photo_file)
+                                                <span class="text-success">
+                                                    <i class="bx bx-check"></i> Documento cargado exitosamente
+                                                </span>
+                                            @else
+                                                <span>
+                                                    <i class="bx bx-info-circle"></i> Foto reciente, fondo blanco
+                                                </span>
+                                            @endif
+                                        </small>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                            onclick="document.getElementById('photo_input').click()">
+                                            <i class="bx bx-cloud-upload"></i> Subir Archivo
+                                        </button>
+                                    </div>
+                                    <input type="file" wire:model="photo_file" id="photo_input" class="d-none"
+                                        accept=".jpg,.jpeg,.png">
+                                </div>
+                                <div wire:loading wire:target="photo_file" class="alert alert-info py-2">
+                                    <i class="bx bx-loader-alt bx-spin"></i> Subiendo archivo...
+                                </div>
+                                @if ($photo_file)
+                                    <div class="file-card">
+                                        <div class="d-flex align-items-center gap-3 p-3 bg-light rounded border">
+                                            <i class="bx bx-image text-success" style="font-size: 24px;"></i>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-medium">Fotografía</div>
+                                                <small
+                                                    class="text-muted">{{ $photo_file->getClientOriginalName() }}</small>
+                                            </div>
+                                            <button type="button" wire:click="$set('photo_file', null)"
+                                                class="btn btn-sm btn-outline-danger">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -286,59 +454,161 @@
                         <h6 class="mb-0"><i class="bx bx-file"></i> Documentos</h6>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label text-muted">Acta de Nacimiento</label>
-                                @if ($certificate->birth_certificate_file)
-                                    <div class="d-flex align-items-center">
-                                        <a href="{{ $certificate->birth_certificate_file }}" target="_blank"
-                                            class="btn btn-outline-primary btn-sm">
-                                            <i class="bx bx-download"></i> Ver
-                                        </a>
-                                        @if ($certificate->birth_certificate_approved)
-                                            <span class="badge bg-success ms-2"><i class="bx bx-check"></i>
-                                                Aprobado</span>
-                                        @else
-                                            <span class="badge bg-warning ms-2">Pendiente</span>
-                                        @endif
+                        <!-- Acta de Nacimiento -->
+                        <div class="document-item mb-3 pb-3 border-bottom">
+                            <div class="d-flex align-items-start gap-3">
+                                <!-- Icono de estado -->
+                                <div class="flex-shrink-0">
+                                    @if ($certificate->birth_certificate_approved)
+                                        <div class="status-icon status-completed">
+                                            <ion-icon name="checkmark-circle"
+                                                style="font-size: 32px; color: #198754;"></ion-icon>
+                                        </div>
+                                    @else
+                                        <div class="status-icon status-pending">
+                                            <ion-icon name="ellipse-outline"
+                                                style="font-size: 32px; color: #ffc107;"></ion-icon>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6
+                                                class="mb-1 {{ $certificate->birth_certificate_approved ? 'text-success' : '' }}">
+                                                Acta de Nacimiento
+                                            </h6>
+                                            <small class="text-muted">
+                                                @if ($certificate->birth_certificate_approved)
+                                                    <span class="text-success">
+                                                        <i class="bx bx-check"></i> Documento aprobado
+                                                    </span>
+                                                @elseif($certificate->birth_certificate_file)
+                                                    <span class="text-warning">
+                                                        <i class="bx bx-time-five"></i> Pendiente de revision
+                                                    </span>
+                                                @else
+                                                    <span class="text-danger">
+                                                        <i class="bx bx-x"></i> No subido
+                                                    </span>
+                                                @endif
+                                            </small>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            @if ($certificate->birth_certificate_file)
+                                                <a href="{{ $certificate->birth_certificate_file }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-primary">
+                                                    <i class="bx bx-show"></i> Ver
+                                                </a>
+                                            @endif
+                                        </div>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label text-muted">Comprobante de Domicilio</label>
-                                @if ($certificate->proof_of_address_file)
-                                    <div class="d-flex align-items-center">
-                                        <a href="{{ $certificate->proof_of_address_file }}" target="_blank"
-                                            class="btn btn-outline-primary btn-sm">
-                                            <i class="bx bx-download"></i> Ver
-                                        </a>
-                                        @if ($certificate->proof_of_address_approved)
-                                            <span class="badge bg-success ms-2"><i class="bx bx-check"></i>
-                                                Aprobado</span>
-                                        @else
-                                            <span class="badge bg-warning ms-2">Pendiente</span>
-                                        @endif
+                        </div>
+
+                        <!-- Comprobante de Domicilio -->
+                        <div class="document-item mb-3 pb-3 border-bottom">
+                            <div class="d-flex align-items-start gap-3">
+                                <!-- Icono de estado -->
+                                <div class="flex-shrink-0">
+                                    @if ($certificate->proof_of_address_approved)
+                                        <div class="status-icon status-completed">
+                                            <ion-icon name="checkmark-circle"
+                                                style="font-size: 32px; color: #198754;"></ion-icon>
+                                        </div>
+                                    @else
+                                        <div class="status-icon status-pending">
+                                            <ion-icon name="ellipse-outline"
+                                                style="font-size: 32px; color: #ffc107;"></ion-icon>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6
+                                                class="mb-1 {{ $certificate->proof_of_address_approved ? 'text-success' : '' }}">
+                                                Comprobante de Domicilio
+                                            </h6>
+                                            <small class="text-muted">
+                                                @if ($certificate->proof_of_address_approved)
+                                                    <span class="text-success">
+                                                        <i class="bx bx-check"></i> Documento aprobado
+                                                    </span>
+                                                @elseif($certificate->proof_of_address_file)
+                                                    <span class="text-warning">
+                                                        <i class="bx bx-time-five"></i> Pendiente de revision
+                                                    </span>
+                                                @else
+                                                    <span class="text-danger">
+                                                        <i class="bx bx-x"></i> No subido
+                                                    </span>
+                                                @endif
+                                            </small>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            @if ($certificate->proof_of_address_file)
+                                                <a href="{{ $certificate->proof_of_address_file }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-primary">
+                                                    <i class="bx bx-show"></i> Ver
+                                                </a>
+                                            @endif
+                                        </div>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label text-muted">Fotografia</label>
-                                @if ($certificate->photo_file)
-                                    <div class="d-flex align-items-center">
-                                        <a href="{{ $certificate->photo_file }}" target="_blank"
-                                            class="btn btn-outline-primary btn-sm">
-                                            <i class="bx bx-download"></i> Ver
-                                        </a>
-                                        @if ($certificate->photo_approved)
-                                            <span class="badge bg-success ms-2"><i class="bx bx-check"></i>
-                                                Aprobado</span>
-                                        @else
-                                            <span class="badge bg-warning ms-2">Pendiente</span>
-                                        @endif
+                        </div>
+
+                        <!-- Fotografía -->
+                        <div class="document-item">
+                            <div class="d-flex align-items-start gap-3">
+                                <!-- Icono de estado -->
+                                <div class="flex-shrink-0">
+                                    @if ($certificate->photo_approved)
+                                        <div class="status-icon status-completed">
+                                            <ion-icon name="checkmark-circle"
+                                                style="font-size: 32px; color: #198754;"></ion-icon>
+                                        </div>
+                                    @else
+                                        <div class="status-icon status-pending">
+                                            <ion-icon name="ellipse-outline"
+                                                style="font-size: 32px; color: #ffc107;"></ion-icon>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1 {{ $certificate->photo_approved ? 'text-success' : '' }}">
+                                                Fotografía
+                                            </h6>
+                                            <small class="text-muted">
+                                                @if ($certificate->photo_approved)
+                                                    <span class="text-success">
+                                                        <i class="bx bx-check"></i> Documento aprobado
+                                                    </span>
+                                                @elseif($certificate->photo_file)
+                                                    <span class="text-warning">
+                                                        <i class="bx bx-time-five"></i> Pendiente de revision
+                                                    </span>
+                                                @else
+                                                    <span class="text-muted">
+                                                        <i class="bx bx-minus"></i> Opcional - No subido
+                                                    </span>
+                                                @endif
+                                            </small>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            @if ($certificate->photo_file)
+                                                <a href="{{ $certificate->photo_file }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-primary">
+                                                    <i class="bx bx-show"></i> Ver
+                                                </a>
+                                            @endif
+                                        </div>
                                     </div>
-                                @else
-                                    <p class="text-muted">No subida</p>
-                                @endif
+                                </div>
                             </div>
                         </div>
                     </div>
