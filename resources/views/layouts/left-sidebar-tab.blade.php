@@ -61,7 +61,8 @@
                         </li>
                     @endif
 
-                    @hasanyrole(['dif', 'financial_support', 'financial_support_helper', 'all', 'tesoreria_caja', 'cto_admin', 'cto_helper'])
+                    @hasanyrole(['dif', 'financial_support', 'financial_support_helper', 'all', 'tesoreria_caja',
+                        'cto_admin', 'cto_helper'])
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería"
                             data-bs-trigger="hover">
                             <a href="#valleTreasury" id="uikit-tab" class="nav-link">
@@ -123,6 +124,13 @@
                             </a>
                         </li>
                     @endif
+
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="Secretaría Particular" data-bs-trigger="hover">
+                        <a href="#valleSecretary" id="authentication-tab" class="nav-link">
+                            <i class="ti ti-briefcase menu-icon"></i>
+                        </a>
+                    </li>
 
                     @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -336,25 +344,26 @@
                 </div>
             @endif
 
-            @hasanyrole(['dif', 'financial_support', 'financial_support_helper', 'all', 'tesoreria_caja', 'cto_admin', 'cto_helper'])
+            @hasanyrole(['dif', 'financial_support', 'financial_support_helper', 'all', 'tesoreria_caja', 'cto_admin',
+                'cto_helper'])
                 <div id="valleTreasury" class="main-icon-menu-pane tab-pane" role="tabpanel"
                     aria-labelledby="uikit-tab">
 
                     <div class="title-box mt-5">
                         <h6 class="menu-title">Predial</h6>
                     </div>
-                    
+
                     <ul class="nav flex-column">
                         @hasanyrole(['all', 'financial_support', 'financial_support_helper', 'cto_admin', 'cto_helper'])
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('properties.index') }}">Predios</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('properties.index') }}">Predios</a>
+                            </li>
                         @endhasanyrole
 
                         @hasanyrole(['all', 'financial_support', 'financial_support_helper', 'tesoreria_caja'])
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('property_taxes.index') }}">Recibos</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('property_taxes.index') }}">Recibos</a>
+                            </li>
                         @endhasanyrole
                     </ul>
 
@@ -397,8 +406,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link"
-                                    href="{{ route('account_due_provisional_integers.index') }}">Registro
+                                <a class="nav-link" href="{{ route('account_due_provisional_integers.index') }}">Registro
                                     de Enteros</a>
                             </li>
 
@@ -440,8 +448,7 @@
 
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link"
-                                    href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
+                                <a class="nav-link" href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
                             </li>
                         </ul>
                     @endhasanyrole
@@ -752,6 +759,19 @@
                     </ul>
                 </div>
             @endif
+
+            <div id="valleSecretary" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="authentication-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Secretaría Publica</h6>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('identification_certificates.index') }}">Constancias de
+                            Identificación</a>
+                    </li>
+                </ul>
+            </div>
 
             @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                 <div id="valleConfiguration" class="main-icon-menu-pane tab-pane" role="tabpanel"

@@ -78,7 +78,7 @@
                 </div>
 
                 <div class="text-center">
-                    <button class="btn btn-primary" wire:click="nextStep">Siguiente</button>
+                    <button type="button" class="btn btn-primary" wire:click="nextStep">Siguiente</button>
                 </div>
             @break
 
@@ -186,7 +186,7 @@
                         <button type="button" wire:click="back" class="btn btn-secondary">Regresar</button>
                     </div>
                     <div class="col-md-6 text-end">
-                        <button class="btn btn-primary" wire:click="nextStep">
+                        <button type="button" class="btn btn-primary" wire:click="nextStep">
                             Siguiente
                         </button>
                     </div>
@@ -271,7 +271,7 @@
                             </div>
                             <div class="col-md-6 d-flex justify-content-end mt-3">
                                 <button type="submit" class="btn btn-primary">Enviar</button>
-                                <button wire:click="clean" class="btn btn-secondary ms-2">Borrar datos</button>
+                                <button type="button" wire:click="clean" class="btn btn-secondary ms-2">Borrar datos</button>
                             </div>
                         </div>
                     </div>
@@ -327,19 +327,38 @@
             });
         </script>
 
-        <script src="https://www.google.com/recaptcha/api.js?onload=handle&render=explicit" async defer></script>
+        <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
         <script>
-            var handle = function(e) {
-                widget = grecaptcha.render('captcha', {
-                    'sitekey': '{{ config('services.recaptcha.public_key') }}',
-                    'theme': 'light', // you could switch between dark and light mode.
-                    'callback': verify
-                });
+            var captchaRendered = false;
 
+            function renderCaptcha() {
+                if (captchaRendered) return;
+
+                var captchaDiv = document.getElementById('captcha');
+                if (captchaDiv && typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+                    grecaptcha.render('captcha', {
+                        'sitekey': '{{ config('services.recaptcha.public_key') }}',
+                        'theme': 'light',
+                        'callback': function(response) {
+                            @this.set('captcha', response);
+                        }
+                    });
+                    captchaRendered = true;
+                }
             }
-            var verify = function(response) {
-                @this.set('captcha', response)
-            }
+
+            // Intentar renderizar cuando Livewire actualiza el DOM (cambio de step)
+            document.addEventListener('livewire:navigated', renderCaptcha);
+
+            // Para Livewire 3 - escuchar actualizaciones del componente
+            Livewire.hook('morph.updated', ({ el, component }) => {
+                setTimeout(renderCaptcha, 100);
+            });
+
+            // Intentar renderizar si ya estamos en step 3
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(renderCaptcha, 500);
+            });
         </script>
     @endpush
 </div>

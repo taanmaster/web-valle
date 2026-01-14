@@ -14,6 +14,8 @@ use Intervention\Image\Facades\Image as Image;
 use Livewire\WithFileUploads;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\ValidationException;
 use ZipArchive;
 
 //Modelos
@@ -110,13 +112,18 @@ class Form extends Component
 
     public function save()
     {
-        // Validar captcha
+        // Validar que el captcha haya sido verificado (se valida en updatedCaptcha)
+        if ($this->captcha !== true) {
+            throw ValidationException::withMessages([
+                'captcha' => 'Por favor, completa el captcha antes de enviar.',
+            ]);
+        }
+
         $this->validate([
-            'captcha' => 'required|captcha',
             'complain' => 'required|string|min:10',
         ], [
-            'captcha.required' => 'El captcha es obligatorio.',
-            'captcha.captcha' => 'El captcha es incorrecto. Por favor, inténtelo de nuevo.',
+            'complain.required' => 'La descripción es obligatoria.',
+            'complain.min' => 'La descripción debe tener al menos 10 caracteres.',
         ]);
 
 

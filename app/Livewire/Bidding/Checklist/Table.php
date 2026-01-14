@@ -54,14 +54,22 @@ class Table extends Component
             $item->file = $uploaded;
 
             $item->upload_date = now()->format('Y-m-d');
-        }
+            $item->save();
 
+            $item->bidding->updateStatus();
+        }
+    }
+
+    public function markAsCompleted($id)
+    {
+        $item = BiddingDeliverable::findOrFail($id);
+        $item->is_completed = true;
+        $item->upload_date = now()->format('Y-m-d');
         $item->save();
 
         $item->bidding->updateStatus();
 
         $this->dispatch('$refresh');
-
     }
 
     protected function handleUpload($document)

@@ -79,31 +79,30 @@
                 <p>{{ $movement->type }} de Inventario</p>
             </td>
         </tr>
-        <tr>
-            <td class="label">SKU</td>
-            <td colspan="2"><input type="text" value="{{ $movement->material->sku }}"></td>
-        </tr>
-
-        <tr>
-            <td class="label">Cantidad</td>
-            <td colspan="3"><input type="text" value="{{ $movement->quantity }}"></td>
-        </tr>
-        <tr>
-            <td class="label">Nombre</td>
-            <td><input type="text" value="{{ $movement->material->title }}"></td>
-            <td class="label">Categoría</td>
-            <td>
-                <p>{{ $movement->material->category }}</p>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label">Dependencia</td>
-            <td colspan="3">
-                <p>{{ $movement->material->dependency_name }}</p>
-            </td>
-        </tr>
-
+        @foreach ($movement->items as $item)
+            <tr>
+                <td class="label">SKU</td>
+                <td colspan="2"><input type="text" value="{{ $item->material->sku }}"></td>
+            </tr>
+            <tr>
+                <td class="label">Cantidad</td>
+                <td colspan="3"><input type="text" value="{{ $item->quantity }}"></td>
+            </tr>
+            <tr>
+                <td class="label">Nombre</td>
+                <td><input type="text" value="{{ $item->material->title }}"></td>
+                <td class="label">Categoría</td>
+                <td>
+                    <p>{{ $item->material->category }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Dependencia</td>
+                <td colspan="3">
+                    <p>{{ $item->material->dependency_name }}</p>
+                </td>
+            </tr>
+        @endforeach
         <tr>
             <td class="label">Proveedor</td>
             <td colspan="3">

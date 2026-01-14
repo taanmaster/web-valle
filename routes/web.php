@@ -1032,7 +1032,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::resource('properties', CTOPropertyController::class); // Listado de Predios
             Route::post('properties/import', [CTOPropertyController::class, 'import'])->name('properties.import'); // Importar Excel de Predios
             Route::resource('property_taxes', CTOPropertyTaxController::class); // Recibos de los Predios
-            
+
             // Rutas adicionales para recibos de predial
             Route::patch('property_taxes/{id}/mark-paid', [CTOPropertyTaxController::class, 'markAsPaid'])->name('property_taxes.mark-paid');
             Route::get('property_taxes/{id}/print', [CTOPropertyTaxController::class, 'print'])->name('property_taxes.print');
@@ -1437,6 +1437,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'as' => 'citizen_complain.index',
         ]);
 
+        Route::get('/citizen-complain/{id}', [
+            'uses' => 'CitizenComplainController@show',
+            'as' => 'citizen_complain.show',
+        ]);
 
         Route::group(['prefix' => 'institucional_development'], function () {
             Route::resource('regulations', MunicipalRegulationController::class)->names([
@@ -1553,6 +1557,19 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'as' => 'implan.banners.status',
             ]);
         });
+
+        /* ------------------- */
+        /* ------------------- */
+        /* Secretaría particular */
+        Route::resource('identification_certificates', IdentificationCertificateController::class)->names([
+            'index' => 'identification_certificates.index',
+            'create' => 'identification_certificates.create',
+            'store' => 'identification_certificates.store',
+            'show' => 'identification_certificates.show',
+            'edit' => 'identification_certificates.edit',
+            'update' => 'identification_certificates.update',
+            'destroy' => 'identification_certificates.destroy',
+        ]);
     });
 
     // Rutas del Perfil Ciudadano (Front-End)
@@ -1564,6 +1581,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil/tramites', 'CitizenProfileController@urbanDevRequests')->name('citizen.profile.urban_dev_requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
         Route::put('/perfil/notificaciones', 'CitizenProfileController@updateNotifications')->name('citizen.profile.notifications');
+
+        // Rutas para constancias de identificación
+        Route::get('/constancias_de_identificacion', 'CitizenProfileController@identificationCertificates')->name('citizen.profile.identification_certificates');
+        Route::get('/constancias_de_identificacion/crear', 'CitizenProfileController@createIdentificationCertificate')->name('citizen.profile.identification_certificates.create');
+        Route::get('/constancias_de_identificacion/{certificate}', 'CitizenProfileController@showIdentificationCertificate')->name('citizen.profile.identification_certificates.show');
 
         // Rutas SARE para ciudadanos
         Route::get('/sare/crear', 'CitizenProfileController@createSareRequest')->name('citizen.sare.create');

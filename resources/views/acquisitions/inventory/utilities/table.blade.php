@@ -113,54 +113,56 @@
 
                     @if ($mode != 0)
                         @foreach ($movements as $movement)
-                            <tr>
-                                <td>{{ $movement->material->category }}</td>
-                                <td>
-                                    {{ $movement->material->sku }}
-                                </td>
-                                <td>
-                                    {{ $movement->material->title }}
-                                </td>
-                                <td>
-                                    {{ $movement->material->dependency_name }}
-                                </td>
-                                <td>
-                                    {{ $movement->supplier->owner_name }}
-                                </td>
-                                <td>
-                                    @if ($movement->type == 'Entrada')
-                                        +
-                                    @else
-                                        -
-                                    @endif
-                                    {{ $movement->quantity }}
-                                </td>
-                                <td>
-                                    @if ($movement->file)
-                                        <a href="{{ $movement->file }}" target="_blank" class="btn btn-sm btn-link">
-                                            Ver PDF
-                                        </a>
-                                    @endif
-                                    <div class="dropdown">
-                                        <button class="btn btn-primary dropdown-toggle" type="button"
-                                            id="dropdownMenuButton{{ $movement->id }}" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                            <i class="fas fa-cog"></i> Acciones
-                                        </button>
-                                        <ul class="dropdown-menu"
-                                            aria-labelledby="dropdownMenuButton{{ $movement->id }}">
-                                            <!-- Ver medicamento -->
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('acquisitions.inventory.show', $movement->id) }}">
-                                                    <i class="fas fa-eye text-primary me-2"></i>
-                                                    <span class="fw-medium">Ver Movimiento</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                            @foreach ($movement->items as $item)
+                                <tr>
+                                    <td>{{ $item->material->category }}</td>
+                                    <td>
+                                        {{ $item->material->sku }}
+                                    </td>
+                                    <td>
+                                        {{ $item->material->title }}
+                                    </td>
+                                    <td>
+                                        {{ $item->material->dependency_name }}
+                                    </td>
+                                    <td>
+                                        {{ $movement->supplier->owner_name }}
+                                    </td>
+                                    <td>
+                                        @if ($movement->type == 'Entrada')
+                                            +
+                                        @else
+                                            -
+                                        @endif
+                                        {{ $item->quantity }}
+                                    </td>
+                                    <td>
+                                        @if ($movement->file)
+                                            <a href="{{ $movement->file }}" target="_blank" class="btn btn-sm btn-link">
+                                                Ver PDF
+                                            </a>
+                                        @endif
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                                id="dropdownMenuButton{{ $movement->id }}" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="fas fa-cog"></i> Acciones
+                                            </button>
+                                            <ul class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton{{ $movement->id }}">
+                                                <!-- Ver medicamento -->
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('acquisitions.inventory.show', $movement->id) }}">
+                                                        <i class="fas fa-eye text-primary me-2"></i>
+                                                        <span class="fw-medium">Ver Movimiento</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endforeach
                     @else
                         @foreach ($movements as $movement)

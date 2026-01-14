@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\AcquisitionInventoryMovement;
+use App\Models\AcquisitionInventoryMovementItem;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -14,8 +14,10 @@ class OutcomeInventoryExport implements FromCollection, WithHeadings, WithMappin
 
     public function collection()
     {
-        return AcquisitionInventoryMovement::with(['material', 'supplier'])
-            ->where('type', 'Salida')
+        return AcquisitionInventoryMovementItem::with(['movement.supplier', 'material'])
+            ->whereHas('movement', function ($query) {
+                $query->where('type', 'Salida');
+            })
             ->get();
     }
 
@@ -34,11 +36,11 @@ class OutcomeInventoryExport implements FromCollection, WithHeadings, WithMappin
     public function map($row): array
     {
         return [
-            $row->type,
-            $row->sku,
-            $row->title,
-            $row->dependency_name,
-            optional($row->supplier)->owner_name ?? 'N/A',
+            optional($row->movement)->type,
+            optional($row->material)->sku,
+            optional($row->material)->title,
+            optional($row->movement)->dependency_name,
+            optional($row->movement->supplier)->owner_name ?? 'N/A',
             $row->quantity,
         ];
     }

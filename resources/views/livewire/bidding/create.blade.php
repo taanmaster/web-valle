@@ -112,6 +112,7 @@
                     <option value="Licitación pública">Licitación pública</option>
                     <option value="Licitación restringida">Licitación restringida</option>
                     <option value="Adjudicación directa">Adjudicación directa</option>
+                    <option value="Orden de compra">Orden de compra</option>
                     <option value="Con cotización de tres proveedores">Con cotización de tres proveedores
                     </option>
 

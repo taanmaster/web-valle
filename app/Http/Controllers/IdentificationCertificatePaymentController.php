@@ -2,29 +2,17 @@
 
 namespace App\Http\Controllers;
 
-// Ayudantes
-use PDF;
-use Str;
-use Auth;
-use Session;
-
-use App\Models\CitizenComplain;
+use App\Models\IdentificationCertificatePayment;
 use Illuminate\Http\Request;
 
-
-class CitizenComplainController extends Controller
+class IdentificationCertificatePaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $complains = CitizenComplain::paginate(10);
-
-
-        return view('complains.index')->with([
-            'complains' => $complains,
-        ]);
+        //
     }
 
     /**
@@ -46,19 +34,15 @@ class CitizenComplainController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(IdentificationCertificatePayment $identificationCertificatePayment)
     {
-        $complain = CitizenComplain::findOrFail($id);
-
-        return view('complains.show')->with([
-            'complain' => $complain,
-        ]);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CitizenComplain $citizenComplain)
+    public function edit(IdentificationCertificatePayment $identificationCertificatePayment)
     {
         //
     }
@@ -66,7 +50,7 @@ class CitizenComplainController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CitizenComplain $citizenComplain)
+    public function update(Request $request, IdentificationCertificatePayment $identificationCertificatePayment)
     {
         //
     }
@@ -74,7 +58,7 @@ class CitizenComplainController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CitizenComplain $citizenComplain)
+    public function destroy(IdentificationCertificatePayment $identificationCertificatePayment)
     {
         //
     }

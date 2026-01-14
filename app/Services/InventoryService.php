@@ -4,16 +4,19 @@ namespace App\Services;
 
 use App\Models\AcquisitionMaterial;
 use App\Models\AcquisitionInventoryMovement;
+use App\Models\AcquisitionInventoryMovementItem;
 
 class InventoryService
 {
-    public function applyToStock(AcquisitionInventoryMovement $movement)
+    public function applyToStock(AcquisitionInventoryMovementItem $movement)
     {
         $material = $movement->material;
 
         $current = $material->current_stock;
 
-        $newStock = $movement->type === 'Entrada'
+        $type = $movement->movement->type;
+
+        $newStock = $type === 'Entrada'
             ? $current + $movement->quantity
             : $current - $movement->quantity;
 

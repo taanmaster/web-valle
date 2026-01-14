@@ -25,7 +25,7 @@
             <label class="form-label">Ingresa tu folio aquí</label>
         </div>
         <div class="col-md">
-            <input type="text" wire:model.live="complain">
+            <input type="text" wire:model.blur="complain" class="form-control">
         </div>
     </div>
 

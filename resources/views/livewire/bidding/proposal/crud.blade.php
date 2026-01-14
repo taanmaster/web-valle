@@ -199,7 +199,7 @@
 
                         <div class="row">
 
-                            <h4>Inforamción de Proveedor</h4>
+                            <h4>Información de Proveedor</h4>
 
                             <div class="col-md-2">
                                 <label for="worker_id" class="col-form-label" required>Proveedor</label>
