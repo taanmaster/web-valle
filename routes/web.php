@@ -142,6 +142,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /* Predial en Línea */
     Route::get('/predial-en-linea', 'FrontController@predialSearch')->name('predial.search');
     Route::post('/predial-en-linea/resultados', 'FrontController@predialSearchResults')->name('predial.search.results');
+    Route::get('/predial-en-linea/recibo/{id}/imprimir', 'FrontController@predialReceiptPrint')->name('predial.receipt.print');
+    Route::get('/predial-en-linea/estado-cuenta/{id}/imprimir', 'FrontController@predialAccountStatementPrint')->name('predial.account-statement.print');
 
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
@@ -1036,6 +1038,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             // Rutas adicionales para recibos de predial
             Route::patch('property_taxes/{id}/mark-paid', [CTOPropertyTaxController::class, 'markAsPaid'])->name('property_taxes.mark-paid');
             Route::get('property_taxes/{id}/print', [CTOPropertyTaxController::class, 'print'])->name('property_taxes.print');
+            Route::get('properties/{id}/account-statement/print', [CTOPropertyController::class, 'printAccountStatement'])->name('properties.account-statement.print');
 
             /* Apoyos Económicos */
             Route::resource('financial_supports', FinancialSupportController::class);

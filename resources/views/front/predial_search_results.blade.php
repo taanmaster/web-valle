@@ -5,7 +5,7 @@
     <!-- Botón para regresar -->
     <div class="mb-4">
         <a href="{{ route('predial.search') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i> Hacer otra búsqueda
+            <ion-icon name="arrow-back-outline" class="me-2"></ion-icon> Hacer otra búsqueda
         </a>
     </div>
 
@@ -15,7 +15,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h3 class="mb-0 text-white">
-                        <i class="fas fa-home me-2"></i>
+                        <ion-icon name="home-outline" class="me-2"></ion-icon>
                         Información de tu Propiedad
                     </h3>
                 </div>
@@ -24,7 +24,7 @@
         <div class="card-body p-4">
             <!-- Contribuyente -->
             <h5 class="border-bottom pb-3 mb-4">
-                <i class="fas fa-user text-primary me-2"></i>
+                <ion-icon name="person-outline" class="text-primary me-2"></ion-icon>
                 Información del Contribuyente
             </h5>
             <div class="row mb-4">
@@ -44,7 +44,7 @@
 
             <!-- Dirección -->
             <h5 class="border-bottom pb-3 mb-4">
-                <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                <ion-icon name="location-outline" class="text-primary me-2"></ion-icon>
                 Dirección del Predio
             </h5>
             <div class="row mb-4">
@@ -62,7 +62,7 @@
 
             <!-- Información del Predio -->
             <h5 class="border-bottom pb-3 mb-4">
-                <i class="fas fa-building text-primary me-2"></i>
+                <ion-icon name="business-outline" class="text-primary me-2"></ion-icon>
                 Datos del Predio
             </h5>
             <div class="row">
@@ -94,11 +94,16 @@
 
     <!-- Estado de Cuenta -->
     <div class="card shadow-lg border-0 rounded-4 mb-4">
-        <div class="card-header bg-warning text-dark py-4">
+        <div class="card-header bg-warning text-dark py-4 d-flex justify-content-between align-items-center">
             <h3 class="mb-0 text-white">
-                <i class="fas fa-file-invoice-dollar me-2"></i>
+                <ion-icon name="document-text-outline" class="me-2"></ion-icon>
                 Estado de Cuenta
             </h3>
+            <a href="{{ route('predial.account-statement.print', $property->id) }}" 
+               class="btn btn-dark"
+               target="_blank">
+                <ion-icon name="print-outline" class="me-1"></ion-icon> Imprimir Estado de Cuenta
+            </a>
         </div>
         <div class="card-body p-4">
             @if($years->count() > 0)
@@ -232,7 +237,7 @@
                             <!-- Total a pagar -->
                             <div class="alert alert-success text-center">
                                 <h3 class="mb-0">
-                                    <i class="fas fa-dollar-sign me-2"></i>
+                                    <ion-icon name="cash-outline" class="me-2"></ion-icon>
                                     <strong>TOTAL A PAGAR:</strong> ${{ number_format($totalAPagar, 2) }}
                                 </h3>
                             </div>
@@ -241,7 +246,7 @@
                 </div>
             @else
                 <div class="text-center py-5">
-                    <i class="fas fa-file-invoice-dollar fa-4x text-muted mb-3"></i>
+                    <ion-icon name="document-text-outline" style="font-size: 4rem;" class="text-muted mb-3 d-block mx-auto"></ion-icon>
                     <p class="text-muted">No hay recibos registrados para este predio</p>
                 </div>
             @endif
@@ -252,7 +257,7 @@
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header bg-success text-white py-4">
             <h3 class="mb-0 text-white">
-                <i class="fas fa-file-invoice me-2"></i>
+                <ion-icon name="receipt-outline" class="me-2"></ion-icon>
                 Recibos del Predio
             </h3>
         </div>
@@ -269,6 +274,7 @@
                                 <th class="text-end">Total</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Fecha de Pago</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -294,6 +300,14 @@
                                     </td>
                                     <td class="text-center">
                                         {{ $tax->payment_date ? $tax->payment_date->format('d/m/Y') : '-' }}
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ route('predial.receipt.print', $tax->id) }}" 
+                                           class="btn btn-sm btn-outline-secondary"
+                                           title="Imprimir recibo"
+                                           target="_blank">
+                                            <ion-icon name="print-outline"></ion-icon>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -330,7 +344,7 @@
                 </div>
             @else
                 <div class="text-center py-5">
-                    <i class="fas fa-file-invoice fa-4x text-muted mb-3"></i>
+                    <ion-icon name="receipt-outline" style="font-size: 4rem;" class="text-muted mb-3 d-block mx-auto"></ion-icon>
                     <p class="text-muted">No hay recibos registrados para este predio</p>
                 </div>
             @endif
@@ -341,11 +355,11 @@
     <div class="card border-0 bg-light mt-4">
         <div class="card-body p-4">
             <h5 class="fw-bold mb-3">
-                <i class="fas fa-info-circle text-info me-2"></i>
+                <ion-icon name="information-circle-outline" class="text-info me-2"></ion-icon>
                 ¿Tienes dudas sobre tu estado de cuenta?
             </h5>
             <p class="mb-0">
-                <i class="fas fa-phone-alt text-primary me-2"></i>
+                <ion-icon name="call-outline" class="text-primary me-2"></ion-icon>
                 Comunícate con Tesorería Municipal para más información sobre pagos, descuentos y formas de pago disponibles.
             </p>
         </div>

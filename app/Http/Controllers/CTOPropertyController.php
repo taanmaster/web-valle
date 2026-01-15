@@ -7,6 +7,7 @@ use App\Models\Notification;
 use App\Services\NotificationService;
 use App\Imports\CTOPropertyImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Session;
 use Auth;
@@ -241,5 +242,22 @@ class CTOPropertyController extends Controller
 
             return redirect()->route('properties.index')->with('error', 'Ocurrió un error al importar el archivo. Por favor verifica el formato.');
         }
+    }
+
+    /**
+     * Imprimir estado de cuenta de una propiedad
+     */
+    public function printAccountStatement($id)
+    {
+        $property = CTOProperty::with('propertyTaxes')->findOrFail($id);
+        
+        // Obtener años únicos de los recibos
+        $years = $property->propertyTaxes->pluck('tax_year')->unique()->sort()->reverse();
+        
+        $pdf = PDF::loadView('cto.properties.print_account_statement', compact('property', 'years'))->setPaper('A4');
+        
+        $filename = 'estado_cuenta_' . ($property->location_account ?? $property->id) . '.pdf';
+        
+        return $pdf->download($filename);
     }
 }
