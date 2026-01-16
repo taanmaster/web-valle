@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('citizen_complains', function (Blueprint $table) {
-            $table->string('status')->default('Nueva');
+        Schema::table('backoffice_dependencies', function (Blueprint $table) {
+            $table->string('type', 255)->nullable()->after('responsible_name');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('citizen_complains', function (Blueprint $table) {
-            $table->dropColumn('status');
+        Schema::table('backoffice_dependencies', function (Blueprint $table) {
+            $table->dropColumn('type');
         });
     }
 };

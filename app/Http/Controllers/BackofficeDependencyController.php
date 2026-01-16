@@ -45,6 +45,7 @@ class BackofficeDependencyController extends Controller
             'code' => 'required|string|max:20|unique:backoffice_dependencies,code',
             'name' => 'required|string|max:255',
             'responsible_name' => 'required|string|max:255',
+            'type' => 'nullable|string|max:255',
         ], [
             'code.required' => 'El código es obligatorio.',
             'code.unique' => 'Este código ya existe.',
@@ -56,6 +57,7 @@ class BackofficeDependencyController extends Controller
             'code' => strtoupper($request->code),
             'name' => $request->name,
             'responsible_name' => $request->responsible_name,
+            'type' => $request->type,
         ]);
 
         Session::flash('success', 'Dependencia creada exitosamente.');
@@ -92,6 +94,7 @@ class BackofficeDependencyController extends Controller
             'code' => 'required|string|max:20|unique:backoffice_dependencies,code,' . $id,
             'name' => 'required|string|max:255',
             'responsible_name' => 'required|string|max:255',
+            'type' => 'nullable|string|max:255',
         ], [
             'code.required' => 'El código es obligatorio.',
             'code.unique' => 'Este código ya existe.',
@@ -104,6 +107,7 @@ class BackofficeDependencyController extends Controller
             'code' => strtoupper($request->code),
             'name' => $request->name,
             'responsible_name' => $request->responsible_name,
+            'type' => $request->type,
         ]);
 
         Session::flash('success', 'Dependencia actualizada exitosamente.');

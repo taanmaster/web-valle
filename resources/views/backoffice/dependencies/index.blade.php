@@ -117,6 +117,7 @@
                                     <tr>
                                         <th class="fw-semibold">Código</th>
                                         <th class="fw-semibold">Nombre</th>
+                                        <th class="fw-semibold">Tipo</th>
                                         <th class="fw-semibold">Responsable</th>
                                         <th class="fw-semibold text-center">Usuarios</th>
                                         <th class="fw-semibold text-center">Oficios</th>
@@ -131,6 +132,13 @@
                                             </td>
                                             <td>
                                                 <strong>{{ $dependency->name }}</strong>
+                                            </td>
+                                            <td>
+                                                @if($dependency->type)
+                                                    <span class="text-muted">{{ $dependency->type }}</span>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
                                             </td>
                                             <td>{{ $dependency->responsible_name }}</td>
                                             <td class="text-center">

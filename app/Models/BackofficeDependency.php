@@ -15,6 +15,7 @@ class BackofficeDependency extends Model
         'code',
         'name',
         'responsible_name',
+        'type',
     ];
 
     /**

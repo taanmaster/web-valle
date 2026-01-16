@@ -92,6 +92,22 @@
                             </div>
                         </div>
 
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label">Tipo</label>
+                                <input type="text" 
+                                       name="type" 
+                                       class="form-control @error('type') is-invalid @enderror" 
+                                       value="{{ old('type', $dependency->type) }}" 
+                                       placeholder="Ej: Dirección, Coordinación, Departamento..."
+                                       maxlength="255">
+                                <small class="text-muted">Clasificación o tipo de dependencia (opcional).</small>
+                                @error('type')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <!-- Botones -->
                         <div class="d-flex justify-content-end gap-2 mt-4">
                             <a href="{{ route('backoffice.dependencies.index') }}" class="btn btn-secondary">
