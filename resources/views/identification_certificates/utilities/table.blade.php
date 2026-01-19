@@ -88,10 +88,18 @@
                                 <span class="badge bg-{{ $color }}">{{ $certificate->status }}</span>
                             </td>
                             <td>
-                                <a href="{{ route('identification_certificates.show', $certificate->id) }}"
-                                    class="btn btn-sm btn-primary">
-                                    <i class="fas fa-eye"></i> Ver
-                                </a>
+                                @if ($mode == 0)
+                                    <a href="{{ route('identification_certificates.show', $certificate->id) }}"
+                                        class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i> Ver
+                                    </a>
+                                @else
+                                    <a href="{{ route('citizen.profile.identification_certificates.show', $certificate->id) }}"
+                                        class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i> Ver
+                                    </a>
+                                @endif
+
                             </td>
                         </tr>
                     @endforeach
