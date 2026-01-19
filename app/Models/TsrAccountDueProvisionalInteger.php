@@ -22,6 +22,7 @@ class TsrAccountDueProvisionalInteger extends Model
         'payment_method',
         'created_by',
         'director',
+        'type',
     ];
 
     public function profile()
@@ -32,5 +33,10 @@ class TsrAccountDueProvisionalInteger extends Model
     public function incomes()
     {
         return $this->hasMany(TsrAccountDueIncome::class, 'provisional_integer_id');
+    }
+
+    public function folios()
+    {
+        return $this->hasMany(TsrAccountDueProvisionalIntegerFolio::class, 'provisional_integer_id');
     }
 }

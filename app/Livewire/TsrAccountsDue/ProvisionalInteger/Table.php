@@ -31,11 +31,9 @@ class Table extends Component
     public $dependencies = [];
 
     #[On('select')]
-    public function listenerReferenceHere($selectedValue)
+    public function listenerReferenceHere($selectedValue = null)
     {
-
         if ($selectedValue != null) {
-
             if (!in_array($selectedValue, $this->dependency_name)) {
                 $this->dependency_name[] = $selectedValue;
             }
