@@ -1347,7 +1347,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Backoffice - Oficios */
         Route::group(['prefix' => 'backoffice'], function () {
-            
+
             /* Dependencias del Backoffice */
             Route::resource('dependencies', BackofficeDependencyController::class)->names([
                 'index' => 'backoffice.dependencies.index',
@@ -1358,7 +1358,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'backoffice.dependencies.update',
                 'destroy' => 'backoffice.dependencies.destroy',
             ]);
-            
+
             /* Gestión de usuarios en dependencias */
             Route::get('dependencies/users/search', [BackofficeDependencyController::class, 'searchUsers'])->name('backoffice.dependencies.search-users');
             Route::post('dependencies/{id}/attach-user', [BackofficeDependencyController::class, 'attachUser'])->name('backoffice.dependencies.attach-user');
@@ -1367,7 +1367,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
             /* Documentos/Oficios */
             Route::get('documents/notifications', [BackofficeDocumentController::class, 'notifications'])->name('backoffice.documents.notifications');
             Route::get('documents/repository', [BackofficeDocumentController::class, 'repository'])->name('backoffice.documents.repository')->middleware('role:webmaster|all');
-            
+
             Route::resource('documents', BackofficeDocumentController::class)->names([
                 'index' => 'backoffice.documents.index',
                 'create' => 'backoffice.documents.create',
@@ -1588,7 +1588,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         // Rutas para constancias de identificación
         Route::get('/constancias_de_identificacion', 'CitizenProfileController@identificationCertificates')->name('citizen.profile.identification_certificates');
         Route::get('/constancias_de_identificacion/crear', 'CitizenProfileController@createIdentificationCertificate')->name('citizen.profile.identification_certificates.create');
-        Route::get('/constancias_de_identificacion/{certificate}', 'CitizenProfileController@showIdentificationCertificate')->name('citizen.profile.identification_certificates.show');
+        Route::get('/constancias_de_identificacion/{id}', 'CitizenProfileController@showIdentificationCertificate')->name('citizen.profile.identification_certificates.show');
 
         // Rutas SARE para ciudadanos
         Route::get('/sare/crear', 'CitizenProfileController@createSareRequest')->name('citizen.sare.create');

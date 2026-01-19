@@ -63,6 +63,17 @@
     <table class="w-full">
         <tr>
             <td class="w-half">
+                <img src="{{ asset('front/img/logo-valle.png') }}" alt="" style="height: 150px">
+            </td>
+            <td class="w-half">
+                <h2>Recibo oficial</h2>
+            </td>
+        </tr>
+    </table>
+
+    <table class="w-full">
+        <tr>
+            <td class="w-half">
                 {{ $receipt->created_at->format('Y-m-d') }}
             </td>
             <td class="w-half">
@@ -129,6 +140,18 @@
         </table>
 
     </div>
+
+    <table class="w-full">
+        <tr>
+            <td class="w-half">
+                <h2>MUNICIPIO DE VALLE DE SANTIAGO, GTO.</h2>
+                <h3>AYUNTAMIENTO 2024 - 2027</h3>
+            </td>
+            <td class="w-half">
+
+            </td>
+        </tr>
+    </table>
 </body>
 
 </html>

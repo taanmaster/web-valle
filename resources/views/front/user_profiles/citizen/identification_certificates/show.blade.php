@@ -16,19 +16,21 @@
                             <h5 class="mb-0">
                                 <ion-icon name="id-card-outline"></ion-icon> Constancia #{{ $certificate->folio }}
                             </h5>
-                            <a href="{{ route('citizen.profile.identification_certificates') }}" class="btn btn-outline-secondary btn-sm">
+                            <a href="{{ route('citizen.profile.identification_certificates') }}"
+                                class="btn btn-outline-secondary btn-sm">
                                 <i class="bx bx-arrow-back"></i> Volver
                             </a>
                         </div>
 
-                        @if(session('success'))
+                        @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
 
-                        <livewire:front.identification-certificates.crud :certificate="$certificate" />
+                        <livewire:front.identification-certificates.crud :certificate="$certificate" :mode="$mode" />
                     </div>
                 </div>
             </div>

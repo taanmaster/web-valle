@@ -7,7 +7,7 @@
         <div class="row justify-content-center mb-5">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner justify-content-center wow fadeInUp">
-                    <img class="card-img-top" src="{{ asset('front/img/placeholder-8.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contraloria/contra-8.jpg') }}" alt="">
                     <div class="overlay" style="opacity: .4"></div>
                     <div class="card-content text-center w-100">
                         <p class="small-uppercase mb-0">Contraloría Interna Municipal</p>
@@ -242,21 +242,224 @@
                 </div>
             </div>
 
-            <div class="col-md-12 mb-3">
-                <div class="card card-normal wow fadeInUp">
-                    <div class="card-content">
-                        <ul class="mb-0" style="line-height: 2.5; font-size: 1.05rem;">
-                            <li><strong>Soborno.</strong></li>
-                            <li><strong>Participación ilícita en procedimientos administrativos.</strong></li>
-                            <li><strong>Tráfico de Influencias para inducir a la autoridad.</strong></li>
-                            <li><strong>Utilización de información falsa.</strong></li>
-                            <li><strong>Obstrucción de facultades de investigación.</strong></li>
-                            <li><strong>Colusión. • Uso indebido de recursos públicos.</strong></li>
-                            <li><strong>Contratación indebida de ex Servidores Públicos.</strong></li>
-                            <li><strong>Faltas realizadas por candidatos a cargos de elección popular</strong></li>
-                        </ul>
+            <div class="container" style="padding: 30px 20%;">
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-image card-alignment-center wow fadeInUp h-100">
+                            <img class="card-img-top" src="{{ asset('contraloria/contra-21.jpg') }}" alt="">
+                            <div class="overlay"></div>
+
+                            <div class="card-content">
+                                <div class="d-flex align-items-center mb-0 gap-3">
+                                    <div
+                                        class="card-icon card-icon-static bg-white text-warning d-flex align-items-center justify-content-center">
+                                        <ion-icon name="warning-outline"></ion-icon>
+                                    </div>
+                                    <h2 class="mb-0">01</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="card card-normal card-alignment-center wow fadeInUp h-100">
+                            <div class="card-content mb-0">
+                                <h4 class="mb-0">Soborno</h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card card-normal flex-row justify-content-end align-items-center wow fadeInUp h-100">
+                            <div class="card-content text-end mb-0">
+                                <h4 class="mb-0">Participación ilícita en procedimientos administrativos.</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card card-image card-alignment-center wow fadeInUp h-100">
+                            <img class="card-img-top" src="{{ asset('contraloria/contra-48.jpg') }}" alt="">
+                            <div class="overlay"></div>
+
+                            <div class="card-content">
+                                <div class="d-flex align-items-center mb-0 gap-3">
+                                    <div
+                                        class="card-icon card-icon-static bg-white text-warning d-flex align-items-center justify-content-center">
+                                        <ion-icon name="warning-outline"></ion-icon>
+                                    </div>
+                                    <h2 class="mb-0">02</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-image card-alignment-center wow fadeInUp h-100">
+                            <img class="card-img-top" src="{{ asset('contraloria/contra-49.jpg') }}" alt="">
+                            <div class="overlay"></div>
+
+                            <div class="card-content">
+                                <div class="d-flex align-items-center mb-0 gap-3">
+                                    <div
+                                        class="card-icon card-icon-static bg-white text-warning d-flex align-items-center justify-content-center">
+                                        <ion-icon name="warning-outline"></ion-icon>
+                                    </div>
+                                    <h2 class="mb-0">03</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="card card-normal card-alignment-center wow fadeInUp h-100">
+                            <div class="card-content mb-0">
+                                <h4 class="mb-0">Tráfico de Influencias para inducir a la autoridad.</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card card-normal flex-row justify-content-end align-items-center wow fadeInUp h-100">
+                            <div class="card-content text-end mb-0">
+                                <h4 class="mb-0">Utilización de información falsa.</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card card-image card-alignment-center wow fadeInUp h-100">
+                            <img class="card-img-top" src="{{ asset('contraloria/contra-50.jpg') }}" alt="">
+                            <div class="overlay"></div>
+
+                            <div class="card-content">
+                                <div class="d-flex align-items-center mb-0 gap-3">
+                                    <div
+                                        class="card-icon card-icon-static bg-white text-warning d-flex align-items-center justify-content-center">
+                                        <ion-icon name="warning-outline"></ion-icon>
+                                    </div>
+                                    <h2 class="mb-0">04</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-image card-alignment-center wow fadeInUp h-100">
+                            <img class="card-img-top" src="{{ asset('contraloria/contra-51.jpg') }}" alt="">
+                            <div class="overlay"></div>
+
+                            <div class="card-content">
+                                <div class="d-flex align-items-center mb-0 gap-3">
+                                    <div
+                                        class="card-icon card-icon-static bg-white text-warning d-flex align-items-center justify-content-center">
+                                        <ion-icon name="warning-outline"></ion-icon>
+                                    </div>
+                                    <h2 class="mb-0">05</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="card card-normal card-alignment-center wow fadeInUp h-100">
+                            <div class="card-content mb-0">
+                                <h4 class="mb-0">Obstrucción de facultades de investigación.</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card card-normal flex-row justify-content-end align-items-center wow fadeInUp h-100">
+                            <div class="card-content text-end mb-0">
+                                <h4 class="mb-0">Colusión. • Uso indebido de recursos públicos.</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card card-image card-alignment-center wow fadeInUp h-100">
+                            <img class="card-img-top" src="{{ asset('contraloria/contra-52.jpg') }}" alt="">
+                            <div class="overlay"></div>
+
+                            <div class="card-content">
+                                <div class="d-flex align-items-center mb-0 gap-3">
+                                    <div
+                                        class="card-icon card-icon-static bg-white text-warning d-flex align-items-center justify-content-center">
+                                        <ion-icon name="warning-outline"></ion-icon>
+                                    </div>
+                                    <h2 class="mb-0">06</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-image card-alignment-center wow fadeInUp h-100">
+                            <img class="card-img-top" src="{{ asset('contraloria/contra-53.jpg') }}" alt="">
+                            <div class="overlay"></div>
+
+                            <div class="card-content">
+                                <div class="d-flex align-items-center mb-0 gap-3">
+                                    <div
+                                        class="card-icon card-icon-static bg-white text-warning d-flex align-items-center justify-content-center">
+                                        <ion-icon name="warning-outline"></ion-icon>
+                                    </div>
+                                    <h2 class="mb-0">07</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="card card-normal card-alignment-center wow fadeInUp h-100">
+                            <div class="card-content mb-0">
+                                <h4 class="mb-0">Contratación indebida de ex Servidores Públicos.</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card card-normal flex-row justify-content-end align-items-center wow fadeInUp h-100">
+                            <div class="card-content text-end mb-0">
+                                <h4 class="mb-0">Faltas realizadas por candidatos a cargos de elección popular</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card card-image card-alignment-center wow fadeInUp h-100">
+                            <img class="card-img-top" src="{{ asset('contraloria/contra-54.jpg') }}" alt="">
+                            <div class="overlay"></div>
+
+                            <div class="card-content">
+                                <div class="d-flex align-items-center mb-0 gap-3">
+                                    <div
+                                        class="card-icon card-icon-static bg-white text-warning d-flex align-items-center justify-content-center">
+                                        <ion-icon name="warning-outline"></ion-icon>
+                                    </div>
+                                    <h2 class="mb-0">08</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -428,7 +631,7 @@
             </div>
 
             <div class="col-md-3 mb-3">
-                <div class="card card-normal wow fadeInUp h-100 text-center"
+                <div class="card card-normal wow fadeInUp h-100 text-center overflow-hidden"
                     style="border: 2px solid #e0e0e0; transition: all 0.3s ease;">
                     <div class="card-content d-flex flex-column align-items-center justify-content-center"
                         style="min-height: 200px;">
@@ -438,11 +641,13 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">FOTOGRAFÍAS, AUDIO O VIDEO</h6>
                     </div>
+                    <img src="{{ asset('contraloria/contra-38.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                        class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
 
             <div class="col-md-3 mb-3">
-                <div class="card card-normal wow fadeInUp h-100 text-center"
+                <div class="card card-normal wow fadeInUp h-100 text-center overflow-hidden"
                     style="border: 2px solid #e0e0e0; transition: all 0.3s ease;">
                     <div class="card-content d-flex flex-column align-items-center justify-content-center"
                         style="min-height: 200px;">
@@ -452,11 +657,13 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">DOCUMENTACIÓN EN PAPEL</h6>
                     </div>
+                    <img src="{{ asset('contraloria/contra-39.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                        class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
 
             <div class="col-md-3 mb-3">
-                <div class="card card-normal wow fadeInUp h-100 text-center"
+                <div class="card card-normal wow fadeInUp h-100 text-center overflow-hidden"
                     style="border: 2px solid #e0e0e0; transition: all 0.3s ease;">
                     <div class="card-content d-flex flex-column align-items-center justify-content-center"
                         style="min-height: 200px;">
@@ -466,11 +673,13 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">DECLARACIÓN DE TESTIGOS</h6>
                     </div>
+                    <img src="{{ asset('contraloria/contra-40.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                        class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
 
             <div class="col-md-3 mb-3">
-                <div class="card card-normal wow fadeInUp h-100 text-center"
+                <div class="card card-normal wow fadeInUp h-100 text-center overflow-hidden"
                     style="border: 2px solid #e0e0e0; transition: all 0.3s ease;">
                     <div class="card-content d-flex flex-column align-items-center justify-content-center"
                         style="min-height: 200px;">
@@ -481,6 +690,8 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">INFORMACIÓN DETALLADA</h6>
                     </div>
+                    <img src="{{ asset('contraloria/contra-41.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                        class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
         </div>
@@ -497,7 +708,7 @@
             </div>
 
             <div class="col-md-4 mb-3">
-                <div class="card card-normal wow fadeInUp h-100 text-center"
+                <div class="card card-normal wow fadeInUp h-100 text-center overflow-hidden"
                     style="border: 2px solid #e0e0e0; transition: all 0.3s ease;">
                     <div class="card-content d-flex flex-column align-items-center justify-content-center"
                         style="min-height: 200px;">
@@ -507,11 +718,13 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">EN LÍNEA</h6>
                     </div>
+                    <img src="{{ asset('contraloria/contra-42.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                        class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
 
             <div class="col-md-4 mb-3">
-                <div class="card card-normal wow fadeInUp h-100 text-center"
+                <div class="card card-normal wow fadeInUp h-100 text-center overflow-hidden"
                     style="border: 2px solid #e0e0e0; transition: all 0.3s ease;">
                     <div class="card-content d-flex flex-column align-items-center justify-content-center"
                         style="min-height: 200px;">
@@ -521,11 +734,13 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">VÍA TELEFÓNICA</h6>
                     </div>
+                    <img src="{{ asset('contraloria/contra-43.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                        class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
 
             <div class="col-md-4 mb-3">
-                <div class="card card-normal wow fadeInUp h-100 text-center"
+                <div class="card card-normal wow fadeInUp h-100 text-center overflow-hidden"
                     style="border: 2px solid #e0e0e0; transition: all 0.3s ease;">
                     <div class="card-content d-flex flex-column align-items-center justify-content-center"
                         style="min-height: 200px;">
@@ -535,6 +750,8 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">PRESENCIAL</h6>
                     </div>
+                    <img src="{{ asset('contraloria/contra-8.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                        class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
         </div>
