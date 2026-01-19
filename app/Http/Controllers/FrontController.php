@@ -26,6 +26,7 @@ use App\Models\TransparencyDocument;
 // Modelos Catastro/Predial
 use App\Models\CTOProperty;
 use App\Models\CTOPropertyTax;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 // Modelos Textos Legales
 use App\Models\LegalText;
@@ -754,5 +755,36 @@ class FrontController extends Controller
         $years = $property->propertyTaxes()->pluck('tax_year')->unique()->sort()->reverse();
 
         return view('front.predial_search_results', compact('property', 'years'));
+    }
+
+    /**
+     * Imprimir recibo de predial (público)
+     */
+    public function predialReceiptPrint($id)
+    {
+        $propertyTax = CTOPropertyTax::with('property')->findOrFail($id);
+        
+        $pdf = PDF::loadView('cto.property_taxes.print', compact('propertyTax'))->setPaper('A4');
+        
+        $filename = 'recibo_predial_' . ($propertyTax->folio ?? $propertyTax->id) . '.pdf';
+        
+        return $pdf->download($filename);
+    }
+
+    /**
+     * Imprimir estado de cuenta de una propiedad (público)
+     */
+    public function predialAccountStatementPrint($id)
+    {
+        $property = CTOProperty::with('propertyTaxes')->findOrFail($id);
+        
+        // Obtener años únicos de los recibos
+        $years = $property->propertyTaxes->pluck('tax_year')->unique()->sort()->reverse();
+        
+        $pdf = PDF::loadView('cto.properties.print_account_statement', compact('property', 'years'))->setPaper('A4');
+        
+        $filename = 'estado_cuenta_' . ($property->location_account ?? $property->id) . '.pdf';
+        
+        return $pdf->download($filename);
     }
 }

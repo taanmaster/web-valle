@@ -204,6 +204,11 @@
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-file-invoice-dollar me-2"></i> Estado de Cuenta</h5>
+                    <a href="{{ route('properties.account-statement.print', $property->id) }}" 
+                       class="btn btn-sm btn-dark"
+                       target="_blank">
+                        <i class="fas fa-print me-1"></i> Imprimir Estado de Cuenta
+                    </a>
                 </div>
                 <div class="card-body p-4">
                     @php
