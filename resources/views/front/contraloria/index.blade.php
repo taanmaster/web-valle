@@ -38,7 +38,7 @@
                 <div class="card wow fadeInUp h-100" style="overflow: hidden;">
                     <div class="row g-0 h-100">
                         <div class="col-4">
-                            <img src="{{ asset('contraloria/contra-1.jpg') }}" class="img-fluid h-100 w-100"
+                            <img src="{{ asset('contra-img/contra-1.jpg') }}" class="img-fluid h-100 w-100"
                                 style="object-fit: cover;" alt="">
                         </div>
                         <div class="col-8">
@@ -56,7 +56,7 @@
                 <div class="card wow fadeInUp h-100" style="overflow: hidden;">
                     <div class="row g-0 h-100">
                         <div class="col-4">
-                            <img src="{{ asset('contraloria/contra-2.jpg') }}" class="img-fluid h-100 w-100"
+                            <img src="{{ asset('contra-img/contra-2.jpg') }}" class="img-fluid h-100 w-100"
                                 style="object-fit: cover;" alt="">
                         </div>
                         <div class="col-8">
@@ -74,7 +74,7 @@
                 <div class="card wow fadeInUp h-100" style="overflow: hidden;">
                     <div class="row g-0 h-100">
                         <div class="col-4">
-                            <img src="{{ asset('contraloria/contra-3.jpg') }}" class="img-fluid h-100 w-100"
+                            <img src="{{ asset('contra-img/contra-3.jpg') }}" class="img-fluid h-100 w-100"
                                 style="object-fit: cover;" alt="">
                         </div>
                         <div class="col-8">
@@ -91,7 +91,7 @@
                 <div class="card wow fadeInUp h-100" style="overflow: hidden;">
                     <div class="row g-0 h-100">
                         <div class="col-4">
-                            <img src="{{ asset('contraloria/contra-4.jpg') }}" class="img-fluid h-100 w-100"
+                            <img src="{{ asset('contra-img/contra-4.jpg') }}" class="img-fluid h-100 w-100"
                                 style="object-fit: cover;" alt="">
                         </div>
                         <div class="col-8">
@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <div class="col-4">
-                            <img src="{{ asset('contraloria/contra-5.jpg') }}" class="img-fluid h-100 w-100"
+                            <img src="{{ asset('contra-img/contra-5.jpg') }}" class="img-fluid h-100 w-100"
                                 style="object-fit: cover;" alt="">
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                             </div>
                         </div>
                         <div class="col-4">
-                            <img src="{{ asset('contraloria/contra-6.jpg') }}" class="img-fluid h-100 w-100"
+                            <img src="{{ asset('contra-img/contra-6.jpg') }}" class="img-fluid h-100 w-100"
                                 style="object-fit: cover;" alt="">
                         </div>
                     </div>
@@ -172,7 +172,7 @@
                             </div>
                         </div>
                         <div class="col-4">
-                            <img src="{{ asset('contraloria/contra-7.jpg') }}" class="img-fluid h-100 w-100"
+                            <img src="{{ asset('contra-img/contra-7.jpg') }}" class="img-fluid h-100 w-100"
                                 style="object-fit: cover;" alt="">
                         </div>
                     </div>

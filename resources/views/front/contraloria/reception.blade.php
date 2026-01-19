@@ -7,7 +7,7 @@
         <div class="row justify-content-center mb-5">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner justify-content-center wow fadeInUp">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-45.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-45.jpg') }}" alt="">
                     <div class="overlay" style="opacity: .4"></div>
                     <div class="card-content text-center w-100">
                         <p class="small-uppercase mb-0">Contraloría Interna Municipal</p>

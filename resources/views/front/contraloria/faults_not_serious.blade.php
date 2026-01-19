@@ -5,7 +5,7 @@
         <div class="row justify-content-center mb-4">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner wow fadeInUp">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-9.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-9.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -27,7 +27,7 @@
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-10.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-10.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -62,7 +62,7 @@
 
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-11.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-11.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -81,7 +81,7 @@
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-12.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-12.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -116,7 +116,7 @@
 
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-13.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-13.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -135,7 +135,7 @@
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-14.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-14.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -170,7 +170,7 @@
 
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-15.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-15.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -189,7 +189,7 @@
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-16.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-16.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -224,7 +224,7 @@
 
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-17.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-17.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -243,7 +243,7 @@
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-18.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-18.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -278,7 +278,7 @@
 
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-19.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-19.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">

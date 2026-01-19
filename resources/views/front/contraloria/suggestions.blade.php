@@ -7,7 +7,7 @@
         <div class="row justify-content-center mb-5">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner justify-content-center wow fadeInUp">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-8.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-8.jpg') }}" alt="">
                     <div class="overlay" style="opacity: .4"></div>
                     <div class="card-content text-center w-100">
                         <p class="small-uppercase mb-0">Contraloría Interna Municipal</p>
@@ -247,7 +247,7 @@
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                            <img class="card-img-top" src="{{ asset('contraloria/contra-21.jpg') }}" alt="">
+                            <img class="card-img-top" src="{{ asset('contra-img/contra-21.jpg') }}" alt="">
                             <div class="overlay"></div>
 
                             <div class="card-content">
@@ -282,7 +282,7 @@
 
                     <div class="col-md-4">
                         <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                            <img class="card-img-top" src="{{ asset('contraloria/contra-48.jpg') }}" alt="">
+                            <img class="card-img-top" src="{{ asset('contra-img/contra-48.jpg') }}" alt="">
                             <div class="overlay"></div>
 
                             <div class="card-content">
@@ -301,7 +301,7 @@
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                            <img class="card-img-top" src="{{ asset('contraloria/contra-49.jpg') }}" alt="">
+                            <img class="card-img-top" src="{{ asset('contra-img/contra-49.jpg') }}" alt="">
                             <div class="overlay"></div>
 
                             <div class="card-content">
@@ -336,7 +336,7 @@
 
                     <div class="col-md-4">
                         <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                            <img class="card-img-top" src="{{ asset('contraloria/contra-50.jpg') }}" alt="">
+                            <img class="card-img-top" src="{{ asset('contra-img/contra-50.jpg') }}" alt="">
                             <div class="overlay"></div>
 
                             <div class="card-content">
@@ -355,7 +355,7 @@
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                            <img class="card-img-top" src="{{ asset('contraloria/contra-51.jpg') }}" alt="">
+                            <img class="card-img-top" src="{{ asset('contra-img/contra-51.jpg') }}" alt="">
                             <div class="overlay"></div>
 
                             <div class="card-content">
@@ -390,7 +390,7 @@
 
                     <div class="col-md-4">
                         <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                            <img class="card-img-top" src="{{ asset('contraloria/contra-52.jpg') }}" alt="">
+                            <img class="card-img-top" src="{{ asset('contra-img/contra-52.jpg') }}" alt="">
                             <div class="overlay"></div>
 
                             <div class="card-content">
@@ -409,7 +409,7 @@
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                            <img class="card-img-top" src="{{ asset('contraloria/contra-53.jpg') }}" alt="">
+                            <img class="card-img-top" src="{{ asset('contra-img/contra-53.jpg') }}" alt="">
                             <div class="overlay"></div>
 
                             <div class="card-content">
@@ -444,7 +444,7 @@
 
                     <div class="col-md-4">
                         <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                            <img class="card-img-top" src="{{ asset('contraloria/contra-54.jpg') }}" alt="">
+                            <img class="card-img-top" src="{{ asset('contra-img/contra-54.jpg') }}" alt="">
                             <div class="overlay"></div>
 
                             <div class="card-content">
@@ -641,7 +641,7 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">FOTOGRAFÍAS, AUDIO O VIDEO</h6>
                     </div>
-                    <img src="{{ asset('contraloria/contra-38.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                    <img src="{{ asset('contra-img/contra-38.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
                         class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
@@ -657,7 +657,7 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">DOCUMENTACIÓN EN PAPEL</h6>
                     </div>
-                    <img src="{{ asset('contraloria/contra-39.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                    <img src="{{ asset('contra-img/contra-39.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
                         class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
@@ -673,7 +673,7 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">DECLARACIÓN DE TESTIGOS</h6>
                     </div>
-                    <img src="{{ asset('contraloria/contra-40.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                    <img src="{{ asset('contra-img/contra-40.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
                         class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
@@ -690,7 +690,7 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">INFORMACIÓN DETALLADA</h6>
                     </div>
-                    <img src="{{ asset('contraloria/contra-41.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                    <img src="{{ asset('contra-img/contra-41.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
                         class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
@@ -718,7 +718,7 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">EN LÍNEA</h6>
                     </div>
-                    <img src="{{ asset('contraloria/contra-42.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                    <img src="{{ asset('contra-img/contra-42.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
                         class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
@@ -734,7 +734,7 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">VÍA TELEFÓNICA</h6>
                     </div>
-                    <img src="{{ asset('contraloria/contra-43.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                    <img src="{{ asset('contra-img/contra-43.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
                         class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>
@@ -750,7 +750,7 @@
                         </div>
                         <h6 class="mb-0" style="color: #333; font-weight: 600;">PRESENCIAL</h6>
                     </div>
-                    <img src="{{ asset('contraloria/contra-8.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
+                    <img src="{{ asset('contra-img/contra-8.jpg') }}" alt="FOTOGRAFÍAS, AUDIO O VIDEO"
                         class="position-absolute w-100 h-100 top-0 start-0 object-fit-cover opacity-25 hover-opacity-100 transition-opacity">
                 </div>
             </div>

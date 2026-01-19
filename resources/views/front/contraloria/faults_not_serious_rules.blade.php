@@ -5,7 +5,7 @@
         <div class="row justify-content-center mb-4">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner wow fadeInUp">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-33.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-33.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -28,7 +28,7 @@
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-34.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-34.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -63,7 +63,7 @@
 
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-35.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-35.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -82,7 +82,7 @@
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-36.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-36.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
@@ -117,7 +117,7 @@
 
             <div class="col-md-4">
                 <div class="card card-image card-alignment-center wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('contraloria/contra-37.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset('contra-img/contra-37.jpg') }}" alt="">
                     <div class="overlay"></div>
 
                     <div class="card-content">
