@@ -101,10 +101,20 @@
                         
                         <!-- Paso 4: Firmado -->
                         <div class="text-center flex-fill">
-                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center {{ $document->status == 'firmado' ? 'bg-success' : 'bg-secondary' }}" style="width: 50px; height: 50px;">
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center {{ $document->status == 'firmado' ? ($document->sent_to_user_id ? 'bg-success' : 'bg-warning') : 'bg-secondary' }}" style="width: 50px; height: 50px;">
                                 <i class="fas fa-signature text-white"></i>
                             </div>
-                            <small class="d-block mt-2 {{ $document->status == 'firmado' ? 'fw-bold text-success' : 'text-muted' }}">Firmado</small>
+                            <small class="d-block mt-2 {{ $document->status == 'firmado' ? ($document->sent_to_user_id ? 'text-success' : 'fw-bold text-warning') : 'text-muted' }}">Firmado</small>
+                        </div>
+                        
+                        <div class="text-muted"><i class="fas fa-arrow-right"></i></div>
+                        
+                        <!-- Paso 5: Enviado -->
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center {{ $document->sent_to_user_id ? 'bg-success' : 'bg-secondary' }}" style="width: 50px; height: 50px;">
+                                <i class="fas fa-paper-plane text-white"></i>
+                            </div>
+                            <small class="d-block mt-2 {{ $document->sent_to_user_id ? 'fw-bold text-success' : 'text-muted' }}">Enviado</small>
                         </div>
                     </div>
                 </div>
@@ -117,13 +127,23 @@
                 <div class="col-12">
                     <h6 class="text-muted mb-3"><i class="fas fa-bell me-2"></i> Avisos y Notificaciones</h6>
                     
-                    @if($document->status == 'firmado')
+                    @if($document->status == 'firmado' && $document->sent_to_user_id)
                         <div class="alert alert-success mb-2">
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-check-double fa-lg me-3"></i>
                                 <div>
-                                    <strong>Oficio Completado</strong><br>
-                                    <small>Este oficio ha sido firmado y su proceso ha concluido exitosamente.</small>
+                                    <strong>Oficio Enviado</strong><br>
+                                    <small>Este oficio ha sido firmado y enviado a <strong>{{ $document->sentToUser->name ?? 'Destinatario' }}</strong> el {{ $document->sent_at ? $document->sent_at->format('d/m/Y H:i') : '' }}.</small>
+                                </div>
+                            </div>
+                        </div>
+                    @elseif($document->status == 'firmado' && !$document->sent_to_user_id)
+                        <div class="alert alert-warning mb-2">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-paper-plane fa-lg me-3"></i>
+                                <div>
+                                    <strong>Pendiente de Envío</strong><br>
+                                    <small>Este oficio ha sido firmado. Falta enviarlo a un contacto de la dependencia destino.</small>
                                 </div>
                             </div>
                         </div>
@@ -354,6 +374,19 @@
                                 @endif
                             </div>
                         </div>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Acción para enviar a destinatario (solo firmado y no enviado) -->
+            @if($document->status == 'firmado' && !$document->sent_to_user_id)
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4 text-center">
+                        <h5 class="mb-3"><i class="fas fa-paper-plane me-2 text-success"></i> Enviar a Destinatario</h5>
+                        <p class="text-muted mb-4">El oficio está firmado. Envíalo a un contacto de la dependencia <strong>{{ $document->dependency->name ?? 'destino' }}</strong>.</p>
+                        <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#sendRecipientModal">
+                            <i class="fas fa-paper-plane me-2"></i> Enviar a Destinatario
+                        </button>
                     </div>
                 </div>
             @endif
@@ -677,6 +710,44 @@
     </div>
 </div>
 
+<!-- Modal: Enviar a Destinatario -->
+<div class="modal fade" id="sendRecipientModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="fas fa-paper-plane me-2"></i> Enviar a Destinatario</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('backoffice.documents.send-to-recipient', $document->id) }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Selecciona un contacto de la dependencia <strong>{{ $document->dependency->name ?? 'destino' }}</strong> para enviar este oficio firmado.
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Seleccionar Destinatario <span class="text-danger">*</span></label>
+                        <select name="sent_to_user_id" id="sent_to_user_id" class="form-select" required>
+                            <option value="">Buscar contacto de la dependencia...</option>
+                        </select>
+                        <small class="text-muted">Solo se muestran usuarios de la dependencia destino.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mensaje (opcional)</label>
+                        <textarea name="sent_message" class="form-control" rows="3" placeholder="Escriba un mensaje para el destinatario..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-paper-plane me-2"></i> Enviar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('script')
@@ -713,6 +784,52 @@ document.addEventListener('DOMContentLoaded', function() {
             theme: 'bootstrap-5',
             placeholder: 'Buscar colaborador...',
             dropdownParent: $(this)
+        });
+    });
+
+    // Select2 para envío a destinatario (usuarios de dependencia destino)
+    $('#sendRecipientModal').on('shown.bs.modal', function() {
+        var modal = $(this);
+        $('#sent_to_user_id').select2({
+            theme: 'bootstrap-5',
+            placeholder: 'Buscar contacto de la dependencia...',
+            allowClear: true,
+            dropdownParent: modal,
+            ajax: {
+                url: '{{ route("backoffice.documents.search-dependency-users") }}',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        dependency_id: '{{ $document->dependency_id }}'
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.results
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 0
+        });
+        
+        // Cargar usuarios inicialmente
+        $.ajax({
+            url: '{{ route("backoffice.documents.search-dependency-users") }}',
+            data: { dependency_id: '{{ $document->dependency_id }}' },
+            dataType: 'json',
+            success: function(data) {
+                if (data.results && data.results.length > 0) {
+                    var select = $('#sent_to_user_id');
+                    select.empty();
+                    select.append('<option value="">Seleccionar contacto...</option>');
+                    data.results.forEach(function(user) {
+                        select.append('<option value="' + user.id + '">' + user.text + '</option>');
+                    });
+                }
+            }
         });
     });
 

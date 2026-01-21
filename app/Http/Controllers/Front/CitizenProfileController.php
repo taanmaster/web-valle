@@ -557,7 +557,7 @@ class CitizenProfileController extends Controller
     public function storeUrbanDevRequest(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'request_type' => 'required|string|in:uso-de-suelo,constancia-de-factibilidad,permiso-de-anuncios,certificacion-numero-oficial,permiso-de-division,uso-de-via-publica,licencia-de-construccion,permiso-construccion-panteones',
+            'request_type' => 'required|string',
             'description' => 'nullable|string|max:1000',
         ]);
 
@@ -591,10 +591,14 @@ class CitizenProfileController extends Controller
             return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
 
         } catch (\Exception $e) {
+            // Loguear la excepción para diagnóstico (temporal)
+            \Log::error('storeUrbanDevRequest exception: ' . $e->getMessage(), ['exception' => $e]);
+
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.'
+                    'message' => 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.',
+                    'debug_message' => config('app.debug') ? $e->getMessage() : null
                 ], 500);
             }
 

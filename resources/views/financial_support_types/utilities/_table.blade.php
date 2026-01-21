@@ -1,57 +1,85 @@
 <div class="table-responsive">
-    <table class="table">
-        <thead class="thead-light">
+    <table class="table table-hover align-middle">
+        <thead class="">
             <tr>
-                <th>id</th>
-                <th>Nombre</th>
-                <th>Documentos Necesarios</th>
-                <th>Creado</th>
-                <th>Actualizado</th>
-                <th scope="col">Acciones</th>
+                <th style="width: 5%">ID</th>
+                <th style="width: 15%">Nombre</th>
+                <th style="width: 25%">Descripción</th>
+                <th style="width: 10%">Monto</th>
+                <th style="width: 20%">Documentos</th>
+                <th style="width: 10%">Creado</th>
+                <th style="width: 10%">Actualizado</th>
+                <th style="width: 5%" class="text-center">Acciones</th>
             </tr>
         </thead>
 
         <tbody>
             @foreach($financial_support_types as $financial_support_type)
             <tr>
-                <th scope="row">#{{ $financial_support_type->id }}</th>
                 <td>
-                    <a href="{{ route('financial_support_types.show', $financial_support_type->id) }}">
+                    <span class="badge bg-secondary">#{{ $financial_support_type->id }}</span>
+                </td>
+                <td>
+                    <a href="{{ route('financial_support_types.show', $financial_support_type->id) }}" class="fw-bold text-decoration-none">
                         {{ $financial_support_type->name }}
                     </a>
                 </td>
-
                 <td>
-                    <ul class="list-unstyled">
-                        <li>{!! $financial_support_type->doc_birth_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Acta de nacimiento</li>
-                        <li>{!! $financial_support_type->doc_ine ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} INE</li>
-                        <li>{!! $financial_support_type->doc_address_proof ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Comprobante de domicilio</li>
-                        <li>{!! $financial_support_type->doc_rfc ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} RFC</li>
-                        <li>{!! $financial_support_type->doc_death_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Acta de defunción</li>
-                        <li>{!! $financial_support_type->doc_funeral_payment ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Hoja de paga funeraria</li>
-                        <li>{!! $financial_support_type->doc_cemetery_docs ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Documentos del panteón</li>
-                        <li>{!! $financial_support_type->doc_study_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Constancia de estudios</li>
-                        <li>{!! $financial_support_type->doc_medical_prescriptions ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Recetas médicas</li>
-                        <li>{!! $financial_support_type->doc_medical_certificate ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Constancia médica</li>
-                        <li>{!! $financial_support_type->doc_hospital_visit_card ? '<span class="text-success">✔</span>' : '<span class="text-danger">✘</span>' !!} Tarjetón de visita al hospital</li>
-                    </ul>
+                    <small class="text-muted">
+                        {{ $financial_support_type->description ? substr($financial_support_type->description, 0, 50) . (strlen($financial_support_type->description) > 50 ? '...' : '') : '—' }}
+                    </small>
                 </td>
-
-                <td>{{ $financial_support_type->created_at }}</td>
-                <td>{{ $financial_support_type->updated_at }}</td>
-
                 <td>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        {{--  <a href="{{ route('financial_support_types.edit', $financial_support_type->id) }}" class="btn btn-sm btn-icon"><i class='bx bx-show-alt'></i></a> --}}
-
-                        <form method="POST" action="{{ route('financial_support_types.destroy', $financial_support_type->id) }}" style="display: inline-block;">
-                            <button type="submit" class="btn btn-sm btn-icon">
-                                <i class='bx bx-trash-alt text-danger'></i> Eliminar
-                            </button>
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                        </form>
+                    <span class="badge bg-info text-dark">
+                        @if($financial_support_type->monthly_cap)
+                            ${{ number_format($financial_support_type->monthly_cap, 2) }}
+                        @else
+                            —
+                        @endif
+                    </span>
+                </td>
+                <td>
+                    <div style="max-height: 60px; overflow-y: auto;">
+                        @php
+                            $documents = [
+                                'doc_birth_certificate' => 'Acta nacimiento',
+                                'doc_ine' => 'INE',
+                                'doc_address_proof' => 'Domicilio',
+                                'doc_rfc' => 'RFC',
+                                'doc_death_certificate' => 'Acta defunción',
+                                'doc_funeral_payment' => 'Paga funeraria',
+                                'doc_cemetery_docs' => 'Panteón',
+                                'doc_study_certificate' => 'Estudios',
+                                'doc_medical_prescriptions' => 'Recetas',
+                                'doc_medical_certificate' => 'Médica',
+                                'doc_hospital_visit_card' => 'Hospital'
+                            ];
+                        @endphp
+                        @foreach($documents as $field => $label)
+                            @if($financial_support_type->$field)
+                                <span class="badge bg-success me-1 mb-1">{{ $label }}</span>
+                            @endif
+                        @endforeach
                     </div>
+                </td>
+                <td>
+                    <small class="text-muted">
+                        {{ $financial_support_type->created_at->format('d/m/Y') }}
+                    </small>
+                </td>
+                <td>
+                    <small class="text-muted">
+                        {{ $financial_support_type->updated_at->format('d/m/Y') }}
+                    </small>
+                </td>
+                <td class="text-center">
+                    <form method="POST" action="{{ route('financial_support_types.destroy', $financial_support_type->id) }}" style="display: inline-block;">
+                        <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                            Eliminar
+                        </button>
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                    </form>
                 </td> 
             </tr>
             @endforeach                           

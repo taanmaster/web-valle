@@ -33,11 +33,15 @@ class BackofficeDocument extends Model
         'first_read_at',
         'assigned_to',
         'assignment_message',
+        'sent_to_user_id',
+        'sent_at',
+        'sent_message',
     ];
 
     protected $casts = [
         'issue_date' => 'date',
         'first_read_at' => 'datetime',
+        'sent_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -92,6 +96,14 @@ class BackofficeDocument extends Model
     public function assignedUser()
     {
         return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    /**
+     * Relación: Documento enviado a un usuario destinatario
+     */
+    public function sentToUser()
+    {
+        return $this->belongsTo(User::class, 'sent_to_user_id');
     }
 
     /**

@@ -99,7 +99,7 @@ class FinancialSupportController extends Controller
 
         $citizen = Citizen::find($request->citizen_id);
 
-        $cost = FinancialSupportType::find($request->type_id)->limit_per_citizen;
+        $cost = FinancialSupportType::find($request->type_id)->monthly_cap;
 
         // Guardar datos en la base de datos
         $financial_support = FinancialSupport::create([

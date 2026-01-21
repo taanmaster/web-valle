@@ -185,6 +185,10 @@
                     </li>
 
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('backoffice.documents.received') }}">Recibidos</a>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('backoffice.documents.notifications') }}">Notificaciones</a>
                     </li>
 

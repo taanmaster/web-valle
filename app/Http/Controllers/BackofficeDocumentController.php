@@ -90,6 +90,38 @@ class BackofficeDocumentController extends Controller
     }
 
     /**
+     * Display received documents (Oficios enviados al usuario como destinatario).
+     */
+    public function received()
+    {
+        $query = BackofficeDocument::with(['dependency', 'user', 'sentToUser'])
+            ->where('sent_to_user_id', Auth::id())
+            ->where('status', 'firmado')
+            ->whereNotNull('sent_at');
+
+        // Filtros
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('folio', 'LIKE', "%{$search}%")
+                  ->orWhere('subject', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if (request('priority')) {
+            $query->where('priority', request('priority'));
+        }
+
+        if (request('type')) {
+            $query->where('type', request('type'));
+        }
+
+        $documents = $query->orderBy('sent_at', 'desc')->paginate(20);
+
+        return view('backoffice.documents.received', compact('documents'));
+    }
+
+    /**
      * Display repository (Vista webmaster - todos los oficios).
      */
     public function repository()
@@ -594,6 +626,87 @@ class BackofficeDocumentController extends Controller
         });
 
         return response()->json(['results' => $results]);
+    }
+
+    /**
+     * Buscar usuarios de una dependencia específica (para enviar a destinatario).
+     */
+    public function searchDependencyUsers(Request $request)
+    {
+        $search = $request->input('q', '');
+        $dependencyId = $request->input('dependency_id');
+
+        if (!$dependencyId) {
+            return response()->json(['results' => []]);
+        }
+
+        $users = User::whereNotNull('backoffice_dependency_id')
+            ->where('backoffice_dependency_id', $dependencyId)
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                      ->orWhere('email', 'LIKE', "%{$search}%");
+            })
+            ->limit(20)
+            ->get(['id', 'name', 'email']);
+
+        $results = $users->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'text' => $user->name . ' (' . $user->email . ')',
+            ];
+        });
+
+        return response()->json(['results' => $results]);
+    }
+
+    /**
+     * Enviar oficio firmado a un destinatario de la dependencia destino.
+     */
+    public function sendToRecipient(Request $request, $id)
+    {
+        $document = BackofficeDocument::findOrFail($id);
+
+        // Verificar que el documento esté firmado
+        if ($document->status != 'firmado') {
+            Session::flash('error', 'Solo se pueden enviar oficios firmados.');
+            return redirect()->back();
+        }
+
+        // Verificar que no haya sido enviado ya
+        if ($document->sent_to_user_id) {
+            Session::flash('error', 'Este oficio ya fue enviado a un destinatario.');
+            return redirect()->back();
+        }
+
+        $this->validate($request, [
+            'sent_to_user_id' => 'required|exists:users,id',
+            'sent_message' => 'nullable|string|max:500',
+        ]);
+
+        // Verificar que el usuario pertenezca a la dependencia destino
+        $recipientUser = User::findOrFail($request->sent_to_user_id);
+        if ($recipientUser->backoffice_dependency_id != $document->dependency_id) {
+            Session::flash('error', 'El destinatario debe pertenecer a la dependencia destino del oficio.');
+            return redirect()->back();
+        }
+
+        // Actualizar documento
+        $document->update([
+            'sent_to_user_id' => $request->sent_to_user_id,
+            'sent_at' => Carbon::now(),
+            'sent_message' => $request->sent_message,
+        ]);
+
+        // Registrar en historial de versiones
+        $this->versionService->createSnapshot(
+            $document,
+            'enviado_destinatario',
+            'Oficio enviado a ' . $recipientUser->name . ' de la dependencia destino'
+        );
+
+        Session::flash('success', 'Oficio enviado exitosamente a ' . $recipientUser->name);
+
+        return redirect()->route('backoffice.documents.show', $document->id);
     }
 
     /**

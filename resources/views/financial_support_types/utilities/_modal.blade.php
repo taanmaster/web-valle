@@ -19,14 +19,17 @@
                             <label for="description" class="form-label">Descripción <span class="text-info tx-12">(Opcional)</span></label>
                             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                         </div>
+                        
                         <div class="col-md-6 mb-3">
-                            <label for="monthly_cap" class="form-label">Límite Mensual <span class="text-danger tx-12">*</span></label>
+                            <label for="monthly_cap" class="form-label">Monto <span class="text-danger tx-12">*</span></label>
                             <input type="number" class="form-control" id="monthly_cap" name="monthly_cap" required>
                         </div>
+                        {{--  
                         <div class="col-md-6 mb-3">
                             <label for="limit_per_citizen" class="form-label">Límite por Ciudadano <span class="text-danger tx-12">*</span></label>
                             <input type="number" class="form-control" id="limit_per_citizen" name="limit_per_citizen" required>
                         </div>
+                        --}}
 
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Documentación Necesaria</label>
