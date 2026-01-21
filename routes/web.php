@@ -1366,6 +1366,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             /* Documentos/Oficios */
             Route::get('documents/notifications', [BackofficeDocumentController::class, 'notifications'])->name('backoffice.documents.notifications');
+            Route::get('documents/received', [BackofficeDocumentController::class, 'received'])->name('backoffice.documents.received');
             Route::get('documents/repository', [BackofficeDocumentController::class, 'repository'])->name('backoffice.documents.repository')->middleware('role:webmaster|all');
 
             Route::resource('documents', BackofficeDocumentController::class)->names([
@@ -1391,6 +1392,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             /* Generación de PDF */
             Route::get('documents/{id}/pdf', [BackofficeDocumentController::class, 'generatePdf'])->name('backoffice.documents.pdf');
+
+            /* Enviar a destinatario */
+            Route::post('documents/{id}/send-to-recipient', [BackofficeDocumentController::class, 'sendToRecipient'])->name('backoffice.documents.send-to-recipient');
+            Route::get('documents/dependency-users/search', [BackofficeDocumentController::class, 'searchDependencyUsers'])->name('backoffice.documents.search-dependency-users');
 
             /* Búsqueda de usuarios para Select2 */
             Route::get('users/search', [BackofficeDocumentController::class, 'searchUsers'])->name('backoffice.users.search');
