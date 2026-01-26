@@ -21,14 +21,14 @@
                 <br>
 
                 <div class="btn-group mt-3" role="group" aria-label="Basic example">
-                    <a href="{{ route('regulatory_agenda.show', $dependency->id) }}"
+                    <a href="{{ route('agenda_dependencies.show', $dependency->id) }}"
                         class="btn btn-sm btn-outline-primary"><i class='bx bx-show-alt'></i> Ver
                         Detalle</a>
                     <a href="javascript:void(0)" class="btn btn-sm btn-outline-primary edit-dependency"
                         data-id="{{ $dependency->id }}">
                         <i class="bx bx-edit"></i> Editar Dependencia
                     </a>
-                    <form method="POST" action="{{ route('regulatory_agenda_dependency.destroy', $dependency->id) }}"
+                    <form method="POST" action="{{ route('agenda_dependencies.destroy', $dependency->id) }}"
                         style="display: inline-block;">
                         <button type="submit" class="btn btn-sm btn-outline-danger">
                             <i class='bx bx-trash-alt text-danger'></i> Eliminar

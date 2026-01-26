@@ -69,6 +69,56 @@
                     </div>
                 </div>
 
+                <div class="row align-items-center m-3">
+                    <div class="col-md-2">
+                        <label for="legal_basis_law" class="col-form-label">Fundamento jurídico para emitir la propuesta LEY</label>
+                    </div>
+                    <div class="col-md">
+                        <textarea class="form-control" wire:model="legal_basis_law" name="legal_basis_law" rows="3"
+                            @if ($mode == 1) disabled @endif></textarea>
+                    </div>
+                </div>
+
+                <div class="row align-items-center m-3">
+                    <div class="col-md-2">
+                        <label for="legal_basis_article" class="col-form-label">Fundamento jurídico para emitir la propuesta Artículo</label>
+                    </div>
+                    <div class="col-md">
+                        <textarea class="form-control" wire:model="legal_basis_article" name="legal_basis_article" rows="3"
+                            @if ($mode == 1) disabled @endif></textarea>
+                    </div>
+                </div>
+
+                <div class="row align-items-center m-3">
+                    <div class="col-md-2">
+                        <label for="proposal_alternatives" class="col-form-label">Alternativas consideradas para atender la problemática</label>
+                    </div>
+                    <div class="col-md">
+                        <textarea class="form-control" wire:model="proposal_alternatives" name="proposal_alternatives" rows="4"
+                            @if ($mode == 1) disabled @endif></textarea>
+                    </div>
+                </div>
+
+                <div class="row align-items-center m-3">
+                    <div class="col-md-2">
+                        <label for="burocratic_cost_benefict" class="col-form-label">Identificar posibles costos burocráticos y beneficios</label>
+                    </div>
+                    <div class="col-md">
+                        <textarea class="form-control" wire:model="burocratic_cost_benefict" name="burocratic_cost_benefict" rows="3"
+                            @if ($mode == 1) disabled @endif></textarea>
+                    </div>
+                </div>
+
+                <div class="row align-items-center m-3">
+                    <div class="col-md-2">
+                        <label for="simplification_oportunities" class="col-form-label">Identificar en su caso, las acciones de simplificación y digitalización asociadas a la propuesta regulatoria</label>
+                    </div>
+                    <div class="col-md">
+                        <textarea class="form-control" wire:model="simplification_oportunities" name="simplification_oportunities" rows="4"
+                            @if ($mode == 1) disabled @endif></textarea>
+                    </div>
+                </div>
+
                 <div class="row m-3">
                     <div class="col-md-6">
                         <label for="presentation_date" class="form-label">Fecha tentativa de presentación</label>
@@ -135,7 +185,7 @@
 
                 @if ($mode != 1)
                     <div class="m-3 d-flex justify-content-end" style="gap: 12px">
-                        <a href="{{ route('regulatory_agenda.show', $dependency->id) }}" style="max-width: 110px"
+                        <a href="{{ route('agenda_dependencies.show', $dependency->id) }}" style="max-width: 110px"
                             class="btn btn-secondary btn-sm">Cancelar</a>
                         <button type="submit" style="max-width: 110px" class="btn btn-dark btn-sm">Guardar
                             datos</button>

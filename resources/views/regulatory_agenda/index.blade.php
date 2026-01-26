@@ -9,7 +9,7 @@
             Intranet
         @endslot
         @slot('li_2')
-            Agenda Regulatoria
+            Agendas
         @endslot
         @slot('title')
             Dependencias
@@ -23,7 +23,6 @@
                     <a href="javascript:void(0)" class="btn btn-primary new-dependency">Nueva Dependencia</a>
                 </div>
             </div>
-
 
             @if ($dependecies->count() == 0)
                 <div class="row">
