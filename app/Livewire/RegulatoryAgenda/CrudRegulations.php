@@ -37,6 +37,13 @@ class CrudRegulations extends Component
     public $is_active;
     public $expeditions_date = '';
     public $update_date = '';
+    
+    // Nuevos campos
+    public $legal_basis_law = '';
+    public $legal_basis_article = '';
+    public $proposal_alternatives = '';
+    public $burocratic_cost_benefict = '';
+    public $simplification_oportunities = '';
 
 
     public function mount()
@@ -59,6 +66,13 @@ class CrudRegulations extends Component
         $this->semester = $this->regulation->semester;
         $this->expeditions_date = $this->regulation->expeditions_date;
         $this->update_date = $this->regulation->update_date;
+        
+        // Nuevos campos
+        $this->legal_basis_law = $this->regulation->legal_basis_law;
+        $this->legal_basis_article = $this->regulation->legal_basis_article;
+        $this->proposal_alternatives = $this->regulation->proposal_alternatives;
+        $this->burocratic_cost_benefict = $this->regulation->burocratic_cost_benefict;
+        $this->simplification_oportunities = $this->regulation->simplification_oportunities;
     }
 
     public function save()
@@ -86,6 +100,11 @@ class CrudRegulations extends Component
                 'semester' => $this->semester,
                 'expeditions_date' => $expeditions_date,
                 'update_date' => $update_date,
+                'legal_basis_law' => $this->legal_basis_law,
+                'legal_basis_article' => $this->legal_basis_article,
+                'proposal_alternatives' => $this->proposal_alternatives,
+                'burocratic_cost_benefict' => $this->burocratic_cost_benefict,
+                'simplification_oportunities' => $this->simplification_oportunities,
             ]);
 
             // Mensaje de sesión
@@ -109,6 +128,11 @@ class CrudRegulations extends Component
                 'is_active' => true,
                 'expeditions_date' => $expeditions_date,
                 'update_date' => $update_date,
+                'legal_basis_law' => $this->legal_basis_law,
+                'legal_basis_article' => $this->legal_basis_article,
+                'proposal_alternatives' => $this->proposal_alternatives,
+                'burocratic_cost_benefict' => $this->burocratic_cost_benefict,
+                'simplification_oportunities' => $this->simplification_oportunities,
 
             ]);
 
