@@ -1401,28 +1401,48 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('users/search', [BackofficeDocumentController::class, 'searchUsers'])->name('backoffice.users.search');
         });
 
-        /*Agenda regulatoria*/
-        Route::resource('regulatory_agenda', RegulatoryAgendaController::class)->names([
-            'index' => 'regulatory_agenda.index',
-            'show' => 'regulatory_agenda.show',
-        ]);
 
-        Route::resource('regulatory_agenda_dependency', RegulatoryAgendaDependencyController::class)->names([
-            'destroy' => 'regulatory_agenda_dependency.destroy'
-        ]);
+        /* Agendas */
+        Route::group(['prefix' => 'agendas'], function () {
+            /* Dependencia de las Agendas */
+            /* NOTA FUTURE REWORK */
+            /* Se requerirá un controlador independiente para gestionar las dependencias de las agendas */
+            /* A diferencia de usar la nomenclatura de que el controlador RegulatoryAgenda maneja las dependencias */
+            Route::resource('dependencies', RegulatoryAgendaController::class)->names([
+                'index' => 'agenda_dependencies.index',
+                'show' => 'agenda_dependencies.show',
+            ]);
 
-        Route::resource('regulatory_agenda_regulation', RegulatoryAgendaRegulationController::class)->names([
-            'show' => 'regulatory_agenda_regulation.show',
-        ]);
+             /*Agenda regulatoria*/
+            /* NOTA FUTURE REWORK */
+            /* Estos controladores tienen nomenclatura redundante, se recomienda unificar en uno solo */
+            Route::resource('regulatory_agenda_dependency', RegulatoryAgendaDependencyController::class)->names([
+                'destroy' => 'agenda_dependencies.destroy'
+            ]);
 
-        Route::resource('regulatory_agenda_regulation', RegulatoryAgendaRegulationController::class)->names([
-            'edit' => 'regulatory_agenda_regulation.edit',
-        ]);
+            Route::resource('regulatory_agenda_regulation', RegulatoryAgendaRegulationController::class)->names([
+                'show' => 'regulatory_agenda_regulation.show',
+                'edit' => 'regulatory_agenda_regulation.edit',
+            ]);
 
-        Route::get('/regulatory_agenda_new/{id}', [
-            'uses' => 'RegulatoryAgendaRegulationController@create',
-            'as' => 'regulatory_agenda_regulation.create'
-        ]);
+            Route::get('/regulatory_agenda_new/{id}', [
+                'uses' => 'RegulatoryAgendaRegulationController@create',
+                'as' => 'regulatory_agenda_regulation.create'
+            ]);
+
+            /* Agenda de Simplificación */
+            Route::resource('simplification_agenda', SimplificationAgendaController::class)->names([
+                'index' => 'simplification_agenda.index',
+                'show' => 'simplification_agenda.show',
+                'edit' => 'simplification_agenda.edit',
+                'destroy' => 'simplification_agenda.destroy',
+            ]);
+
+            Route::get('/simplification_agenda_new/{id}', [
+                'uses' => 'SimplificationAgendaController@create',
+                'as' => 'simplification_agenda.create'
+            ]);
+        });
 
         Route::resource('blogAmin', BlogController::class)->names([
             'index' => 'blog.admin.index',
