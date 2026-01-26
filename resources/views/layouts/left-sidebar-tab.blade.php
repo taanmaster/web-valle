@@ -233,8 +233,7 @@
                         </div>
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('regulatory_agenda.index') }}">Agenda
-                                    Regulatoria</a>
+                                <a class="nav-link" href="{{ route('agenda_dependencies.index') }}">Agendas</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('municipal_inspections.index') }}" class="nav-link">
