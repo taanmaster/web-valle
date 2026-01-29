@@ -14,7 +14,7 @@
                             <h3>Listado de Dependencias</h3>
                         </div>
 
-                        <p class="card-title-description mb-2">Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
+                        <p class="card-title-description mb-2">Son las propuestas de regulaciones y simplificación que los sujetos obligados pretenden expedir.</p>
                     </div>
                 </div>
             </div>

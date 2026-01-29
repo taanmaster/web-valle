@@ -183,8 +183,8 @@
             <div class="overlay"></div>
 
             <div class="card-content">
-                <h2 style="padding-top: 120px;">Agenda Regulatoria</h2>
-                <p class="mb-4">Son las propuestas de regulaciones que los sujetos obligados pretenden expedir.</p>
+                <h2 style="padding-top: 120px;">Agendas</h2>
+                <p class="mb-4">Son las propuestas de regulaciones y simplificación que los sujetos obligados pretenden expedir.</p>
                 <a href="{{ route('regulatory-agenda.index') }}"
                     class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0"
                     style="width: fit-content">Acceder a directorio de Dependencias <ion-icon

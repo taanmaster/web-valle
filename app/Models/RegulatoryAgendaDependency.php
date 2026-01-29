@@ -20,4 +20,9 @@ class RegulatoryAgendaDependency extends Model
     {
         return $this->hasMany(RegulatoryAgendaRegulation::class, 'dependency_id');
     }
+
+    public function simplifications()
+    {
+        return $this->hasMany(SimplificationAgenda::class, 'dependency_id');
+    }
 }
