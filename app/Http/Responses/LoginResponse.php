@@ -9,6 +9,11 @@ class LoginResponse implements LoginResponseContract
     public function toResponse($request)
     {
         $user = auth()->user();
+
+        // Si hay una cita pendiente en sesión, redirigir a la página de citas
+        if (session()->has('pending_booking')) {
+            return redirect()->route('appointments.search');
+        }
         
         // Redireccionar según el rol del usuario
         if ($user->hasRole('admin') || $user->can('admin_access')) {
