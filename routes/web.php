@@ -63,6 +63,9 @@ use App\Http\Controllers\CTOPropertyTaxController;
 use App\Http\Controllers\BackofficeDependencyController;
 use App\Http\Controllers\BackofficeDocumentController;
 
+// Citas para Trámites
+use App\Http\Controllers\AppointmentController;
+
 // Modelos
 use App\Models\InstitucionalDevelopmentBanner;
 use App\Models\TsrAdminRevenueColletionArticle;
@@ -144,6 +147,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/predial-en-linea/resultados', 'FrontController@predialSearchResults')->name('predial.search.results');
     Route::get('/predial-en-linea/recibo/{id}/imprimir', 'FrontController@predialReceiptPrint')->name('predial.receipt.print');
     Route::get('/predial-en-linea/estado-cuenta/{id}/imprimir', 'FrontController@predialAccountStatementPrint')->name('predial.account-statement.print');
+
+
+    /* Citas para Trámites */
+    Route::get('/citas-para-tramites', 'FrontController@appointments')->name('appointments.search');
 
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
@@ -383,6 +390,21 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'uses' => 'TransparencyDocumentController@deleteFile',
             'as' => 'transparency_documents.deleteFile',
         ]);
+
+
+        /* Citas para Trámites */
+        Route::resource('appointments', AppointmentController::class)->names([
+            'index' => 'appointments.index',
+            'create' => 'appointments.create',
+            'store' => 'appointments.store',
+            'show' => 'appointments.show',
+            'edit' => 'appointments.edit',
+            'update' => 'appointments.update',
+            'destroy' => 'appointments.destroy',
+        ]);
+        Route::get('appointments/{appointment}/holidays', [AppointmentController::class, 'holidays'])->name('appointments.holidays');
+        Route::get('appointment-bookings', [AppointmentController::class, 'bookings'])->name('appointment-bookings.index');
+        Route::get('appointment-bookings/my-dependency', [AppointmentController::class, 'bookingsByDependency'])->name('appointment-bookings.dependency');
 
         /* SARE */
         Route::group(['prefix' => 'sare'], function () {
@@ -1401,7 +1423,6 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('users/search', [BackofficeDocumentController::class, 'searchUsers'])->name('backoffice.users.search');
         });
 
-
         /* Agendas */
         Route::group(['prefix' => 'agendas'], function () {
             /* Dependencia de las Agendas */
@@ -1642,6 +1663,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
         //Rutas para citatorios
         Route::get('/citatorios', 'CitizenProfileController@summons')->name('citizen.summons.index');
         Route::get('/citatorios/{id}', 'CitizenProfileController@showSummon')->name('citizen.summons.show');
+
+        // Rutas para citas de trámites
+        Route::get('/citas', 'CitizenProfileController@appointments')->name('citizen.appointments.index');
+        Route::get('/citas/{booking}', 'CitizenProfileController@showAppointment')->name('citizen.appointments.show');
+        Route::post('/citas/{booking}/confirmar', 'CitizenProfileController@confirmAppointment')->name('citizen.appointments.confirm');
+        Route::post('/citas/{booking}/cancelar', 'CitizenProfileController@cancelAppointment')->name('citizen.appointments.cancel');
     });
 
     // Rutas del Perfil Proveedores (Front-End)
