@@ -29,6 +29,10 @@ use App\Http\Controllers\TapSupplierLogController;
 // Desarrollo Institucional
 use App\Http\Controllers\InstitucionalDevelopmentBannerController;
 
+// Tourism
+use App\Http\Controllers\TourismBannerController;
+use App\Http\Controllers\TourismBlogController;
+
 // Tesorería
 use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Http\Controllers\TsrBillingAccountController;
@@ -97,6 +101,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/proyectos', 'FrontController@implanProjects')->name('implan.front.projects');
         Route::get('/proyectos/{slug}', 'FrontController@implanProjectDetail')->name('implan.front.project.detail');
         Route::get('/logros', 'FrontController@implanAchievements')->name('implan.front.achievements');
+    });
+
+    //Tourism
+    Route::group(['prefix' => '/turismo'], function () {
+        Route::get('/', 'FrontController@tourism')->name('turismo.index');
+        Route::get('/blog', 'FrontController@tourismBlogList')->name('turismo.front.blog.list');
+        Route::get('/blog/{slug}', 'FrontController@tourismBlogDetail')->name('turismo.front.blog.detail');
     });
 
     // SARE
@@ -1583,6 +1594,52 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('/implan/banners/status/{id}', [
                 'uses' => 'ImplanBannerController@status',
                 'as' => 'implan.banners.status',
+            ]);
+        });
+
+        /* ------------------- */
+        /* ------------------- */
+        /* Tourism */
+        Route::group(['prefix' => 'tourism'], function () {
+            Route::resource('blog', TourismBlogController::class)->names([
+                'index' => 'tourism.blog.admin.index',
+                'create' => 'tourism.blog.admin.create',
+                'store' => 'tourism.blog.admin.store',
+                'show' => 'tourism.blog.admin.show',
+                'edit' => 'tourism.blog.admin.edit',
+                'update' => 'tourism.blog.admin.update',
+                'destroy' => 'tourism.blog.admin.destroy',
+            ]);
+
+            // Dropzone routes for Tourism Blog
+            Route::post('/blog/upload/{id}', [
+                'uses' => 'TourismBlogController@uploadFile',
+                'as' => 'dropzone.tourism.blog.upload',
+            ]);
+
+            Route::get('/blog/fetch/{id}', [
+                'uses' => 'TourismBlogController@fetchFile',
+                'as' => 'dropzone.tourism.blog.fetch',
+            ]);
+
+            Route::post('/blog/delete-file', [
+                'uses' => 'TourismBlogController@deleteFile',
+                'as' => 'dropzone.tourism.blog.delete',
+            ]);
+
+            Route::resource('banners', TourismBannerController::class)->names([
+                'index' => 'tourism.banners.index',
+                'create' => 'tourism.banners.create',
+                'store' => 'tourism.banners.store',
+                'show' => 'tourism.banners.show',
+                'edit' => 'tourism.banners.edit',
+                'update' => 'tourism.banners.update',
+                'destroy' => 'tourism.banners.destroy',
+            ]);
+
+            Route::post('/banners/status/{id}', [
+                'uses' => 'TourismBannerController@status',
+                'as' => 'tourism.banners.status',
             ]);
         });
 

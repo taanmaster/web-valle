@@ -61,8 +61,8 @@
                         </li>
                     @endif
 
-                    @hasanyrole(['financial_support', 'financial_support_helper', 'all', 'tesoreria_caja',
-                        'cto_admin', 'cto_helper'])
+                    @hasanyrole(['financial_support', 'financial_support_helper', 'all', 'tesoreria_caja', 'cto_admin',
+                        'cto_helper'])
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería"
                             data-bs-trigger="hover">
                             <a href="#valleTreasury" id="uikit-tab" class="nav-link">
@@ -115,6 +115,13 @@
                             </a>
                         </li>
                     @endif
+
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Turismo"
+                        data-bs-trigger="hover">
+                        <a href="#valleTourism" id="tourism-tab" class="nav-link">
+                            <i class="ti ti-map menu-icon"></i>
+                        </a>
+                    </li>
 
                     @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
@@ -189,37 +196,38 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('backoffice.documents.notifications') }}">Notificaciones</a>
+                        <a class="nav-link"
+                            href="{{ route('backoffice.documents.notifications') }}">Notificaciones</a>
                     </li>
 
                     @hasanyrole(['webmaster', 'all'])
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('backoffice.documents.repository') }}">Repositorio</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('backoffice.documents.repository') }}">Repositorio</a>
+                        </li>
                     @endhasanyrole
                 </ul>
 
                 @hasanyrole(['human_resources', 'all'])
-                <div class="title-box">
-                    <h6 class="menu-title">Recursos Humanos</h6>
-                </div>
+                    <div class="title-box">
+                        <h6 class="menu-title">Recursos Humanos</h6>
+                    </div>
 
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('backoffice.dependencies.index') }}">Dependencias</a>
-                    </li>
-                </ul>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('backoffice.dependencies.index') }}">Dependencias</a>
+                        </li>
+                    </ul>
                 @endhasanyrole
 
-                @if(auth()->user()->hasRole('all'))
-                <div class="mt-3 px-3">
-                    <small class="text-muted d-block mb-1">Roles con acceso general:</small>
-                    <span class="badge bg-primary me-1 mb-1">dashboard</span>
-                    <span class="badge bg-primary me-1 mb-1">all</span>
-                    <small class="text-muted d-block mb-1">Roles con acceso Recursos Humanos:</small>
-                    <span class="badge bg-primary me-1 mb-1">human_resources</span>
-                    <span class="badge bg-primary me-1 mb-1">all</span>
-                </div>
+                @if (auth()->user()->hasRole('all'))
+                    <div class="mt-3 px-3">
+                        <small class="text-muted d-block mb-1">Roles con acceso general:</small>
+                        <span class="badge bg-primary me-1 mb-1">dashboard</span>
+                        <span class="badge bg-primary me-1 mb-1">all</span>
+                        <small class="text-muted d-block mb-1">Roles con acceso Recursos Humanos:</small>
+                        <span class="badge bg-primary me-1 mb-1">human_resources</span>
+                        <span class="badge bg-primary me-1 mb-1">all</span>
+                    </div>
                 @endif
             </div>
 
@@ -277,13 +285,13 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">des_Institucional</span>
-                        <span class="badge bg-primary me-1 mb-1">private_secretary</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">des_Institucional</span>
+                            <span class="badge bg-primary me-1 mb-1">private_secretary</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif
@@ -300,12 +308,12 @@
                     </li>
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                        <span class="badge bg-secondary me-1 mb-1">denunciascontraloria@...</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                            <span class="badge bg-secondary me-1 mb-1">denunciascontraloria@...</span>
+                        </div>
                     @endif
                 </div>
             @endif
@@ -336,12 +344,12 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">dashboard</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">dashboard</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif
@@ -389,13 +397,13 @@
                         </ul>
                     @endif
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">des_Institucional</span>
-                        <span class="badge bg-primary me-1 mb-1">transparency</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">des_Institucional</span>
+                            <span class="badge bg-primary me-1 mb-1">transparency</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif
@@ -509,16 +517,16 @@
                         </ul>
                     @endhasanyrole
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">financial_support</span>
-                        <span class="badge bg-primary me-1 mb-1">financial_support_helper</span>
-                        <span class="badge bg-primary me-1 mb-1">tesoreria_caja</span>
-                        <span class="badge bg-primary me-1 mb-1">cto_admin</span>
-                        <span class="badge bg-primary me-1 mb-1">cto_helper</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">financial_support</span>
+                            <span class="badge bg-primary me-1 mb-1">financial_support_helper</span>
+                            <span class="badge bg-primary me-1 mb-1">tesoreria_caja</span>
+                            <span class="badge bg-primary me-1 mb-1">cto_admin</span>
+                            <span class="badge bg-primary me-1 mb-1">cto_helper</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endhasanyrole
@@ -556,12 +564,12 @@
                         @endif
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">private_secretary</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">private_secretary</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif
@@ -577,12 +585,12 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">sare</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">sare</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif
@@ -656,12 +664,12 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">urban_dev</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">urban_dev</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif
@@ -765,12 +773,12 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">dif</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">dif</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif
@@ -826,15 +834,38 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">acquisitions</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">acquisitions</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif
+
+            <div id="valleTourism" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="tourism-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Turismo</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('tourism.blog.admin.index') }}">Blog</a>
+                    </li>
+                </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Comunicación</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('tourism.banners.index') }}">Banners</a>
+                    </li>
+                </ul>
+            </div>
 
             @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
                 <div id="valleImplan" class="main-icon-menu-pane tab-pane" role="tabpanel"
@@ -865,12 +896,12 @@
                         </li>
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">implan</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">implan</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif
@@ -887,11 +918,11 @@
                     </li>
                 </ul>
 
-                @if(auth()->user()->hasRole('all'))
-                <div class="mt-3 px-3">
-                    <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                    <span class="badge bg-success me-1 mb-1">Todos los usuarios</span>
-                </div>
+                @if (auth()->user()->hasRole('all'))
+                    <div class="mt-3 px-3">
+                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                        <span class="badge bg-success me-1 mb-1">Todos los usuarios</span>
+                    </div>
                 @endif
             </div>
 
@@ -921,12 +952,12 @@
                         @endif
                     </ul>
 
-                    @if(auth()->user()->hasRole('all'))
-                    <div class="mt-3 px-3">
-                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
-                        <span class="badge bg-primary me-1 mb-1">configuration</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                    </div>
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">configuration</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
                     @endif
                 </div>
             @endif

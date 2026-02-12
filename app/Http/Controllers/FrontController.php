@@ -58,6 +58,10 @@ use App\Models\ImplanProject;
 use App\Models\ImplanAchievement;
 use App\Models\ImplanBlog;
 
+//Tourism
+use App\Models\TourismBanner;
+use App\Models\TourismBlog;
+
 class FrontController extends Controller
 {
     public function index()
@@ -707,6 +711,30 @@ class FrontController extends Controller
         $achievements = ImplanAchievement::where('is_active', true)->get();
 
         return view('front.implan.achievements')->with('achievements', $achievements);
+    }
+
+    // Tourism
+    public function tourism()
+    {
+        $banners = TourismBanner::where('is_active', true)->orderBy('priority', 'asc')->get();
+        $fav_posts = TourismBlog::where('is_fav', true)->orderBy('updated_at', 'desc')->limit(3)->get();
+
+        return view('front.tourism.index')->with([
+            'banners' => $banners,
+            'fav_posts' => $fav_posts,
+        ]);
+    }
+
+    public function tourismBlogList()
+    {
+        return view('front.tourism.blog.index');
+    }
+
+    public function tourismBlogDetail($slug)
+    {
+        $blog = TourismBlog::where('slug', $slug)->first();
+
+        return view('front.tourism.blog.show')->with('blog', $blog);
     }
 
     public function municipalInspection()

@@ -82,6 +82,13 @@
             </li>
 
             <li>
+                <a href="{{ route('turismo.index') }}">
+                    <ion-icon name="map-outline"></ion-icon>
+                    <span>Turismo</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('dif.index') }}">
                     <ion-icon name="medkit-outline"></ion-icon>
                     <span>DIF</span>
@@ -107,8 +114,8 @@
                     <ion-icon name="library-outline"></ion-icon>
                     <span>Contraloría</span>
                 </a>
-            </li>            
-            
+            </li>
+
             <li>
                 <div class="switch">
                     <input type="checkbox" id="mode" checked>
