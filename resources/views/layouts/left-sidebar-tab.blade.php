@@ -123,6 +123,13 @@
                         </a>
                     </li>
 
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Recursos Humanos"
+                        data-bs-trigger="hover">
+                        <a href="#valleHR" id="hr-tab" class="nav-link">
+                            <i class="ti ti-briefcase menu-icon"></i>
+                        </a>
+                    </li>
+
                     @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
                             data-bs-trigger="hover">
@@ -211,12 +218,6 @@
                     <div class="title-box">
                         <h6 class="menu-title">Recursos Humanos</h6>
                     </div>
-
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('backoffice.dependencies.index') }}">Dependencias</a>
-                        </li>
-                    </ul>
                 @endhasanyrole
 
                 @if (auth()->user()->hasRole('all'))
@@ -866,6 +867,20 @@
                     </li>
                 </ul>
             </div>
+
+            @hasanyrole(['human_resources', 'all'])
+                <div id="valleHR" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="hr-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Recursos Humanos</h6>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('hr.vacancies.admin.index') }}">Vacantes</a>
+                        </li>
+                    </ul>
+                </div>
+            @endhasanyrole
 
             @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
                 <div id="valleImplan" class="main-icon-menu-pane tab-pane" role="tabpanel"
