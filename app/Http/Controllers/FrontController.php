@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 // Ayudantes
+use App\Http\Controllers\Controller;
 use Str;
 use Auth;
 use Session;
@@ -61,6 +62,9 @@ use App\Models\ImplanBlog;
 //Tourism
 use App\Models\TourismBanner;
 use App\Models\TourismBlog;
+
+// Recursos Humanos
+use App\Models\HRVacancy;
 
 class FrontController extends Controller
 {
@@ -737,6 +741,30 @@ class FrontController extends Controller
         return view('front.tourism.blog.show')->with('blog', $blog);
     }
 
+    // Recursos Humanos
+    public function humanResources()
+    {
+        $vacancies = HRVacancy::where('published_at', '<=', now())
+            ->orderBy('published_at', 'desc')
+            ->paginate(12);
+
+        return view('front.hr.index')->with('vacancies', $vacancies);
+    }
+
+    public function humanResourcesVacancyDetail($id)
+    {
+        $vacancy = HRVacancy::findOrFail($id);
+
+        return view('front.hr.show')->with('vacancy', $vacancy);
+    }
+
+    public function humanResourcesApply($id)
+    {
+        $vacancy = HRVacancy::findOrFail($id);
+
+        return view('front.hr.apply')->with('vacancy', $vacancy);
+    }
+
     public function municipalInspection()
     {
         return view('front.municipal_inspection');
@@ -791,11 +819,11 @@ class FrontController extends Controller
     public function predialReceiptPrint($id)
     {
         $propertyTax = CTOPropertyTax::with('property')->findOrFail($id);
-        
+
         $pdf = PDF::loadView('cto.property_taxes.print', compact('propertyTax'))->setPaper('A4');
-        
+
         $filename = 'recibo_predial_' . ($propertyTax->folio ?? $propertyTax->id) . '.pdf';
-        
+
         return $pdf->download($filename);
     }
 
@@ -805,14 +833,14 @@ class FrontController extends Controller
     public function predialAccountStatementPrint($id)
     {
         $property = CTOProperty::with('propertyTaxes')->findOrFail($id);
-        
+
         // Obtener años únicos de los recibos
         $years = $property->propertyTaxes->pluck('tax_year')->unique()->sort()->reverse();
-        
+
         $pdf = PDF::loadView('cto.properties.print_account_statement', compact('property', 'years'))->setPaper('A4');
-        
+
         $filename = 'estado_cuenta_' . ($property->location_account ?? $property->id) . '.pdf';
-        
+
         return $pdf->download($filename);
     }
 }
