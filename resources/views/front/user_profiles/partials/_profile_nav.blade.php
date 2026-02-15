@@ -30,9 +30,9 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link {{ $currentRoute === 'citizen.profile.requests' ? 'active' : '' }}"
-                    href="{{ route('citizen.profile.requests') }}" id="solicitudes-tab" role="tab">
-                    <ion-icon name="file-tray-full-outline"></ion-icon> Solicitudes S.A.R.E
+                <a class="nav-link {{ $currentRoute === 'citizen.my_requests' || $currentRoute === 'citizen.profile.requests' || str_starts_with($currentRoute, 'citizen.third_party') ? 'active' : '' }}"
+                    href="{{ route('citizen.my_requests') }}" id="solicitudes-tab" role="tab">
+                    <ion-icon name="file-tray-full-outline"></ion-icon> Mis Solicitudes
                 </a>
             </li>
             <li class="nav-item" role="presentation">

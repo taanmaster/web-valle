@@ -12,6 +12,7 @@ use App\Models\SareRequest;
 use App\Models\SareRequestFile;
 use App\Models\Summon;
 use App\Models\IdentificationCertificate;
+use App\Models\TourismThirdPartyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -197,6 +198,36 @@ class CitizenProfileController extends Controller
         }
 
         return $userInfo;
+    }
+
+    // =============== MIS SOLICITUDES ===============
+
+    public function myRequests()
+    {
+        return view('front.user_profiles.citizen.my_requests');
+    }
+
+    // =============== MÉTODOS APOYO A TERCEROS PARA CIUDADANOS ===============
+
+    public function thirdPartyRequests()
+    {
+        return view('front.user_profiles.citizen.third_party_support.index');
+    }
+
+    public function createThirdPartyRequest()
+    {
+        return view('front.user_profiles.citizen.third_party_support.create');
+    }
+
+    public function showThirdPartyRequest($id)
+    {
+        $thirdPartyRequest = TourismThirdPartyRequest::findOrFail($id);
+
+        if ($thirdPartyRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        return view('front.user_profiles.citizen.third_party_support.show', compact('thirdPartyRequest'));
     }
 
     // =============== MÉTODOS SARE PARA CIUDADANOS ===============

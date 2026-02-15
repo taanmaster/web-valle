@@ -32,6 +32,7 @@ use App\Http\Controllers\InstitucionalDevelopmentBannerController;
 // Tourism
 use App\Http\Controllers\TourismBannerController;
 use App\Http\Controllers\TourismBlogController;
+use App\Http\Controllers\TourismThirdPartyRequestController;
 
 // Recursos Humanos
 use App\Http\Controllers\HRVacancyController;
@@ -1651,6 +1652,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'uses' => 'TourismBannerController@status',
                 'as' => 'tourism.banners.status',
             ]);
+
+            Route::resource('third-party-requests', TourismThirdPartyRequestController::class)->only(['index', 'show', 'destroy'])->names([
+                'index' => 'tourism.third_party_requests.admin.index',
+                'show' => 'tourism.third_party_requests.admin.show',
+                'destroy' => 'tourism.third_party_requests.admin.destroy',
+            ]);
         });
 
         /* ------------------- */
@@ -1687,6 +1694,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil', 'CitizenProfileController@index')->name('citizen.profile.index');
         Route::get('/perfil/editar', 'CitizenProfileController@edit')->name('citizen.profile.edit');
         Route::put('/perfil/actualizar', 'CitizenProfileController@update')->name('citizen.profile.update');
+        Route::get('/perfil/mis-solicitudes', 'CitizenProfileController@myRequests')->name('citizen.my_requests');
         Route::get('/perfil/solicitudes', 'CitizenProfileController@requests')->name('citizen.profile.requests');
         Route::get('/perfil/tramites', 'CitizenProfileController@urbanDevRequests')->name('citizen.profile.urban_dev_requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
@@ -1698,6 +1706,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/constancias_de_identificacion', 'CitizenProfileController@identificationCertificates')->name('citizen.profile.identification_certificates');
         Route::get('/constancias_de_identificacion/crear', 'CitizenProfileController@createIdentificationCertificate')->name('citizen.profile.identification_certificates.create');
         Route::get('/constancias_de_identificacion/{id}', 'CitizenProfileController@showIdentificationCertificate')->name('citizen.profile.identification_certificates.show');
+
+        // Rutas Apoyo a Terceros para ciudadanos
+        Route::get('/apoyo-terceros', 'CitizenProfileController@thirdPartyRequests')->name('citizen.third_party.index');
+        Route::get('/apoyo-terceros/crear', 'CitizenProfileController@createThirdPartyRequest')->name('citizen.third_party.create');
+        Route::get('/apoyo-terceros/{id}', 'CitizenProfileController@showThirdPartyRequest')->name('citizen.third_party.show');
 
         // Rutas SARE para ciudadanos
         Route::get('/sare/crear', 'CitizenProfileController@createSareRequest')->name('citizen.sare.create');
