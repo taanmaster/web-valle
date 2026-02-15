@@ -855,6 +855,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('tourism.blog.admin.index') }}">Blog</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('tourism.third_party_requests.admin.index') }}">Apoyo a Terceros</a>
+                    </li>
                 </ul>
 
                 <div class="title-box">
