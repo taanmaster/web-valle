@@ -96,6 +96,13 @@
             </li>
 
             <li>
+                <a href="{{ route('rrhh.index') }}">
+                    <ion-icon name="briefcase-outline"></ion-icon>
+                    <span>Recursos Humanos</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('sare.index') }}">
                     <ion-icon name="layers-outline"></ion-icon>
                     <span>S.A.R.E</span>

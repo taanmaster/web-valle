@@ -33,6 +33,9 @@ use App\Http\Controllers\InstitucionalDevelopmentBannerController;
 use App\Http\Controllers\TourismBannerController;
 use App\Http\Controllers\TourismBlogController;
 
+// Recursos Humanos
+use App\Http\Controllers\HRVacancyController;
+
 // Tesorería
 use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Http\Controllers\TsrBillingAccountController;
@@ -108,6 +111,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/', 'FrontController@tourism')->name('turismo.index');
         Route::get('/blog', 'FrontController@tourismBlogList')->name('turismo.front.blog.list');
         Route::get('/blog/{slug}', 'FrontController@tourismBlogDetail')->name('turismo.front.blog.detail');
+    });
+
+    // Recursos Humanos (Front)
+    Route::group(['prefix' => '/recursos-humanos'], function () {
+        Route::get('/', 'FrontController@humanResources')->name('rrhh.index');
+        Route::get('/vacante/{id}', 'FrontController@humanResourcesVacancyDetail')->name('rrhh.vacancy.detail');
+        Route::get('/vacante/{id}/aplicar', 'FrontController@humanResourcesApply')->name('rrhh.vacancy.apply')->middleware('auth');
     });
 
     // SARE
@@ -1645,6 +1655,21 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* ------------------- */
         /* ------------------- */
+        /* Recursos Humanos */
+        Route::group(['prefix' => 'human-resources'], function () {
+            Route::resource('vacancies', HRVacancyController::class)->names([
+                'index' => 'hr.vacancies.admin.index',
+                'create' => 'hr.vacancies.admin.create',
+                'store' => 'hr.vacancies.admin.store',
+                'show' => 'hr.vacancies.admin.show',
+                'edit' => 'hr.vacancies.admin.edit',
+                'update' => 'hr.vacancies.admin.update',
+                'destroy' => 'hr.vacancies.admin.destroy',
+            ]);
+        });
+
+        /* ------------------- */
+        /* ------------------- */
         /* Secretaría particular */
         Route::resource('identification_certificates', IdentificationCertificateController::class)->names([
             'index' => 'identification_certificates.index',
@@ -1666,6 +1691,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil/tramites', 'CitizenProfileController@urbanDevRequests')->name('citizen.profile.urban_dev_requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
         Route::put('/perfil/notificaciones', 'CitizenProfileController@updateNotifications')->name('citizen.profile.notifications');
+        Route::get('/perfil/postulaciones', 'CitizenProfileController@applications')->name('citizen.profile.applications');
+        Route::get('/perfil/postulaciones/{id}', 'CitizenProfileController@applicationShow')->name('citizen.profile.applications.show');
 
         // Rutas para constancias de identificación
         Route::get('/constancias_de_identificacion', 'CitizenProfileController@identificationCertificates')->name('citizen.profile.identification_certificates');

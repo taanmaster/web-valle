@@ -42,6 +42,12 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
+                <a class="nav-link {{ $currentRoute === 'citizen.profile.applications' ? 'active' : '' }}"
+                    href="{{ route('citizen.profile.applications') }}" id="citas-tab" role="tab">
+                    <ion-icon name="briefcase-outline"></ion-icon> Solicitudes Vacantes
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
                 <a class="nav-link {{ $currentRoute === 'citizen.summons.index' ? 'active' : '' }}"
                     href="{{ route('citizen.summons.index') }}" id="citatorios-tab" role="tab">
                     <ion-icon name="document-text-outline"></ion-icon> Citatorios
