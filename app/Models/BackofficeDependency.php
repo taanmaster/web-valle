@@ -35,6 +35,14 @@ class BackofficeDependency extends Model
     }
 
     /**
+     * Relación: Una dependencia tiene muchos trámites de citas
+     */
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'backoffice_dependency_id');
+    }
+
+    /**
      * Accessor: Obtener código formateado en mayúsculas
      */
     public function getFormattedCodeAttribute()
