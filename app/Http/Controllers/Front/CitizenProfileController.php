@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Citizen;
+use App\Models\HRApplication;
+use App\Models\HRVacancy;
 use App\Models\UserInfo;
 use App\Models\SareRequest;
 use App\Models\SareRequestFile;
 use App\Models\Summon;
 use App\Models\AppointmentBooking;
 use App\Models\IdentificationCertificate;
+use App\Models\TourismThirdPartyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -196,6 +199,36 @@ class CitizenProfileController extends Controller
         }
 
         return $userInfo;
+    }
+
+    // =============== MIS SOLICITUDES ===============
+
+    public function myRequests()
+    {
+        return view('front.user_profiles.citizen.my_requests');
+    }
+
+    // =============== MÉTODOS APOYO A TERCEROS PARA CIUDADANOS ===============
+
+    public function thirdPartyRequests()
+    {
+        return view('front.user_profiles.citizen.third_party_support.index');
+    }
+
+    public function createThirdPartyRequest()
+    {
+        return view('front.user_profiles.citizen.third_party_support.create');
+    }
+
+    public function showThirdPartyRequest($id)
+    {
+        $thirdPartyRequest = TourismThirdPartyRequest::findOrFail($id);
+
+        if ($thirdPartyRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        return view('front.user_profiles.citizen.third_party_support.show', compact('thirdPartyRequest'));
     }
 
     // =============== MÉTODOS SARE PARA CIUDADANOS ===============
@@ -1212,6 +1245,41 @@ class CitizenProfileController extends Controller
         return view('front.user_profiles.citizen.identification_certificates.show')->with('certificate', $certificate)->with('mode', $mode);
     }
 
+    public function applications()
+    {
+        $user = Auth::user();
+
+        $mode = 1;
+
+        $applications = HRApplication::where('user_id', $user->id)->get();
+        $appliedVacancyIds = $applications->pluck('hr_vacancy_id')->toArray();
+
+        $vacancies = HRVacancy::paginate(12);
+
+        return view('front.user_profiles.citizen.applications.index', [
+            'applications' => $applications,
+            'vacancies' => $vacancies,
+            'appliedVacancyIds' => $appliedVacancyIds,
+            'mode' => $mode
+        ]);
+    }
+
+    public function applicationShow($id)
+    {
+        $user = Auth::user();
+        $mode = 1;
+
+        $vacancy = HRVacancy::findOrFail($id);
+        $hasApplied = HRApplication::where('user_id', $user->id)
+            ->where('hr_vacancy_id', $vacancy->id)
+            ->exists();
+
+        return view('front.user_profiles.citizen.applications.show', [
+            'vacancy' => $vacancy,
+            'hasApplied' => $hasApplied,
+            'mode' => $mode
+        ]);
+    }
     // ──────────────────────────────────────────────
     // Citas para Trámites
     // ──────────────────────────────────────────────

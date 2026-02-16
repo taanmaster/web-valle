@@ -29,6 +29,14 @@ use App\Http\Controllers\TapSupplierLogController;
 // Desarrollo Institucional
 use App\Http\Controllers\InstitucionalDevelopmentBannerController;
 
+// Tourism
+use App\Http\Controllers\TourismBannerController;
+use App\Http\Controllers\TourismBlogController;
+use App\Http\Controllers\TourismThirdPartyRequestController;
+
+// Recursos Humanos
+use App\Http\Controllers\HRVacancyController;
+
 // Tesorería
 use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Http\Controllers\TsrBillingAccountController;
@@ -100,6 +108,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/proyectos', 'FrontController@implanProjects')->name('implan.front.projects');
         Route::get('/proyectos/{slug}', 'FrontController@implanProjectDetail')->name('implan.front.project.detail');
         Route::get('/logros', 'FrontController@implanAchievements')->name('implan.front.achievements');
+    });
+
+    //Tourism
+    Route::group(['prefix' => '/turismo'], function () {
+        Route::get('/', 'FrontController@tourism')->name('turismo.index');
+        Route::get('/blog', 'FrontController@tourismBlogList')->name('turismo.front.blog.list');
+        Route::get('/blog/{slug}', 'FrontController@tourismBlogDetail')->name('turismo.front.blog.detail');
+    });
+
+    // Recursos Humanos (Front)
+    Route::group(['prefix' => '/recursos-humanos'], function () {
+        Route::get('/', 'FrontController@humanResources')->name('rrhh.index');
+        Route::get('/vacante/{id}', 'FrontController@humanResourcesVacancyDetail')->name('rrhh.vacancy.detail');
+        Route::get('/vacante/{id}/aplicar', 'FrontController@humanResourcesApply')->name('rrhh.vacancy.apply')->middleware('auth');
     });
 
     // SARE
@@ -1609,6 +1631,73 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* ------------------- */
         /* ------------------- */
+        /* Tourism */
+        Route::group(['prefix' => 'tourism'], function () {
+            Route::resource('blog', TourismBlogController::class)->names([
+                'index' => 'tourism.blog.admin.index',
+                'create' => 'tourism.blog.admin.create',
+                'store' => 'tourism.blog.admin.store',
+                'show' => 'tourism.blog.admin.show',
+                'edit' => 'tourism.blog.admin.edit',
+                'update' => 'tourism.blog.admin.update',
+                'destroy' => 'tourism.blog.admin.destroy',
+            ]);
+
+            // Dropzone routes for Tourism Blog
+            Route::post('/blog/upload/{id}', [
+                'uses' => 'TourismBlogController@uploadFile',
+                'as' => 'dropzone.tourism.blog.upload',
+            ]);
+
+            Route::get('/blog/fetch/{id}', [
+                'uses' => 'TourismBlogController@fetchFile',
+                'as' => 'dropzone.tourism.blog.fetch',
+            ]);
+
+            Route::post('/blog/delete-file', [
+                'uses' => 'TourismBlogController@deleteFile',
+                'as' => 'dropzone.tourism.blog.delete',
+            ]);
+
+            Route::resource('banners', TourismBannerController::class)->names([
+                'index' => 'tourism.banners.index',
+                'create' => 'tourism.banners.create',
+                'store' => 'tourism.banners.store',
+                'show' => 'tourism.banners.show',
+                'edit' => 'tourism.banners.edit',
+                'update' => 'tourism.banners.update',
+                'destroy' => 'tourism.banners.destroy',
+            ]);
+
+            Route::post('/banners/status/{id}', [
+                'uses' => 'TourismBannerController@status',
+                'as' => 'tourism.banners.status',
+            ]);
+
+            Route::resource('third-party-requests', TourismThirdPartyRequestController::class)->only(['index', 'show', 'destroy'])->names([
+                'index' => 'tourism.third_party_requests.admin.index',
+                'show' => 'tourism.third_party_requests.admin.show',
+                'destroy' => 'tourism.third_party_requests.admin.destroy',
+            ]);
+        });
+
+        /* ------------------- */
+        /* ------------------- */
+        /* Recursos Humanos */
+        Route::group(['prefix' => 'human-resources'], function () {
+            Route::resource('vacancies', HRVacancyController::class)->names([
+                'index' => 'hr.vacancies.admin.index',
+                'create' => 'hr.vacancies.admin.create',
+                'store' => 'hr.vacancies.admin.store',
+                'show' => 'hr.vacancies.admin.show',
+                'edit' => 'hr.vacancies.admin.edit',
+                'update' => 'hr.vacancies.admin.update',
+                'destroy' => 'hr.vacancies.admin.destroy',
+            ]);
+        });
+
+        /* ------------------- */
+        /* ------------------- */
         /* Secretaría particular */
         Route::resource('identification_certificates', IdentificationCertificateController::class)->names([
             'index' => 'identification_certificates.index',
@@ -1626,15 +1715,23 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil', 'CitizenProfileController@index')->name('citizen.profile.index');
         Route::get('/perfil/editar', 'CitizenProfileController@edit')->name('citizen.profile.edit');
         Route::put('/perfil/actualizar', 'CitizenProfileController@update')->name('citizen.profile.update');
+        Route::get('/perfil/mis-solicitudes', 'CitizenProfileController@myRequests')->name('citizen.my_requests');
         Route::get('/perfil/solicitudes', 'CitizenProfileController@requests')->name('citizen.profile.requests');
         Route::get('/perfil/tramites', 'CitizenProfileController@urbanDevRequests')->name('citizen.profile.urban_dev_requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
         Route::put('/perfil/notificaciones', 'CitizenProfileController@updateNotifications')->name('citizen.profile.notifications');
+        Route::get('/perfil/postulaciones', 'CitizenProfileController@applications')->name('citizen.profile.applications');
+        Route::get('/perfil/postulaciones/{id}', 'CitizenProfileController@applicationShow')->name('citizen.profile.applications.show');
 
         // Rutas para constancias de identificación
         Route::get('/constancias_de_identificacion', 'CitizenProfileController@identificationCertificates')->name('citizen.profile.identification_certificates');
         Route::get('/constancias_de_identificacion/crear', 'CitizenProfileController@createIdentificationCertificate')->name('citizen.profile.identification_certificates.create');
         Route::get('/constancias_de_identificacion/{id}', 'CitizenProfileController@showIdentificationCertificate')->name('citizen.profile.identification_certificates.show');
+
+        // Rutas Apoyo a Terceros para ciudadanos
+        Route::get('/apoyo-terceros', 'CitizenProfileController@thirdPartyRequests')->name('citizen.third_party.index');
+        Route::get('/apoyo-terceros/crear', 'CitizenProfileController@createThirdPartyRequest')->name('citizen.third_party.create');
+        Route::get('/apoyo-terceros/{id}', 'CitizenProfileController@showThirdPartyRequest')->name('citizen.third_party.show');
 
         // Rutas SARE para ciudadanos
         Route::get('/sare/crear', 'CitizenProfileController@createSareRequest')->name('citizen.sare.create');

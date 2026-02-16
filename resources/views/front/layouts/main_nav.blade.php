@@ -82,9 +82,23 @@
             </li>
 
             <li>
+                <a href="{{ route('turismo.index') }}">
+                    <ion-icon name="map-outline"></ion-icon>
+                    <span>Turismo</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('dif.index') }}">
                     <ion-icon name="medkit-outline"></ion-icon>
                     <span>DIF</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('rrhh.index') }}">
+                    <ion-icon name="briefcase-outline"></ion-icon>
+                    <span>Recursos Humanos</span>
                 </a>
             </li>
 
@@ -107,8 +121,8 @@
                     <ion-icon name="library-outline"></ion-icon>
                     <span>Contraloría</span>
                 </a>
-            </li>            
-            
+            </li>
+
             <li>
                 <div class="switch">
                     <input type="checkbox" id="mode" checked>

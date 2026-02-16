@@ -82,4 +82,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(BackofficeDependency::class, 'backoffice_dependency_id');
     }
+
+    public function hrApplications()
+    {
+        return $this->hasMany(HRApplication::class, 'user_id');
+    }
 }
