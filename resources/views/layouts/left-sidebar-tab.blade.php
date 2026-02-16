@@ -20,6 +20,15 @@
                         </li>
                     @endif
 
+                    @if (auth()->user()->hasRole('all'))
+                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
+                            title="Citas para Trámites" data-bs-trigger="hover">
+                            <a href="#valleCitas" id="citas-tab" class="nav-link">
+                                <i class="ti ti-calendar-event menu-icon"></i>
+                            </a>
+                        </li>
+                    @endif
+
                     @if (auth()->user()->hasRole('des_Institucional') ||
                             auth()->user()->hasRole('private_secretary') ||
                             auth()->user()->hasRole('all'))
@@ -186,6 +195,16 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                    </li>
+                </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Citas para Trámites</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('appointment-bookings.dependency') }}">Citas de Mi Dependencia</a>
                     </li>
                 </ul>
 
@@ -943,6 +962,28 @@
                     </div>
                 @endif
             </div>
+
+            @if (auth()->user()->hasRole('all'))
+                <div id="valleCitas" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="citas-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Citas para Trámites</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('appointments.index') }}">Trámites (Config.)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('appointment-bookings.index') }}">Citas Agendadas</a>
+                        </li>
+                    </ul>
+
+                    <div class="mt-3 px-3">
+                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                        <span class="badge bg-primary me-1 mb-1">all</span>
+                    </div>
+                </div>
+            @endif
 
             @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                 <div id="valleConfiguration" class="main-icon-menu-pane tab-pane" role="tabpanel"

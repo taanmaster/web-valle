@@ -11,6 +11,7 @@ use App\Models\UserInfo;
 use App\Models\SareRequest;
 use App\Models\SareRequestFile;
 use App\Models\Summon;
+use App\Models\AppointmentBooking;
 use App\Models\IdentificationCertificate;
 use App\Models\TourismThirdPartyRequest;
 use Illuminate\Http\Request;
@@ -1278,5 +1279,90 @@ class CitizenProfileController extends Controller
             'hasApplied' => $hasApplied,
             'mode' => $mode
         ]);
+    }
+    // ──────────────────────────────────────────────
+    // Citas para Trámites
+    // ──────────────────────────────────────────────
+
+    /**
+     * Listado de citas del ciudadano.
+     */
+    public function appointments()
+    {
+        $bookings = AppointmentBooking::with('appointment.dependency')
+            ->where('user_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->orderBy('start_time', 'desc')
+            ->get();
+
+        return view('front.user_profiles.citizen.appointments.index', [
+            'bookings' => $bookings,
+        ]);
+    }
+
+    /**
+     * Detalle de una cita.
+     */
+    public function showAppointment($id)
+    {
+        $booking = AppointmentBooking::with('appointment.dependency')->findOrFail($id);
+
+        if ($booking->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta cita.');
+        }
+
+        return view('front.user_profiles.citizen.appointments.show', [
+            'booking' => $booking,
+        ]);
+    }
+
+    /**
+     * Confirmar una cita.
+     */
+    public function confirmAppointment($id)
+    {
+        $booking = AppointmentBooking::findOrFail($id);
+
+        if ($booking->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta cita.');
+        }
+
+        if ($booking->status !== 'scheduled') {
+            return redirect()->route('citizen.appointments.show', $booking->id)
+                ->with('error', 'Esta cita no puede ser confirmada en su estado actual.');
+        }
+
+        $booking->update([
+            'status' => 'confirmed',
+            'confirmed_at' => now(),
+        ]);
+
+        return redirect()->route('citizen.appointments.show', $booking->id)
+            ->with('success', 'Tu cita ha sido confirmada exitosamente.');
+    }
+
+    /**
+     * Cancelar una cita.
+     */
+    public function cancelAppointment($id)
+    {
+        $booking = AppointmentBooking::findOrFail($id);
+
+        if ($booking->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta cita.');
+        }
+
+        if ($booking->status === 'cancelled') {
+            return redirect()->route('citizen.appointments.show', $booking->id)
+                ->with('error', 'Esta cita ya fue cancelada.');
+        }
+
+        $booking->update([
+            'status' => 'cancelled',
+            'cancelled_at' => now(),
+        ]);
+
+        return redirect()->route('citizen.appointments.show', $booking->id)
+            ->with('success', 'Tu cita ha sido cancelada.');
     }
 }

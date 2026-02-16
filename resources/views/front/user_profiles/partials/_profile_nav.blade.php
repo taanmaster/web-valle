@@ -54,6 +54,12 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
+                <a class="nav-link {{ str_starts_with($currentRoute, 'citizen.appointments') ? 'active' : '' }}"
+                    href="{{ route('citizen.appointments.index') }}" id="citas-tab" role="tab">
+                    <ion-icon name="calendar-outline"></ion-icon> Mis Citas
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
                 <a class="nav-link {{ $currentRoute === 'citizen.profile.settings' ? 'active' : '' }}"
                     href="{{ route('citizen.profile.settings') }}" id="configuraciones-tab" role="tab">
                     <ion-icon name="cog-outline"></ion-icon> Configuraciones

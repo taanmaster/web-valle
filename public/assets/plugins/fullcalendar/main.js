@@ -14119,6 +14119,7 @@ var FullCalendar = (function (exports) {
         if (!isImmuneUrl(currentUrl)) {
             var status_1 = processLicenseKey(key);
             if (status_1 !== 'valid') {
+                return null;    
                 return (createElement("div", { className: "fc-license-message", style: CSS }, (status_1 === 'outdated') ? (createElement(Fragment, null,
                     'Your license key is too old to work with this version. ',
                     createElement("a", { href: OUTDATED_LICENSE_URL }, "More Info"))) : (createElement(Fragment, null,

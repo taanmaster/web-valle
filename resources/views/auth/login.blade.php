@@ -1,198 +1,130 @@
-{{-- @extends('layouts.app')
+{{-- Login original de Laravel (desactivado) --}}
+{{-- ... --}}
+
+@extends('front.layouts.app')
 
 @section('content')
-<div class="container">
+@php
+    $hasPendingBooking = session()->has('pending_booking');
+@endphp
+
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+        <div class="col-md-4">
+            <div class="card card-image card-alignment-bottom wow fadeInUp h-100">
+                <img class="card-img-top" src="{{ asset('front/img/placeholder-3.jpg') }}" alt="">
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card shadow wow fadeInUp mb-0">
+                <div class="card-body bg-secondary text-white">
+                    <h4 class="mb-0">
+                        <ion-icon name="log-in-outline"></ion-icon> Iniciar Sesión
+                    </h4>
+                    <p class="mb-0 small">Accede a tu cuenta para utilizar los servicios municipales</p>
+                </div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
+                <div class="card-body p-4">
+                    {{-- Alerta de cita pendiente --}}
+                    @if ($hasPendingBooking)
+                        <div class="alert alert-info border-0 shadow-sm">
+                            <div class="d-flex align-items-center">
+                                <ion-icon name="calendar-outline" class="me-2" style="font-size: 1.4rem;"></ion-icon>
+                                <div>
+                                    <strong>Tienes una cita pendiente por confirmar.</strong><br>
+                                    <small>Inicia sesión para completar tu reservación.</small>
                                 </div>
                             </div>
                         </div>
+                    @endif
 
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-                                @if (Route::has('password.request'))
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
-                                @endif
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+
+                        <div class="mb-4">
+                            <label for="email" class="form-label">
+                                <ion-icon name="mail-outline"></ion-icon> Correo Electrónico <span class="text-danger">*</span>
+                            </label>
+                            <input id="email" type="email"
+                                class="form-control @error('email') is-invalid @enderror"
+                                name="email"
+                                value="{{ old('email') }}"
+                                required
+                                autocomplete="email"
+                                autofocus
+                                placeholder="ejemplo@correo.com">
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label">
+                                <ion-icon name="lock-closed-outline"></ion-icon> Contraseña <span class="text-danger">*</span>
+                            </label>
+                            <input id="password" type="password"
+                                class="form-control @error('password') is-invalid @enderror"
+                                name="password"
+                                required
+                                autocomplete="current-password"
+                                placeholder="Tu contraseña">
+                            @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="remember">
+                                    Recordar mi cuenta
+                                </label>
                             </div>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg py-3 d-flex align-items-center justify-content-center gap-2">
+                                <ion-icon name="log-in-outline"></ion-icon> Iniciar Sesión
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <p class="mb-2">
+                                ¿No tienes cuenta?
+                                <a href="{{ route('register') }}" class="text-primary fw-semibold">Regístrate aquí</a>
+                            </p>
+                            <p class="mb-0 text-muted small">
+                                ¿Olvidaste tu contraseña? Solicita una actualización con administración de sistemas.
+                            </p>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@endsection --}}
 
-
-@extends('layouts.master-without-nav')
-@section('title')
-    Valle de Santiago
-@endsection
-@section('content')
-@section('body')
-
-    <body id="body" class="auth-page"
-        style="background-image: url({{ URL::asset('assets/images/p-1.png') }}); background-size: cover; background-position: center center;">
-    @endsection
-
-    <!-- Log In page -->
-    <div class="container-md">
-        <div class="row vh-100 d-flex justify-content-center">
-            <div class="col-12 align-self-center">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4 mx-auto">
-                            <div class="card">
-                                <div class="card-body p-0 auth-header-box">
-                                    <div class="text-center p-3">
-                                        <a href="index" class="logo logo-admin">
-                                            <img src="{{ URL::asset('assets/images/logo-sm.png') }}" height="50"
-                                                alt="logo" class="auth-logo">
-                                        </a>
-                                        <h4 class="mt-3 mb-1 fw-semibold text-white font-18">Comencemos</h4>
-                                        <p class="text-muted  mb-0">Inicia sesión para acceder al portal de Valle de
-                                            Santiago.</p>
-                                    </div>
-                                </div>
-                                <div class="card-body pt-0">
-                                    <form class="my-4" method="POST" action="{{ route('login') }}">
-                                        @csrf
-                                        <div class="form-group mb-2">
-                                            <label class="form-label" for="username">Correo Electrónico</label>
-                                            <input id="email" type="email"
-                                                class="form-control @error('email') is-invalid @enderror" name="email"
-                                                value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                            @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="userpassword">Contraseña</label>
-                                            <input id="password" type="password"
-                                                class="form-control @error('password') is-invalid @enderror"
-                                                name="password" required autocomplete="current-password">
-
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group row mt-3">
-                                            <div class="col-sm-6">
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input" type="checkbox" name="remember"
-                                                        id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="customSwitchSuccess">Recordar
-                                                        cuenta</label>
-                                                </div>
-                                            </div>
-                                            {{--
-                                            <div class="col-sm-6 text-end">
-                                                @if (Route::has('password.request'))
-                                                <a class="text-muted font-13" href="{{ route('password.request') }}">
-                                                    <i class="dripicons-lock"></i> Forgot password?
-                                                </a>
-                                                @endif
-                                            </div>
-                                            --}}
-                                        </div>
-
-                                        <div class="form-group mb-0 row">
-                                            <div class="col-12">
-                                                <div class="d-grid mt-3">
-                                                    <button class="btn btn-primary" type="submit">Acceder <i
-                                                            class="fas fa-sign-in-alt ms-1"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                    <div class="m-3 text-center text-muted">
-                                        <p class="mb-0">¿Olvidaste tu contraseña? Solicita una actualización con
-                                            administración de sistemas.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-9">
+            <div class="text-center mt-4 wow fadeInUp">
+                <div class="alert alert-info">
+                    <ion-icon name="information-circle-outline"></ion-icon>
+                    <strong>¿Necesitas ayuda?</strong><br>
+                    Contacta a soporte: <a href="mailto:comunicacion.social@valledesantiago.gob.mx">comunicacion.social@valledesantiago.gob.mx</a>
                 </div>
             </div>
-
-            {{--
-            <div class="col-12 align-self-center">
-                <div class="row">
-                    <div class="col-lg-4 mx-auto">
-                        <div class="card card-body">
-                            <h3>Accesos de Prueba:</h3>
-
-                            <p class="mb-0">Correo: webmaster@valle.com</p>
-                            <p>Contraseña: valle12345</p>
-
-                            <p class="mb-0">Correo: admin@valle.com</p>
-                            <p>Contraseña: valle12345</p>
-
-                            <p class="mb-0">Correo: ciudadano@valle.com</p>
-                            <p>Contraseña: valle12345</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-             --}}
         </div>
     </div>
+</div>
 @endsection

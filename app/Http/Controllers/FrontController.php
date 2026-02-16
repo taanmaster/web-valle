@@ -791,6 +791,12 @@ class FrontController extends Controller
         return view('front.predial_search');
     }
 
+    // Citas para Trámites
+    public function appointments()
+    {
+        return view('front.appointments.index');
+    }
+
     public function predialSearchResults(Request $request)
     {
         $request->validate([
