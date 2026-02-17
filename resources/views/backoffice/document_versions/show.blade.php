@@ -194,7 +194,7 @@
                     @if($version->modified_field)
                         <div class="mb-3">
                             <small class="text-muted d-block">Campos Afectados</small>
-                            <span class="badge bg-warning text-dark">{{ $version->modified_field }}</span>
+                            <span class="badge bg-warning text-dark">{{ $version->modified_field_label }}</span>
                         </div>
                     @endif
                 </div>

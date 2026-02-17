@@ -135,4 +135,31 @@ class BackofficeDocumentVersion extends Model
         
         return $badges[$this->activity_type] ?? '<span class="badge bg-secondary">' . ucfirst($this->activity_type) . '</span>';
     }
+
+    /**
+     * Accessor: Traducir el nombre del campo modificado al español
+     */
+    public function getModifiedFieldLabelAttribute()
+    {
+        if (!$this->modified_field) {
+            return null;
+        }
+
+        $fieldLabels = [
+            'subject' => 'Asunto',
+            'sender' => 'Remitente',
+            'body' => 'Cuerpo del Oficio',
+            'requester' => 'Solicitante',
+            'priority' => 'Prioridad',
+            'type' => 'Tipo',
+            'status' => 'Estado',
+            'assigned_to' => 'Asignado a',
+            'assignment_message' => 'Mensaje de Asignación',
+            'validations_count' => 'Validaciones',
+            'folio' => 'Folio',
+            'issue_date' => 'Fecha de Emisión',
+        ];
+
+        return $fieldLabels[$this->modified_field] ?? ucfirst(str_replace('_', ' ', $this->modified_field));
+    }
 }
