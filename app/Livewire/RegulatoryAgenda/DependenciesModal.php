@@ -73,7 +73,7 @@ class DependenciesModal extends Component
             Session::flash('success', 'Dependencia actualizada correctamente.');
 
             // Redirigir
-            return redirect()->route('regulatory_agenda.index');
+            return redirect()->route('agenda_dependencies.index');
         } else {
             RegulatoryAgendaDependency::create([
                 'name' => $this->name,
@@ -89,7 +89,7 @@ class DependenciesModal extends Component
             Session::flash('success', 'Dependencia creada correctamente.');
 
             // Redirigir
-            return redirect()->route('regulatory_agenda.index');
+            return redirect()->route('agenda_dependencies.index');
         }
     }
 

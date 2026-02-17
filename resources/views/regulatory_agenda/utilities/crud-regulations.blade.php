@@ -58,6 +58,7 @@
                     </div>
                 </div>
 
+                {{--  
                 <div class="row align-items-center m-3">
                     <div class="col-md-2">
                         <label for="justification" class="col-form-label">Justificación para emitir la propuesta
@@ -68,6 +69,7 @@
                             @if ($mode == 1) disabled @endif>
                     </div>
                 </div>
+                --}}
 
                 <div class="row align-items-center m-3">
                     <div class="col-md-2">

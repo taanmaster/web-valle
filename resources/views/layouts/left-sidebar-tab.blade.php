@@ -82,7 +82,7 @@
 
                     @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Secretaría de Ayuntamiento" data-bs-trigger="hover">
+                            title="Secretaría Particular" data-bs-trigger="hover">
                             <a href="#vallePrivateSecretary" id="uikit-tab" class="nav-link">
                                 <i class="ti ti-bookmark menu-icon"></i>
                             </a>
@@ -132,12 +132,14 @@
                         </a>
                     </li>
 
+                    @hasanyrole(['human_resources', 'all'])
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Recursos Humanos"
                         data-bs-trigger="hover">
                         <a href="#valleHR" id="hr-tab" class="nav-link">
                             <i class="ti ti-briefcase menu-icon"></i>
                         </a>
                     </li>
+                    @endhasanyrole
 
                     @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
@@ -233,19 +235,10 @@
                     @endhasanyrole
                 </ul>
 
-                @hasanyrole(['human_resources', 'all'])
-                    <div class="title-box">
-                        <h6 class="menu-title">Recursos Humanos</h6>
-                    </div>
-                @endhasanyrole
-
                 @if (auth()->user()->hasRole('all'))
                     <div class="mt-3 px-3">
                         <small class="text-muted d-block mb-1">Roles con acceso general:</small>
                         <span class="badge bg-primary me-1 mb-1">dashboard</span>
-                        <span class="badge bg-primary me-1 mb-1">all</span>
-                        <small class="text-muted d-block mb-1">Roles con acceso Recursos Humanos:</small>
-                        <span class="badge bg-primary me-1 mb-1">human_resources</span>
                         <span class="badge bg-primary me-1 mb-1">all</span>
                     </div>
                 @endif
@@ -898,6 +891,12 @@
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('backoffice.dependencies.index') }}">Dependencias</a>
+                        </li>
+                    </ul>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('hr.vacancies.admin.index') }}">Vacantes</a>
                         </li>
                     </ul>
@@ -946,7 +945,7 @@
             <div id="valleSecretary" class="main-icon-menu-pane tab-pane" role="tabpanel"
                 aria-labelledby="authentication-tab">
                 <div class="title-box">
-                    <h6 class="menu-title">Secretaría Publica</h6>
+                    <h6 class="menu-title">Secretaría de Ayuntamiento</h6>
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">

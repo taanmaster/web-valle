@@ -279,7 +279,16 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="alert alert-warning d-flex align-items-center mb-3" role="alert">
+                        <i class="bx bx-info-circle fs-4 me-2"></i>
+                        <div>
+                            <strong>Nota importante:</strong> Es necesario llevar foto presencial.
+                        </div>
+                    </div>
                 </div>
+
+                
             </div>
 
             <!-- Primer Testigo -->
