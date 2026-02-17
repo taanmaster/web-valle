@@ -74,7 +74,7 @@
                                             </td>
                                             <td>
                                                 @if($version->modified_field)
-                                                    <span class="badge bg-light text-dark">{{ $version->modified_field }}</span>
+                                                    <span class="badge bg-light text-dark">{{ $version->modified_field_label }}</span>
                                                 @else
                                                     <span class="text-muted">-</span>
                                                 @endif

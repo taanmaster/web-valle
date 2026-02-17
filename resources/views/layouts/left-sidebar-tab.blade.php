@@ -82,7 +82,7 @@
 
                     @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Secretaría Particular" data-bs-trigger="hover">
+                            title="Secretaría de Ayuntamiento" data-bs-trigger="hover">
                             <a href="#vallePrivateSecretary" id="uikit-tab" class="nav-link">
                                 <i class="ti ti-bookmark menu-icon"></i>
                             </a>
@@ -149,7 +149,7 @@
                     @endif
 
                     <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Secretaría Particular" data-bs-trigger="hover">
+                        title="Secretaría de Ayuntamiento" data-bs-trigger="hover">
                         <a href="#valleSecretary" id="authentication-tab" class="nav-link">
                             <i class="ti ti-briefcase menu-icon"></i>
                         </a>
