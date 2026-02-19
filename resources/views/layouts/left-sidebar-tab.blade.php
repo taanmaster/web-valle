@@ -972,8 +972,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('appointments.index') }}">Trámites (Config.)</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('appointment-bookings.index') }}">Citas Agendadas</a>
+                            <a class="nav-link" href="{{ route('appointment-bookings.index') }}">Calendario de Citas</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('appointment-bookings.list') }}">Listado Total Agendadas</a>
                         </li>
                     </ul>
 
