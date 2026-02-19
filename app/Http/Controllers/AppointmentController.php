@@ -95,6 +95,34 @@ class AppointmentController extends Controller
     }
 
     /**
+     * Listado total de citas agendadas (tabla clásica).
+     */
+    public function bookingsList()
+    {
+        return view('appointments.bookings-list');
+    }
+
+    /**
+     * Detalle de citas agendadas para un trámite en una fecha específica.
+     */
+    public function bookingsDay($appointmentId, $date)
+    {
+        $appointment = Appointment::with('dependency')->findOrFail($appointmentId);
+
+        // Validar formato de fecha
+        try {
+            $parsedDate = \Carbon\Carbon::parse($date)->format('Y-m-d');
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+        return view('appointments.bookings-day', [
+            'appointment' => $appointment,
+            'date' => $parsedDate,
+        ]);
+    }
+
+    /**
      * Citas agendadas filtradas por la dependencia del usuario autenticado.
      */
     public function bookingsByDependency()
