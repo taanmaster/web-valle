@@ -426,6 +426,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
         ]);
         Route::get('appointments/{appointment}/holidays', [AppointmentController::class, 'holidays'])->name('appointments.holidays');
         Route::get('appointment-bookings', [AppointmentController::class, 'bookings'])->name('appointment-bookings.index');
+        Route::get('appointment-bookings/list', [AppointmentController::class, 'bookingsList'])->name('appointment-bookings.list');
+        Route::get('appointment-bookings/day/{appointment}/{date}', [AppointmentController::class, 'bookingsDay'])->name('appointment-bookings.day');
         Route::get('appointment-bookings/my-dependency', [AppointmentController::class, 'bookingsByDependency'])->name('appointment-bookings.dependency');
 
         /* SARE */
