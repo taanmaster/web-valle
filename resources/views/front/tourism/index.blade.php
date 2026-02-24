@@ -41,6 +41,19 @@
             </div>
         </div>
 
+        <!--Agenda Regulatoria -->
+        <div href="{{ route('urban_dev.index') }}"
+            class="card card-image card-alignment-bottom wow fadeInUp h-100 d-block">
+            <img src="{{ asset('front/img/placeholder-3.jpg') }}" class="card-img-top" alt="Portada de Desarrollo Urbano">
+            <div class="overlay"></div>
+
+            <div class="card-content">
+                <h2 style="padding-top: 120px;">Apoyos a terceros</h2>
+                <a href="{{ route('login') }}" class="btn btn-secondary d-flex align-items-center gap-2 mb-4 mb-md-0"
+                    style="width: fit-content">Realizar solicitud <ion-icon name="caret-forward-outline"></ion-icon></a>
+            </div>
+        </div>
+
         @if (count($fav_posts) > 0)
             <div class="row wow fadeInUp">
                 <div class="col-md-12">
@@ -67,8 +80,8 @@
                     @if ($index === 0)
                         <a href="{{ route('turismo.front.blog.detail', $fav_post->slug) }}" class="col-md-12 mb-3">
                             <div class="card card-image card-image-banner wow fadeInUp">
-                                <img class="card-img-top"
-                                    src="{{ asset('images/tourism/blog/' . $fav_post->hero_img) }}" alt="">
+                                <img class="card-img-top" src="{{ asset('images/tourism/blog/' . $fav_post->hero_img) }}"
+                                    alt="">
                                 <div class="overlay"></div>
                                 <div class="card-content w-100">
                                     <div class="d-flex aling-items-center justify-content-between w-100">
@@ -81,8 +94,8 @@
                     @else
                         <a href="{{ route('turismo.front.blog.detail', $fav_post->slug) }}" class="col-md-6 mb-4">
                             <div class="card card-image justify-content-end wow fadeInUp" style="height: 400px">
-                                <img class="card-img-top"
-                                    src="{{ asset('images/tourism/blog/' . $fav_post->hero_img) }}" alt="">
+                                <img class="card-img-top" src="{{ asset('images/tourism/blog/' . $fav_post->hero_img) }}"
+                                    alt="">
                                 <div class="overlay"></div>
                                 <div class="card-content w-100">
                                     <div class="d-flex aling-items-center justify-content-between w-100">
