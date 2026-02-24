@@ -91,8 +91,12 @@ class Crud extends Component
             if ($this->hero_img != $this->blog->hero_img) {
                 $imageCoverPath = $this->hero_img;
                 $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
-                $imageCoverLocation = public_path('images/tourism/blog/' . $imageCoverName);
-                Image::make($imageCoverPath)->resize(960, null, function ($constraint) {
+                $imageCoverDir = public_path('images/tourism/blog/');
+                if (!file_exists($imageCoverDir)) {
+                    mkdir($imageCoverDir, 0755, true);
+                }
+                $imageCoverLocation = $imageCoverDir . $imageCoverName;
+                Image::make($imageCoverPath->getRealPath())->resize(960, null, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($imageCoverLocation);
 
@@ -124,8 +128,12 @@ class Crud extends Component
             if ($this->hero_img != null) {
                 $imageCoverPath = $this->hero_img;
                 $imageCoverName = Str::random(8) . '_cover' . '.' . $imageCoverPath->getClientOriginalExtension();
-                $imageCoverLocation = public_path('images/tourism/blog/' . $imageCoverName);
-                Image::make($imageCoverPath)->resize(960, null, function ($constraint) {
+                $imageCoverDir = public_path('images/tourism/blog/');
+                if (!file_exists($imageCoverDir)) {
+                    mkdir($imageCoverDir, 0755, true);
+                }
+                $imageCoverLocation = $imageCoverDir . $imageCoverName;
+                Image::make($imageCoverPath->getRealPath())->resize(960, null, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($imageCoverLocation);
             } else {
