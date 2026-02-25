@@ -126,6 +126,11 @@ class AppointmentBookingWizard extends Component
             $this->calendarMonth = (int) date('m');
             $this->loadAvailability();
             $this->step = 2;
+            $this->dispatch('calendar-updated',
+                availability: $this->availabilityData,
+                year: $this->calendarYear,
+                month: $this->calendarMonth
+            );
         } else {
             $this->appointmentName = '';
             $this->step = 1;
@@ -154,6 +159,11 @@ class AppointmentBookingWizard extends Component
         $this->calendarYear = (int) $year;
         $this->calendarMonth = (int) $month;
         $this->loadAvailability();
+        $this->dispatch('calendar-updated',
+            availability: $this->availabilityData,
+            year: $this->calendarYear,
+            month: $this->calendarMonth
+        );
     }
 
     public function previousMonth()
@@ -168,16 +178,31 @@ class AppointmentBookingWizard extends Component
         $this->calendarYear = $date->year;
         $this->calendarMonth = $date->month;
         $this->loadAvailability();
-        $this->dispatch('calendar-updated', availability: $this->availabilityData, year: $this->calendarYear, month: $this->calendarMonth);
+        $this->dispatch('calendar-updated',
+            availability: $this->availabilityData,
+            year: $this->calendarYear,
+            month: $this->calendarMonth
+        );
     }
 
     public function nextMonth()
     {
         $date = Carbon::create($this->calendarYear, $this->calendarMonth, 1)->addMonth();
+
+        // No permitir navegar más de 3 meses en el futuro
+        $maxDate = Carbon::now()->addMonths(3)->endOfMonth();
+        if ($date->gt($maxDate)) {
+            return;
+        }
+
         $this->calendarYear = $date->year;
         $this->calendarMonth = $date->month;
         $this->loadAvailability();
-        $this->dispatch('calendar-updated', availability: $this->availabilityData, year: $this->calendarYear, month: $this->calendarMonth);
+        $this->dispatch('calendar-updated',
+            availability: $this->availabilityData,
+            year: $this->calendarYear,
+            month: $this->calendarMonth
+        );
     }
 
     public function onDateSelected($date)
@@ -194,7 +219,16 @@ class AppointmentBookingWizard extends Component
 
     public function selectDate($date)
     {
-        $this->onDateSelected($date);
+        if (!$this->selectedAppointment) return;
+
+        // Validar que la fecha no sea pasada
+        $carbonDate = Carbon::parse($date);
+        if ($carbonDate->lt(Carbon::today())) return;
+
+        // No depender de availabilityData cacheada; cargar slots directamente
+        $this->selectedDate = $date;
+        $this->selectedSlot = '';
+        $this->loadSlots();
     }
 
     // ──────────────────────────────────────────────

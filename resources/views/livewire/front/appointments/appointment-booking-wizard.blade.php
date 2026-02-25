@@ -69,7 +69,7 @@
                                             class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2 {{ $selectedSlot === $slot['start_time'] ? 'active' : '' }}">
                                             <span>
                                                 <i class="fas fa-clock me-1"></i>
-                                                {{ $slot['start_time'] }} - {{ $slot['end_time'] }}
+                                                {{ \Carbon\Carbon::parse($slot['start_time'])->format('h:i A') }} - {{ \Carbon\Carbon::parse($slot['end_time'])->format('h:i A') }}
                                             </span>
                                             <span class="badge bg-success rounded-pill">Disponible</span>
                                         </button>
@@ -77,7 +77,7 @@
                                         <div class="list-group-item d-flex justify-content-between align-items-center py-2 text-muted">
                                             <span>
                                                 <i class="fas fa-clock me-1"></i>
-                                                {{ $slot['start_time'] }} - {{ $slot['end_time'] }}
+                                                {{ \Carbon\Carbon::parse($slot['start_time'])->format('h:i A') }} - {{ \Carbon\Carbon::parse($slot['end_time'])->format('h:i A') }}
                                             </span>
                                             <span class="badge bg-secondary rounded-pill">Ocupado</span>
                                         </div>
@@ -180,9 +180,9 @@
                                         <p class="mb-0 fw-semibold">
                                             @php
                                                 $appointment = \App\Models\Appointment::find($selectedAppointment);
-                                                $endTime = $appointment ? \Carbon\Carbon::parse($selectedSlot)->addMinutes($appointment->slot_duration)->format('H:i') : '';
+                                                $endTime = $appointment ? \Carbon\Carbon::parse($selectedSlot)->addMinutes($appointment->slot_duration)->format('h:i A') : '';
                                             @endphp
-                                            {{ $selectedSlot }} - {{ $endTime }}
+                                            {{ \Carbon\Carbon::parse($selectedSlot)->format('h:i A') }} - {{ $endTime }}
                                         </p>
                                     </div>
                                 </div>

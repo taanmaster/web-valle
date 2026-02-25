@@ -152,8 +152,8 @@
                                                         {{ $dayNames[$schedule['day_of_week']] ?? 'N/A' }}
                                                     </span>
                                                 </td>
-                                                <td>{{ $schedule['start_time'] }}</td>
-                                                <td>{{ $schedule['end_time'] }}</td>
+                                                <td>{{  \Carbon\Carbon::parse($schedule['start_time'])->format('h:i A') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($schedule['end_time'])->format('h:i A') }}</td>
                                                 @if ($mode !== 1)
                                                     <td class="text-center">
                                                         <button type="button"

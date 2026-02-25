@@ -78,17 +78,15 @@ document.addEventListener('livewire:initialized', function() {
     let calendar = null;
     let selectedDateEl = null;
 
-    function initCalendar(availability, year, month) {
-        const calendarEl = document.getElementById('appointment-calendar');
-        if (!calendarEl) return;
+    // Estado compartido para evitar loops y mantener datos frescos
+    let currentAvailability = null;
+    let currentCalYear = null;
+    let currentCalMonth = null;
 
-        // Destruir calendario anterior si existe
-        if (calendar) {
-            calendar.destroy();
-            calendar = null;
-        }
-
-        // Construir eventos de fondo con colores de disponibilidad
+    /**
+     * Construye el array de eventos de fondo para FullCalendar.
+     */
+    function buildEvents(availability) {
         const events = [];
         if (availability) {
             Object.keys(availability).forEach(function(date) {
@@ -105,8 +103,36 @@ document.addEventListener('livewire:initialized', function() {
                 });
             });
         }
+        return events;
+    }
 
-        // Fecha inicial del calendario
+    /**
+     * Calcula la fecha límite: hoy + 3 meses (fin del mes).
+     */
+    function getMaxDate() {
+        const today = new Date();
+        // Último día del mes dentro de 3 meses
+        const maxDate = new Date(today.getFullYear(), today.getMonth() + 4, 0);
+        return maxDate.toISOString().split('T')[0];
+    }
+
+    function initCalendar(availability, year, month) {
+        const calendarEl = document.getElementById('appointment-calendar');
+        if (!calendarEl) return;
+
+        // Destruir calendario anterior si existe
+        if (calendar) {
+            calendar.destroy();
+            calendar = null;
+        }
+
+        // Actualizar estado de seguimiento ANTES de crear el calendario
+        // para que el handler datesSet no dispare un loop
+        currentAvailability = availability;
+        currentCalYear = year;
+        currentCalMonth = month;
+
+        const events = buildEvents(availability);
         const initialDate = year + '-' + String(month).padStart(2, '0') + '-01';
 
         calendar = new FullCalendar.Calendar(calendarEl, {
@@ -121,12 +147,14 @@ document.addEventListener('livewire:initialized', function() {
             height: 'auto',
             events: events,
             validRange: {
-                start: new Date().toISOString().split('T')[0]
+                start: new Date().toISOString().split('T')[0],
+                end: getMaxDate()
             },
             dateClick: function(info) {
-                // Verificar si el día tiene disponibilidad
-                const dayData = availability ? availability[info.dateStr] : null;
-                if (!dayData || dayData.available === 0) return;
+                // Solo bloquear si SABEMOS que no hay disponibilidad.
+                // Si la fecha no está en los datos cargados, dejamos que el servidor valide.
+                const dayData = currentAvailability ? currentAvailability[info.dateStr] : null;
+                if (dayData && dayData.available === 0) return;
 
                 // Marcar visualmente
                 if (selectedDateEl) {
@@ -135,20 +163,27 @@ document.addEventListener('livewire:initialized', function() {
                 selectedDateEl = info.dayEl;
                 selectedDateEl.classList.add('fc-day-selected');
 
-                // Notificar a Livewire
+                // Notificar a Livewire (método directo de Livewire 3)
                 const wrapper = calendarEl.closest('[wire\\:id]');
                 if (wrapper) {
-                    Livewire.find(wrapper.getAttribute('wire:id')).call('selectDate', info.dateStr);
+                    Livewire.find(wrapper.getAttribute('wire:id')).selectDate(info.dateStr);
                 }
             },
             datesSet: function(info) {
-                // Cuando el usuario navega a otro mes
+                // Calcular el mes visible
                 const midDate = new Date((info.start.getTime() + info.end.getTime()) / 2);
                 const newYear = midDate.getFullYear();
                 const newMonth = midDate.getMonth() + 1;
+
+                // Guard: no disparar si el mes no cambió (evita loop infinito)
+                if (newYear === currentCalYear && newMonth === currentCalMonth) return;
+
+                currentCalYear = newYear;
+                currentCalMonth = newMonth;
+
                 const wrapper = calendarEl.closest('[wire\\:id]');
                 if (wrapper) {
-                    Livewire.find(wrapper.getAttribute('wire:id')).call('onMonthChanged', newYear, newMonth);
+                    Livewire.find(wrapper.getAttribute('wire:id')).onMonthChanged(newYear, newMonth);
                 }
             }
         });
@@ -159,10 +194,22 @@ document.addEventListener('livewire:initialized', function() {
     // Escuchar cuando Livewire actualiza la disponibilidad
     Livewire.on('calendar-updated', (data) => {
         const params = Array.isArray(data) ? data[0] : data;
-        initCalendar(params.availability, params.year, params.month);
+
+        // Actualizar disponibilidad y tracking
+        currentAvailability = params.availability;
+        currentCalYear = params.year;
+        currentCalMonth = params.month;
+
+        if (calendar) {
+            // Actualizar eventos in-place sin recrear el calendario
+            calendar.getEventSources().forEach(source => source.remove());
+            calendar.addEventSource(buildEvents(params.availability));
+        } else {
+            initCalendar(params.availability, params.year, params.month);
+        }
     });
 
-    // Observar cambios del DOM para re-inicializar el calendario
+    // Observar cambios del DOM para inicializar el calendario cuando aparece
     const observer = new MutationObserver(function() {
         const calendarEl = document.getElementById('appointment-calendar');
         if (calendarEl && !calendar) {
@@ -181,12 +228,15 @@ document.addEventListener('livewire:initialized', function() {
         } else if (!calendarEl && calendar) {
             calendar.destroy();
             calendar = null;
+            currentAvailability = null;
+            currentCalYear = null;
+            currentCalMonth = null;
         }
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Re-inicializar después de cada morphing de Livewire
+    // Re-inicializar después de cada morphing de Livewire si el calendario fue vaciado
     Livewire.hook('morph.updated', ({ el }) => {
         const calendarEl = document.getElementById('appointment-calendar');
         if (calendarEl && calendarEl.innerHTML === '') {
