@@ -17,7 +17,7 @@
 
     <div class="row layout-spacing">
         <div class="main-content">
-            {{-- Header siempre visible --}}
+            {{-- Header --}}
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="row align-items-center">
@@ -33,39 +33,22 @@
                             <small class="text-muted">Solicitante</small>
                             <h6 class="mb-0">{{ $request->full_name }}</h6>
                         </div>
-                        <div class="col-md-2 text-end">
+                        <div class="col-md-2 text-end d-flex flex-column align-items-end gap-2">
                             <span class="badge bg-{{ $request->status_color }} fs-6">{{ $request->status }}</span>
+                            <a href="{{ route('tourism.third_party_requests.admin.index') }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="bx bx-arrow-back"></i> Volver
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Tabs --}}
-            <ul class="nav nav-tabs mb-4" id="requestTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="detail-tab" data-bs-toggle="tab" data-bs-target="#detail"
-                        type="button" role="tab" aria-controls="detail" aria-selected="true">Detalle</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="observations-tab" data-bs-toggle="tab" data-bs-target="#observations"
-                        type="button" role="tab" aria-controls="observations" aria-selected="false">
-                        Observaciones
-                        <span class="badge bg-primary ms-1">{{ $request->observations->count() }}</span>
-                    </button>
-                </li>
-            </ul>
+            {{-- Componente compartido --}}
+            <livewire:tourism.third-party-request.request-detail
+                :request="$request"
+                mode="admin" />
 
-            <div class="tab-content" id="requestTabsContent">
-                {{-- Tab Detalle --}}
-                <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
-                    <livewire:tourism.third-party-request.detail-view :request="$request" />
-                </div>
-
-                {{-- Tab Observaciones --}}
-                <div class="tab-pane fade" id="observations" role="tabpanel" aria-labelledby="observations-tab">
-                    <livewire:tourism.third-party-request.observations-tab :request="$request" />
-                </div>
-            </div>
         </div>
     </div>
+
 @endsection

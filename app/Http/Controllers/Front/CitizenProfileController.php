@@ -231,7 +231,7 @@ class CitizenProfileController extends Controller
         return view('front.user_profiles.citizen.third_party_support.show', compact('thirdPartyRequest'));
     }
 
-    // =============== MÉTODOS SARE PARA CIUDADANOS ===============
+// =============== MÉTODOS SARE PARA CIUDADANOS ===============
 
     /**
      * Mostrar formulario para crear nueva solicitud SARE

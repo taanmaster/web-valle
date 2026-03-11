@@ -54,12 +54,18 @@ class TourismThirdPartyRequest extends Model
         return $this->hasMany(TourismThirdPartyObservation::class, 'tourism_third_party_request_id');
     }
 
+    public function evidences()
+    {
+        return $this->hasMany(TourismThirdPartyEvidence::class, 'tourism_third_party_request_id');
+    }
+
     public function getStatusColorAttribute()
     {
         return match ($this->status) {
             'Enviada' => 'primary',
             'En Revisión' => 'warning',
             'Aprobada' => 'success',
+            'Concluido' => 'info',
             'Rechazada' => 'danger',
             'Cancelada' => 'secondary',
             default => 'info',

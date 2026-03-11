@@ -3,7 +3,8 @@
     <div class="row mb-4">
         <div class="col-md-4">
             <label for="search" class="form-label">Buscar</label>
-            <input type="text" class="form-control" wire:model.live="search" placeholder="Buscar por nombre del evento...">
+            <input type="text" class="form-control" wire:model.live="search"
+                placeholder="Buscar por nombre del evento...">
         </div>
         <div class="col-md-3">
             <label for="date_filter" class="form-label">Fecha de Envío</label>
@@ -52,8 +53,10 @@
                             <span class="badge bg-{{ $request->status_color }}">{{ $request->status }}</span>
                         </div>
                         <div class="col-md-2 text-end">
-                            <a href="{{ route('citizen.third_party.show', $request->id) }}" class="btn btn-outline-primary btn-sm">
-                                <ion-icon name="eye-outline"></ion-icon> Ver
+                            <a href="{{ route('citizen.third_party.show', $request->id) }}"
+                                class="btn btn-outline-primary btn-sm">
+                                <ion-icon name="eye-outline"></ion-icon>
+                                {{ $request->status === 'Aprobada' ? 'Ver Evento' : 'Ver Solicitud' }}
                             </a>
                         </div>
                     </div>
