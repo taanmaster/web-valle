@@ -362,7 +362,7 @@
                             <!-- Firmar -->
                             <div class="col-md-4">
                                 @if($document->canBeSigned())
-                                    <button type="button" class="btn btn-outline-success w-100 py-3" data-bs-toggle="modal" data-bs-target="#signModal">
+                                    <button type="button" class="btn btn-outline-success w-100 py-3" id="initSignBtn">
                                         <i class="fas fa-signature fa-2x d-block mb-2"></i>
                                         Firmar
                                     </button>
@@ -665,47 +665,86 @@
                 <h5 class="modal-title"><i class="fas fa-signature me-2"></i> Firmar Oficio</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{{ route('backoffice.documents.sign', $document->id) }}" method="POST" enctype="multipart/form-data" id="signForm">
-                @csrf
-                <div class="modal-body">
-                    <div class="alert alert-success">
-                        <i class="fas fa-check-double me-2"></i>
-                        Este oficio ha completado las 3 validaciones requeridas y está listo para ser firmado.
+            <div class="modal-body">
+
+                {{-- Sección: cargando --}}
+                <div id="signLoading" class="text-center py-5">
+                    <div class="spinner-border text-success mb-3" role="status">
+                        <span class="visually-hidden">Cargando...</span>
                     </div>
-                    
-                    <!-- Área de Firma -->
-                    <div class="mb-4">
-                        <label class="form-label"><strong>Firma Digital</strong> <span class="text-danger">*</span></label>
-                        <div class="signature-pad-wrapper p-3">
-                            <div class="sigPad" id="signaturePad">
-                                <ul class="sigNav mb-2">
-                                    <li class="clearButton btn btn-sm btn-outline-secondary">
-                                        <i class="fas fa-eraser me-1"></i> Limpiar
-                                    </li>
-                                </ul>
-                                <div class="sig sigWrapper">
-                                    <canvas class="pad" width="600" height="200"></canvas>
-                                    <input type="hidden" name="signature" class="output" id="signatureOutput">
+                    <p class="text-muted">Conectando con el servicio de firma electrónica...</p>
+                </div>
+
+                {{-- Sección: eFirma iFrame --}}
+                <div id="signEfirmaSection" style="display:none;">
+                    <div class="alert alert-success">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        <strong>Firma Electrónica Certificada</strong> — Complete el proceso de firma en el panel de abajo. Una vez finalizado, haga clic en <strong>Confirmar Firma</strong>.
+                    </div>
+                    <div class="ratio mb-3" style="--bs-aspect-ratio: 65%;">
+                        <iframe id="efirmaIframe" src="" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <form action="{{ route('backoffice.documents.efirma-confirm', $document->id) }}" method="POST" class="flex-grow-1">
+                            @csrf
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="fas fa-check-circle me-2"></i> Confirmar Firma Electrónica
+                            </button>
+                        </form>
+                        @if($document->hasEfirmaDocument())
+                        <button type="button" class="btn btn-outline-secondary" id="reminderBtn" title="Enviar recordatorio a firmante">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Sección: canvas (fallback) --}}
+                <div id="signCanvasSection" style="display:none;">
+                    <div id="signCanvasWarning" class="alert alert-warning d-none">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>eFirma no disponible.</strong> Se usará la firma de canvas como respaldo. Esta firma no tiene validez de certificado electrónico.
+                    </div>
+                    <div class="alert alert-success" id="signCanvasReady">
+                        <i class="fas fa-check-double me-2"></i>
+                        Este oficio ha completado las validaciones requeridas y está listo para ser firmado.
+                    </div>
+                    <form action="{{ route('backoffice.documents.sign', $document->id) }}" method="POST" enctype="multipart/form-data" id="signForm">
+                        @csrf
+                        <!-- Área de Firma -->
+                        <div class="mb-4">
+                            <label class="form-label"><strong>Firma Digital</strong> <span class="text-danger">*</span></label>
+                            <div class="signature-pad-wrapper p-3">
+                                <div class="sigPad" id="signaturePad">
+                                    <ul class="sigNav mb-2">
+                                        <li class="clearButton btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-eraser me-1"></i> Limpiar
+                                        </li>
+                                    </ul>
+                                    <div class="sig sigWrapper">
+                                        <canvas class="pad" width="600" height="200"></canvas>
+                                        <input type="hidden" name="signature" class="output" id="signatureOutput">
+                                    </div>
                                 </div>
                             </div>
+                            <small class="text-muted">Dibuje su firma en el área de arriba usando el mouse o pantalla táctil.</small>
                         </div>
-                        <small class="text-muted">Dibuje su firma en el área de arriba usando el mouse o pantalla táctil.</small>
-                    </div>
+                        <!-- Subir Sello -->
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Sello (opcional)</strong></label>
+                            <input type="file" name="stamp" class="form-control" accept=".png,.jpg,.jpeg">
+                            <small class="text-muted">Suba una imagen PNG o JPG del sello que aparecerá decorativamente sobre el documento.</small>
+                        </div>
+                        <div class="modal-footer px-0 pb-0">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-signature me-2"></i> Firmar Documento
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
-                    <!-- Subir Sello -->
-                    <div class="mb-3">
-                        <label class="form-label"><strong>Sello (opcional)</strong></label>
-                        <input type="file" name="stamp" class="form-control" accept=".png,.jpg,.jpeg">
-                        <small class="text-muted">Suba una imagen PNG o JPG del sello que aparecerá decorativamente sobre el documento.</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-signature me-2"></i> Firmar Documento
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -833,18 +872,69 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Inicializar Signature Pad
+    // -------------------------------------------------------------------------
+    // Botón "Firmar" — inicia proceso eFirma o cae a canvas
+    // -------------------------------------------------------------------------
     var signaturePad = null;
-    $('#signModal').on('shown.bs.modal', function() {
+
+    $('#initSignBtn').on('click', function () {
+        // Mostrar modal en estado "cargando"
+        $('#signLoading').show();
+        $('#signEfirmaSection').hide();
+        $('#signCanvasSection').hide();
+
+        var modal = new bootstrap.Modal(document.getElementById('signModal'));
+        modal.show();
+
+        // Llamar al endpoint de inicio eFirma
+        $.ajax({
+            url: '{{ route("backoffice.documents.efirma-initiate", $document->id) }}',
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            success: function (data) {
+                $('#signLoading').hide();
+                if (data.mode === 'efirma') {
+                    $('#efirmaIframe').attr('src', data.iframe_url || '');
+                    $('#signEfirmaSection').show();
+                } else {
+                    // Fallback canvas
+                    if (data.warning) {
+                        $('#signCanvasWarning').text(data.warning).removeClass('d-none');
+                        $('#signCanvasReady').hide();
+                    }
+                    $('#signCanvasSection').show();
+                    initSignaturePad();
+                }
+            },
+            error: function () {
+                $('#signLoading').hide();
+                $('#signCanvasWarning')
+                    .text('No se pudo conectar con eFirma. Se usará firma de canvas como respaldo.')
+                    .removeClass('d-none');
+                $('#signCanvasReady').hide();
+                $('#signCanvasSection').show();
+                initSignaturePad();
+            }
+        });
+    });
+
+    function initSignaturePad() {
         if (!signaturePad) {
             signaturePad = $('#signaturePad').signaturePad({
                 drawOnly: true,
                 lineTop: 180
             });
         }
+    }
+
+    // Inicializar Signature Pad cuando el modal se muestre (en caso de apertura directa)
+    $('#signModal').on('shown.bs.modal', function() {
+        if ($('#signCanvasSection').is(':visible')) {
+            initSignaturePad();
+        }
     });
 
-    // Antes de enviar el formulario de firma, obtener la imagen base64
+    // Antes de enviar el formulario de firma de canvas
     $('#signForm').on('submit', function(e) {
         if (signaturePad) {
             var signatureData = signaturePad.getSignatureImage();
@@ -855,6 +945,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             $('#signatureOutput').val(signatureData);
         }
+    });
+
+    // Botón de recordatorio eFirma
+    $('#reminderBtn').on('click', function () {
+        var btn = $(this);
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+        $.ajax({
+            url: '{{ route("backoffice.documents.efirma-reminder", $document->id) }}',
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            success: function (data) {
+                alert(data.message || 'Recordatorio enviado.');
+            },
+            error: function (xhr) {
+                var msg = xhr.responseJSON ? xhr.responseJSON.message : 'Error al enviar recordatorio.';
+                alert(msg);
+            },
+            complete: function () {
+                btn.prop('disabled', false).html('<i class="fas fa-bell"></i>');
+            }
+        });
     });
 });
 </script>

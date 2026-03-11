@@ -1432,6 +1432,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('documents/{id}/validate', [BackofficeDocumentController::class, 'validateDocument'])->name('backoffice.documents.validate');
             Route::post('documents/{id}/sign', [BackofficeDocumentController::class, 'sign'])->name('backoffice.documents.sign');
 
+            /* Rutas eFirma */
+            Route::post('documents/{id}/efirma/initiate', [BackofficeDocumentController::class, 'efirmaInitiate'])->name('backoffice.documents.efirma-initiate');
+            Route::post('documents/{id}/efirma/confirm', [BackofficeDocumentController::class, 'efirmaConfirm'])->name('backoffice.documents.efirma-confirm');
+            Route::post('documents/{id}/efirma/reminder', [BackofficeDocumentController::class, 'efirmaReminder'])->name('backoffice.documents.efirma-reminder');
+
             /* Control de versiones */
             Route::get('documents/{id}/versions', [BackofficeDocumentController::class, 'versions'])->name('backoffice.documents.versions');
             Route::get('documents/{documentId}/versions/{versionId}', [BackofficeDocumentController::class, 'versionShow'])->name('backoffice.documents.versions.show');
