@@ -2613,3 +2613,58 @@ a:hover {
         padding: 0.5rem 0.75rem;
     }
 }
+
+
+/* =========================================
+   Profile Sidebar Navigation
+   ========================================= */
+.profile-sidebar-nav {
+    border-radius: 0.6rem !important;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    border: 1px solid rgba(0, 0, 0, 0.09) !important;
+    overflow: hidden;
+}
+
+.profile-sidebar-nav .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.profile-sidebar-nav .list-group-item {
+    padding: 0.75rem 1.1rem;
+    border-left: 3px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.875rem;
+    color: #444;
+    transition: background-color 0.15s ease, border-left-color 0.15s ease, color 0.15s ease;
+}
+
+.profile-sidebar-nav .list-group-item ion-icon {
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.profile-sidebar-nav .list-group-item:first-child {
+    border-top: none;
+}
+
+.profile-sidebar-nav .list-group-item:hover:not(.active) {
+    background-color: rgba(124, 50, 53, 0.06);
+    border-left-color: rgba(124, 50, 53, 0.35);
+    color: #7C3235;
+}
+
+.profile-sidebar-nav .list-group-item.active {
+    background-color: #7C3235;
+    border-color: transparent;
+    border-left: 3px solid #551312;
+    color: #fff;
+    font-weight: 500;
+}
+
+.profile-sidebar-nav .list-group-item.active ion-icon {
+    color: #fff;
+}

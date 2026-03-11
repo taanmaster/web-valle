@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tourism_third_party_evidences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tourism_third_party_request_id')->constrained('tourism_third_party_requests')->cascadeOnDelete();
+            //$table->foreignId('tourism_third_party_request_id')->constrained('tourism_third_party_requests')->cascadeOnDelete();
             $table->foreignId('uploaded_by')->constrained('users')->cascadeOnDelete();
             $table->string('name');
             $table->string('file_path');
