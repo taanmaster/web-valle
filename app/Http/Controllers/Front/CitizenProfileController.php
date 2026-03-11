@@ -203,9 +203,9 @@ class CitizenProfileController extends Controller
 
     // =============== MIS SOLICITUDES ===============
 
-    public function myRequests()
+    public function myRequests($type = null)
     {
-        return view('front.user_profiles.citizen.my_requests');
+        return view('front.user_profiles.citizen.my_requests', compact('type'));
     }
 
     // =============== MÉTODOS APOYO A TERCEROS PARA CIUDADANOS ===============

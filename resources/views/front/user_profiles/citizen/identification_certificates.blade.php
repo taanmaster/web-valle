@@ -24,7 +24,6 @@
                         <div class="row">
                             <livewire:identification-certificates.table :mode="1" :userId="Auth::user()->id" />
                         </div>
-
                     </div>
                 </div>
             </div>

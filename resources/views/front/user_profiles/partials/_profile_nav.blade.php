@@ -25,10 +25,21 @@
                         class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.profile.index' ? 'active' : '' }}">
                         <ion-icon name="home-outline"></ion-icon> Inicio
                     </a>
-                    <a href="{{ route('citizen.profile.edit') }}"
-                        class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.profile.edit' ? 'active' : '' }}">
-                        <ion-icon name="create-outline"></ion-icon> Editar Perfil
+                    
+                    <a href="{{ route('citizen.my_requests', 'secretaria-de-ayuntamiento') }}"
+                        class="list-group-item list-group-item-action {{ request()->segment(4) === 'secretaria-de-ayuntamiento' || str_starts_with($currentRoute, 'citizen.profile.identification_certificates') ? 'active' : '' }}">
+                        <ion-icon name="business-outline"></ion-icon> Secretaría de Ayuntamiento
                     </a>
+                    <a href="{{ route('citizen.my_requests', 'economia') }}"
+                        class="list-group-item list-group-item-action {{ request()->segment(4) === 'economia' || $currentRoute === 'citizen.profile.requests' || str_starts_with($currentRoute, 'citizen.sare') ? 'active' : '' }}">
+                        <ion-icon name="storefront-outline"></ion-icon> Economía
+                    </a>
+                    <a href="{{ route('citizen.my_requests', 'tramites') }}"
+                        class="list-group-item list-group-item-action {{ request()->segment(4) === 'tramites' || str_starts_with($currentRoute, 'citizen.third_party') ? 'active' : '' }}">
+                        <ion-icon name="earth-outline"></ion-icon> Turismo
+                    </a>
+
+                    {{--  
                     <a href="{{ route('citizen.profile.identification_certificates') }}"
                         class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.profile.identification_certificates') ? 'active' : '' }}">
                         <ion-icon name="id-card-outline"></ion-icon> Constancias de Identificación
@@ -37,6 +48,8 @@
                         class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.my_requests' || $currentRoute === 'citizen.profile.requests' || str_starts_with($currentRoute, 'citizen.third_party') ? 'active' : '' }}">
                         <ion-icon name="file-tray-full-outline"></ion-icon> Mis Solicitudes
                     </a>
+                    --}}
+
                     <a href="{{ route('citizen.profile.urban_dev_requests') }}"
                         class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.profile.urban_dev_requests' ? 'active' : '' }}">
                         <ion-icon name="business-outline"></ion-icon> Trámites Desarrollo Urbano
@@ -51,8 +64,14 @@
                     </a>
                     <a href="{{ route('citizen.appointments.index') }}"
                         class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.appointments') ? 'active' : '' }}">
-                        <ion-icon name="calendar-outline"></ion-icon> Mis Citas
+                        <ion-icon name="calendar-outline"></ion-icon> Mis Citas a Trámites
                     </a>
+
+                    <a href="{{ route('citizen.profile.edit') }}"
+                        class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.profile.edit' ? 'active' : '' }}">
+                        <ion-icon name="create-outline"></ion-icon> Editar Perfil
+                    </a>
+
                     <a href="{{ route('citizen.profile.settings') }}"
                         class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.profile.settings' ? 'active' : '' }}">
                         <ion-icon name="cog-outline"></ion-icon> Configuraciones

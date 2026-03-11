@@ -1717,7 +1717,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil', 'CitizenProfileController@index')->name('citizen.profile.index');
         Route::get('/perfil/editar', 'CitizenProfileController@edit')->name('citizen.profile.edit');
         Route::put('/perfil/actualizar', 'CitizenProfileController@update')->name('citizen.profile.update');
-        Route::get('/perfil/mis-solicitudes', 'CitizenProfileController@myRequests')->name('citizen.my_requests');
+        Route::get('/perfil/mis-solicitudes/{type?}', 'CitizenProfileController@myRequests')->name('citizen.my_requests');
         Route::get('/perfil/solicitudes', 'CitizenProfileController@requests')->name('citizen.profile.requests');
         Route::get('/perfil/tramites', 'CitizenProfileController@urbanDevRequests')->name('citizen.profile.urban_dev_requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
