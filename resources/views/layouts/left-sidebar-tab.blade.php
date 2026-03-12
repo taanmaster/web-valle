@@ -952,6 +952,11 @@
                         <a class="nav-link" href="{{ route('identification_certificates.index') }}">Constancias de
                             Identificación</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('document_certificates.index') }}">Certificaciones de
+                            Documentos</a>
+                    </li>
                 </ul>
 
                 @if (auth()->user()->hasRole('all'))

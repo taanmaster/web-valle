@@ -9,7 +9,7 @@
             <div class="col-md-7">
                 <div class="d-flex gap-3 justify-content-end flex-column flex-md-row">
                     <a href="{{ route('appointments.search') }}" class="btn d-flex align-items-center gap-2 btn-warning position-relative">
-                        <ion-icon name="calendar-outline"></ion-icon> Trámites
+                        <ion-icon name="calendar-outline"></ion-icon> Agenda tu Cita
                         @if(session()->has('pending_booking'))
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65em;">
                                 <ion-icon name="alert-circle-outline"></ion-icon> Pendiente

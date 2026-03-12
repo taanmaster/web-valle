@@ -2,53 +2,14 @@
 
 @section('content')
     <div class="container py-4">
-        <div class="row">
-            <div class="col-md-12">
-                @include('front.user_profiles.partials._profile_card')
+        @include('front.user_profiles.partials._profile_card')
 
-                <!-- Menú de navegación -->
+        <div class="row g-3 mt-0">
+            <div class="col-md-3">
+                @include('front.user_profiles.partials._profile_nav')
+            </div>
+            <div class="col-md-9">
                 <div class="card wow fadeInUp">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs" id="citizenProfileTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" href="{{ route('citizen.profile.index') }}" id="inicio-tab"
-                                    role="tab">
-                                    <ion-icon name="home-outline"></ion-icon> Inicio
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" href="{{ route('citizen.profile.edit') }}" id="perfil-tab"
-                                    role="tab">
-                                    <ion-icon name="create-outline"></ion-icon> Editar Perfil
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" href="{{ route('citizen.profile.requests') }}" id="solicitudes-tab"
-                                    role="tab">
-                                    <ion-icon name="file-tray-full-outline"></ion-icon> Solicitudes S.A.R.E
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" href="{{ route('citizen.profile.urban_dev_requests') }}"
-                                    id="solicitudes-tab" role="tab">
-                                    <ion-icon name="file-tray-full-outline"></ion-icon> Trámites Desarrollo Urbano
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" href="{{ route('citizen.summons.index') }}" id="citatorios-tab"
-                                    role="tab">
-                                    <ion-icon name="document-text-outline"></ion-icon>Citatorios
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" href="{{ route('citizen.profile.settings') }}" id="configuraciones-tab"
-                                    role="tab">
-                                    <ion-icon name="cog-outline"></ion-icon> Configuraciones
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
                     <div class="card-body">
                         <!-- Lista de solicitudes -->
                         <div class="row">

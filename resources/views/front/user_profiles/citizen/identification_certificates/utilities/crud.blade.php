@@ -24,8 +24,9 @@
                                     class="text-danger">*</span></label>
                             <select wire:model="certificate_type" class="form-select" required>
                                 <option value="">Seleccionar...</option>
-                                <option value="Constancia de Identificacion">Constancia de Identificacion</option>
+                                <option value="Constancia de Origen">Constancia de Origen</option>
                                 <option value="Constancia de Identidad">Constancia de Identidad</option>
+                                <option value="Certificación de Documentos">Certificación de Documentos</option>
                             </select>
                         </div>
 

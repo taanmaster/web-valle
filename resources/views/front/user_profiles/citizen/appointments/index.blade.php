@@ -85,7 +85,7 @@
                                 <ion-icon name="calendar-outline" style="font-size: 3rem;" class="text-muted"></ion-icon>
                                 <h5 class="mt-3 text-muted">No tienes citas agendadas</h5>
                                 <p class="text-muted">Agenda tu primera cita para realizar un trámite municipal.</p>
-                                <a href="{{ url('/citas') }}" class="btn btn-primary">
+                                <a href="{{ route('appointments.search') }}" class="btn btn-primary">
                                     <ion-icon name="add-outline"></ion-icon> Agendar Cita
                                 </a>
                             </div>

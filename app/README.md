@@ -1,7 +1,7 @@
 ## Nomenclatura de modulos
 
 ### Listado de modulos con sus Abreviaturas
-## Última actualización: 19 de septiembre de 2025
+## Última actualización: 11 de marzo de 2026
 
 1. **TSR** = Tesorería (Treasury)
 2. **TRN** = Transparencia (Transparency)
@@ -11,6 +11,7 @@
 6. **SARE** = Sistema de Atención y Registro de Eventos (Event Attention and Registration System)
 7. **URBAN_DEV** = Desarrollo Urbano (Urban Development)
 8. **CTO** = Catastro 
+9. **SCR** = Secretaria de Ayuntamiento
 
 ### Modelos sin prefijo (Generales del Sistema)
 - **Banner** = Banners generales del sistema

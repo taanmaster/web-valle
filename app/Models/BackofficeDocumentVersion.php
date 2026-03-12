@@ -36,6 +36,9 @@ class BackofficeDocumentVersion extends Model
     const ACTIVITY_CORRECTION_REQUESTED = 'correccion_solicitada';
     const ACTIVITY_VALIDATED = 'validado';
     const ACTIVITY_SIGNED = 'firmado';
+    const ACTIVITY_EFIRMA_SUBMITTED = 'efirma_enviado';
+    const ACTIVITY_EFIRMA_SIGNED = 'efirma_firmado';
+    const ACTIVITY_EFIRMA_ERROR = 'efirma_error';
 
     /**
      * Relación: Versión pertenece a un documento
@@ -113,6 +116,9 @@ class BackofficeDocumentVersion extends Model
             self::ACTIVITY_CORRECTION_REQUESTED => 'Corrección Solicitada',
             self::ACTIVITY_VALIDATED => 'Validación',
             self::ACTIVITY_SIGNED => 'Firma',
+            self::ACTIVITY_EFIRMA_SUBMITTED => 'Enviado a eFirma',
+            self::ACTIVITY_EFIRMA_SIGNED => 'Firmado con eFirma',
+            self::ACTIVITY_EFIRMA_ERROR => 'Error en eFirma',
         ];
         
         return $labels[$this->activity_type] ?? ucfirst(str_replace('_', ' ', $this->activity_type));
@@ -131,6 +137,9 @@ class BackofficeDocumentVersion extends Model
             self::ACTIVITY_CORRECTION_REQUESTED => '<span class="badge bg-danger">Corrección Solicitada</span>',
             self::ACTIVITY_VALIDATED => '<span class="badge bg-success">Validado</span>',
             self::ACTIVITY_SIGNED => '<span class="badge bg-dark">Firmado</span>',
+            self::ACTIVITY_EFIRMA_SUBMITTED => '<span class="badge bg-primary">Enviado a eFirma</span>',
+            self::ACTIVITY_EFIRMA_SIGNED => '<span class="badge bg-success">Firmado con eFirma</span>',
+            self::ACTIVITY_EFIRMA_ERROR => '<span class="badge bg-danger">Error en eFirma</span>',
         ];
         
         return $badges[$this->activity_type] ?? '<span class="badge bg-secondary">' . ucfirst($this->activity_type) . '</span>';

@@ -203,9 +203,9 @@ class CitizenProfileController extends Controller
 
     // =============== MIS SOLICITUDES ===============
 
-    public function myRequests()
+    public function myRequests($type = null)
     {
-        return view('front.user_profiles.citizen.my_requests');
+        return view('front.user_profiles.citizen.my_requests', compact('type'));
     }
 
     // =============== MÉTODOS APOYO A TERCEROS PARA CIUDADANOS ===============
@@ -1243,6 +1243,27 @@ class CitizenProfileController extends Controller
         $mode = 1;
 
         return view('front.user_profiles.citizen.identification_certificates.show')->with('certificate', $certificate)->with('mode', $mode);
+    }
+
+    public function documentCertificates()
+    {
+        return view('front.user_profiles.citizen.document_certificates');
+    }
+
+    public function createDocumentCertificate()
+    {
+        return view('front.user_profiles.citizen.document_certificates.create');
+    }
+
+    public function showDocumentCertificate($id)
+    {
+        $certificate = \App\Models\DocumentCertificate::findOrFail($id);
+
+        if ($certificate->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        return view('front.user_profiles.citizen.document_certificates.show', compact('certificate'));
     }
 
     public function applications()

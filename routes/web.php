@@ -1432,6 +1432,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('documents/{id}/validate', [BackofficeDocumentController::class, 'validateDocument'])->name('backoffice.documents.validate');
             Route::post('documents/{id}/sign', [BackofficeDocumentController::class, 'sign'])->name('backoffice.documents.sign');
 
+            /* Rutas eFirma */
+            Route::post('documents/{id}/efirma/initiate', [BackofficeDocumentController::class, 'efirmaInitiate'])->name('backoffice.documents.efirma-initiate');
+            Route::post('documents/{id}/efirma/confirm', [BackofficeDocumentController::class, 'efirmaConfirm'])->name('backoffice.documents.efirma-confirm');
+            Route::post('documents/{id}/efirma/reminder', [BackofficeDocumentController::class, 'efirmaReminder'])->name('backoffice.documents.efirma-reminder');
+
             /* Control de versiones */
             Route::get('documents/{id}/versions', [BackofficeDocumentController::class, 'versions'])->name('backoffice.documents.versions');
             Route::get('documents/{documentId}/versions/{versionId}', [BackofficeDocumentController::class, 'versionShow'])->name('backoffice.documents.versions.show');
@@ -1710,6 +1715,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'update' => 'identification_certificates.update',
             'destroy' => 'identification_certificates.destroy',
         ]);
+
+        /* Certificaciones de Documentos */
+        Route::resource('document_certificates', \App\Http\Controllers\DocumentCertificateController::class)->names([
+            'index' => 'document_certificates.index',
+            'create' => 'document_certificates.create',
+            'store' => 'document_certificates.store',
+            'show' => 'document_certificates.show',
+            'edit' => 'document_certificates.edit',
+            'update' => 'document_certificates.update',
+            'destroy' => 'document_certificates.destroy',
+        ]);
     });
 
     // Rutas del Perfil Ciudadano (Front-End)
@@ -1717,7 +1733,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/perfil', 'CitizenProfileController@index')->name('citizen.profile.index');
         Route::get('/perfil/editar', 'CitizenProfileController@edit')->name('citizen.profile.edit');
         Route::put('/perfil/actualizar', 'CitizenProfileController@update')->name('citizen.profile.update');
-        Route::get('/perfil/mis-solicitudes', 'CitizenProfileController@myRequests')->name('citizen.my_requests');
+        Route::get('/perfil/mis-solicitudes/{type?}', 'CitizenProfileController@myRequests')->name('citizen.my_requests');
         Route::get('/perfil/solicitudes', 'CitizenProfileController@requests')->name('citizen.profile.requests');
         Route::get('/perfil/tramites', 'CitizenProfileController@urbanDevRequests')->name('citizen.profile.urban_dev_requests');
         Route::get('/perfil/configuraciones', 'CitizenProfileController@settings')->name('citizen.profile.settings');
@@ -1729,6 +1745,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/constancias_de_identificacion', 'CitizenProfileController@identificationCertificates')->name('citizen.profile.identification_certificates');
         Route::get('/constancias_de_identificacion/crear', 'CitizenProfileController@createIdentificationCertificate')->name('citizen.profile.identification_certificates.create');
         Route::get('/constancias_de_identificacion/{id}', 'CitizenProfileController@showIdentificationCertificate')->name('citizen.profile.identification_certificates.show');
+
+        // Rutas para certificaciones de documentos
+        Route::get('/certificaciones_de_documentos', 'CitizenProfileController@documentCertificates')->name('citizen.profile.document_certificates');
+        Route::get('/certificaciones_de_documentos/crear', 'CitizenProfileController@createDocumentCertificate')->name('citizen.profile.document_certificates.create');
+        Route::get('/certificaciones_de_documentos/{id}', 'CitizenProfileController@showDocumentCertificate')->name('citizen.profile.document_certificates.show');
 
         // Rutas Apoyo a Terceros para ciudadanos
         Route::get('/apoyo-terceros', 'CitizenProfileController@thirdPartyRequests')->name('citizen.third_party.index');

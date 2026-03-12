@@ -36,14 +36,22 @@ class BackofficeDocument extends Model
         'sent_to_user_id',
         'sent_at',
         'sent_message',
+        'efirma_document_id',
+        'efirma_status',
+        'efirma_iframe_url',
+        'efirma_signatures',
+        'efirma_error',
+        'efirma_sent_at',
     ];
 
     protected $casts = [
-        'issue_date' => 'date',
-        'first_read_at' => 'datetime',
-        'sent_at' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'issue_date'       => 'date',
+        'first_read_at'    => 'datetime',
+        'sent_at'          => 'datetime',
+        'efirma_sent_at'   => 'datetime',
+        'efirma_signatures' => 'array',
+        'created_at'       => 'datetime',
+        'updated_at'       => 'datetime',
     ];
 
     /**
@@ -128,6 +136,22 @@ class BackofficeDocument extends Model
     public function canBeSigned()
     {
         return $this->validations_count >= 2;
+    }
+
+    /**
+     * Verificar si el documento tiene un proceso de firma eFirma activo
+     */
+    public function hasEfirmaDocument(): bool
+    {
+        return !empty($this->efirma_document_id);
+    }
+
+    /**
+     * Verificar si el documento fue firmado completamente en eFirma
+     */
+    public function isEfirmaSigned(): bool
+    {
+        return $this->efirma_status === 'signed_complete';
     }
 
     /**
