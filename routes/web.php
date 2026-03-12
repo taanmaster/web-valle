@@ -1715,6 +1715,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'update' => 'identification_certificates.update',
             'destroy' => 'identification_certificates.destroy',
         ]);
+
+        /* Certificaciones de Documentos */
+        Route::resource('document_certificates', \App\Http\Controllers\DocumentCertificateController::class)->names([
+            'index' => 'document_certificates.index',
+            'create' => 'document_certificates.create',
+            'store' => 'document_certificates.store',
+            'show' => 'document_certificates.show',
+            'edit' => 'document_certificates.edit',
+            'update' => 'document_certificates.update',
+            'destroy' => 'document_certificates.destroy',
+        ]);
     });
 
     // Rutas del Perfil Ciudadano (Front-End)
@@ -1734,6 +1745,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/constancias_de_identificacion', 'CitizenProfileController@identificationCertificates')->name('citizen.profile.identification_certificates');
         Route::get('/constancias_de_identificacion/crear', 'CitizenProfileController@createIdentificationCertificate')->name('citizen.profile.identification_certificates.create');
         Route::get('/constancias_de_identificacion/{id}', 'CitizenProfileController@showIdentificationCertificate')->name('citizen.profile.identification_certificates.show');
+
+        // Rutas para certificaciones de documentos
+        Route::get('/certificaciones_de_documentos', 'CitizenProfileController@documentCertificates')->name('citizen.profile.document_certificates');
+        Route::get('/certificaciones_de_documentos/crear', 'CitizenProfileController@createDocumentCertificate')->name('citizen.profile.document_certificates.create');
+        Route::get('/certificaciones_de_documentos/{id}', 'CitizenProfileController@showDocumentCertificate')->name('citizen.profile.document_certificates.show');
 
         // Rutas Apoyo a Terceros para ciudadanos
         Route::get('/apoyo-terceros', 'CitizenProfileController@thirdPartyRequests')->name('citizen.third_party.index');

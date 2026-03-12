@@ -161,10 +161,9 @@
                                                         <p class="card-text text-muted flex-grow-1">
                                                             Gestiona y da seguimiento a tus solicitudes ciudadanas de certificación de documentos que expide la secretaría de ayuntamiento.
                                                         </p>
-                                                        <button type="button" class="btn btn-secondary"
-                                                            onclick="switchToConstanciasTab('Certificación de Documentos')">
+                                                        <a href="{{ route('citizen.profile.document_certificates') }}" class="btn btn-secondary">
                                                             <ion-icon name="eye-outline"></ion-icon> Ver Solicitudes
-                                                        </button>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
