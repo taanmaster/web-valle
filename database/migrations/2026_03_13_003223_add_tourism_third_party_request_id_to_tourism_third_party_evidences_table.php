@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tourism_third_party_evidences', function (Blueprint $table) {
-            $table->foreignId('tourism_third_party_request_id')->after('id');
             $table->foreign('tourism_third_party_request_id', 'ttp_evidences_request_fk')
                 ->references('id')
                 ->on('tourism_third_party_requests')
