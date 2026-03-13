@@ -11,7 +11,6 @@
 
     {{-- Tabs controlados por Livewire --}}
     @php
-        $showEvidence = $mode === 'admin' || $request->status === 'Aprobada';
         $showObservations = $mode === 'admin';
     @endphp
 
@@ -22,17 +21,16 @@
                 Detalles de la Solicitud
             </button>
         </li>
-        @if ($showEvidence)
-            <li class="nav-item" wire:key="tab-nav-evidence">
-                <button wire:click="$set('activeTab','evidence')"
-                    class="nav-link {{ $activeTab === 'evidence' ? 'active' : '' }}" type="button">
-                    Evidencia
-                    @if ($evidences->count() > 0)
-                        <span class="badge bg-secondary ms-1">{{ $evidences->count() }}</span>
-                    @endif
-                </button>
-            </li>
-        @endif
+
+        <li class="nav-item" wire:key="tab-nav-evidence">
+            <button wire:click="$set('activeTab','evidence')"
+                class="nav-link {{ $activeTab === 'evidence' ? 'active' : '' }}" type="button">
+                Evidencia
+                @if ($evidences->count() > 0)
+                    <span class="badge bg-secondary ms-1">{{ $evidences->count() }}</span>
+                @endif
+            </button>
+        </li>
         @if ($showObservations)
             <li class="nav-item" wire:key="tab-nav-observations">
                 <button wire:click="$set('activeTab','observations')"
@@ -247,128 +245,123 @@
         {{-- /TAB DETALLE --}}
 
         {{-- ===== TAB: EVIDENCIA ===== --}}
-        @if ($showEvidence)
-            <div @class(['d-none' => $activeTab !== 'evidence'])>
+        <div @class(['d-none' => $activeTab !== 'evidence'])>
 
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6 class="mb-0">Evidencias del Evento</h6>
-                    @if ($mode === 'citizen')
-                        <button wire:click="$set('showEvidenceForm', true)" type="button"
-                            class="btn btn-primary btn-sm">
-                            Agregar Evidencia
-                        </button>
-                    @endif
-                </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0">Evidencias del Evento</h6>
+                @if ($mode === 'citizen')
+                    <button wire:click="$set('showEvidenceForm', true)" type="button"
+                        class="btn btn-primary btn-sm">
+                        Agregar Evidencia
+                    </button>
+                @endif
+            </div>
 
-                {{-- Form inline --}}
-                @if ($showEvidenceForm)
-                    <div class="card mb-4 border-primary">
-                        <div
-                            class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                            <span><ion-icon name="cloud-upload-outline"></ion-icon> Nueva Evidencia</span>
-                            <button wire:click="$set('showEvidenceForm', false)" type="button"
-                                class="btn-close btn-close-white"></button>
-                        </div>
-                        <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-md-5">
-                                    <label class="form-label">Nombre <span class="text-danger">*</span></label>
-                                    <input type="text" wire:model="evidenceName"
-                                        class="form-control @error('evidenceName') is-invalid @enderror"
-                                        placeholder="Ej: Fotografías del evento">
-                                    @error('evidenceName')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-5">
-                                    <label class="form-label">Archivo <span class="text-danger">*</span></label>
-                                    <input type="file" wire:model="evidenceFile"
-                                        class="form-control @error('evidenceFile') is-invalid @enderror"
-                                        accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx">
-                                    <div class="form-text">Imágenes, PDF, Word o Excel. Máx. 20 MB.</div>
-                                    @error('evidenceFile')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button wire:click="saveEvidence" wire:loading.attr="disabled"
-                                        class="btn btn-success w-100">
-                                        <span wire:loading wire:target="saveEvidence"
-                                            class="spinner-border spinner-border-sm me-1"></span>
-                                        Guardar
-                                    </button>
-                                </div>
+            {{-- Form inline --}}
+            @if ($showEvidenceForm)
+                <div class="card mb-4 border-primary">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <span><ion-icon name="cloud-upload-outline"></ion-icon> Nueva Evidencia</span>
+                        <button wire:click="$set('showEvidenceForm', false)" type="button"
+                            class="btn-close btn-close-white"></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                                <input type="text" wire:model="evidenceName"
+                                    class="form-control @error('evidenceName') is-invalid @enderror"
+                                    placeholder="Ej: Fotografías del evento">
+                                @error('evidenceName')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label">Archivo <span class="text-danger">*</span></label>
+                                <input type="file" wire:model="evidenceFile"
+                                    class="form-control @error('evidenceFile') is-invalid @enderror"
+                                    accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx">
+                                <div class="form-text">Imágenes, PDF, Word o Excel. Máx. 20 MB.</div>
+                                @error('evidenceFile')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button wire:click="saveEvidence" wire:loading.attr="disabled"
+                                    class="btn btn-success w-100">
+                                    <span wire:loading wire:target="saveEvidence"
+                                        class="spinner-border spinner-border-sm me-1"></span>
+                                    Guardar
+                                </button>
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
+            @endif
 
-                {{-- Tabla de evidencias --}}
-                @if ($evidences->count() > 0)
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
+            {{-- Tabla de evidencias --}}
+            @if ($evidences->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Subido por</th>
+                                <th>Fecha</th>
+                                <th class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($evidences as $evidence)
                                 <tr>
-                                    <th>Nombre</th>
-                                    <th>Tipo</th>
-                                    <th>Subido por</th>
-                                    <th>Fecha</th>
-                                    <th class="text-center">Acción</th>
+                                    <td>
+                                        @php
+                                            $icon = match (true) {
+                                                in_array($evidence->file_extension, [
+                                                    'jpg',
+                                                    'jpeg',
+                                                    'png',
+                                                    'gif',
+                                                    'webp',
+                                                ])
+                                                    => 'image-outline',
+                                                $evidence->file_extension === 'pdf' => 'document-outline',
+                                                in_array($evidence->file_extension, ['doc', 'docx'])
+                                                    => 'document-text-outline',
+                                                in_array($evidence->file_extension, ['xls', 'xlsx']) => 'grid-outline',
+                                                default => 'attach-outline',
+                                            };
+                                        @endphp
+                                        <a href="{{ $evidence->file_download_url }}" target="_blank"
+                                            class="text-decoration-none text-body">
+                                            <ion-icon name="{{ $icon }}" class="me-1 text-muted"></ion-icon>
+                                            {{ $evidence->name }}
+                                        </a>
+                                    </td>
+                                    <td><span
+                                            class="badge bg-light text-dark text-uppercase">{{ $evidence->file_extension }}</span>
+                                    </td>
+                                    <td>{{ $evidence->uploader->name ?? 'N/A' }}</td>
+                                    <td>{{ $evidence->created_at->format('d/m/Y H:i') }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ $evidence->file_url }}" target="_blank"
+                                            class="btn btn-outline-primary btn-sm">
+                                            <ion-icon name="eye-outline"></ion-icon> Ver
+                                        </a>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($evidences as $evidence)
-                                    <tr>
-                                        <td>
-                                            @php
-                                                $icon = match (true) {
-                                                    in_array($evidence->file_extension, [
-                                                        'jpg',
-                                                        'jpeg',
-                                                        'png',
-                                                        'gif',
-                                                        'webp',
-                                                    ])
-                                                        => 'image-outline',
-                                                    $evidence->file_extension === 'pdf' => 'document-outline',
-                                                    in_array($evidence->file_extension, ['doc', 'docx'])
-                                                        => 'document-text-outline',
-                                                    in_array($evidence->file_extension, ['xls', 'xlsx'])
-                                                        => 'grid-outline',
-                                                    default => 'attach-outline',
-                                                };
-                                            @endphp
-                                            <a href="{{ $evidence->file_download_url }}" target="_blank"
-                                                class="text-decoration-none text-body">
-                                                <ion-icon name="{{ $icon }}"
-                                                    class="me-1 text-muted"></ion-icon>
-                                                {{ $evidence->name }}
-                                            </a>
-                                        </td>
-                                        <td><span
-                                                class="badge bg-light text-dark text-uppercase">{{ $evidence->file_extension }}</span>
-                                        </td>
-                                        <td>{{ $evidence->uploader->name ?? 'N/A' }}</td>
-                                        <td>{{ $evidence->created_at->format('d/m/Y H:i') }}</td>
-                                        <td class="text-center">
-                                            <a href="{{ $evidence->file_url }}" target="_blank"
-                                                class="btn btn-outline-primary btn-sm">
-                                                <ion-icon name="eye-outline"></ion-icon> Ver
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @else
-                    <div class="text-center py-5 text-muted">
-                        <ion-icon name="folder-open-outline" class="display-4 d-block mx-auto mb-2"></ion-icon>
-                        <p class="mb-0">No hay evidencias registradas aún.</p>
-                    </div>
-                @endif
-            </div>
-        @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="text-center py-5 text-muted">
+                    <ion-icon name="folder-open-outline" class="display-4 d-block mx-auto mb-2"></ion-icon>
+                    <p class="mb-0">No hay evidencias registradas aún.</p>
+                </div>
+            @endif
+        </div>
         {{-- /TAB EVIDENCIA --}}
 
         {{-- ===== TAB: OBSERVACIONES (solo admin) ===== --}}
