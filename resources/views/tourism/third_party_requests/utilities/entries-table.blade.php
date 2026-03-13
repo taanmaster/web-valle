@@ -13,6 +13,7 @@
                 <option value="Enviada">Enviada</option>
                 <option value="En Revisión">En Revisión</option>
                 <option value="Aprobada">Aprobada</option>
+                <option value="Concluido">Concluido</option>
                 <option value="Rechazada">Rechazada</option>
                 <option value="Cancelada">Cancelada</option>
             </select>

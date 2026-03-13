@@ -1,6 +1,7 @@
 @extends('front.layouts.app')
 
 @push('styles')
+
 @endpush
 
 @section('content')
@@ -23,17 +24,14 @@
             </div>
         @endif
 
-        <div class="row">
-            <div class="col-md-12">
+        @include('front.user_profiles.partials._profile_card')
 
-                @include('front.user_profiles.partials._profile_card')
-
-                <!-- Menú de navegación -->
+        <div class="row g-3 mt-0">
+            <div class="col-md-3">
+                @include('front.user_profiles.partials._profile_nav')
+            </div>
+            <div class="col-md-9">
                 <div class="card wow fadeInUp">
-                    <div class="card-header">
-                        @include('front.user_profiles.partials._profile_nav')
-                    </div>
-
                     <div class="card-body">
                         <!-- Contenido de la pestaña Inicio -->
                         <div class="row">

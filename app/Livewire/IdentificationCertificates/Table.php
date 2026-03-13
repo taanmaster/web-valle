@@ -2,6 +2,7 @@
 
 namespace App\Livewire\IdentificationCertificates;
 
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\IdentificationCertificate;
@@ -14,6 +15,7 @@ class Table extends Component
     public $userId = null;
 
     public $statusFilter = '';
+    public $typeFilter = '';
     public $startDate = '';
     public $endDate = '';
 
@@ -31,9 +33,17 @@ class Table extends Component
         $this->resetPage();
     }
 
+    #[On('filterByType')]
+    public function filterByType(string $type = ''): void
+    {
+        $this->typeFilter = $type;
+        $this->resetPage();
+    }
+
     public function clearFilters()
     {
         $this->statusFilter = '';
+        $this->typeFilter = '';
         $this->startDate = '';
         $this->endDate = '';
         $this->resetPage();
@@ -51,6 +61,11 @@ class Table extends Component
         // Filtro por estatus
         if ($this->statusFilter) {
             $query->where('status', $this->statusFilter);
+        }
+
+        // Filtro por tipo de constancia
+        if ($this->typeFilter) {
+            $query->where('certificate_type', $this->typeFilter);
         }
 
         // Filtro por fechas

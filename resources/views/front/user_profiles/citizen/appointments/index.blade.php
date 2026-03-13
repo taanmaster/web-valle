@@ -2,16 +2,14 @@
 
 @section('content')
     <div class="container py-4">
-        <div class="row">
-            <div class="col-md-12">
-                @include('front.user_profiles.partials._profile_card')
+        @include('front.user_profiles.partials._profile_card')
 
-                <!-- Menú de navegación -->
+        <div class="row g-3 mt-0">
+            <div class="col-md-3">
+                @include('front.user_profiles.partials._profile_nav')
+            </div>
+            <div class="col-md-9">
                 <div class="card wow fadeInUp">
-                    <div class="card-header">
-                        @include('front.user_profiles.partials._profile_nav')
-                    </div>
-
                     <div class="card-body">
                         <div class="alert alert-warning">
                             <ion-icon name="information-circle-outline"></ion-icon>
@@ -87,7 +85,7 @@
                                 <ion-icon name="calendar-outline" style="font-size: 3rem;" class="text-muted"></ion-icon>
                                 <h5 class="mt-3 text-muted">No tienes citas agendadas</h5>
                                 <p class="text-muted">Agenda tu primera cita para realizar un trámite municipal.</p>
-                                <a href="{{ url('/citas') }}" class="btn btn-primary">
+                                <a href="{{ route('appointments.search') }}" class="btn btn-primary">
                                     <ion-icon name="add-outline"></ion-icon> Agendar Cita
                                 </a>
                             </div>

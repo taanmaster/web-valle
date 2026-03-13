@@ -2,15 +2,14 @@
 
 @section('content')
     <div class="container py-4">
-        <div class="row">
-            <div class="col-md-12">
-                @include('front.user_profiles.partials._profile_card')
+        @include('front.user_profiles.partials._profile_card')
 
+        <div class="row g-3 mt-0">
+            <div class="col-md-3">
+                @include('front.user_profiles.partials._profile_nav')
+            </div>
+            <div class="col-md-9">
                 <div class="card wow fadeInUp">
-                    <div class="card-header">
-                        @include('front.user_profiles.partials._profile_nav')
-                    </div>
-
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h5 class="mb-0">
@@ -24,7 +23,8 @@
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
 

@@ -6,8 +6,10 @@ use App\Models\BackofficeDependency;
 use App\Models\BackofficeDocument;
 use App\Models\BackofficeDocumentVersion;
 use App\Models\BackofficeDocumentValidation;
+use App\Models\EfirmaLog;
 use App\Models\User;
 use App\Services\BackofficeVersionService;
+use App\Services\EfirmaService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Storage;
@@ -18,10 +20,12 @@ use PDF;
 class BackofficeDocumentController extends Controller
 {
     protected $versionService;
+    protected $efirmaService;
 
-    public function __construct(BackofficeVersionService $versionService)
+    public function __construct(BackofficeVersionService $versionService, EfirmaService $efirmaService)
     {
         $this->versionService = $versionService;
+        $this->efirmaService  = $efirmaService;
     }
 
     /**
@@ -534,69 +538,277 @@ class BackofficeDocumentController extends Controller
     }
 
     /**
-     * Firmar el oficio (solo si tiene 3 validaciones).
+     * Firmar el oficio con canvas (fallback cuando eFirma no está disponible).
      */
     public function sign(Request $request, $id)
     {
         $document = BackofficeDocument::findOrFail($id);
 
-        // Verificar que tenga 3 validaciones
         if (!$document->canBeSigned()) {
-            Session::flash('error', 'Este documento requiere 3 validaciones antes de poder ser firmado.');
+            Session::flash('error', 'Este documento requiere al menos 2 validaciones antes de poder ser firmado.');
+            return redirect()->back();
+        }
+
+        if ($document->assigned_to != Auth::id()) {
+            Session::flash('error', 'Solo el colaborador asignado puede firmar este oficio.');
             return redirect()->back();
         }
 
         $this->validate($request, [
-            'signature' => 'required|string', // Base64 de la firma
-            'stamp' => 'nullable|file|mimes:png,jpg,jpeg|max:2048',
+            'signature' => 'required|string',
+            'stamp'     => 'nullable|file|mimes:png,jpg,jpeg|max:2048',
         ], [
             'signature.required' => 'La firma es obligatoria.',
         ]);
 
         // Procesar firma (base64 a archivo y subir a S3)
-        $signatureData = $request->signature;
-        $signatureData = str_replace('data:image/png;base64,', '', $signatureData);
-        $signatureData = str_replace(' ', '+', $signatureData);
+        $signatureData  = $request->signature;
+        $signatureData  = str_replace('data:image/png;base64,', '', $signatureData);
+        $signatureData  = str_replace(' ', '+', $signatureData);
         $signatureImage = base64_decode($signatureData);
 
         $signatureFilename = 'signature_' . $document->id . '_' . time() . '.png';
-        $signaturePath = 'backoffice/signatures/' . $signatureFilename;
+        $signaturePath     = 'backoffice/signatures/' . $signatureFilename;
 
         Storage::disk('s3')->put($signaturePath, $signatureImage);
         $signatureS3Url = Storage::disk('s3')->url($signaturePath);
 
         // Procesar sello si se proporcionó
         $stampFilename = null;
-        $stampS3Url = null;
+        $stampS3Url    = null;
         if ($request->hasFile('stamp')) {
-            $stamp = $request->file('stamp');
+            $stamp         = $request->file('stamp');
             $stampFilename = 'stamp_' . $document->id . '_' . time() . '.' . $stamp->getClientOriginalExtension();
-            $stampPath = 'backoffice/stamps/' . $stampFilename;
+            $stampPath     = 'backoffice/stamps/' . $stampFilename;
 
             Storage::disk('s3')->put($stampPath, file_get_contents($stamp));
             $stampS3Url = Storage::disk('s3')->url($stampPath);
         }
 
-        // Actualizar documento
         $document->update([
             'signature_filename' => $signatureFilename,
-            'signature_s3_url' => $signatureS3Url,
-            'stamp_filename' => $stampFilename,
-            'stamp_s3_url' => $stampS3Url,
-            'status' => 'firmado',
+            'signature_s3_url'   => $signatureS3Url,
+            'stamp_filename'     => $stampFilename,
+            'stamp_s3_url'       => $stampS3Url,
+            'status'             => 'firmado',
         ]);
 
-        // Crear versión
         $this->versionService->createSnapshot(
             $document,
             BackofficeDocumentVersion::ACTIVITY_SIGNED,
-            'Documento firmado por ' . Auth::user()->name,
+            'Documento firmado con canvas por ' . Auth::user()->name,
             'status'
         );
 
         Session::flash('success', 'Oficio firmado exitosamente.');
 
         return redirect()->route('backoffice.documents.show', $id);
+    }
+
+    /**
+     * Iniciar proceso de firma electrónica con eFirma.
+     * Intenta conectar a eFirma y crear el documento; si falla retorna modo canvas.
+     * Retorna JSON: { mode: 'efirma'|'canvas', iframe_url?, warning? }
+     */
+    public function efirmaInitiate(Request $request, $id)
+    {
+        $document = BackofficeDocument::findOrFail($id);
+
+        if (!$document->canBeSigned()) {
+            return response()->json(['success' => false, 'message' => 'Este documento requiere al menos 2 validaciones.'], 422);
+        }
+
+        if ($document->assigned_to != Auth::id()) {
+            return response()->json(['success' => false, 'message' => 'Solo el colaborador asignado puede firmar.'], 403);
+        }
+
+        if ($document->status !== 'validado') {
+            return response()->json(['success' => false, 'message' => 'El documento debe estar en estado validado para ser firmado.'], 422);
+        }
+
+        // Si ya se inició un proceso eFirma activo, devolver iframe_url existente
+        if ($document->hasEfirmaDocument() && $document->efirma_iframe_url) {
+            return response()->json([
+                'success'    => true,
+                'mode'       => 'efirma',
+                'iframe_url' => $document->efirma_iframe_url,
+            ]);
+        }
+
+        try {
+            if (!$this->efirmaService->isAvailable()) {
+                throw new \RuntimeException('El servicio de eFirma no está disponible en este momento.');
+            }
+
+            // Generar contenido PDF
+            $document->load(['dependency', 'user', 'validations.validator']);
+            $pdf        = PDF::loadView('backoffice.documents.pdf', compact('document'))
+                ->setPaper('letter', 'portrait');
+            $pdfContent = $pdf->output();
+
+            // Crear documento en eFirma
+            $metadata = [
+                'name' => 'Oficio ' . $document->folio,
+                'tags' => [$document->type, $document->priority],
+            ];
+
+            $result    = $this->efirmaService->createDocument($pdfContent, $metadata);
+            $efirmaId  = $result['data']['id'] ?? null;
+            $iframeUrl = $result['data']['iframe_url'] ?? null;
+
+            $document->update([
+                'efirma_document_id' => $efirmaId,
+                'efirma_iframe_url'  => $iframeUrl,
+                'efirma_status'      => 'created',
+                'efirma_sent_at'     => Carbon::now(),
+                'efirma_error'       => null,
+            ]);
+
+            EfirmaLog::create([
+                'document_id' => $document->id,
+                'event'       => 'create_document',
+                'payload'     => ['folio' => $document->folio, 'name' => $metadata['name']],
+                'response'    => $result['data'],
+                'http_status' => $result['http_status'],
+                'success'     => true,
+            ]);
+
+            $this->versionService->createSnapshot(
+                $document,
+                BackofficeDocumentVersion::ACTIVITY_EFIRMA_SUBMITTED,
+                'Documento enviado a eFirma para firma electrónica por ' . Auth::user()->name,
+                'efirma_status'
+            );
+
+            return response()->json([
+                'success'    => true,
+                'mode'       => 'efirma',
+                'iframe_url' => $iframeUrl,
+            ]);
+
+        } catch (\Exception $e) {
+            EfirmaLog::create([
+                'document_id' => $document->id,
+                'event'       => 'create_document_error',
+                'payload'     => ['folio' => $document->folio],
+                'response'    => ['error' => $e->getMessage()],
+                'http_status' => null,
+                'success'     => false,
+            ]);
+
+            $document->update(['efirma_error' => $e->getMessage()]);
+
+            return response()->json([
+                'success' => true,
+                'mode'    => 'canvas',
+                'warning' => 'eFirma no está disponible. Se usará la firma de canvas como respaldo.',
+            ]);
+        }
+    }
+
+    /**
+     * Confirmar firma electrónica: obtiene firmas de eFirma y marca el documento como firmado.
+     */
+    public function efirmaConfirm(Request $request, $id)
+    {
+        $document = BackofficeDocument::findOrFail($id);
+
+        if ($document->assigned_to != Auth::id()) {
+            Session::flash('error', 'No autorizado.');
+            return redirect()->back();
+        }
+
+        if (!$document->hasEfirmaDocument()) {
+            Session::flash('error', 'No hay un proceso de firma eFirma activo para este documento.');
+            return redirect()->back();
+        }
+
+        try {
+            $result     = $this->efirmaService->getSignatures($document->efirma_document_id);
+            $signatures = $result['data'] ?? [];
+
+            $document->update([
+                'efirma_signatures' => $signatures,
+                'efirma_status'     => 'signed_complete',
+                'status'            => 'firmado',
+            ]);
+
+            EfirmaLog::create([
+                'document_id' => $document->id,
+                'event'       => 'get_signatures',
+                'payload'     => ['efirma_id' => $document->efirma_document_id],
+                'response'    => $signatures,
+                'http_status' => $result['http_status'],
+                'success'     => true,
+            ]);
+
+            $this->versionService->createSnapshot(
+                $document,
+                BackofficeDocumentVersion::ACTIVITY_EFIRMA_SIGNED,
+                'Firma electrónica confirmada en eFirma por ' . Auth::user()->name,
+                'status'
+            );
+
+            Session::flash('success', 'Oficio firmado electrónicamente con eFirma exitosamente.');
+
+        } catch (\Exception $e) {
+            EfirmaLog::create([
+                'document_id' => $document->id,
+                'event'       => 'get_signatures_error',
+                'payload'     => ['efirma_id' => $document->efirma_document_id],
+                'response'    => ['error' => $e->getMessage()],
+                'http_status' => null,
+                'success'     => false,
+            ]);
+
+            Session::flash('error', 'Error al confirmar la firma en eFirma: ' . $e->getMessage());
+        }
+
+        return redirect()->route('backoffice.documents.show', $id);
+    }
+
+    /**
+     * Enviar recordatorio de firma a los firmantes en eFirma.
+     * Retorna JSON para consumo AJAX.
+     */
+    public function efirmaReminder(Request $request, $id)
+    {
+        $document = BackofficeDocument::findOrFail($id);
+
+        if ($document->assigned_to != Auth::id() && !Auth::user()->hasAnyRole(['webmaster', 'all'])) {
+            return response()->json(['success' => false, 'message' => 'No autorizado.'], 403);
+        }
+
+        if (!$document->hasEfirmaDocument()) {
+            return response()->json(['success' => false, 'message' => 'No hay un proceso de firma eFirma activo.'], 422);
+        }
+
+        try {
+            $result = $this->efirmaService->sendReminder($document->efirma_document_id);
+
+            EfirmaLog::create([
+                'document_id' => $document->id,
+                'event'       => 'send_reminder',
+                'payload'     => ['efirma_id' => $document->efirma_document_id],
+                'response'    => $result['data'] ?? [],
+                'http_status' => $result['http_status'],
+                'success'     => true,
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Recordatorio enviado exitosamente.']);
+
+        } catch (\Exception $e) {
+            EfirmaLog::create([
+                'document_id' => $document->id,
+                'event'       => 'send_reminder_error',
+                'payload'     => ['efirma_id' => $document->efirma_document_id],
+                'response'    => ['error' => $e->getMessage()],
+                'http_status' => null,
+                'success'     => false,
+            ]);
+
+            return response()->json(['success' => false, 'message' => 'Error al enviar recordatorio: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
