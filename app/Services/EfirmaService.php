@@ -174,79 +174,67 @@ class EfirmaService
 
     /**
      * Enviar documento como multipart/form-data.
-     * Usa CURLFile con archivo en disco (réplica exacta del curl CLI que funcionó).
-     * curl -v -X POST 'https://mx.efirma.com/api/document' \
-     *  -H 'X-eFirma-Auth: {"uid":"USER_ID","key":"API_KEY"}' \
-     *  -H 'Accept: application/json' \
-     *  -F 'file=@/tmp/oficio_real.pdf;type=application/pdf' \
-     *  -F 'data={"name":"Test_real_pdf","signature_type":2,"send_mails":false,"users":[{"email":"webmaster@valle.com","type":"signer"}]}'
+     * Ejecuta el binario curl directamente (réplica exacta del comando que funcionó en terminal).
      */
     protected function requestMultipart(string $endpoint, string $pdfPath, array $metadata): array
     {
         $url = $this->baseUrl . $endpoint;
-        $ch  = curl_init();
 
         if (!file_exists($pdfPath) || filesize($pdfPath) === 0) {
             throw new RuntimeException("Archivo PDF no encontrado o vacío: {$pdfPath}");
         }
 
-        $filename = basename($pdfPath);
+        $authHeader = $this->buildAuthHeader();
+        $dataJson   = json_encode($metadata, JSON_UNESCAPED_UNICODE);
 
-        $postFields = [
-            'file' => new \CURLFile($pdfPath, 'application/pdf', $filename),
-            'data' => json_encode($metadata, JSON_UNESCAPED_UNICODE),
-        ];
-
-        $headers = [
-            'X-eFirma-Auth: ' . $this->buildAuthHeader(),
-            'Accept: application/json',
-        ];
-
-        \Log::debug('[eFirma] requestMultipart enviando', [
-            'url'       => $url,
-            'pdf_path'  => $pdfPath,
-            'pdf_size'  => filesize($pdfPath),
-            'filename'  => $filename,
-            'data'      => $metadata,
+        \Log::debug('[eFirma] requestMultipart enviando (curl CLI)', [
+            'url'      => $url,
+            'pdf_path' => $pdfPath,
+            'pdf_size' => filesize($pdfPath),
+            'data'     => $metadata,
         ]);
 
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, config('efirma.timeout_connect', 10));
-        curl_setopt($ch, CURLOPT_TIMEOUT, config('efirma.timeout_request', 120));
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
-        curl_setopt($ch, CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+        // Réplica exacta del curl que funcionó en terminal del servidor:
+        // curl -s -X POST 'https://mx.efirma.com/api/document' \
+        //   -H 'X-eFirma-Auth: ...' -H 'Accept: application/json' \
+        //   -F 'file=@/tmp/oficio.pdf;type=application/pdf' \
+        //   -F 'data={...}'
+        $command = sprintf(
+            'curl -s -w "\n%%{http_code}" --connect-timeout %d --max-time %d -X POST %s -H %s -H %s -F %s -F %s 2>&1',
+            (int) config('efirma.timeout_connect', 10),
+            (int) config('efirma.timeout_request', 120),
+            escapeshellarg($url),
+            escapeshellarg('X-eFirma-Auth: ' . $authHeader),
+            escapeshellarg('Accept: application/json'),
+            escapeshellarg('file=@' . $pdfPath . ';type=application/pdf'),
+            escapeshellarg('data=' . $dataJson)
+        );
 
-        $response      = curl_exec($ch);
-        $httpCode      = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $effectiveUrl  = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $uploadSize    = curl_getinfo($ch, CURLINFO_SIZE_UPLOAD);
-        $redirectCount = (int) curl_getinfo($ch, CURLINFO_REDIRECT_COUNT);
-        $curlError     = curl_error($ch);
-        curl_close($ch);
+        $output   = [];
+        $exitCode = 0;
+        exec($command, $output, $exitCode);
 
-        if ($curlError) {
-            throw new RuntimeException("cURL error al subir documento a eFirma: {$curlError}");
+        $fullOutput = implode("\n", $output);
+
+        // La última línea es el HTTP status code (por -w "%{http_code}")
+        $lines        = explode("\n", $fullOutput);
+        $httpCode     = (int) array_pop($lines);
+        $responseBody = implode("\n", $lines);
+
+        \Log::debug('[eFirma] requestMultipart raw response (curl CLI)', [
+            'http_status' => $httpCode,
+            'body'        => $responseBody,
+            'exit_code'   => $exitCode,
+        ]);
+
+        if ($exitCode !== 0) {
+            throw new RuntimeException("curl CLI error (exit code {$exitCode}): {$fullOutput}");
         }
 
-        \Log::debug('[eFirma] requestMultipart raw response', [
-            'http_status'    => $httpCode,
-            'effective_url'  => $effectiveUrl,
-            'upload_size'    => $uploadSize,
-            'redirect_count' => $redirectCount,
-            'body'           => $response,
-        ]);
-
-        $decoded = json_decode($response, true) ?? [];
+        $decoded = json_decode($responseBody, true) ?? [];
 
         if ($httpCode >= 400) {
-            $message = $decoded['message'] ?? $decoded['error'] ?? $response;
+            $message = $decoded['message'] ?? $decoded['error'] ?? $responseBody;
             throw new RuntimeException("eFirma API error {$httpCode}: {$message}");
         }
 
