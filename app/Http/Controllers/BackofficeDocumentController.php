@@ -675,15 +675,12 @@ class BackofficeDocumentController extends Controller
                 'name'           => \Str::slug($document->folio),
                 'signature_type' => 2,
                 'send_mails'     => false,
-                'expiry_in'      => 30,
                 'users'          => [
                     [
-                        'email'             => Auth::user()->email,
-                        'type'              => 'signer',
-                        'ignore_invitation' => true,
+                        'email' => Auth::user()->email,
+                        'type'  => 'signer',
                     ],
                 ],
-                'tags'         => [$document->type, $document->priority],
                 'callback_url' => $callbackUrl,
                 'return_url'   => $returnUrl,
             ];
