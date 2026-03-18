@@ -247,6 +247,51 @@ class BackofficeDocumentController extends Controller
             'versions.modifiedByUser'
         ])->findOrFail($id);
 
+        // Si regresa de eFirma tras firmar, intentar confirmar automáticamente
+        if (request('efirma_signed') && $document->hasEfirmaDocument() && $document->efirma_status !== 'signed_complete') {
+            try {
+                $docResult = $this->efirmaService->getDocument($document->efirma_document_id);
+                $docData   = $docResult['data'] ?? [];
+
+                if (!empty($docData['fully_signed'])) {
+                    $sigResult  = $this->efirmaService->getSignatures($document->efirma_document_id);
+                    $signatures = $sigResult['data'] ?? [];
+
+                    $document->update([
+                        'efirma_signatures' => [
+                            'signatures'    => $signatures,
+                            'signed_file'   => $docData['signed_file']   ?? null,
+                            'merged_file'   => $docData['merged_file']   ?? null,
+                            'original_file' => $docData['original_file'] ?? null,
+                        ],
+                        'efirma_status' => 'signed_complete',
+                        'status'        => 'firmado',
+                    ]);
+
+                    EfirmaLog::create([
+                        'document_id' => $document->id,
+                        'event'       => 'auto_confirm_return',
+                        'payload'     => ['efirma_id' => $document->efirma_document_id],
+                        'response'    => $docData,
+                        'http_status' => $docResult['http_status'],
+                        'success'     => true,
+                    ]);
+
+                    $this->versionService->createSnapshot(
+                        $document,
+                        BackofficeDocumentVersion::ACTIVITY_EFIRMA_SIGNED,
+                        'Firma electrónica confirmada automáticamente al regresar de eFirma',
+                        'status'
+                    );
+
+                    Session::flash('success', 'Oficio firmado electrónicamente con eFirma exitosamente.');
+                    return redirect()->route('backoffice.documents.show', $id);
+                }
+            } catch (\Exception $e) {
+                \Log::warning('[eFirma] Auto-confirm falló al regresar', ['error' => $e->getMessage()]);
+            }
+        }
+
         // Verificar si el usuario actual es el colaborador asignado y es primera lectura
         $showConfirmModal = false;
         if ($document->assigned_to == Auth::id() && $document->isFirstRead()) {
@@ -668,7 +713,7 @@ class BackofficeDocumentController extends Controller
 
             // Generar URLs de callback y retorno
             $callbackUrl = route('backoffice.efirma.callback', $document->id);
-            $returnUrl   = route('backoffice.documents.show', $document->id);
+            $returnUrl   = route('backoffice.documents.show', $document->id) . '?efirma_signed=1';
 
             // Crear documento en eFirma
             $metadata = [
