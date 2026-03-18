@@ -32,12 +32,11 @@
                 <div id="signEfirmaSection" style="display:none;">
                     <div class="alert alert-success">
                         <i class="fas fa-shield-alt me-2"></i>
-                        <strong>Firma Electrónica Certificada</strong> — Complete el proceso de firma en el panel de abajo. Una vez finalizado, haga clic en <strong>Confirmar Firma</strong>.
+                        <strong>Firma Electrónica Certificada</strong> — Se enviará un correo de confirmación antes de mostrar el documento. Una vez completada la firma, haga clic en <strong>Confirmar Firma</strong>.
                     </div>
-                    <div class="ratio mb-3" style="--bs-aspect-ratio: 65%;">
-                        <iframe id="efirmaIframe" src="" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="d-flex gap-2">
+                    {{-- Contenedor requerido por el SDK de eFirma (EfirmaTools lo usa por ID) --}}
+                    <div id="efirmaContainer" style="height: 600px; width: 100%;"></div>
+                    <div class="d-flex gap-2 mt-3">
                         <form action="{{ route('backoffice.documents.efirma-confirm', $document->id) }}" method="POST" class="flex-grow-1">
                             @csrf
                             <button type="submit" class="btn btn-success w-100">

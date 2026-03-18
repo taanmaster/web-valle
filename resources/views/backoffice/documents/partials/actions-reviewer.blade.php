@@ -7,7 +7,7 @@
     Variables heredadas del padre (scope @include):
         $document
 --}}
-@if($document->assigned_to == Auth::id() && $document->status == 'revision')
+@if($document->assigned_to == Auth::id() && in_array($document->status, ['revision', 'validado']))
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4">
         <h5 class="mb-4"><i class="fas fa-tasks me-2"></i> Acciones Disponibles</h5>

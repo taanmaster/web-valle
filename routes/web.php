@@ -1450,6 +1450,68 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             /* Búsqueda de usuarios para Select2 */
             Route::get('users/search', [BackofficeDocumentController::class, 'searchUsers'])->name('backoffice.users.search');
+
+            /* Debug eFirma — solo webmaster/all */
+            Route::get('efirma/debug', function () {
+                $service = app(\App\Services\EfirmaService::class);
+
+                $apiKey = config('efirma.api_key', '');
+                $masked = strlen($apiKey) > 8
+                    ? substr($apiKey, 0, 4) . str_repeat('*', strlen($apiKey) - 8) . substr($apiKey, -4)
+                    : '****';
+
+                $debug = [
+                    'config' => [
+                        'base_url' => config('efirma.base_url'),
+                        'user_id'  => config('efirma.user_id'),
+                        'api_key'  => $masked,
+                        'timeout_connect' => config('efirma.timeout_connect'),
+                        'timeout_request' => config('efirma.timeout_request'),
+                    ],
+                    'tests' => [],
+                ];
+
+                // Test 1: isAvailable (GET /api/account)
+                try {
+                    $ch = curl_init();
+                    $authHeader = json_encode([
+                        'uid' => config('efirma.user_id'),
+                        'key' => config('efirma.api_key'),
+                    ]);
+                    curl_setopt_array($ch, [
+                        CURLOPT_URL            => rtrim(config('efirma.base_url'), '/') . '/api/account',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_HTTPHEADER     => ['X-eFirma-Auth: ' . $authHeader, 'Accept: application/json'],
+                        CURLOPT_CONNECTTIMEOUT => config('efirma.timeout_connect', 10),
+                        CURLOPT_TIMEOUT        => config('efirma.timeout_request', 60),
+                        CURLOPT_SSL_VERIFYPEER => true,
+                        CURLOPT_SSL_VERIFYHOST => 2,
+                    ]);
+                    $raw      = curl_exec($ch);
+                    $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                    $curlErr  = curl_error($ch);
+                    curl_close($ch);
+
+                    $debug['tests']['GET /api/account'] = [
+                        'http_status'  => $httpCode,
+                        'curl_error'   => $curlErr ?: null,
+                        'raw_response' => $raw,
+                        'decoded'      => json_decode($raw, true),
+                        'auth_header'  => $authHeader,
+                    ];
+                } catch (\Throwable $e) {
+                    $debug['tests']['GET /api/account'] = ['exception' => $e->getMessage()];
+                }
+
+                // Test 2: isAvailable() del servicio
+                try {
+                    $debug['tests']['isAvailable()'] = $service->isAvailable();
+                } catch (\Throwable $e) {
+                    $debug['tests']['isAvailable()'] = ['exception' => $e->getMessage()];
+                }
+
+                return response()->json($debug, 200, [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            })->name('backoffice.efirma.debug')->middleware('role:webmaster|all');
         });
 
         /* Agendas */
@@ -1832,4 +1894,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'uses' => 'FrontController@reloadCaptcha',
         'as' => 'reload.captcha',
     ]);
+
+    // Webhook público: eFirma notifica el estado de firma (no requiere autenticación de usuario)
+    Route::post('/efirma/callback/{id}', [\App\Http\Controllers\BackofficeDocumentController::class, 'efirmaCallback'])
+        ->name('backoffice.efirma.callback');
 });

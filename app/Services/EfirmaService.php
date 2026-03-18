@@ -40,7 +40,8 @@ class EfirmaService
      */
     public function createDocument(string $pdfContent, array $metadata): array
     {
-        return $this->requestMultipart('/api/document/', $pdfContent, $metadata);
+        // Sin trailing slash: el redirect 307 de /api/document/ → /api/document pierde el body
+        return $this->requestMultipart('/api/document', $pdfContent, $metadata);
     }
 
     /**
@@ -55,10 +56,11 @@ class EfirmaService
     /**
      * Obtener firmas de un documento.
      * POST /api/document/get_signatures
+     * La API espera el campo 'docid' (no 'id').
      */
     public function getSignatures(string $efirmaId): array
     {
-        return $this->request('POST', '/api/document/get_signatures', ['id' => $efirmaId]);
+        return $this->request('POST', '/api/document/get_signatures', ['docid' => $efirmaId]);
     }
 
     /**
@@ -68,6 +70,19 @@ class EfirmaService
     public function sendReminder(string $efirmaId): array
     {
         return $this->request('POST', '/api/document/send_reminder/', ['id' => $efirmaId]);
+    }
+
+    /**
+     * Listar todos los documentos accesibles.
+     * GET /api/document/get_all
+     */
+    public function getDocumentAll(array $queryParams = []): array
+    {
+        $endpoint = '/api/document/get_all';
+        if (!empty($queryParams)) {
+            $endpoint .= '?' . http_build_query($queryParams);
+        }
+        return $this->request('GET', $endpoint);
     }
 
     /**
@@ -89,8 +104,8 @@ class EfirmaService
     protected function buildAuthHeader(): string
     {
         return json_encode([
-            'user_id' => $this->userId,
-            'api_key'  => $this->apiKey,
+            'uid' => $this->userId,
+            'key' => $this->apiKey,
         ], JSON_UNESCAPED_UNICODE);
     }
 
@@ -122,6 +137,8 @@ class EfirmaService
         curl_setopt($ch, CURLOPT_TIMEOUT, config('efirma.timeout_request', 60));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL); // preservar POST en 301/302/307
 
         if ($method === 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
@@ -167,16 +184,23 @@ class EfirmaService
             'Accept: application/json',
         ];
 
-        // Archivo temporal para el PDF
-        $tmpFile = tmpfile();
-        fwrite($tmpFile, $pdfContent);
-        $tmpPath  = stream_get_meta_data($tmpFile)['uri'];
-        $filename = ($metadata['name'] ?? 'documento') . '.pdf';
+        // Escribir el PDF en un archivo temporal con ruta explícita
+        // (CURLFile requiere un path real en disco; tmpfile() puede quedar bloqueado)
+        $filename = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $metadata['name'] ?? 'documento') . '.pdf';
+        $tmpPath  = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'efirma_' . uniqid() . '_' . $filename;
+        file_put_contents($tmpPath, $pdfContent);
 
         $postFields = [
             'file' => new \CURLFile($tmpPath, 'application/pdf', $filename),
             'data' => json_encode($metadata, JSON_UNESCAPED_UNICODE),
         ];
+
+        \Log::debug('[eFirma] requestMultipart enviando', [
+            'url'       => $url,
+            'file_size' => filesize($tmpPath),
+            'filename'  => $filename,
+            'data'      => $metadata,
+        ]);
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -185,6 +209,8 @@ class EfirmaService
         curl_setopt($ch, CURLOPT_TIMEOUT, config('efirma.timeout_request', 60));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
 
@@ -192,11 +218,16 @@ class EfirmaService
         $httpCode  = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $curlError = curl_error($ch);
         curl_close($ch);
-        fclose($tmpFile);
+        @unlink($tmpPath); // limpiar archivo temporal
 
         if ($curlError) {
             throw new RuntimeException("cURL error al subir documento a eFirma: {$curlError}");
         }
+
+        \Log::debug('[eFirma] requestMultipart raw response', [
+            'http_status' => $httpCode,
+            'body'        => $response,
+        ]);
 
         $decoded = json_decode($response, true) ?? [];
 

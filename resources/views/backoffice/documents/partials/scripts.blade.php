@@ -18,6 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{ asset('libs/signature-pad-main/jquery.signaturepad.min.js') }}"></script>
 <script src="{{ asset('libs/signature-pad-main/assets/json2.min.js') }}"></script>
+<script src="https://efirma.com/pub/js/efirmaTools.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -125,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     $('#initSignBtn').on('click', function () {
+        console.log('[eFirma] Botón firmar presionado');
         $('#signLoading').show();
         $('#signEfirmaSection').hide();
         $('#signCanvasSection').hide();
@@ -132,27 +134,34 @@ document.addEventListener('DOMContentLoaded', function() {
         var modal = new bootstrap.Modal(document.getElementById('signModal'));
         modal.show();
 
+        console.log('[eFirma] Lanzando POST a efirma-initiate para documento {{ $document->id }}');
         $.ajax({
             url: '{{ route("backoffice.documents.efirma-initiate", $document->id) }}',
             method: 'POST',
             headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
             success: function (data) {
+                console.log('[eFirma] Respuesta de efirma-initiate:', data);
                 $('#signLoading').hide();
                 if (data.mode === 'efirma') {
-                    $('#efirmaIframe').attr('src', data.iframe_url || '');
+                    console.log('[eFirma] Modo: efirma — iframe_url:', data.iframe_url);
+                    console.log('[eFirma] ¿EfirmaTools disponible?', typeof EfirmaTools !== 'undefined');
                     $('#signEfirmaSection').show();
+                    var efirmaTools = new EfirmaTools('efirmaContainer', data.iframe_url || '');
+                    console.log('[eFirma] EfirmaTools instanciado, llamando openWindow()');
+                    efirmaTools.openWindow();
                 } else {
+                    console.log('[eFirma] Modo: canvas — warning:', data.warning || 'ninguno');
                     if (data.warning) {
                         $('#signCanvasWarning').text(data.warning).removeClass('d-none');
                         $('#signCanvasReady').hide();
                     }
                     $('#signCanvasSection').show();
-                    // Si el modal ya terminó de animar, inicializar ahora; si no, el
-                    // evento shown.bs.modal lo hará cuando las dimensiones sean reales.
                     if (modalFullyShown) { initSignaturePad(); } else { pendingCanvasInit = true; }
                 }
             },
-            error: function () {
+            error: function (xhr, status, error) {
+                console.error('[eFirma] Error en la petición AJAX:', status, error);
+                console.error('[eFirma] Respuesta del servidor:', xhr.status, xhr.responseText);
                 $('#signLoading').hide();
                 $('#signCanvasWarning')
                     .text('No se pudo conectar con eFirma. Se usará firma de canvas como respaldo.')

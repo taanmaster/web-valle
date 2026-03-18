@@ -175,7 +175,7 @@ class FrontController extends Controller
 
     public function gazetteDetail($type, $slug)
     {
-        $gazette = Gazette::where('slug', '=', $slug)->first();
+        $gazette = Gazette::where('slug', '=', $slug)->firstOrFail();
 
         return view('front.gazette.detail')
             ->with('gazette', $gazette);
@@ -297,7 +297,7 @@ class FrontController extends Controller
 
     public function dependencyDetail($slug)
     {
-        $dependency = TransparencyDependency::where('slug', '=', $slug)->first();
+        $dependency = TransparencyDependency::where('slug', '=', $slug)->firstOrFail();
 
         $type = '';
 
@@ -311,7 +311,7 @@ class FrontController extends Controller
     {
         Carbon::setLocale('es');
 
-        $obligation = TransparencyObligation::where('dependency_id', $dependency)->where('slug', '=', $slug)->first();
+        $obligation = TransparencyObligation::where('dependency_id', $dependency)->where('slug', '=', $slug)->firstOrFail();
         $documents = TransparencyDocument::where('obligation_id', $obligation->id)
             ->orderBy('year', 'desc')
             ->orderBy('created_at', 'desc')
@@ -333,7 +333,7 @@ class FrontController extends Controller
     {
         Carbon::setLocale('es');
 
-        $obligation = TransparencyObligation::where('dependency_id', $dependency)->where('slug', '=', $slug)->first();
+        $obligation = TransparencyObligation::where('dependency_id', $dependency)->where('slug', '=', $slug)->firstOrFail();
         $documents = TransparencyDocument::where('obligation_id', $obligation->id)
             ->where('year', '=', $date)
             ->orderBy('year', 'desc')
@@ -367,7 +367,7 @@ class FrontController extends Controller
 
     public function regulatoryAgendaDependency($id)
     {
-        $dependency = RegulatoryAgendaDependency::find($id);
+        $dependency = RegulatoryAgendaDependency::findOrFail($id);
 
         return view('front.regulatory_agenda.show')->with('dependency', $dependency);
     }
@@ -543,7 +543,7 @@ class FrontController extends Controller
 
     public function blogDetail($slug)
     {
-        $blog = Blog::where('slug', $slug)->first();
+        $blog = Blog::where('slug', $slug)->firstOrFail();
 
         return view('front.blog.detail')->with('blog', $blog);
     }
@@ -705,7 +705,7 @@ class FrontController extends Controller
 
     public function implanProjectDetail($slug)
     {
-        $project = ImplanProject::where('slug', $slug)->first();
+        $project = ImplanProject::where('slug', $slug)->firstOrFail();
 
         return view('front.implan.projects.show')->with('project', $project);
     }

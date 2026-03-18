@@ -518,8 +518,8 @@ class BackofficeDocumentController extends Controller
             'first_read_at' => null,
         ]);
 
-        // Si ya tiene 3 validaciones, cambiar status a validado
-        if ($document->validations_count >= 3) {
+        // Si ya cumple el mínimo para firmar, cambiar status a validado
+        if ($document->validations_count >= 2) {
             $document->update(['status' => 'validado']);
         }
 
@@ -640,21 +640,111 @@ class BackofficeDocumentController extends Controller
                 throw new \RuntimeException('El servicio de eFirma no está disponible en este momento.');
             }
 
+            $iframeUrl = null;
+
+            // Si ya existe un documento en eFirma (pero sin iframe_url guardado),
+            // intentar recuperar la iframe_url sin crear uno nuevo.
+            if ($document->hasEfirmaDocument()) {
+                \Log::info('[eFirma] Documento ya existe, intentando recuperar iframe_url', [
+                    'doc_id'    => $document->id,
+                    'efirma_id' => $document->efirma_document_id,
+                ]);
+                $docResult    = $this->efirmaService->getDocument($document->efirma_document_id);
+                \Log::debug('[eFirma] getDocument (existente) response', ['response' => $docResult]);
+                $docUsers     = $docResult['data']['users'] ?? [];
+                $currentEmail = Auth::user()->email;
+                foreach ($docUsers as $docUser) {
+                    if (strtolower($docUser['email'] ?? '') === strtolower($currentEmail)) {
+                        $iframeUrl = $docUser['iframeurl'] ?? $docUser['iframe_url'] ?? null;
+                        break;
+                    }
+                }
+                if ($iframeUrl) {
+                    $document->update(['efirma_iframe_url' => $iframeUrl]);
+                    return response()->json(['success' => true, 'mode' => 'efirma', 'iframe_url' => $iframeUrl]);
+                }
+                // Si aún no hay iframe_url, caemos a la creación normal
+            }
+
             // Generar contenido PDF
             $document->load(['dependency', 'user', 'validations.validator']);
             $pdf        = PDF::loadView('backoffice.documents.pdf', compact('document'))
                 ->setPaper('letter', 'portrait');
             $pdfContent = $pdf->output();
 
+            $callbackUrl = route('backoffice.efirma.callback', $document->id);
+            $returnUrl   = route('backoffice.documents.show', $document->id);
+
+            // eFirma valida que callback_url sea pública — omitir en entornos locales
+            $isLocal = str_contains($callbackUrl, '127.0.0.1')
+                    || str_contains($callbackUrl, 'localhost')
+                    || str_contains($callbackUrl, '.test');
+
             // Crear documento en eFirma
+            // users y signature_type son requeridos por la API
             $metadata = [
-                'name' => 'Oficio ' . $document->folio,
-                'tags' => [$document->type, $document->priority],
+                'name'           => 'Oficio ' . $document->folio,
+                'signature_type' => 2, // 2 = Firma Autógrafa Digital
+                'send_mails'     => false,
+                'users'          => [
+                    [
+                        'email'             => Auth::user()->email,
+                        'type'              => 'signer',
+                        'ignore_invitation' => true,
+                    ],
+                ],
+                'tags'      => [$document->type, $document->priority],
+                'return_url' => $isLocal ? '' : $returnUrl,
             ];
 
-            $result    = $this->efirmaService->createDocument($pdfContent, $metadata);
-            $efirmaId  = $result['data']['id'] ?? null;
-            $iframeUrl = $result['data']['iframe_url'] ?? null;
+            // Solo incluir callback_url en producción (URL pública alcanzable)
+            if (!$isLocal) {
+                $metadata['callback_url'] = $callbackUrl;
+            }
+
+            \Log::info('[eFirma] metadata preparada', ['is_local' => $isLocal, 'metadata' => $metadata]);
+
+            // POST /api/document/ solo devuelve {"id": "..."}
+            $result   = $this->efirmaService->createDocument($pdfContent, $metadata);
+            \Log::debug('[eFirma] createDocument response', ['response' => $result]);
+            $efirmaId = $result['data']['id'] ?? null;
+
+            if (empty($efirmaId)) {
+                // La API a veces devuelve {"id":""} aunque el documento se creó.
+                // Recuperamos el id buscando por nombre en get_all.
+                \Log::warning('[eFirma] createDocument devolvió id vacío, intentando recuperar vía get_all', [
+                    'name' => $metadata['name'],
+                    'data' => $result['data'] ?? null,
+                ]);
+                $allResult = $this->efirmaService->getDocumentAll();
+                \Log::debug('[eFirma] get_all response', ['count' => count($allResult['data'] ?? [])]);
+                $targetName = $metadata['name'];
+                foreach (($allResult['data'] ?? []) as $doc) {
+                    if (($doc['name'] ?? '') === $targetName && !empty($doc['id'])) {
+                        $efirmaId = $doc['id'];
+                        \Log::info('[eFirma] id recuperado vía get_all', ['id' => $efirmaId]);
+                        break;
+                    }
+                }
+            }
+
+            if (empty($efirmaId)) {
+                \Log::error('[eFirma] No se pudo obtener id del documento', ['data' => $result['data'] ?? null]);
+                throw new \RuntimeException('eFirma no devolvió un ID de documento. Respuesta: ' . json_encode($result['data'] ?? []));
+            }
+
+            // GET /api/document/get/:id para obtener el iframe_url del firmante
+            $docResult    = $this->efirmaService->getDocument($efirmaId);
+            \Log::debug('[eFirma] getDocument (nuevo) response', ['response' => $docResult]);
+            $docUsers     = $docResult['data']['users'] ?? [];
+            $currentEmail = Auth::user()->email;
+            foreach ($docUsers as $docUser) {
+                if (strtolower($docUser['email'] ?? '') === strtolower($currentEmail)) {
+                    $iframeUrl = $docUser['iframeurl'] ?? $docUser['iframe_url'] ?? null;
+                    break;
+                }
+            }
+            \Log::info('[eFirma] iframe_url extraído', ['iframe_url' => $iframeUrl, 'users_count' => count($docUsers)]);
 
             $document->update([
                 'efirma_document_id' => $efirmaId,
@@ -724,21 +814,37 @@ class BackofficeDocumentController extends Controller
         }
 
         try {
-            $result     = $this->efirmaService->getSignatures($document->efirma_document_id);
-            $signatures = $result['data'] ?? [];
+            // 1. Verificar estado actual del documento en eFirma
+            $docResult = $this->efirmaService->getDocument($document->efirma_document_id);
+            $docData   = $docResult['data'] ?? [];
 
+            if (empty($docData['fully_signed'])) {
+                Session::flash('error', 'El documento todavía no ha sido firmado completamente en eFirma. Complete la firma en el panel antes de confirmar.');
+                return redirect()->route('backoffice.documents.show', $id);
+            }
+
+            // 2. Obtener detalle de las firmas
+            $sigResult  = $this->efirmaService->getSignatures($document->efirma_document_id);
+            $signatures = $sigResult['data'] ?? [];
+
+            // 3. Guardar firmas + URLs de archivos firmados
             $document->update([
-                'efirma_signatures' => $signatures,
-                'efirma_status'     => 'signed_complete',
-                'status'            => 'firmado',
+                'efirma_signatures' => [
+                    'signatures'    => $signatures,
+                    'signed_file'   => $docData['signed_file']   ?? null,
+                    'merged_file'   => $docData['merged_file']   ?? null,
+                    'original_file' => $docData['original_file'] ?? null,
+                ],
+                'efirma_status' => 'signed_complete',
+                'status'        => 'firmado',
             ]);
 
             EfirmaLog::create([
                 'document_id' => $document->id,
-                'event'       => 'get_signatures',
+                'event'       => 'confirm_signature',
                 'payload'     => ['efirma_id' => $document->efirma_document_id],
-                'response'    => $signatures,
-                'http_status' => $result['http_status'],
+                'response'    => $docData,
+                'http_status' => $docResult['http_status'],
                 'success'     => true,
             ]);
 
@@ -754,7 +860,7 @@ class BackofficeDocumentController extends Controller
         } catch (\Exception $e) {
             EfirmaLog::create([
                 'document_id' => $document->id,
-                'event'       => 'get_signatures_error',
+                'event'       => 'confirm_signature_error',
                 'payload'     => ['efirma_id' => $document->efirma_document_id],
                 'response'    => ['error' => $e->getMessage()],
                 'http_status' => null,
@@ -765,6 +871,65 @@ class BackofficeDocumentController extends Controller
         }
 
         return redirect()->route('backoffice.documents.show', $id);
+    }
+
+    /**
+     * Webhook: eFirma notifica automáticamente cuando ocurre un evento en el documento.
+     * POST /api/efirma/callback/{id}  (ruta pública, sin auth)
+     * Payload: Objeto Callback según la documentación de eFirma.
+     */
+    public function efirmaCallback(Request $request, $id)
+    {
+        $document = BackofficeDocument::find($id);
+
+        if (!$document) {
+            return response()->json(['status' => 'not_found'], 404);
+        }
+
+        $payload      = $request->all();
+        $event        = $payload['event']        ?? '';
+        $fullySigned  = !empty($payload['fully_signed']);
+
+        EfirmaLog::create([
+            'document_id' => $document->id,
+            'event'       => 'callback_' . $event,
+            'payload'     => $payload,
+            'response'    => [],
+            'http_status' => 200,
+            'success'     => true,
+        ]);
+
+        // Solo procesamos el evento 'sign' cuando el documento está completamente firmado
+        if ($event === 'sign' && $fullySigned && $document->efirma_document_id) {
+            try {
+                $docResult  = $this->efirmaService->getDocument($document->efirma_document_id);
+                $docData    = $docResult['data'] ?? [];
+                $sigResult  = $this->efirmaService->getSignatures($document->efirma_document_id);
+                $signatures = $sigResult['data'] ?? [];
+
+                $document->update([
+                    'efirma_signatures' => [
+                        'signatures'    => $signatures,
+                        'signed_file'   => $docData['signed_file']   ?? $payload['signed_file']   ?? null,
+                        'merged_file'   => $docData['merged_file']   ?? $payload['merged_file']   ?? null,
+                        'original_file' => $docData['original_file'] ?? $payload['original_file'] ?? null,
+                    ],
+                    'efirma_status' => 'signed_complete',
+                    'status'        => 'firmado',
+                ]);
+            } catch (\Exception $e) {
+                EfirmaLog::create([
+                    'document_id' => $document->id,
+                    'event'       => 'callback_sign_error',
+                    'payload'     => $payload,
+                    'response'    => ['error' => $e->getMessage()],
+                    'http_status' => null,
+                    'success'     => false,
+                ]);
+            }
+        }
+
+        return response()->json(['status' => 'ok']);
     }
 
     /**
