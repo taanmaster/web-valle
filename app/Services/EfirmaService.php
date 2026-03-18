@@ -35,14 +35,12 @@ class EfirmaService
      * Crear/subir documento a eFirma para firmado.
      * POST /api/document/  (multipart/form-data)
      *
-     * @param string $pdfContent  Contenido binario del PDF
-     * @param array  $metadata    Metadatos del documento (name, tags, etc.)
+     * @param string $pdfPath    Ruta absoluta al archivo PDF en disco
+     * @param array  $metadata   Metadatos del documento (name, tags, etc.)
      */
-    public function createDocument(string $pdfContent, array $metadata): array
+    public function createDocument(string $pdfPath, array $metadata): array
     {
-        // Trailing slash requerido: /api/document/ es el endpoint de creación.
-        // /api/document (sin slash) acepta la request pero NO crea el documento (devuelve {"id":""}).
-        return $this->requestMultipart('/api/document/', $pdfContent, $metadata);
+        return $this->requestMultipart('/api/document/', $pdfPath, $metadata);
     }
 
     /**
@@ -173,41 +171,40 @@ class EfirmaService
 
     /**
      * Enviar documento como multipart/form-data.
-     * Construye el body multipart manualmente (sin CURLFile ni archivos temporales)
-     * para garantizar que el contenido del archivo se preserve en redirects.
+     * Usa CURLFile con archivo en disco (réplica exacta del curl CLI que funcionó).
+     * curl -v -X POST 'https://mx.efirma.com/api/document' \
+     *  -H 'X-eFirma-Auth: {"uid":"USER_ID","key":"API_KEY"}' \
+     *  -H 'Accept: application/json' \
+     *  -F 'file=@/tmp/oficio_real.pdf;type=application/pdf' \
+     *  -F 'data={"name":"Test_real_pdf","signature_type":2,"send_mails":false,"users":[{"email":"webmaster@valle.com","type":"signer"}]}'
      */
-    protected function requestMultipart(string $endpoint, string $pdfContent, array $metadata): array
+    protected function requestMultipart(string $endpoint, string $pdfPath, array $metadata): array
     {
         $url = $this->baseUrl . $endpoint;
         $ch  = curl_init();
 
-        $filename = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $metadata['name'] ?? 'documento') . '.pdf';
-        $dataJson = json_encode($metadata, JSON_UNESCAPED_UNICODE);
+        if (!file_exists($pdfPath) || filesize($pdfPath) === 0) {
+            throw new RuntimeException("Archivo PDF no encontrado o vacío: {$pdfPath}");
+        }
 
-        // Construir body multipart manualmente (replica lo que hace curl CLI)
-        $boundary = '----EfirmaUpload' . bin2hex(random_bytes(16));
+        $filename = basename($pdfPath);
 
-        $body  = "--{$boundary}\r\n";
-        $body .= "Content-Disposition: form-data; name=\"file\"; filename=\"{$filename}\"\r\n";
-        $body .= "Content-Type: application/pdf\r\n\r\n";
-        $body .= $pdfContent;
-        $body .= "\r\n--{$boundary}\r\n";
-        $body .= "Content-Disposition: form-data; name=\"data\"\r\n\r\n";
-        $body .= $dataJson;
-        $body .= "\r\n--{$boundary}--\r\n";
+        $postFields = [
+            'file' => new \CURLFile($pdfPath, 'application/pdf', $filename),
+            'data' => json_encode($metadata, JSON_UNESCAPED_UNICODE),
+        ];
 
         $headers = [
             'X-eFirma-Auth: ' . $this->buildAuthHeader(),
             'Accept: application/json',
-            'Content-Type: multipart/form-data; boundary=' . $boundary,
         ];
 
         \Log::debug('[eFirma] requestMultipart enviando', [
-            'url'          => $url,
-            'pdf_size'     => strlen($pdfContent),
-            'body_size'    => strlen($body),
-            'filename'     => $filename,
-            'data'         => $metadata,
+            'url'       => $url,
+            'pdf_path'  => $pdfPath,
+            'pdf_size'  => filesize($pdfPath),
+            'filename'  => $filename,
+            'data'      => $metadata,
         ]);
 
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -221,7 +218,7 @@ class EfirmaService
         curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
         curl_setopt($ch, CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
 
         $response      = curl_exec($ch);
         $httpCode      = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);

@@ -659,11 +659,12 @@ class BackofficeDocumentController extends Controller
                 }
             }
 
-            // Generar contenido PDF
+            // Generar contenido PDF y guardarlo en disco (CURLFile requiere ruta real)
             $document->load(['dependency', 'user', 'validations.validator']);
             $pdf        = PDF::loadView('backoffice.documents.pdf', compact('document'))
                 ->setPaper('letter', 'portrait');
-            $pdfContent = $pdf->output();
+            $pdfPath = '/tmp/' . \Str::slug($document->folio) . '.pdf';
+            file_put_contents($pdfPath, $pdf->output());
 
             // Generar URLs de callback y retorno
             $callbackUrl = route('backoffice.efirma.callback', $document->id);
@@ -687,7 +688,7 @@ class BackofficeDocumentController extends Controller
                 'return_url'   => $returnUrl,
             ];
 
-            $result   = $this->efirmaService->createDocument($pdfContent, $metadata);
+            $result   = $this->efirmaService->createDocument($pdfPath, $metadata);
             $efirmaId = $result['data']['id'] ?? null;
 
             // Fallback: si la API devuelve id vacío, buscar por nombre en get_all
