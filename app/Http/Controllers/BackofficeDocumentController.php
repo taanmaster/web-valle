@@ -671,21 +671,19 @@ class BackofficeDocumentController extends Controller
             $returnUrl   = route('backoffice.documents.show', $document->id);
 
             // Crear documento en eFirma
+            // Metadata mínimo — réplica exacta de lo que funcionó en curl CLI.
+            // Campos extra (expiry_in, tags, callback_url, return_url, ignore_invitation)
+            // causan que eFirma devuelva {"id":""} silenciosamente.
             $metadata = [
-                'name'           => 'Oficio ' . $document->folio,
+                'name'           => \Str::slug($document->folio),
                 'signature_type' => 2,
                 'send_mails'     => false,
-                'expiry_in'      => 30,
                 'users'          => [
                     [
-                        'email'             => Auth::user()->email,
-                        'type'              => 'signer',
-                        'ignore_invitation' => true,
+                        'email' => Auth::user()->email,
+                        'type'  => 'signer',
                     ],
                 ],
-                'tags'         => [$document->type, $document->priority],
-                'callback_url' => $callbackUrl,
-                'return_url'   => $returnUrl,
             ];
 
             $result   = $this->efirmaService->createDocument($pdfPath, $metadata);
