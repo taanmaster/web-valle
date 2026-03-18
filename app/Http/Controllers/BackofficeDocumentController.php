@@ -665,9 +665,6 @@ class BackofficeDocumentController extends Controller
                 ->setPaper('letter', 'portrait');
             $pdfContent = $pdf->output();
 
-            // Detectar entorno local por configuración de Laravel (no depende de APP_URL)
-            $isLocal = app()->environment('local');
-
             // Generar URLs de callback y retorno
             $callbackUrl = route('backoffice.efirma.callback', $document->id);
             $returnUrl   = route('backoffice.documents.show', $document->id);
@@ -685,14 +682,10 @@ class BackofficeDocumentController extends Controller
                         'ignore_invitation' => true,
                     ],
                 ],
-                'tags' => [$document->type, $document->priority],
+                'tags'         => [$document->type, $document->priority],
+                'callback_url' => $callbackUrl,
+                'return_url'   => $returnUrl,
             ];
-
-            // Incluir URLs siempre en producción; omitir solo en local
-            if (!$isLocal) {
-                $metadata['callback_url'] = $callbackUrl;
-                $metadata['return_url']   = $returnUrl;
-            }
 
             $result   = $this->efirmaService->createDocument($pdfContent, $metadata);
             $efirmaId = $result['data']['id'] ?? null;
