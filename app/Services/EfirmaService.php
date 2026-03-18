@@ -40,8 +40,9 @@ class EfirmaService
      */
     public function createDocument(string $pdfContent, array $metadata): array
     {
-        // Sin trailing slash: el redirect 307 de /api/document/ → /api/document pierde el body
-        return $this->requestMultipart('/api/document', $pdfContent, $metadata);
+        // Trailing slash requerido: /api/document/ es el endpoint de creación.
+        // /api/document (sin slash) acepta la request pero NO crea el documento (devuelve {"id":""}).
+        return $this->requestMultipart('/api/document/', $pdfContent, $metadata);
     }
 
     /**
