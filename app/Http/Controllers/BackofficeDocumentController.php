@@ -665,18 +665,19 @@ class BackofficeDocumentController extends Controller
                 ->setPaper('letter', 'portrait');
             $pdfContent = $pdf->output();
 
-            // Detectar entorno local: eFirma rechaza URLs no alcanzables públicamente
+            // Detectar entorno local por configuración de Laravel (no depende de APP_URL)
+            $isLocal = app()->environment('local');
+
+            // Generar URLs de callback y retorno
             $callbackUrl = route('backoffice.efirma.callback', $document->id);
             $returnUrl   = route('backoffice.documents.show', $document->id);
-            $isLocal     = str_contains($callbackUrl, '127.0.0.1')
-                        || str_contains($callbackUrl, 'localhost')
-                        || str_contains($callbackUrl, '.test');
 
             // Crear documento en eFirma
             $metadata = [
                 'name'           => 'Oficio ' . $document->folio,
                 'signature_type' => 2,
                 'send_mails'     => false,
+                'expiry_in'      => 30,
                 'users'          => [
                     [
                         'email'             => Auth::user()->email,
@@ -687,7 +688,7 @@ class BackofficeDocumentController extends Controller
                 'tags' => [$document->type, $document->priority],
             ];
 
-            // Solo incluir URLs en producción (eFirma rechaza URLs no alcanzables)
+            // Incluir URLs siempre en producción; omitir solo en local
             if (!$isLocal) {
                 $metadata['callback_url'] = $callbackUrl;
                 $metadata['return_url']   = $returnUrl;
@@ -698,6 +699,21 @@ class BackofficeDocumentController extends Controller
 
             // Fallback: si la API devuelve id vacío, buscar por nombre en get_all
             if (empty($efirmaId)) {
+                // Loguear respuesta vacía para diagnóstico
+                EfirmaLog::create([
+                    'document_id' => $document->id,
+                    'event'       => 'create_document_empty_id',
+                    'payload'     => ['folio' => $document->folio, 'name' => $metadata['name'], 'metadata' => $metadata],
+                    'response'    => $result['data'],
+                    'http_status' => $result['http_status'],
+                    'success'     => false,
+                ]);
+
+                \Log::warning('[eFirma] createDocument devolvió id vacío', [
+                    'name'     => $metadata['name'],
+                    'response' => $result,
+                ]);
+
                 $allResult  = $this->efirmaService->getDocumentAll();
                 $targetName = $metadata['name'];
                 foreach (($allResult['data'] ?? []) as $doc) {

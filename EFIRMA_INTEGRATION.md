@@ -13,6 +13,11 @@ EFIRMA_USER_ID=        # ID de usuario en el panel eFirma
 EFIRMA_API_KEY=        # API Key del panel eFirma
 ```
 
+> **⚠️ IMPORTANTE:** `EFIRMA_BASE_URL` debe apuntar al servidor regional correcto (ej. `https://mx.efirma.com`).
+> **NO** usar `https://efirma.com` directamente — causa un redirect que pierde el archivo PDF durante el upload multipart, resultando en `{"id":""}`.
+>
+> Asegúrese también de que `APP_URL` en `.env` sea el dominio público real del sitio (no `http://localhost`), ya que de él se generan las URLs de `callback_url` y `return_url` enviadas a eFirma.
+
 Las credenciales se gestionan en: https://efirma.com/panel/api-management
 
 ---
