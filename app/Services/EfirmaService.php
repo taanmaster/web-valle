@@ -218,15 +218,18 @@ class EfirmaService
         curl_setopt($ch, CURLOPT_TIMEOUT, config('efirma.timeout_request', 60));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+        curl_setopt($ch, CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
 
-        $response     = curl_exec($ch);
-        $httpCode     = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $effectiveUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $uploadSize   = curl_getinfo($ch, CURLINFO_SIZE_UPLOAD);
-        $curlError    = curl_error($ch);
+        $response      = curl_exec($ch);
+        $httpCode      = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $effectiveUrl  = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        $uploadSize    = curl_getinfo($ch, CURLINFO_SIZE_UPLOAD);
+        $redirectCount = (int) curl_getinfo($ch, CURLINFO_REDIRECT_COUNT);
+        $curlError     = curl_error($ch);
         curl_close($ch);
         @unlink($tmpPath); // limpiar archivo temporal
 
@@ -234,22 +237,12 @@ class EfirmaService
             throw new RuntimeException("cURL error al subir documento a eFirma: {$curlError}");
         }
 
-        // Detectar redirect (3xx) — indica URL base incorrecta; el archivo se pierde en el redirect
-        if ($httpCode >= 300 && $httpCode < 400) {
-            $location = $response; // el body suele contener la URL destino
-            throw new RuntimeException(
-                "eFirma respondió con redirect {$httpCode}. "
-                . "Esto causa pérdida del archivo PDF en el upload. "
-                . "Verifique que EFIRMA_BASE_URL apunte al servidor regional correcto (ej. https://mx.efirma.com). "
-                . "URL solicitada: {$url}"
-            );
-        }
-
         \Log::debug('[eFirma] requestMultipart raw response', [
-            'http_status'   => $httpCode,
-            'effective_url' => $effectiveUrl,
-            'upload_size'   => $uploadSize,
-            'body'          => $response,
+            'http_status'    => $httpCode,
+            'effective_url'  => $effectiveUrl,
+            'upload_size'    => $uploadSize,
+            'redirect_count' => $redirectCount,
+            'body'           => $response,
         ]);
 
         $decoded = json_decode($response, true) ?? [];
