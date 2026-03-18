@@ -18,7 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{ asset('libs/signature-pad-main/jquery.signaturepad.min.js') }}"></script>
 <script src="{{ asset('libs/signature-pad-main/assets/json2.min.js') }}"></script>
-<script src="https://efirma.com/pub/js/efirmaTools.js"></script>
+<script src="https://mx.efirma.com/pub/js/efirmaTools.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
