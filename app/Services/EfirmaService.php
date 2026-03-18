@@ -173,56 +173,55 @@ class EfirmaService
 
     /**
      * Enviar documento como multipart/form-data.
-     * Crea un archivo temporal del PDF y lo sube con CURLFile.
+     * Construye el body multipart manualmente (sin CURLFile ni archivos temporales)
+     * para garantizar que el contenido del archivo se preserve en redirects.
      */
     protected function requestMultipart(string $endpoint, string $pdfContent, array $metadata): array
     {
         $url = $this->baseUrl . $endpoint;
         $ch  = curl_init();
 
+        $filename = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $metadata['name'] ?? 'documento') . '.pdf';
+        $dataJson = json_encode($metadata, JSON_UNESCAPED_UNICODE);
+
+        // Construir body multipart manualmente (replica lo que hace curl CLI)
+        $boundary = '----EfirmaUpload' . bin2hex(random_bytes(16));
+
+        $body  = "--{$boundary}\r\n";
+        $body .= "Content-Disposition: form-data; name=\"file\"; filename=\"{$filename}\"\r\n";
+        $body .= "Content-Type: application/pdf\r\n\r\n";
+        $body .= $pdfContent;
+        $body .= "\r\n--{$boundary}\r\n";
+        $body .= "Content-Disposition: form-data; name=\"data\"\r\n\r\n";
+        $body .= $dataJson;
+        $body .= "\r\n--{$boundary}--\r\n";
+
         $headers = [
             'X-eFirma-Auth: ' . $this->buildAuthHeader(),
             'Accept: application/json',
-        ];
-
-        // Escribir el PDF en un archivo temporal con ruta explícita
-        // (CURLFile requiere un path real en disco; tmpfile() puede quedar bloqueado)
-        $filename = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $metadata['name'] ?? 'documento') . '.pdf';
-        $tmpPath  = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'efirma_' . uniqid() . '_' . $filename;
-        $bytesWritten = file_put_contents($tmpPath, $pdfContent);
-
-        if ($bytesWritten === false || !file_exists($tmpPath) || filesize($tmpPath) === 0) {
-            throw new RuntimeException(
-                "No se pudo escribir el archivo temporal para eFirma en: {$tmpPath} "
-                . '(bytes_written: ' . var_export($bytesWritten, true) . ', '
-                . 'content_length: ' . strlen($pdfContent) . ')'
-            );
-        }
-
-        $postFields = [
-            'file' => new \CURLFile($tmpPath, 'application/pdf', $filename),
-            'data' => json_encode($metadata, JSON_UNESCAPED_UNICODE),
+            'Content-Type: multipart/form-data; boundary=' . $boundary,
         ];
 
         \Log::debug('[eFirma] requestMultipart enviando', [
-            'url'       => $url,
-            'file_size' => filesize($tmpPath),
-            'filename'  => $filename,
-            'data'      => $metadata,
+            'url'          => $url,
+            'pdf_size'     => strlen($pdfContent),
+            'body_size'    => strlen($body),
+            'filename'     => $filename,
+            'data'         => $metadata,
         ]);
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, config('efirma.timeout_connect', 10));
-        curl_setopt($ch, CURLOPT_TIMEOUT, config('efirma.timeout_request', 60));
+        curl_setopt($ch, CURLOPT_TIMEOUT, config('efirma.timeout_request', 120));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
         curl_setopt($ch, CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
         $response      = curl_exec($ch);
         $httpCode      = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -231,7 +230,6 @@ class EfirmaService
         $redirectCount = (int) curl_getinfo($ch, CURLINFO_REDIRECT_COUNT);
         $curlError     = curl_error($ch);
         curl_close($ch);
-        @unlink($tmpPath); // limpiar archivo temporal
 
         if ($curlError) {
             throw new RuntimeException("cURL error al subir documento a eFirma: {$curlError}");
