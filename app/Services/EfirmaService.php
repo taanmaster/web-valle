@@ -40,7 +40,10 @@ class EfirmaService
      */
     public function createDocument(string $pdfPath, array $metadata): array
     {
-        return $this->requestMultipart('/api/document/', $pdfPath, $metadata);
+        // SIN trailing slash: /api/document (no /api/document/)
+        // Con slash redirige 301 → pierde el archivo en el redirect.
+        // curl CLI que funcionó usó /api/document sin slash.
+        return $this->requestMultipart('/api/document', $pdfPath, $metadata);
     }
 
     /**
