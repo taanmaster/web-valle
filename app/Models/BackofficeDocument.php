@@ -42,6 +42,7 @@ class BackofficeDocument extends Model
         'efirma_signatures',
         'efirma_error',
         'efirma_sent_at',
+        'efirma_merged_file',
     ];
 
     protected $casts = [

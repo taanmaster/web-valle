@@ -843,25 +843,25 @@ class BackofficeDocumentController extends Controller
         }
 
         try {
-            // 1. Verificar estado actual del documento en eFirma
-            $docResult = $this->efirmaService->getDocument($document->efirma_document_id);
-            $docData   = $docResult['data'] ?? [];
+            // 1. Obtener estado actual del documento en eFirma (incluye firmas y URLs)
+            $docResult  = $this->efirmaService->getDocument($document->efirma_document_id);
+            $docData    = $docResult['data'] ?? [];
+            $mergedFile = $docData['merged_file'] ?? null;
 
             if (empty($docData['fully_signed'])) {
                 Session::flash('error', 'El documento todavía no ha sido firmado completamente en eFirma. Complete la firma antes de confirmar.');
                 return redirect()->route('backoffice.documents.show', $id);
             }
 
-            // 2. Obtener detalle de las firmas
-            $sigResult  = $this->efirmaService->getSignatures($document->efirma_document_id);
-            $signatures = $sigResult['data'] ?? [];
-
-            // 3. Guardar firmas + URLs de archivos firmados
+            // 2. Guardar firmas + URLs de archivos firmados.
+            //    Las firmas vienen en $docData['signatures'] — no se necesita llamada extra.
             $document->update([
-                'efirma_signatures' => [
-                    'signatures'    => $signatures,
+                'efirma_merged_file' => $mergedFile,
+                'efirma_signatures'  => [
+                    'signatures'    => $docData['signatures']    ?? [],
                     'signed_file'   => $docData['signed_file']   ?? null,
-                    'merged_file'   => $docData['merged_file']   ?? null,
+                    'merged_file'   => $mergedFile,
+                    'evidence_file' => $docData['evidence_file'] ?? null,
                     'original_file' => $docData['original_file'] ?? null,
                 ],
                 'efirma_status' => 'signed_complete',
