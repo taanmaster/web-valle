@@ -102,10 +102,15 @@
         <div class="card-body">
             <div class="d-grid gap-2">
                 @if($document->status == 'firmado')
-                    <a href="{{ route('backoffice.documents.pdf', $document->id) }}"
+                    @php
+                        $downloadUrl = $document->efirma_merged_file
+                            ? $document->efirma_merged_file
+                            : route('backoffice.documents.pdf', $document->id);
+                    @endphp
+                    <a href="{{ $downloadUrl }}"
                        class="btn btn-danger"
                        target="_blank">
-                        <i class="fas fa-file-pdf me-2"></i> Generar PDF
+                        <i class="fas fa-file-pdf me-2"></i> Descargar Oficio
                     </a>
                 @endif
                 @if($document->user_id == Auth::id() && $document->status == 'borrador')
