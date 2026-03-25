@@ -187,7 +187,7 @@
         </div>
 
         <div class="d-flex align-items-center justify-content-center">
-            {{ $simplifications->links('pagination::bootstrap-5') }}
+            {{ $simplifications->links() }}
         </div>
     @endif
 

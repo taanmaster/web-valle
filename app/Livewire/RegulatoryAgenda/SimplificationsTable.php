@@ -19,6 +19,8 @@ class SimplificationsTable extends Component
 {
     use WithPagination;
 
+    protected string $paginationTheme = 'bootstrap';
+
     public $dependency;
 
     public $is_admin;
@@ -38,6 +40,14 @@ class SimplificationsTable extends Component
         $this->high_frequency = '';
         $this->priority_grupos = '';
         $this->high_burocratic_cost = '';
+        $this->resetPage('simplificationsPage');
+    }
+
+    public function updated($property)
+    {
+        if (in_array($property, ['date_start', 'semester', 'is_active', 'high_frequency', 'priority_grupos', 'high_burocratic_cost'], true)) {
+            $this->resetPage('simplificationsPage');
+        }
     }
 
     public function toggleActive($id)
@@ -83,7 +93,7 @@ class SimplificationsTable extends Component
             $query->where('high_burocratic_cost', $this->high_burocratic_cost);
         }
 
-        $simplifications = $query->paginate(10);
+        $simplifications = $query->paginate(10, ['*'], 'simplificationsPage');
 
         return view('livewire.regulatory-agenda.simplifications-table', [
             'simplifications' => $simplifications,

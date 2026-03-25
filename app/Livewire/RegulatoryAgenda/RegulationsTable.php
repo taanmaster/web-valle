@@ -21,6 +21,8 @@ class RegulationsTable extends Component
 {
     use WithPagination;
 
+    protected string $paginationTheme = 'bootstrap';
+
     public $dependency;
 
     public $is_admin;
@@ -36,6 +38,14 @@ class RegulationsTable extends Component
         $this->semester = '';
         $this->is_active = '';
         $this->type = '';
+        $this->resetPage('regulationsPage');
+    }
+
+    public function updated($property)
+    {
+        if (in_array($property, ['presentation_date', 'semester', 'is_active', 'type'], true)) {
+            $this->resetPage('regulationsPage');
+        }
     }
 
     public function toggleActive($id)
@@ -75,7 +85,7 @@ class RegulationsTable extends Component
             $query->where('type', $this->type);
         }
 
-        $regulations = $query->paginate(10);
+        $regulations = $query->paginate(10, ['*'], 'regulationsPage');
 
         return view('regulatory_agenda_regulations.utilities.regulations-table', [
             'regulations' => $regulations,
