@@ -849,4 +849,16 @@ class FrontController extends Controller
 
         return $pdf->download($filename);
     }
+
+    // Módulo Dirección General Jurídica
+    public function legalDepartment()
+    {
+        return view('front.legal_department.index');
+    }
+
+    // Módulo Secretaría de Ayudantamiento
+    public function secretaryOfAssistance()
+    {
+        return view('front.secretary_of_assistance.index');
+    }
 }
