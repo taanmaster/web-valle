@@ -74,11 +74,6 @@ use App\Http\Controllers\BackofficeDocumentController;
 // Citas para Trámites
 use App\Http\Controllers\AppointmentController;
 
-// Modelos
-use App\Models\InstitucionalDevelopmentBanner;
-use App\Models\TsrAdminRevenueColletionArticle;
-use App\Models\TsrAdminRevenueColletionFraction;
-use App\Models\DIFIncome;
 
 use Illuminate\Support\Facades\Route;
 
@@ -116,6 +111,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/blog', 'FrontController@tourismBlogList')->name('turismo.front.blog.list');
         Route::get('/blog/{slug}', 'FrontController@tourismBlogDetail')->name('turismo.front.blog.detail');
     });
+
+    // Dirección General Jurídica
+    Route::get('/direccion-general-juridica', 'FrontController@legalDepartment')->name('legal_department.index');
+
+    // Secretaría de ayudantamiento
+    Route::get('/secretaria-de-ayudantamiento', 'FrontController@secretaryOfAssistance')->name('secretary_of_assistance.index');
 
     // Recursos Humanos (Front)
     Route::group(['prefix' => '/recursos-humanos'], function () {
