@@ -6,20 +6,23 @@
 @section('content')
     @php
         $hasPendingBooking = session()->has('pending_booking');
+        $esMunicipio = request('tipo') === 'municipio';
+        $loginTitulo = $esMunicipio ? 'Inicio de Sesión Municipio' : 'Inicio de Sesión Ciudadano';
+        $loginImagen = $esMunicipio ? 'front/img/placeholder-4.jpg' : 'front/img/placeholder-3.jpg';
     @endphp
 
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="card card-image card-alignment-bottom wow fadeInUp h-100">
-                    <img class="card-img-top" src="{{ asset('front/img/placeholder-3.jpg') }}" alt="">
+                    <img class="card-img-top" src="{{ asset($loginImagen) }}" alt="">
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="card wow fadeInUp mb-0 shadow">
                     <div class="card-body bg-secondary text-white">
                         <h4 class="mb-0">
-                            <ion-icon name="log-in-outline"></ion-icon> Inicio de Sesión Ciudadano
+                            <ion-icon name="log-in-outline"></ion-icon> {{ $loginTitulo }}
                         </h4>
                         <p class="small mb-0">Accede a tu cuenta para utilizar los servicios municipales</p>
                     </div>
@@ -100,10 +103,12 @@
                             </div>
 
                             <div class="text-center">
+                                @unless ($esMunicipio)
                                 <p class="mb-2">
                                     ¿No tienes cuenta?
                                     <a href="{{ route('register') }}" class="text-primary fw-semibold">Regístrate aquí</a>
                                 </p>
+                                @endunless
                                 <p class="text-muted small mb-0">
                                     ¿Olvidaste tu contraseña? Solicita una actualización con administración de sistemas.
                                 </p>

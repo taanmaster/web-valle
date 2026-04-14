@@ -21,6 +21,6 @@
     </div>
 
     <div class="d-flex w-100 justify-content-center">
-        <a href="{{ route('login') }}">INICIO DE SESIÓN MUNICIPIO</a>
+        <a href="{{ route('login', ['tipo' => 'municipio']) }}">INICIO DE SESIÓN MUNICIPIO</a>
     </div>
 </footer>
