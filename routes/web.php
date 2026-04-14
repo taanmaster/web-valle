@@ -39,6 +39,8 @@ use App\Http\Controllers\HRVacancyController;
 
 // Tesorería
 use App\Http\Controllers\TreasuryAccountPayableController;
+use App\Http\Controllers\BillableServiceController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TsrBillingAccountController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
 use App\Http\Controllers\TsrAdminRevenueColletionFractionController;
@@ -1387,6 +1389,23 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::resource('dependencies', TreasuryDependencyController::class)->names([
                 'index' => 'treasury_dependencies.index',
             ]);
+
+            /* Cobros en Línea */
+            Route::group(['prefix' => 'cobros-en-linea'], function () {
+                Route::resource('servicios', BillableServiceController::class)->names([
+                    'index'   => 'admin.billable_services.index',
+                    'create'  => 'admin.billable_services.create',
+                    'store'   => 'admin.billable_services.store',
+                    'show'    => 'admin.billable_services.show',
+                    'edit'    => 'admin.billable_services.edit',
+                    'update'  => 'admin.billable_services.update',
+                    'destroy' => 'admin.billable_services.destroy',
+                ]);
+                Route::get('ordenes', [OrderController::class, 'index'])->name('admin.orders.index');
+                Route::get('ordenes/{order}', [OrderController::class, 'show'])->name('admin.orders.show');
+                Route::patch('ordenes/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.update_status');
+                Route::patch('ordenes/{order}/nota', [OrderController::class, 'updateNote'])->name('admin.orders.update_note');
+            });
         });
 
         /* ------------------- */
@@ -1852,6 +1871,28 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/citas/{booking}', 'CitizenProfileController@showAppointment')->name('citizen.appointments.show');
         Route::post('/citas/{booking}/confirmar', 'CitizenProfileController@confirmAppointment')->name('citizen.appointments.confirm');
         Route::post('/citas/{booking}/cancelar', 'CitizenProfileController@cancelAppointment')->name('citizen.appointments.cancel');
+
+        // Servicios Municipales en Línea
+        Route::get('/servicios', 'ServicesController@index')->name('citizen.services.index');
+
+        // Carrito
+        Route::get('/carrito', 'CartController@index')->name('citizen.cart.index');
+        Route::post('/carrito/agregar', 'CartController@store')->name('citizen.cart.store');
+        Route::patch('/carrito/items/{cartItem}', 'CartController@update')->name('citizen.cart.update');
+        Route::delete('/carrito/items/{cartItem}', 'CartController@destroy')->name('citizen.cart.destroy');
+
+        // Checkout
+        Route::get('/checkout', 'CheckoutController@index')->name('citizen.checkout.index');
+        Route::post('/checkout/pagar', 'PaymentGatewayController@paymentStore')->name('citizen.checkout.pay');
+        Route::get('/checkout/completado', 'CheckoutController@success')->name('oxxopay.complete');
+        Route::get('/checkout/completado-bajio', 'CheckoutController@success')->name('bajiopay.complete');
+        Route::get('/checkout/fallido', 'CheckoutController@failed')->name('oxxopay.failed');
+        Route::get('/checkout/fallido-bajio', 'CheckoutController@failed')->name('bajiopay.failed');
+
+        // Mis Órdenes / Pagos
+        Route::get('/mis-ordenes', 'OrderController@index')->name('citizen.orders.index');
+        Route::get('/mis-ordenes/{order}', 'OrderController@show')->name('citizen.orders.show');
+        Route::get('/mis-ordenes/{order}/recibo', 'OrderController@receipt')->name('citizen.orders.receipt');
     });
 
     // Rutas del Perfil Proveedores (Front-End)
@@ -1899,4 +1940,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
     // Webhook público: eFirma notifica el estado de firma (no requiere autenticación de usuario)
     Route::post('/efirma/callback/{id}', [\App\Http\Controllers\BackofficeDocumentController::class, 'efirmaCallback'])
         ->name('backoffice.efirma.callback');
+
+    // Webhook público: Notificaciones de pago (OXXOPay)
+    Route::post('/webhooks/pagos', [\App\Http\Controllers\Front\WebhookController::class, 'order'])
+        ->name('webhook.payments');
+
+    // Webhook público: Notificación de Multipagos BanBajío (POST con firma RSA)
+    // BanBajío espera la respuesta de texto plano "estatus_notificacion=0" para confirmar recepción
+    Route::post('/webhooks/bajio-notificacion', [\App\Http\Controllers\Front\WebhookController::class, 'bajioNotification'])
+        ->name('webhook.bajio');
 });
