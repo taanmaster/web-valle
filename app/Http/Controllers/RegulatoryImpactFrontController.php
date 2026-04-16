@@ -2,6 +2,44 @@
 
 namespace App\Http\Controllers;
 
+/**
+ * ============================================================
+ * MÓDULO CIUDADANO: Análisis de Impacto Regulatorio (AIR) y Exención
+ * ============================================================
+ *
+ * FLUJO CIUDADANO (portal público):
+ *
+ * 1. LANDING
+ *    - El ciudadano accede a /impacto-regulatorio y ve dos
+ *      tarjetas: AIR y Solicitudes de Exención, con una tabla
+ *      de los últimos registros publicados en cada tipo.
+ *
+ * 2. LISTADOS
+ *    - /impacto-regulatorio/air → lista paginada de AIR
+ *      visibles (show_in_front = true).
+ *    - /impacto-regulatorio/exenciones → lista paginada de
+ *      Exenciones visibles.
+ *
+ * 3. DETALLE
+ *    - El ciudadano puede ver el Formato de Solicitud del
+ *      registro embebido como PDF (o descargarlo si el
+ *      navegador no lo soporta).
+ *    - Si existe un Dictamen Final también puede descargarlo.
+ *
+ * 4. CONSULTA PÚBLICA
+ *    - Cualquier visitante puede dejar un comentario público
+ *      en la sección de Consulta Pública de cada detalle.
+ *    - Se requiere resolver un captcha para evitar spam.
+ *    - Una cookie `ri_commented_{id}` limita a un comentario
+ *      por registro cada 7 días desde el mismo navegador.
+ *
+ * ============================================================
+ * Solo se muestran registros con show_in_front = true.
+ * Los comentarios ciudadanos son visibles también en el
+ * backoffice dentro de la sección "Consulta Pública" del detalle.
+ * ============================================================
+ */
+
 use App\Models\RegulatoryImpact;
 use App\Models\RegulatoryImpactComment;
 use Illuminate\Http\Request;

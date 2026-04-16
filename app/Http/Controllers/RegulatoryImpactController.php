@@ -2,6 +2,47 @@
 
 namespace App\Http\Controllers;
 
+/**
+ * ============================================================
+ * MÓDULO: Análisis de Impacto Regulatorio (AIR) y Exención
+ * ============================================================
+ *
+ * FLUJO ADMINISTRATIVO:
+ *
+ * 1. CREACIÓN
+ *    - El usuario con acceso al backoffice crea un registro
+ *      eligiendo el tipo: AIR o Exención.
+ *    - Se genera automáticamente un folio único con formato:
+ *      AIR{año}-{NNNN} o EX{año}-{NNNN}.
+ *    - Puede adjuntarse el Formato de Solicitud (PDF/DOC) que
+ *      se almacena en AWS S3.
+ *
+ * 2. REVISIÓN
+ *    - Los usuarios con rol `des_Institucional` o `all` pueden
+ *      dejar Observaciones internas (admin) visibles solo en
+ *      el backoffice.
+ *    - Pueden también activar el toggle `Mostrar en el Front`
+ *      para publicar el registro en el portal ciudadano.
+ *
+ * 3. DICTAMEN
+ *    - Solo roles `des_Institucional` / `all` pueden emitir
+ *      el dictamen (Pendiente → Aprobado / Rechazado).
+ *    - Al adjuntar el archivo de dictamen se sube a S3.
+ *    - Una vez marcado como Aprobado o Rechazado, el registro
+ *      queda BLOQUEADO: no se puede editar ni cambiar el status.
+ *      Solo se permite actualizar la visibilidad en el front.
+ *
+ * 4. VISIBILIDAD EN FRONT
+ *    - El toggle `show_in_front` puede modificarse en cualquier
+ *      momento, incluso después de una resolución final.
+ *
+ * ============================================================
+ * Roles involucrados:
+ *   - Cualquier usuario backoffice: crear / ver / editar (pendiente)
+ *   - des_Institucional / all: observaciones, dictamen, visibilidad
+ * ============================================================
+ */
+
 use App\Models\BackofficeDependency;
 use App\Models\RegulatoryImpact;
 use App\Models\RegulatoryImpactComment;
