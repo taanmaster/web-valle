@@ -102,6 +102,19 @@
             </div>
         </div>
 
+        <!-- Consulta Pública -->
+        <div href="{{ route('urban_dev.index') }}"
+            class="card card-image card-alignment-bottom wow fadeInUp h-100 d-block">
+            <img src="{{ asset('front/img/placeholder-9.jpg') }}" class="card-img-top"
+                alt="Portada de Consulta Pública">
+            <div class="overlay"></div>
+
+            <div class="card-content">
+                <h2 style="padding-top: 120px;">Consulta Pública</h2>
+                <p class="mb-4">Tu participación es clave para crear reglas claras. En este espacio puedes revisar y opinar sobre los Análisis de Impacto Regulatorio (AIR) y las Exenciones de las nuevas propuestas de trámites y servicios. Nuestro objetivo es asegurar que las regulaciones generen mayores beneficios que costos para la ciudadanía.</p>
+                <a href="{{ route('front.regulatory_impact.index') }}" class="btn btn-primary d-flex align-items-center gap-2 mb-4 mb-md-0" style="width: fit-content">AIR y Exenciones <ion-icon name="caret-forward-outline"></ion-icon></a>
+            </div>
+        </div>
 
         <!-- Dependencias -->
         <div class="row">

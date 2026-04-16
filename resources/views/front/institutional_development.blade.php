@@ -100,6 +100,9 @@
                                     Registro municipal de Inspecciones, Verificaciones y Visitas Domiciliarias
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('front.regulatory_impact.index') }}" class="btn-link">AIR y Exención</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
