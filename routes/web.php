@@ -28,6 +28,8 @@ use App\Http\Controllers\TapSupplierLogController;
 
 // Desarrollo Institucional
 use App\Http\Controllers\InstitucionalDevelopmentBannerController;
+use App\Http\Controllers\RegulatoryImpactController;
+use App\Http\Controllers\RegulatoryImpactFrontController;
 
 // Tourism
 use App\Http\Controllers\TourismBannerController;
@@ -287,6 +289,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'uses' => 'FrontController@acquisitions',
         'as' => 'acquisitions.index',
     ]);
+
+    // Módulo Impacto Regulatorio (front ciudadano)
+    Route::get('/impacto-regulatorio', [RegulatoryImpactFrontController::class, 'index'])
+        ->name('front.regulatory_impact.index');
+    Route::get('/impacto-regulatorio/air', [RegulatoryImpactFrontController::class, 'airIndex'])
+        ->name('front.regulatory_impact.air_index');
+    Route::get('/impacto-regulatorio/exenciones', [RegulatoryImpactFrontController::class, 'exencionIndex'])
+        ->name('front.regulatory_impact.exencion_index');
+    Route::get('/impacto-regulatorio/air/{id}', [RegulatoryImpactFrontController::class, 'airShow'])
+        ->name('front.regulatory_impact.air_show');
+    Route::get('/impacto-regulatorio/exencion/{id}', [RegulatoryImpactFrontController::class, 'exencionShow'])
+        ->name('front.regulatory_impact.exencion_show');
+    Route::post('/impacto-regulatorio/{id}/consulta-publica', [RegulatoryImpactFrontController::class, 'storePublicComment'])
+        ->name('front.regulatory_impact.public_comment');
 
     /* ------------------- */
     /* ------------------- */
@@ -1633,6 +1649,22 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'create' => 'institucional_development.requests.create',
                 'destroy' => 'institucional_development.requests.destroy',
             ]);
+
+            Route::resource('regulatory_impact', RegulatoryImpactController::class)->names([
+                'index'   => 'institucional_development.regulatory_impact.index',
+                'create'  => 'institucional_development.regulatory_impact.create',
+                'store'   => 'institucional_development.regulatory_impact.store',
+                'show'    => 'institucional_development.regulatory_impact.show',
+                'edit'    => 'institucional_development.regulatory_impact.edit',
+                'update'  => 'institucional_development.regulatory_impact.update',
+                'destroy' => 'institucional_development.regulatory_impact.destroy',
+            ]);
+
+            Route::post('regulatory_impact/{regulatoryImpact}/comment', [RegulatoryImpactController::class, 'storeComment'])
+                ->name('institucional_development.regulatory_impact.comment');
+
+            Route::post('regulatory_impact/{regulatoryImpact}/dictamen', [RegulatoryImpactController::class, 'updateDictamen'])
+                ->name('institucional_development.regulatory_impact.dictamen');
         });
 
         //Inspecciones municipales

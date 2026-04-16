@@ -285,6 +285,11 @@
                                 href="{{ route('institucional_development.requests.index') }}">Trámites y
                                 Servicios</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('institucional_development.regulatory_impact.index') }}">AIR y Exención</a>
+                        </li>
                     </ul>
 
                     <div class="title-box">
