@@ -54,6 +54,20 @@
             </li>
 
             <li>
+                <a href="{{ route('legal_department.index') }}">
+                    <ion-icon name="shield-checkmark-outline"></ion-icon>
+                    <span>Dirección General Jurídica</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('secretary_of_assistance.index') }}">
+                    <ion-icon name="people-circle-outline"></ion-icon>
+                    <span>Secretaría de Ayuntamiento</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('urban_dev.index') }}">
                     <ion-icon name="bus-outline"></ion-icon>
                     <span>Desarrollo Urbano</span>

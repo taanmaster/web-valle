@@ -853,12 +853,18 @@ class FrontController extends Controller
     // Módulo Dirección General Jurídica
     public function legalDepartment()
     {
-        return view('front.legal_department.index');
+        return view('front.direccion_general_juridica.index');
     }
 
     // Módulo Secretaría de Ayudantamiento
     public function secretaryOfAssistance()
     {
         return view('front.secretary_of_assistance.index');
+    }
+
+    // Inicio de sesión administrativa
+    public function showLoginForm()
+    {
+        return view('auth.admin.login');
     }
 }
