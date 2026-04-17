@@ -126,7 +126,7 @@
                     )->first();
                 @endphp
 
-                @if ($transparency_dependency->image_cover != null)
+                @if ($transparency_dependency && $transparency_dependency->image_cover != null)
                     <a href="{{ route('transparency.index') }}"
                         class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
                         <img src="{{ asset('images/dependencies/' . $transparency_dependency->image_cover) }}"
