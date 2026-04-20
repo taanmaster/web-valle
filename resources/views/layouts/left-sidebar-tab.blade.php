@@ -285,6 +285,11 @@
                                 href="{{ route('institucional_development.requests.index') }}">Trámites y
                                 Servicios</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('institucional_development.regulatory_impact.index') }}">AIR y Exención</a>
+                        </li>
                     </ul>
 
                     <div class="title-box">
@@ -526,6 +531,19 @@
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('treasury_dependencies.index') }}">Dependencias</a>
+                            </li>
+                        </ul>
+
+                        <div class="title-box mt-5">
+                            <h6 class="menu-title">Cobros en Línea</h6>
+                        </div>
+
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.billable_services.index') }}">Servicios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.orders.index') }}">Órdenes</a>
                             </li>
                         </ul>
                     @endhasanyrole

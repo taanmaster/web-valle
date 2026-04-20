@@ -1,0 +1,98 @@
+@extends('front.layouts.app')
+
+@section('content')
+<div class="container">
+
+    {{-- Breadcrumb --}}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('index') }}">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('front.regulatory_impact.index') }}">Impacto Regulatorio</a></li>
+                    <li class="breadcrumb-item active">Solicitudes de Exención</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    {{-- Header --}}
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card card-normal wow fadeInUp">
+                <div class="card-content">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="card-icon card-icon-static bg-secondary text-white d-flex align-items-center justify-content-center">
+                            <ion-icon name="document-outline"></ion-icon>
+                        </div>
+                        <div>
+                            <h2 class="mb-1">Solicitudes de Exención</h2>
+                            <p class="mb-0 text-muted">Consulta las solicitudes de exención de análisis regulatorio publicadas. Puedes participar dejando tus comentarios en la sección de Consulta Pública de cada registro.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Listado --}}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-normal wow fadeInUp">
+                <div class="card-content">
+
+                    @forelse($records as $record)
+                        <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="flex-shrink-0">
+                                    <span class="badge bg-secondary fw-bold">{{ $record->folio }}</span>
+                                </div>
+                                <div>
+                                    <p class="mb-1 fw-semibold">{{ $record->titulo_regulacion }}</p>
+                                    <small class="text-muted">
+                                        {{ $record->dependency->name ?? '' }}
+                                        @if($record->fecha_envio)
+                                            · Envío: {{ $record->fecha_envio->format('d/m/Y') }}
+                                        @endif
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 ms-3 d-flex align-items-center gap-2">
+                                <span class="badge bg-{{ $record->dictamen_badge_class }}">
+                                    {{ ucfirst($record->dictamen_status) }}
+                                </span>
+                                <a href="{{ route('front.regulatory_impact.exencion_show', $record->id) }}"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    Ver <ion-icon name="chevron-forward-outline"></ion-icon>
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-5 text-muted">
+                            <ion-icon name="document-outline" style="font-size:3rem;"></ion-icon>
+                            <p class="mt-2">No hay solicitudes de exención publicadas en este momento.</p>
+                        </div>
+                    @endforelse
+
+                    @if($records->hasPages())
+                        <div class="mt-4">
+                            {{ $records->links('pagination::bootstrap-5') }}
+                        </div>
+                    @endif
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Volver --}}
+    <div class="row mt-3 mb-5">
+        <div class="col-md-12">
+            <a href="{{ route('front.regulatory_impact.index') }}" class="btn btn-outline-secondary btn-sm">
+                <ion-icon name="arrow-back-outline"></ion-icon> Volver a Impacto Regulatorio
+            </a>
+        </div>
+    </div>
+
+</div>
+@endsection

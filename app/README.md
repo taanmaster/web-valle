@@ -12,6 +12,7 @@
 7. **URBAN_DEV** = Desarrollo Urbano (Urban Development)
 8. **CTO** = Catastro 
 9. **SCR** = Secretaria de Ayuntamiento
+10. **DINS** = Desarrollo Institucional (Institutional Development)
 
 ### Modelos sin prefijo (Generales del Sistema)
 - **Banner** = Banners generales del sistema
@@ -25,11 +26,14 @@
 - **MunicipalRegulation** = Regulaciones municipales
 - **Notification** = Notificaciones del sistema
 - **Popup** = Ventanas emergentes
-- **RegulatoryAgenda** = Agenda regulatoria
-- **ServiceRequest** = Solicitudes de servicios
 - **User** = Usuarios del sistema
 
 ### Distribución por Módulo
+
+#### DINS (Desarrollo Institucional)
+- **RegulatoryAgenda** = Agenda regulatoria
+- **ServiceRequest** = Solicitudes de servicios
+- **RegulatoryImpact** = Formatos AIR y Exención
 
 #### DIF (Desarrollo Integral de la Familia)
 - DIFConsultType, DIFCoordination, DIFCoordinationProgram

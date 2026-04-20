@@ -1,0 +1,66 @@
+<html>
+<head>	
+</head>
+	<body>
+		<form id="myForm">
+		  <div>
+			  <label for="servicio">Número servicio</label>
+			  <input type="text" name="servicio" id="servicio" placeholder="Número servicio" required>
+		  </div>
+		  <div>
+			  <label for="concepto">Número concepto</label>
+			  <input type="text" name="concepto" id="concepto" placeholder="Número concepto" required>
+		  </div>
+		  <div>
+			  <label for="folio">Folio</label>
+			  <input type="text" name="folio" id="folio" placeholder="Número serie" required>
+		  </div>
+		  <div>
+			  <label for="referencia">Referencia</label>
+			  <input type="text" name="referencia" id="referencia" placeholder="Referencia" required>
+		  </div>
+		  <div>
+			  <label for="monto">Monto</label>
+			  <input type="number" step="0.1" name="monto" id="monto" placeholder="Monto" required>
+		  </div>
+		  <div class="button-container">
+			  <button type="submit">Solicitar</button>
+		  </div>
+		</form>
+	</body>
+	<script>
+	
+	window.addEventListener('load', function() {
+	console.log('documentLoaded')
+    document.getElementById('myForm').addEventListener('submit', function(e) {
+		  console.log('submited')
+		  e.preventDefault();
+		  const formData = {
+			  servicio: document.getElementById('servicio').value,
+			  concepto: document.getElementById('concepto').value,
+			  folio: document.getElementById('folio').value,
+			  referencia: document.getElementById('referencia').value,
+			  monto: document.getElementById('monto').value
+		  };
+		  try {
+			  fetch('/solicitarpago.php', {
+				  method: 'POST',
+				  headers: { 'Content-Type': 'application/json' },
+				  body: JSON.stringify(formData)
+			  })
+			  .then(response => {
+				  if (!response.ok) throw new Error('Algo ha salido mal');
+				  console.log(response)
+				  return response.json()
+			  })
+			  .then(data => window.location.replace(data.body))
+			  .catch(error => alert(error));
+		  } catch (error) {
+			  console.log(error.message)
+		  }
+		});
+	});
+		
+	</script>
+</html>
+      

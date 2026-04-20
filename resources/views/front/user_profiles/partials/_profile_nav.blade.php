@@ -67,6 +67,22 @@
                         <ion-icon name="calendar-outline"></ion-icon> Mis Citas a Trámites
                     </a>
 
+                    <div class="list-group-item bg-light fw-semibold text-muted small py-1 px-3">
+                        <ion-icon name="card-outline"></ion-icon> Servicios en Línea
+                    </div>
+                    <a href="{{ route('citizen.services.index') }}"
+                        class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.services.index' ? 'active' : '' }}">
+                        <ion-icon name="storefront-outline"></ion-icon> Servicios Municipales
+                    </a>
+                    <a href="{{ route('citizen.cart.index') }}"
+                        class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.cart.index' ? 'active' : '' }}">
+                        <ion-icon name="cart-outline"></ion-icon> Mi Carrito
+                    </a>
+                    <a href="{{ route('citizen.orders.index') }}"
+                        class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.orders') ? 'active' : '' }}">
+                        <ion-icon name="receipt-outline"></ion-icon> Mis Órdenes / Pagos
+                    </a>
+
                     <a href="{{ route('citizen.profile.edit') }}"
                         class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.profile.edit' ? 'active' : '' }}">
                         <ion-icon name="create-outline"></ion-icon> Editar Perfil

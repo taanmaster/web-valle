@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "83152b627a8d512e20fb01842d7afc17",
+    "content-hash": "a3430f6bf5bdaa8c5dc5607a5a9c6c52",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -770,6 +770,64 @@
                 "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.3"
             },
             "time": "2024-07-08T12:26:09+00:00"
+        },
+        {
+            "name": "digitalfemsa/femsa-php",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/digitaltitransversal/femsa-php.git",
+                "reference": "ebe07954494568fd88d9044de72ac872c1b88195"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/digitaltitransversal/femsa-php/zipball/ebe07954494568fd88d9044de72ac872c1b88195",
+                "reference": "ebe07954494568fd88d9044de72ac872c1b88195",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/guzzle": "^7.3",
+                "guzzlehttp/psr7": "^1.7 || ^2.0",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.5",
+                "phpstan/phpstan": "1.10.47",
+                "phpunit/phpunit": "^8.0 || ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DigitalFemsa\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "engineering@digitalfemsa.io",
+                    "homepage": "https://github.com/digitalfemsa/femsa-php/contributors"
+                }
+            ],
+            "description": "DigitalFemsa PHP Library",
+            "homepage": "https://www.femsa.com/",
+            "keywords": [
+                "api",
+                "femsa",
+                "php",
+                "rest",
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/digitaltitransversal/femsa-php/issues",
+                "source": "https://github.com/digitaltitransversal/femsa-php/tree/1.1.0"
+            },
+            "time": "2026-03-25T22:49:11+00:00"
         },
         {
             "name": "doctrine/inflector",
