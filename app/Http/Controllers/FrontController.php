@@ -878,13 +878,13 @@ class FrontController extends Controller
             ];
 
             Mail::send('front.mail_notifications._test_mail', $data, function($message) {
-                $message->to('web@taansystems.com', 'Taan Systems')->subject('¡Felicidades! Prueba Exitosa');
+                $message->to('web@valledesantiago.gob.mx', 'Web TaanSystems')->subject('¡Felicidades! Prueba Exitosa');
                 $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
             });
 
             return response()->json([
                 'success' => true,
-                'message' => "Correo de prueba enviado correctamente a web@taansystems.com.",
+                'message' => "Correo de prueba enviado correctamente a web@valledesantiago.gob.mx.",
             ]);
         } catch (\Exception $e) {
             return response()->json([
