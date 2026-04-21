@@ -98,6 +98,15 @@
                                         class="btn btn-sm btn-primary">
                                         <i class="fas fa-eye"></i> Ver
                                     </a>
+                                    @if ($certificate->status === 'Pago pendiente')
+                                        <form action="{{ route('citizen.identification_certificate.pay_online', $certificate->id) }}"
+                                              method="POST" class="d-inline ms-1">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-success">
+                                                <ion-icon name="card-outline"></ion-icon> Pagar en línea
+                                            </button>
+                                        </form>
+                                    @endif
                                 @endif
 
                             </td>

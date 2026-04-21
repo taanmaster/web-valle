@@ -36,6 +36,7 @@ use App\Models\LegalText;
 use App\Models\RegulatoryAgendaDependency;
 use App\Models\RegulatoryAgendaRegulation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 //Modelos Mejora Regulatoria
 use App\Models\InstitucionalDevelopmentBanner;
@@ -866,5 +867,30 @@ class FrontController extends Controller
     public function showLoginForm()
     {
         return view('auth.admin.login');
+    }
+
+    // Prueba de envío de correo (solo entornos no productivos)
+    public function sendTestMail(Request $request)
+    {
+        try {
+            $data = [
+                'message' => 'Este es un correo de prueba para verificar que las notificaciones por correo funcionan correctamente.',
+            ];
+
+            Mail::send('front.mail_notifications._test_mail', $data, function($message) {
+                $message->to('web@taansystems.com', 'Taan Systems')->subject('¡Felicidades! Prueba Exitosa');
+                $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => "Correo de prueba enviado correctamente a web@taansystems.com.",
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al enviar el correo: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

@@ -1240,6 +1240,10 @@ class CitizenProfileController extends Controller
     {
         $certificate = IdentificationCertificate::findOrFail($id);
 
+        if ($certificate->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         $mode = 1;
 
         return view('front.user_profiles.citizen.identification_certificates.show')->with('certificate', $certificate)->with('mode', $mode);

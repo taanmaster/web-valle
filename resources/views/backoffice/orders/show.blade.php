@@ -107,7 +107,17 @@
                                 <tbody>
                                     @foreach($order->items as $item)
                                     <tr>
-                                        <td>{{ $item->service_name }}</td>
+                                        <td>
+                                            {{ $item->service_name }}
+                                            @if($item->related_folio)
+                                                <br>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-link me-1"></i>
+                                                    Trámite: <strong>{{ $item->related_folio }}</strong>
+                                                    &mdash; {{ class_basename($item->related_model_type) }}
+                                                </small>
+                                            @endif
+                                        </td>
                                         <td class="text-center">{{ $item->quantity }}</td>
                                         <td class="text-end">${{ number_format($item->unit_price, 2) }}</td>
                                         <td class="text-end">${{ number_format($item->subtotal, 2) }}</td>
@@ -212,6 +222,30 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Trámite relacionado --}}
+                @php $relatedItem = $order->items->firstWhere('related_folio', '!=', null); @endphp
+                @if($relatedItem)
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h6 class="mb-0"><i class="fas fa-link me-2"></i> Trámite relacionado</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <small class="text-muted d-block">Módulo</small>
+                            <strong>{{ class_basename($relatedItem->related_model_type) }}</strong>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted d-block">Folio del trámite</small>
+                            <strong>{{ $relatedItem->related_folio }}</strong>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Usuario del trámite (ID)</small>
+                            <strong>{{ $relatedItem->related_user_id }}</strong>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
                 {{-- Cronología --}}
                 <div class="card border-0 shadow-sm mb-4">

@@ -44,7 +44,14 @@
                         <ion-icon name="document-text-outline" class="me-3 fs-4 text-secondary"></ion-icon>
                         <div class="flex-grow-1">
                             <div class="fw-semibold">{{ $item->service_name }}</div>
-                            <div class="text-muted small">Folio: {{ $order->folio }}</div>
+                            <div class="text-muted small">Folio orden: {{ $order->folio }}</div>
+                            @if($item->related_folio)
+                                <div class="text-muted small">
+                                    <ion-icon name="link-outline"></ion-icon>
+                                    Trámite: <strong>{{ $item->related_folio }}</strong>
+                                    <span class="ms-1 text-secondary">({{ class_basename($item->related_model_type) }})</span>
+                                </div>
+                            @endif
                         </div>
                         <div class="fw-bold">${{ number_format($item->subtotal, 2) }}</div>
                     </div>

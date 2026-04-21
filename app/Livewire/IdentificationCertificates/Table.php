@@ -23,6 +23,12 @@ class Table extends Component
         'statusFilter' => ['except' => ''],
     ];
 
+    public function mount(int $mode = 0, $userId = null): void
+    {
+        $this->mode   = $mode;
+        $this->userId = $userId;
+    }
+
     public function updatingSearch()
     {
         $this->resetPage();
@@ -80,6 +86,7 @@ class Table extends Component
 
         return view('identification_certificates.utilities.table', [
             'certificates' => $certificates,
+            'mode'         => $this->mode,
         ]);
     }
 }

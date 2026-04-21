@@ -89,6 +89,10 @@ class PaymentGatewayController extends Controller
                                 'unit_price'          => $item->billableService->unit_price,
                                 'quantity'            => $item->quantity,
                                 'subtotal'            => $item->billableService->unit_price * $item->quantity,
+                                'related_model_type'  => $item->related_model_type,
+                                'related_model_id'    => $item->related_model_id,
+                                'related_folio'       => $item->related_folio,
+                                'related_user_id'     => $item->related_user_id,
                             ]);
                         }
 
@@ -162,6 +166,10 @@ class PaymentGatewayController extends Controller
                                 'unit_price'          => $item->billableService->unit_price,
                                 'quantity'            => $item->quantity,
                                 'subtotal'            => $item->billableService->unit_price * $item->quantity,
+                                'related_model_type'  => $item->related_model_type,
+                                'related_model_id'    => $item->related_model_id,
+                                'related_folio'       => $item->related_folio,
+                                'related_user_id'     => $item->related_user_id,
                             ]);
                         }
 
@@ -228,6 +236,10 @@ class PaymentGatewayController extends Controller
                                 'unit_price'          => $item->billableService->unit_price,
                                 'quantity'            => $item->quantity,
                                 'subtotal'            => $item->billableService->unit_price * $item->quantity,
+                                'related_model_type'  => $item->related_model_type,
+                                'related_model_id'    => $item->related_model_id,
+                                'related_folio'       => $item->related_folio,
+                                'related_user_id'     => $item->related_user_id,
                             ]);
                         }
 

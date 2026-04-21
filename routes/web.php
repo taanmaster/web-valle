@@ -179,6 +179,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /* Citas para Trámites */
     Route::get('/citas-para-tramites', 'FrontController@appointments')->name('appointments.search');
 
+    /* Prueba de correo (solo local/staging) */
+    Route::get('/test-mail', 'FrontController@sendTestMail')->name('test.mail');
+
     // Módulo Gaceta Municipal
     Route::get('/gaceta-municipal/{type}', [
         'uses' => 'FrontController@gazetteList',
@@ -1912,6 +1915,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/carrito/agregar', 'CartController@store')->name('citizen.cart.store');
         Route::patch('/carrito/items/{cartItem}', 'CartController@update')->name('citizen.cart.update');
         Route::delete('/carrito/items/{cartItem}', 'CartController@destroy')->name('citizen.cart.destroy');
+        Route::post('/constancias_de_identificacion/{id}/pagar-en-linea', 'CartController@addCertificateToCart')->name('citizen.identification_certificate.pay_online');
 
         // Checkout
         Route::get('/checkout', 'CheckoutController@index')->name('citizen.checkout.index');

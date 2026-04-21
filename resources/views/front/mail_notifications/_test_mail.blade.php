@@ -1,0 +1,1 @@
+Este es un correo de prueba, para verificar que las notificaciones por correo funcionan correctamente. Si recibiste este mensaje, ¡todo está listo!

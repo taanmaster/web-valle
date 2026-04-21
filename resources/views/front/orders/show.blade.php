@@ -58,6 +58,13 @@
                             <div class="flex-grow-1">
                                 <div class="fw-semibold">{{ $item->service_name }}</div>
                                 <div class="text-muted small">${{ number_format($item->unit_price, 2) }} × {{ $item->quantity }}</div>
+                                @if($item->related_folio)
+                                    <div class="text-muted small mt-1">
+                                        <ion-icon name="link-outline"></ion-icon>
+                                        Trámite: <strong>{{ $item->related_folio }}</strong>
+                                        <span class="ms-1">({{ class_basename($item->related_model_type) }})</span>
+                                    </div>
+                                @endif
                             </div>
                             <div class="fw-semibold">${{ number_format($item->subtotal, 2) }}</div>
                         </div>
