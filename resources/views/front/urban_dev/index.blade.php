@@ -269,7 +269,7 @@
             </div>
 
             <div class="col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-                <a href="{{ route('urban_dev.directory') }}"
+                <a href="{{ route('urban_dev.contacts', 'inspectors') }}"
                     class="d-flex align-items-center justify-content-center rounded-4 p-4 text-decoration-none"
                     style="background-color: #6ECBBA; min-height: 80px;">
                     <h5 class="fw-bold text-white mb-0">Inspectores</h5>
@@ -277,7 +277,7 @@
             </div>
 
             <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
-                <a href="{{ route('urban_dev.directory') }}"
+                <a href="{{ route('urban_dev.contacts', 'experts') }}"
                     class="d-flex align-items-center justify-content-center rounded-4 p-4 text-decoration-none"
                     style="background-color: #6CAEE8; min-height: 80px;">
                     <h5 class="fw-bold text-white mb-0">Peritos</h5>
@@ -285,7 +285,7 @@
             </div>
 
             <div class="col-md-4 wow fadeInUp" data-wow-delay="0.3s">
-                <a href="{{ route('urban_dev.directory') }}"
+                <a href="{{ route('urban_dev.contacts', 'auditors') }}"
                     class="d-flex align-items-center justify-content-center rounded-4 p-4 text-decoration-none"
                     style="background-color: #F5C842; min-height: 80px;">
                     <h5 class="fw-bold text-white mb-0">Fiscalización</h5>
