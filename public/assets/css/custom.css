@@ -38,3 +38,34 @@
     text-transform: uppercase;
     margin-top: 20px;
 }
+
+.leftbar-tab-menu .main-icon-menu,
+.leftbar-tab-menu .main-icon-menu .main-icon-menu-body .nav{
+    width: 90px !important;
+}
+
+.leftbar-tab-menu .main-menu-inner {
+    left: 90px !important;
+}
+
+.leftbar-tab-menu .main-icon-menu .main-icon-menu-body .nav.nav-tabs .nav-link{
+    width: 70px !important;
+    height: auto !important;
+    padding: 6px 0px;
+}
+
+.leftbar-tab-menu .main-icon-menu .main-icon-menu-body .nav.nav-tabs .nav-link.active::before, .leftbar-tab-menu .main-icon-menu .main-icon-menu-body .nav.nav-tabs .nav-link:active::before{
+    left: 70px !important;
+}
+
+.page-wrapper .page-content-tab{
+    width: calc(100% - 300px) ;
+}
+
+.enlarge-menu .page-content-tab{
+    width: calc(100% - 100px) ;
+}
+
+.navbar-custom{
+    margin-left: 300px ;
+}

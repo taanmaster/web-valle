@@ -1,6 +1,26 @@
 {{-- La libreria de iconos es TABLER ICONS https://tablericons.com/ --}}
 {{-- Usar nomeclatura ti ti-[NOMBRE DEL ARCHIVO DE TABLER ICONS] --}}
 
+<style>
+    .nav-item .nav-link {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .menu-label {
+        font-size: 0.65rem;
+        text-align: center;
+        margin-top: 2px;
+        white-space: normal;
+        word-break: break-word;
+        max-width: 90px;
+        color: inherit;
+        line-height: 1.2;
+        color: white !important;
+    }
+</style>
+
 <div class="leftbar-tab-menu">
     <div class="main-icon-menu">
         <a href="{{ route('dashboard') }}" class="logo logo-metrica d-block text-center">
@@ -12,19 +32,19 @@
             <div class="position-reletive h-100" data-simplebar style="overflow-x: hidden;">
                 <ul class="nav nav-tabs" role="tablist" id="tab-menu">
                     @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Vistas Generales"
-                            data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleDashboard" id="dashboard-tab" class="nav-link">
                                 <i class="ti ti-smart-home menu-icon"></i>
+                                <span class="menu-label">Vistas Generales</span>
                             </a>
                         </li>
                     @endif
 
                     @if (auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Citas para Trámites" data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleCitas" id="citas-tab" class="nav-link">
                                 <i class="ti ti-calendar-event menu-icon"></i>
+                                <span class="menu-label">Citas para Trámites</span>
                             </a>
                         </li>
                     @endif
@@ -32,29 +52,29 @@
                     @if (auth()->user()->hasRole('des_Institucional') ||
                             auth()->user()->hasRole('private_secretary') ||
                             auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Desarrollo Institucional" data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleInstitutionalDevelopment" id="institutional-development-tab"
                                 class="nav-link">
                                 <i class="ti ti-notebook menu-icon"></i>
+                                <span class="menu-label">Desarrollo Institucional</span>
                             </a>
                         </li>
                     @endif
 
                     @if (auth()->user()->hasRole('all') || auth()->user()->email == 'denunciascontraloria@valledesantiago.gob.mx')
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Denuncias Ciudadanas" data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleDenunciaNet" id="denuncianet-tab" class="nav-link">
                                 <i class="ti ti-forms menu-icon"></i>
+                                <span class="menu-label">Denuncias Ciudadanas</span>
                             </a>
                         </li>
                     @endif
 
                     @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Comunicación Social" data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleComunicacion" id="comunicacion-tab" class="nav-link">
                                 <i class="ti ti-messages menu-icon"></i>
+                                <span class="menu-label">Comunicación Social</span>
                             </a>
                         </li>
                     @endif
@@ -62,106 +82,106 @@
                     @if (auth()->user()->hasRole('des_Institucional') ||
                             auth()->user()->hasRole('transparency') ||
                             auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Transparencia"
-                            data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleTransparency" id="apps-tab" class="nav-link">
                                 <i class="ti ti-apps menu-icon"></i>
+                                <span class="menu-label">Transparencia</span>
                             </a>
                         </li>
                     @endif
 
                     @hasanyrole(['financial_support', 'financial_support_helper', 'all', 'tesoreria_caja', 'cto_admin',
                         'cto_helper'])
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tesorería"
-                            data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleTreasury" id="uikit-tab" class="nav-link">
                                 <i class="ti ti-archive menu-icon"></i>
+                                <span class="menu-label">Tesorería</span>
                             </a>
                         </li>
                     @endhasanyrole
 
                     @if (auth()->user()->hasRole('private_secretary') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Secretaría Particular" data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#vallePrivateSecretary" id="uikit-tab" class="nav-link">
                                 <i class="ti ti-bookmark menu-icon"></i>
+                                <span class="menu-label">Secretaría Particular</span>
                             </a>
                         </li>
                     @endif
 
                     @if (auth()->user()->hasRole('sare') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="SARE"
-                            data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleSARE" id="sare-tab" class="nav-link">
                                 <i class="ti ti-box-multiple menu-icon"></i>
+                                <span class="menu-label">SARE</span>
                             </a>
                         </li>
                     @endif
 
                     @if (auth()->user()->hasRole('urban_dev') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Desarrollo Urbano" data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleUrbanDev" id="urban-dev-tab" class="nav-link">
                                 <i class="ti ti-map-pin menu-icon"></i>
+                                <span class="menu-label">Desarrollo Urbano</span>
                             </a>
                         </li>
                     @endif
 
                     @if (auth()->user()->hasRole('acquisitions') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Adquisiciones"
-                            data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleAcquisitions" id="acquisitions-tab" class="nav-link">
                                 <i class="ti ti-shopping-cart menu-icon"></i>
+                                <span class="menu-label">Adquisiciones</span>
                             </a>
                         </li>
                     @endif
 
                     @if (auth()->user()->hasRole('dif') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="DIF"
-                            data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleDIF" id="dif-tab" class="nav-link">
                                 <i class="ti ti-heart menu-icon"></i>
+                                <span class="menu-label">DIF</span>
                             </a>
                         </li>
                     @endif
 
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Turismo"
-                        data-bs-trigger="hover">
+                    <li class="nav-item">
                         <a href="#valleTourism" id="tourism-tab" class="nav-link">
                             <i class="ti ti-map menu-icon"></i>
+                            <span class="menu-label">Turismo</span>
                         </a>
                     </li>
 
                     @hasanyrole(['human_resources', 'all'])
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Recursos Humanos"
-                        data-bs-trigger="hover">
+                    <li class="nav-item">
                         <a href="#valleHR" id="hr-tab" class="nav-link">
                             <i class="ti ti-briefcase menu-icon"></i>
+                            <span class="menu-label">Recursos Humanos</span>
                         </a>
                     </li>
                     @endhasanyrole
 
                     @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="IMPLAN"
-                            data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleImplan" id="implan-tab" class="nav-link">
                                 <i class="ti ti-bulb menu-icon"></i>
+                                <span class="menu-label">IMPLAN</span>
                             </a>
                         </li>
                     @endif
 
-                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Secretaría de Ayuntamiento" data-bs-trigger="hover">
+                    <li class="nav-item">
                         <a href="#valleSecretary" id="authentication-tab" class="nav-link">
                             <i class="ti ti-briefcase menu-icon"></i>
+                            <span class="menu-label">Secretaría de Ayuntamiento</span>
                         </a>
                     </li>
 
                     @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Configuraciones" data-bs-trigger="hover">
+                        <li class="nav-item">
                             <a href="#valleConfiguration" id="authentication-tab" class="nav-link">
                                 <i class="ti ti-shield-lock menu-icon"></i>
+                                <span class="menu-label">Configuraciones</span>
                             </a>
                         </li>
                     @endif

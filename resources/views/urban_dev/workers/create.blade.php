@@ -1,13 +1,7 @@
 @extends('layouts.master')
 @section('title')Intranet @endsection
 
-@section('content')
-<!-- this is breadcrumbs -->
-@component('components.breadcrumb')
-@slot('li_1') Intranet @endslot
-@slot('li_2') Desarrollo Urbano @endslot
-@slot('title') Agregar Trabajador @endslot
-@endcomponent
+@push('stylesheets')
 
 <style>
     .profile-upload-section {
@@ -88,6 +82,16 @@
         color: #0d6efd;
     }
 </style>
+@endpush
+
+@section('content')
+<!-- this is breadcrumbs -->
+@component('components.breadcrumb')
+@slot('li_1') Intranet @endslot
+@slot('li_2') Desarrollo Urbano @endslot
+@slot('title') Agregar Trabajador @endslot
+@endcomponent
+
 
 <div class="row">
     <div class="col-lg-12">
@@ -119,9 +123,6 @@
                                 </p>
                             </div>
                         </div>
-
-                        <!-- Columna Derecha: Formulario -->
-                        <div class="col-lg-9 col-md-8">
 
                         <!-- Columna Derecha: Formulario -->
                         <div class="col-lg-9 col-md-8">
@@ -201,7 +202,7 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="dependency_category" class="form-label">Dependencia <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('dependency_category') is-invalid @enderror" id="dependency_category" name="dependency_category" required onchange="toggleSubcategory()">
+                                        <select class="form-control @error('dependency_category') is-invalid @enderror" id="dependency_category" name="dependency_category" required>
                                             <option value="">Seleccionar...</option>
                                             <option value="Desarrollo Urbano" {{ old('dependency_category') == 'Desarrollo Urbano' ? 'selected' : '' }}>Desarrollo Urbano</option>
                                             <option value="Fiscalización" {{ old('dependency_category') == 'Fiscalización' ? 'selected' : '' }}>Fiscalización</option>
@@ -275,16 +276,16 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="email" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="ejemplo@correo.com">
+                                        <label for="user_email" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="user_email" name="email" value="{{ old('email') }}" placeholder="ejemplo@correo.com">
                                         @error('email')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Mínimo 4 caracteres">
+                                        <label for="user_password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="user_password" name="password" placeholder="Mínimo 4 caracteres">
                                         @error('password')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -312,66 +313,72 @@
     </div>
 </div>
 
+
+@endsection
+
+@push('scripts')
 <script>
     function previewImage(event) {
-        const preview = document.getElementById('preview');
-        const file = event.target.files[0];
-        
+        var preview = document.getElementById('preview');
+        var file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-            }
+            var reader = new FileReader();
+            reader.onload = function(e) { preview.src = e.target.result; };
             reader.readAsDataURL(file);
         }
     }
 
-    function toggleSubcategory() {
-        const category = document.getElementById('dependency_category').value;
-        const subcategoryContainer = document.getElementById('subcategory_container');
-        const subcategory = document.getElementById('dependency_subcategory');
-        
-        if (category === 'Desarrollo Urbano') {
-            subcategoryContainer.style.display = 'block';
-            checkInspectorSelected();
-        } else {
-            subcategoryContainer.style.display = 'none';
-            hideUserCredentials();
-            subcategory.value = '';
-        }
+    // Guard para evitar doble inicialización (el stack se renderiza dos veces en el layout)
+    if (typeof window._workersFormInit === 'undefined') {
+        window._workersFormInit = true;
+
+        $(document).ready(function () {
+
+            function toggleSubcategory(value) {
+                var $container = $('#subcategory_container');
+                var $subcategory = $('#dependency_subcategory');
+                if (value === 'Desarrollo Urbano') {
+                    $container.show();
+                    checkInspectorSelected();
+                } else {
+                    $container.hide();
+                    hideUserCredentials();
+                    $subcategory.val('');
+                }
+            }
+
+            function checkInspectorSelected() {
+                if ($('#dependency_subcategory').val() === 'Inspector') {
+                    showUserCredentials();
+                } else {
+                    hideUserCredentials();
+                }
+            }
+
+            function showUserCredentials() {
+                $('#user_credentials_section').show();
+                $('#user_email').prop('required', true);
+                $('#user_password').prop('required', true);
+            }
+
+            function hideUserCredentials() {
+                $('#user_credentials_section').hide();
+                $('#user_email').prop('required', false).val('');
+                $('#user_password').prop('required', false).val('');
+            }
+
+            // Delegación de eventos desde document para máxima compatibilidad
+            $(document).on('change', '#dependency_category', function () {
+                toggleSubcategory($(this).val());
+            });
+
+            $(document).on('change', '#dependency_subcategory', function () {
+                checkInspectorSelected();
+            });
+
+            // Inicializar estado con old() values
+            toggleSubcategory($('#dependency_category').val());
+        });
     }
-
-    function checkInspectorSelected() {
-        const subcategory = document.getElementById('dependency_subcategory').value;
-        
-        if (subcategory === 'Inspector') {
-            showUserCredentials();
-        } else {
-            hideUserCredentials();
-        }
-    }
-
-    function showUserCredentials() {
-        document.getElementById('user_credentials_section').style.display = 'block';
-        document.getElementById('email').required = true;
-        document.getElementById('password').required = true;
-    }
-
-    function hideUserCredentials() {
-        document.getElementById('user_credentials_section').style.display = 'none';
-        document.getElementById('email').required = false;
-        document.getElementById('password').required = false;
-        document.getElementById('email').value = '';
-        document.getElementById('password').value = '';
-    }
-
-    // Event listener para subcategoría
-    document.getElementById('dependency_subcategory').addEventListener('change', checkInspectorSelected);
-
-    // Ejecutar al cargar la página para mantener estado con old()
-    document.addEventListener('DOMContentLoaded', function() {
-        toggleSubcategory();
-    });
 </script>
-
-@endsection
+@endpush
