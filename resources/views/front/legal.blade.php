@@ -7,10 +7,10 @@
             <div class="card card-normal wow fadeInUp">
                 <div>
                     <h1 class="mb-0">{!! $text->title ?? 'Texto Legal Informativo' !!}</h1>
-                    <p><small>Última actualización: {{ $text->updated_at }}</small></p>
+                    <p><small>Última actualización: {{ $text->updated_at ?? '' }}</small></p>
                 </div>
                 
-                {!! $text->description !!}
+                {!! $text->description ?? '' !!}
             </div>
         </div>
     </div>

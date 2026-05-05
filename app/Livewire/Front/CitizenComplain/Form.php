@@ -37,7 +37,7 @@ class Form extends Component
 
     //Paso 2
     public $ine = '';
-    public $anonymus = '';
+    public $anonymus = false;
     public $name = '';
     public $address = '';
     public $suburb = '';
@@ -46,8 +46,8 @@ class Form extends Component
     public $phone = '';
     public $captchaHtml;
 
-    public $notification_email = '';
-    public $notification_home = '';
+    public $notification_email = false;
+    public $notification_home = false;
 
     //Paso 3
     public $complain = '';
@@ -263,7 +263,7 @@ class Form extends Component
 
         // Paso 2
         $this->ine = '';
-        $this->anonymus = '';
+        $this->anonymus = false;
         $this->name = '';
         $this->address = '';
         $this->suburb = '';
@@ -272,8 +272,8 @@ class Form extends Component
         $this->phone = '';
 
         // Notificaciones
-        $this->notification_email = '';
-        $this->notification_home = '';
+        $this->notification_email = false;
+        $this->notification_home = false;
 
         // Mensaje
         $this->complain = '';

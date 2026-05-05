@@ -385,7 +385,7 @@ class FrontController extends Controller
     // Módulo Textos Legales
     public function legalText($slug)
     {
-        $text = LegalText::where('slug', $slug)->orderBy('priority', 'asc')->orderBy('created_at', 'desc')->first();
+        $text = LegalText::where('slug', $slug)->orderBy('priority', 'asc')->orderBy('created_at', 'desc')->firstOrFail();
 
         return view('front.legal')->with('text', $text);
     }
@@ -622,7 +622,6 @@ class FrontController extends Controller
     {
         return view('front.contraloria.privacy_notice');
     }
-
 
     // Pantallas DenunciaNet
     public function denunciaNet()
