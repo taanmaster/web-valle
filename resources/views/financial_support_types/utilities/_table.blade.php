@@ -1,15 +1,15 @@
 <div class="table-responsive">
     <table class="table table-hover align-middle">
-        <thead class="">
+        <thead class="table-light">
             <tr>
-                <th style="width: 5%">ID</th>
-                <th style="width: 15%">Nombre</th>
-                <th style="width: 25%">Descripción</th>
-                <th style="width: 10%">Monto</th>
-                <th style="width: 20%">Documentos</th>
-                <th style="width: 10%">Creado</th>
-                <th style="width: 10%">Actualizado</th>
-                <th style="width: 5%" class="text-center">Acciones</th>
+                <th class="fw-semibold" style="width: 5%">ID</th>
+                <th class="fw-semibold" style="width: 15%">Nombre</th>
+                <th class="fw-semibold" style="width: 25%">Descripción</th>
+                <th class="fw-semibold" style="width: 10%">Monto</th>
+                <th class="fw-semibold" style="width: 20%">Documentos</th>
+                <th class="fw-semibold" style="width: 10%">Creado</th>
+                <th class="fw-semibold" style="width: 10%">Actualizado</th>
+                <th class="fw-semibold text-center" style="width: 5%">Acciones</th>
             </tr>
         </thead>
 
@@ -30,7 +30,7 @@
                     </small>
                 </td>
                 <td>
-                    <span class="badge bg-info text-dark">
+                    <span class="badge bg-info">
                         @if($financial_support_type->monthly_cap)
                             ${{ number_format($financial_support_type->monthly_cap, 2) }}
                         @else
@@ -39,51 +39,53 @@
                     </span>
                 </td>
                 <td>
-                    <div style="max-height: 60px; overflow-y: auto;">
-                        @php
-                            $documents = [
-                                'doc_birth_certificate' => 'Acta nacimiento',
-                                'doc_ine' => 'INE',
-                                'doc_address_proof' => 'Domicilio',
-                                'doc_rfc' => 'RFC',
-                                'doc_death_certificate' => 'Acta defunción',
-                                'doc_funeral_payment' => 'Paga funeraria',
-                                'doc_cemetery_docs' => 'Panteón',
-                                'doc_study_certificate' => 'Estudios',
-                                'doc_medical_prescriptions' => 'Recetas',
-                                'doc_medical_certificate' => 'Médica',
-                                'doc_hospital_visit_card' => 'Hospital'
-                            ];
-                        @endphp
+                    @php
+                        $documents = [
+                            'doc_birth_certificate' => 'Acta nacimiento',
+                            'doc_ine' => 'INE',
+                            'doc_address_proof' => 'Domicilio',
+                            'doc_rfc' => 'RFC',
+                            'doc_death_certificate' => 'Acta defunción',
+                            'doc_funeral_payment' => 'Paga funeraria',
+                            'doc_cemetery_docs' => 'Panteón',
+                            'doc_study_certificate' => 'Estudios',
+                            'doc_medical_prescriptions' => 'Recetas',
+                            'doc_medical_certificate' => 'Médica',
+                            'doc_hospital_visit_card' => 'Hospital'
+                        ];
+                    @endphp
+                    <div class="d-flex flex-wrap gap-1">
                         @foreach($documents as $field => $label)
                             @if($financial_support_type->$field)
-                                <span class="badge bg-success me-1 mb-1">{{ $label }}</span>
+                                <span class="badge bg-success">{{ $label }}</span>
                             @endif
                         @endforeach
                     </div>
                 </td>
                 <td>
-                    <small class="text-muted">
-                        {{ $financial_support_type->created_at->format('d/m/Y') }}
-                    </small>
+                    <small class="text-muted">{{ $financial_support_type->created_at->format('d/m/Y') }}</small>
                 </td>
                 <td>
-                    <small class="text-muted">
-                        {{ $financial_support_type->updated_at->format('d/m/Y') }}
-                    </small>
+                    <small class="text-muted">{{ $financial_support_type->updated_at->format('d/m/Y') }}</small>
                 </td>
                 <td class="text-center">
-                    <form method="POST" action="{{ route('financial_support_types.destroy', $financial_support_type->id) }}" style="display: inline-block;">
-                        <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
-                            Eliminar
-                        </button>
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                    </form>
-                </td> 
+                    <div class="btn-group btn-group-sm">
+                        <a href="{{ route('financial_support_types.show', $financial_support_type->id) }}"
+                            class="btn btn-outline-primary" title="Ver detalle" aria-label="Ver detalle">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <form method="POST" action="{{ route('financial_support_types.destroy', $financial_support_type->id) }}" style="display: inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger" title="Eliminar" aria-label="Eliminar"
+                                onclick="return confirm('¿Estás seguro de eliminar este tipo de apoyo?')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
             </tr>
-            @endforeach                           
+            @endforeach
         </tbody>
-    </table>                    
+    </table>
 </div>
- 
