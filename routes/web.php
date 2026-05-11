@@ -1109,6 +1109,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('properties/{id}/account-statement/print', [CTOPropertyController::class, 'printAccountStatement'])->name('properties.account-statement.print');
 
             /* Apoyos Económicos */
+            Route::post('/importacion-apoyos', [
+                'uses' => 'FinancialSupportController@import',
+                'as' => 'financial_supports.import',
+            ]);
+
             Route::resource('financial_supports', FinancialSupportController::class);
 
             Route::get('/financial_supports/funciones/busqueda', [
