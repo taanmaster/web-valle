@@ -19,6 +19,11 @@
         line-height: 1.2;
         color: white !important;
     }
+
+    .leftbar-tab-menu .main-menu-inner .menu-body .nav-item .nav-link{
+        align-items: start;
+        height: auto !important;
+    }
 </style>
 
 <div class="leftbar-tab-menu">

@@ -1,30 +1,33 @@
 # Sistema de Diseño Bootstrap 5 — Web Valle de Santiago
 
-Guía de referencia para que todo el equipo estructure vistas Blade usando **exclusivamente Bootstrap 5**.
+Guía de referencia para estructurar vistas Blade y componentes Livewire usando **exclusivamente Bootstrap 5**.
+Las **vistas de listado** son el patrón central de esta guía y deben tomarse como referencia principal.
+
 ---
 
-## 📋 Índice
+## Índice
 
-1. [Principios Generales](#principios-generales)
-2. [Layouts y Extends](#layouts-y-extends)
-3. [Contenedores](#contenedores)
-4. [Tarjetas (Cards)](#tarjetas-cards)
-5. [Header de Módulo (Listados)](#header-de-módulo-listados)
-6. [Formularios (Create / Edit)](#formularios-create--edit)
-7. [Tablas](#tablas)
-8. [Alertas y Mensajes Flash](#alertas-y-mensajes-flash)
-9. [Estados Vacíos (Empty States)](#estados-vacíos-empty-states)
-10. [Botones](#botones)
-11. [Badges](#badges)
-12. [Paginación](#paginación)
-13. [Filtros y Búsquedas](#filtros-y-búsquedas)
-14. [Grid y Responsive](#grid-y-responsive)
-15. [Iconografía (FontAwesome + Bootstrap)](#iconografía)
-16. [Validación de Formularios](#validación-de-formularios)
-17. [Paneles Laterales (Sidebars en Edit)](#paneles-laterales)
-18. [Vistas Front (Públicas)](#vistas-front-públicas)
-19. [Reglas de Estilo Prohibidas](#reglas-de-estilo-prohibidas)
-20. [Checklist para PR / Code Review](#checklist-para-pr--code-review)
+1. [Principios Generales](#1-principios-generales)
+2. [Layout y Extends](#2-layout-y-extends)
+3. [Breadcrumb](#3-breadcrumb)
+4. [Vista de Listado — Patrón Canónico](#4-vista-de-listado--patrón-canónico-)
+5. [Header de Módulo](#5-header-de-módulo)
+6. [Tarjetas KPI / Resumen](#6-tarjetas-kpi--resumen)
+7. [Panel de Filtros](#7-panel-de-filtros)
+8. [Tabla de Datos](#8-tabla-de-datos)
+9. [Estado Vacío](#9-estado-vacío)
+10. [Paginación](#10-paginación)
+11. [Vista de Formulario — Patrón Canónico](#11-vista-de-formulario--patrón-canónico)
+12. [Alertas y Flash Messages](#12-alertas-y-flash-messages)
+13. [Tarjetas (Cards)](#13-tarjetas-cards)
+14. [Botones](#14-botones)
+15. [Badges](#15-badges)
+16. [Iconografía](#16-iconografía)
+17. [Patrones Livewire](#17-patrones-livewire)
+18. [Grid y Responsive](#18-grid-y-responsive)
+19. [Validación de Formularios](#19-validación-de-formularios)
+20. [Reglas de Estilo Prohibidas](#20-reglas-de-estilo-prohibidas)
+21. [Checklist de Code Review](#21-checklist-de-code-review)
 
 ---
 
@@ -32,33 +35,37 @@ Guía de referencia para que todo el equipo estructure vistas Blade usando **exc
 
 | Regla | Detalle |
 |-------|---------|
-| **Framework único** | Usar exclusivamente clases de Bootstrap 5. No Tailwind, no CSS inline salvo excepciones justificadas. |
-| **Sin CSS custom para layout** | El grid, espaciado, tipografía y colores se resuelven con utilidades de Bootstrap. |
-| **Responsive first** | Todo debe verse correctamente en `col-lg`, `col-md` y `col-sm` como mínimo. |
-| **Consistencia** | Mismos patrones en todas las vistas: misma card, mismos botones, mismos alerts. |
-| **Accesibilidad** | Usar `aria-label`, `role="alert"`, `title` en botones de iconos, y contrastes AAA (ver `THEME_SYSTEM.md`). |
+| **Bootstrap 5 primero** | Todo layout, espaciado, tipografía y color se resuelve con utilidades de Bootstrap. No Tailwind, no CSS custom para layout. |
+| **Sin estilos inline** | No usar `style=""` para espaciado, colores ni display. Usar clases utilitarias de Bootstrap. |
+| **Responsive siempre** | Toda vista debe funcionar en `col-lg`, `col-md` y `col-sm`. |
+| **Consistencia** | Mismo header de módulo, mismas cards, mismos botones y mismas tablas en todas las vistas. |
+| **Accesibilidad** | `aria-label` en botones de solo icono, `role="alert"` en alertas, `title` en botones de acción. |
+| **Livewire primero** | La interactividad se maneja con Livewire. No jQuery para filtros, búsquedas ni validaciones. |
 
 ---
 
-## 2. Layouts y Extends
+## 2. Layout y Extends
 
-### Backoffice (admin/intranet)
+### Backoffice (admin / intranet)
 
 ```blade
 @extends('layouts.master')
-@section('title')Intranet @endsection
+@section('title') Intranet @endsection
+
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1') Intranet @endslot
-        @slot('li_2') Backoffice @endslot
-        @slot('title') Nombre del Módulo @endslot
+        @slot('li_2') Sección @endslot
+        @slot('title') Nombre de la Vista @endslot
     @endcomponent
 
     <div class="container-fluid py-4">
-        {{-- Contenido aquí --}}
+        <livewire:modulo.componente />
     </div>
 @endsection
 ```
+
+> El layout `master` ya incluye sidebar, topbar, footer, Livewire scripts y Bootstrap. No agregar scripts redundantes.
 
 ### Front (público)
 
@@ -66,93 +73,244 @@ Guía de referencia para que todo el equipo estructure vistas Blade usando **exc
 @extends('front.layouts.app')
 @section('content')
     <div class="container py-5">
-        {{-- Contenido aquí --}}
+        {{-- Contenido --}}
     </div>
 @endsection
 ```
 
-> **Nota:** Backoffice usa `container-fluid` (ancho completo). Front usa `container` (ancho acotado).
+| Contexto | Contenedor |
+|----------|-----------|
+| Backoffice | `container-fluid py-4` |
+| Front público | `container py-5` |
 
 ---
 
-## 3. Contenedores
+## 3. Breadcrumb
 
-| Contexto | Clase | Ejemplo |
-|----------|-------|---------|
-| Backoffice | `container-fluid py-4` | Listados, formularios, paneles admin |
-| Front público | `container py-5` | Página de citas, blog, trámites |
-| Formulario centrado | `col-lg-8 mx-auto` | Create de backoffice |
+Siempre inmediatamente después de `@section('content')`, antes del `container-fluid`:
+
+```blade
+@component('components.breadcrumb')
+    @slot('li_1') Intranet @endslot
+    @slot('li_2') Sección @endslot
+    @slot('title') Título de la Vista @endslot
+@endcomponent
+```
+
+- `li_2` → nombre del módulo (ej: "Citas", "Adquisiciones")
+- `title` → nombre de la vista específica (ej: "Listado de Trámites")
 
 ---
 
-## 4. Tarjetas (Cards)
+## 4. Vista de Listado — Patrón Canónico ⭐
 
-La tarjeta es la **unidad base** para agrupar contenido. Siempre se usa con estas clases:
+Esta es la estructura estándar y **preferida** para todas las vistas de listado de la plataforma.
+Se compone de cuatro bloques en este orden: **Header → Alertas → Filtros → Tabla**.
 
-```html
-<div class="card border-0 shadow-sm">
-    <div class="card-body p-4">
-        {{-- Contenido --}}
+### Archivo blade de la ruta (`resources/views/modulo/index.blade.php`)
+
+```blade
+@extends('layouts.master')
+@section('title') Intranet @endsection
+
+@section('content')
+    @component('components.breadcrumb')
+        @slot('li_1') Intranet @endslot
+        @slot('li_2') Módulo @endslot
+        @slot('title') Listado @endslot
+    @endcomponent
+
+    <div class="container-fluid py-4">
+        <livewire:modulo.table />
+    </div>
+@endsection
+```
+
+### Componente Livewire (`resources/views/livewire/modulo/table.blade.php`)
+
+```blade
+<div>
+    {{-- 1. HEADER DE MÓDULO --}}
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                            <i class="fas fa-[icono] fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-1 fw-bold">
+                                <i class="fas fa-[icono] text-primary me-2"></i> Nombre del Módulo
+                            </h3>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-clipboard-list me-1"></i>
+                                Descripción breve del módulo y su propósito.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <a href="{{ route('modulo.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i> Nuevo Registro
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- 2. ALERTAS FLASH --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle fa-lg me-3"></i>
+                <div>{{ session('success') }}</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    {{-- 3. PANEL DE FILTROS --}}
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-lg-4">
+                    <label class="form-label fw-semibold">
+                        <i class="fas fa-search me-1"></i> Buscar:
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text"
+                            wire:model.live.debounce.300ms="search"
+                            class="form-control border-start-0"
+                            placeholder="Buscar por nombre...">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="form-label fw-semibold">Estado:</label>
+                    <select wire:model.live="filterStatus" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="1">Activo</option>
+                        <option value="0">Inactivo</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    @if ($search || $filterStatus !== '')
+                        <button wire:click="clearFilters" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-times me-1"></i> Limpiar
+                        </button>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- 4. TABLA --}}
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            @if ($items->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="fw-semibold">Columna A</th>
+                                <th class="fw-semibold">Columna B</th>
+                                <th class="fw-semibold text-center">Estado</th>
+                                <th class="fw-semibold text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($items as $item)
+                                <tr>
+                                    <td>
+                                        <strong>{{ $item->nombre }}</strong>
+                                        @if ($item->descripcion)
+                                            <br><small class="text-muted">{{ Str::limit($item->descripcion, 60) }}</small>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary">{{ $item->categoria }}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($item->status)
+                                            <span class="badge bg-success">Activo</span>
+                                        @else
+                                            <span class="badge bg-danger">Inactivo</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ route('modulo.show', $item) }}"
+                                                class="btn btn-outline-primary" title="Ver detalle">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('modulo.edit', $item) }}"
+                                                class="btn btn-outline-secondary" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button wire:click="delete({{ $item->id }})"
+                                                wire:confirm="¿Estás seguro de eliminar este registro?"
+                                                class="btn btn-outline-danger" title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- PAGINACIÓN --}}
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $items->links('pagination::bootstrap-5') }}
+                </div>
+            @else
+                {{-- ESTADO VACÍO --}}
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-folder-open fa-4x text-muted"></i>
+                    </div>
+                    <h5 class="text-muted">No hay registros</h5>
+                    <p class="text-muted mb-4">No se encontraron resultados con los filtros aplicados.</p>
+                    <a href="{{ route('modulo.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i> Crear Primer Registro
+                    </a>
+                </div>
+            @endif
+        </div>
     </div>
 </div>
 ```
 
-### Variantes
-
-| Variante | Clases adicionales | Uso |
-|----------|-------------------|-----|
-| Card estándar | `border-0 shadow-sm` | Todo contenido de backoffice |
-| Card con header de color | `card-header bg-primary text-white` | Formularios create/edit |
-| Card elevada (front) | `shadow-lg border-0 rounded-4` | Secciones destacadas en front público |
-| Card informativa (front) | `border-0 bg-light` | Bloques de ayuda o información |
-| Card con margin | `mb-4` | Separar cards apiladas verticalmente |
-
-### Card con Header de Color
-
-```html
-<div class="card border-0 shadow-sm">
-    <div class="card-header bg-primary text-white">
-        <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Título</h5>
-    </div>
-    <div class="card-body p-4">
-        {{-- Contenido --}}
-    </div>
-</div>
-```
-
-> El color del header indica la acción: `bg-primary` para crear/editar, `bg-secondary` para paneles auxiliares.
-
 ---
 
-## 5. Header de Módulo (Listados)
+## 5. Header de Módulo
 
-Todas las vistas de listado (index) llevan un header consistente dentro de una card:
+Primera sección de cualquier componente Livewire de listado. Define la identidad visual del módulo.
 
 ```html
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4">
         <div class="row align-items-center">
-            {{-- Lado izquierdo: icono + título + descripción --}}
             <div class="col-lg-8">
                 <div class="d-flex align-items-center">
                     <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                        <i class="fas fa-building fa-2x text-primary"></i>
+                        <i class="fas fa-[icono] fa-2x text-primary"></i>
                     </div>
                     <div>
-                        <h3 class="mb-1 fw-bold">
-                            <i class="fas fa-sitemap text-primary me-2"></i> Nombre del Módulo
-                        </h3>
+                        <h3 class="mb-1 fw-bold">Nombre del Módulo</h3>
                         <p class="text-muted mb-0">
                             <i class="fas fa-clipboard-list me-1"></i>
-                            Descripción breve del módulo
+                            Descripción breve del módulo.
                         </p>
                     </div>
                 </div>
             </div>
-
-            {{-- Lado derecho: botón de acción principal --}}
             <div class="col-lg-4 text-end">
-                <a href="#" class="btn btn-primary">
+                <a href="{{ route('...') }}" class="btn btn-primary">
                     <i class="fas fa-plus me-2"></i> Nuevo Registro
                 </a>
             </div>
@@ -161,62 +319,345 @@ Todas las vistas de listado (index) llevan un header consistente dentro de una c
 </div>
 ```
 
-### Anatomía del Header
+| Elemento | Clases | Regla |
+|----------|--------|-------|
+| Contenedor icono | `bg-primary bg-opacity-10 rounded-circle p-3 me-3` | Fijo, no modificar |
+| Icono | `fas fa-[icono] fa-2x text-primary` | Representativo del módulo |
+| Título | `h3 mb-1 fw-bold` | Nombre corto del módulo |
+| Descripción | `p text-muted mb-0` | Una sola línea de contexto |
+| Botón CTA | `btn btn-primary` en `col-lg-4 text-end` | Solo si la vista permite crear |
 
-| Elemento | Clases | Propósito |
-|----------|--------|-----------|
-| Icono circular | `bg-primary bg-opacity-10 rounded-circle p-3 me-3` | Identificación visual del módulo |
-| Título | `h3 mb-1 fw-bold` | Nombre del módulo |
-| Descripción | `text-muted mb-0` | Contexto breve |
-| Botón CTA | `btn btn-primary` en `col-lg-4 text-end` | Acción principal (crear) |
+> Si la vista no tiene botón CTA (solo lectura), usar `col-lg-12` en el lado izquierdo y omitir el derecho.
 
 ---
 
-## 6. Formularios (Create / Edit)
+## 6. Tarjetas KPI / Resumen
 
-### Estructura de formulario Create
+Usadas en vistas de detalle con métricas. Van **después del header** y **antes de la tabla**.
 
 ```html
-<div class="container-fluid py-4">
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm text-center">
+            <div class="card-body py-3">
+                <h2 class="fw-bold text-primary mb-1">{{ $total }}</h2>
+                <small class="text-muted">Total</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm text-center">
+            <div class="card-body py-3">
+                <h2 class="fw-bold text-success mb-1">{{ $completados }}</h2>
+                <small class="text-muted">Completados</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm text-center">
+            <div class="card-body py-3">
+                <h2 class="fw-bold text-danger mb-1">{{ $rechazados }}</h2>
+                <small class="text-muted">Rechazados</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm text-center">
+            <div class="card-body py-3">
+                <h2 class="fw-bold text-info mb-1">{{ $pendientes }}</h2>
+                <small class="text-muted">Pendientes</small>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+| Color | Clase | Uso típico |
+|-------|-------|-----------|
+| Azul | `text-primary` | Total general |
+| Verde | `text-success` | Completados / Activos / Asistieron |
+| Rojo | `text-danger` | Rechazados / Cancelados / No asistieron |
+| Cian | `text-info` | Pendientes / En proceso |
+| Amarillo | `text-warning` | Advertencias / En revisión |
+
+---
+
+## 7. Panel de Filtros
+
+Siempre una `card border-0 shadow-sm` con `card-body p-4`. Los filtros usan `wire:model.live` para reactividad sin botón "buscar".
+
+```html
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4">
+        <div class="row g-3 align-items-end">
+
+            {{-- Campo de búsqueda de texto --}}
+            <div class="col-lg-4">
+                <label class="form-label fw-semibold">
+                    <i class="fas fa-search me-1"></i> Buscar:
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text"
+                        wire:model.live.debounce.300ms="search"
+                        class="form-control border-start-0"
+                        placeholder="Buscar por nombre...">
+                </div>
+            </div>
+
+            {{-- Filtro select --}}
+            <div class="col-lg-3">
+                <label class="form-label fw-semibold">Dependencia:</label>
+                <select wire:model.live="filterDependency" class="form-select">
+                    <option value="">Todas</option>
+                    @foreach ($dependencies as $dep)
+                        <option value="{{ $dep->id }}">{{ $dep->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Filtro de fecha --}}
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold">Desde:</label>
+                <input type="date" wire:model.live="filterDateFrom" class="form-control">
+            </div>
+
+            {{-- Botón limpiar (condicional) --}}
+            <div class="col-lg-1">
+                @if ($search || $filterDependency || $filterDateFrom)
+                    <button wire:click="clearFilters"
+                        class="btn btn-outline-secondary w-100"
+                        title="Limpiar filtros">
+                        <i class="fas fa-times"></i>
+                    </button>
+                @endif
+            </div>
+
+        </div>
+    </div>
+</div>
+```
+
+| Regla | Detalle |
+|-------|---------|
+| **Livewire reactivo** | `wire:model.live` para selects y fechas. `debounce.300ms` solo para campos de texto libre. |
+| **Botón limpiar condicional** | Solo visible cuando hay al menos un filtro activo. |
+| **Icono en buscador** | El `input-group` con lupa es obligatorio en campos de texto libre. |
+| **Label `fw-semibold`** | Todos los labels de filtros llevan `fw-semibold`. |
+| **Grid `g-3 align-items-end`** | Garantiza espaciado y alineación con botones. |
+
+---
+
+## 8. Tabla de Datos
+
+```html
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th class="fw-semibold">Nombre</th>
+                <th class="fw-semibold">Categoría</th>
+                <th class="fw-semibold text-center">Estado</th>
+                <th class="fw-semibold text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($items as $item)
+                <tr>
+                    <td>
+                        <strong>{{ $item->name }}</strong>
+                        <br><small class="text-muted">{{ $item->email }}</small>
+                    </td>
+                    <td>
+                        <span class="badge bg-primary">{{ $item->category }}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge bg-{{ $item->status ? 'success' : 'danger' }}">
+                            {{ $item->status ? 'Activo' : 'Inactivo' }}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm">
+                            <a href="{{ route('modulo.show', $item) }}"
+                                class="btn btn-outline-primary" title="Ver">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{{ route('modulo.edit', $item) }}"
+                                class="btn btn-outline-secondary" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button wire:click="delete({{ $item->id }})"
+                                wire:confirm="¿Estás seguro de eliminar este registro?"
+                                class="btn btn-outline-danger" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+```
+
+| Regla | Clase / Detalle |
+|-------|----------------|
+| Wrapper obligatorio | `<div class="table-responsive">` |
+| Clases base | `table table-hover align-middle` |
+| Encabezado | `<thead class="table-light">` + `<th class="fw-semibold">` |
+| Columnas de acción | `text-center` en `th` y en `td` |
+| Botones de acción | `btn-group btn-group-sm` con `btn btn-outline-*` |
+| Dato secundario en celda | `<br><small class="text-muted">dato</small>` |
+| Folio / código | `<span class="badge bg-primary">{{ $folio }}</span>` |
+| Confirmación de borrado | `wire:confirm="..."` (Livewire nativo, no `window.confirm()`) |
+
+---
+
+## 9. Estado Vacío
+
+Dentro del mismo `card-body` de la tabla cuando no hay registros:
+
+```html
+<div class="text-center py-5">
+    <div class="mb-4">
+        <i class="fas fa-folder-open fa-4x text-muted"></i>
+    </div>
+    <h5 class="text-muted">No hay registros</h5>
+    <p class="text-muted mb-4">
+        No se encontraron resultados. Intenta con otros filtros o crea el primer registro.
+    </p>
+    <a href="{{ route('modulo.create') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i> Crear Primer Registro
+    </a>
+</div>
+```
+
+| Elemento | Clase |
+|----------|-------|
+| Icono | `fas fa-folder-open fa-4x text-muted` |
+| Título | `h5 text-muted` |
+| Descripción | `p text-muted mb-4` |
+| CTA (si aplica) | `btn btn-primary` |
+| Centrado + espaciado | `text-center py-5` |
+
+---
+
+## 10. Paginación
+
+Siempre centrada, dentro del `card-body`, después de la tabla:
+
+```html
+{{-- Con Livewire (paginación reactiva) --}}
+<div class="d-flex justify-content-center mt-4">
+    {{ $items->links('pagination::bootstrap-5') }}
+</div>
+
+{{-- Con controlador tradicional (conservar filtros GET) --}}
+<div class="d-flex justify-content-center mt-4">
+    {{ $items->appends(request()->query())->links('pagination::bootstrap-5') }}
+</div>
+```
+
+> Con Livewire, `appends()` no es necesario. Con controladores tradicionales, siempre agregar `appends(request()->query())`.
+
+---
+
+## 11. Vista de Formulario — Patrón Canónico
+
+Para Create, Edit y Show. El formulario va siempre centrado en `col-lg-8 mx-auto`.
+
+```blade
+<div>
     <div class="row">
         <div class="col-lg-8 mx-auto">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Título del Formulario</h5>
+                    <h5 class="text-white mb-0">
+                        @if ($mode === 0)
+                            <i class="fas fa-plus-circle me-2"></i> Nuevo Registro
+                        @elseif ($mode === 1)
+                            <i class="fas fa-eye me-2"></i> Ver Detalle
+                        @else
+                            <i class="fas fa-edit me-2"></i> Editar Registro
+                        @endif
+                    </h5>
                 </div>
                 <div class="card-body p-4">
-                    <form action="{{ route('...') }}" method="POST">
-                        @csrf
+
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-circle fa-lg me-3"></i>
+                                <div>{{ session('error') }}</div>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    <form wire:submit="save">
 
                         <div class="row mb-4">
-                            <div class="col-md-4">
-                                <label class="form-label">Campo A <span class="text-danger">*</span></label>
-                                <input type="text" name="campo_a" class="form-control @error('campo_a') is-invalid @enderror" value="{{ old('campo_a') }}" required>
-                                <small class="text-muted">Texto de ayuda.</small>
-                                @error('campo_a')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
                             <div class="col-md-8">
-                                <label class="form-label">Campo B <span class="text-danger">*</span></label>
-                                <input type="text" name="campo_b" class="form-control @error('campo_b') is-invalid @enderror" value="{{ old('campo_b') }}" required>
-                                @error('campo_b')
+                                <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                                <input type="text"
+                                    wire:model="name"
+                                    class="form-control @error('name') is-invalid @enderror"
+                                    placeholder="Nombre del registro..."
+                                    {{ $mode === 1 ? 'disabled' : '' }}>
+                                @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Estado</label>
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox"
+                                        wire:model="status"
+                                        id="statusSwitch"
+                                        {{ $mode === 1 ? 'disabled' : '' }}>
+                                    <label class="form-check-label" for="statusSwitch">
+                                        {{ $status ? 'Activo' : 'Inactivo' }}
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
-                        {{-- Más campos con la misma estructura --}}
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label">Descripción</label>
+                                <textarea wire:model="description"
+                                    class="form-control"
+                                    rows="3"
+                                    placeholder="Descripción opcional..."
+                                    {{ $mode === 1 ? 'disabled' : '' }}></textarea>
+                            </div>
+                        </div>
 
-                        <!-- Botones -->
+                        {{-- Separador de sección --}}
+                        <hr class="my-4">
+                        <h6 class="fw-bold mb-3">
+                            <i class="fas fa-cog text-primary me-2"></i> Configuración
+                        </h6>
+
+                        {{-- Botones --}}
                         <div class="d-flex justify-content-end gap-2 mt-4">
-                            <a href="{{ route('...index') }}" class="btn btn-secondary">
-                                <i class="fas fa-times me-2"></i> Cancelar
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i> Guardar
-                            </button>
+                            @if ($mode !== 1)
+                                <a href="{{ route('modulo.index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>
+                                    {{ $mode === 0 ? 'Guardar' : 'Actualizar' }}
+                                </button>
+                            @else
+                                <a href="{{ route('modulo.index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i> Volver
+                                </a>
+                            @endif
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -225,86 +666,37 @@ Todas las vistas de listado (index) llevan un header consistente dentro de una c
 </div>
 ```
 
+### Modos del formulario
+
+| `$mode` | Valor | Comportamiento |
+|---------|-------|---------------|
+| `0` | Crear | Campos editables, botón "Guardar" |
+| `1` | Ver / Solo lectura | Campos `disabled`, solo botón "Volver" |
+| `2` | Editar | Campos editables, botón "Actualizar" |
+
 ### Reglas de campos
 
-| Elemento | Clase | Nota |
-|----------|-------|------|
-| Label | `form-label` | Siempre antes del input |
-| Campo requerido | `<span class="text-danger">*</span>` | Junto al texto del label |
-| Input | `form-control` | Nunca input sin esta clase |
-| Select | `form-select` | Para dropdowns nativos |
-| Error de validación | `is-invalid` + `invalid-feedback` | Se añade con `@error` de Blade |
-| Texto de ayuda | `<small class="text-muted">` | Debajo del input |
-| Espaciado entre filas | `row mb-4` | Separa grupos de campos |
-| Distribución de columnas | `col-md-4` / `col-md-8` / `col-md-12` | Acorde al contenido |
-
-### Barra de botones del formulario
-
-Siempre al final, alineada a la derecha:
-
-```html
-<div class="d-flex justify-content-end gap-2 mt-4">
-    <a href="..." class="btn btn-secondary">
-        <i class="fas fa-times me-2"></i> Cancelar
-    </a>
-    <button type="submit" class="btn btn-primary">
-        <i class="fas fa-save me-2"></i> Guardar
-    </button>
-</div>
-```
-
-> `btn-secondary` siempre para Cancelar, `btn-primary` siempre para la acción principal.
+| Elemento | Clase / Patrón |
+|----------|---------------|
+| Label | `form-label` (siempre antes del input) |
+| Campo requerido | `<span class="text-danger">*</span>` en el label |
+| Input | `form-control @error('campo') is-invalid @enderror` |
+| Select | `form-select @error('campo') is-invalid @enderror` |
+| Textarea | `form-control` con `rows="3"` como mínimo |
+| Switch de estado | `form-check form-switch` con `form-check-input` |
+| Error | `<div class="invalid-feedback">{{ $message }}</div>` |
+| Agrupación | `row mb-4` con `col-md-*` internos |
+| Separador de sección | `<hr class="my-4">` + `<h6 class="fw-bold mb-3">` |
+| Barra de botones | `d-flex justify-content-end gap-2 mt-4` |
 
 ---
 
-## 7. Tablas
+## 12. Alertas y Flash Messages
+
+### Dentro de componentes Livewire
 
 ```html
-<div class="table-responsive">
-    <table class="table table-hover align-middle">
-        <thead class="table-light">
-            <tr>
-                <th class="fw-semibold">Columna</th>
-                <th class="fw-semibold text-center">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Dato principal</strong></td>
-                <td class="text-center">
-                    <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-outline-primary" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <button class="btn btn-outline-danger" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-```
-
-### Reglas de tablas
-
-| Regla | Detalle |
-|-------|---------|
-| Siempre `table-responsive` | Envolver la tabla para scroll horizontal en móvil |
-| `table-hover align-middle` | Hover en filas y alineación vertical centrada |
-| Header | `thead class="table-light"` con `th class="fw-semibold"` |
-| Columnas de acciones | `text-center` tanto en `th` como en `td` |
-| Grupo de botones | `btn-group btn-group-sm` con botones `btn-outline-*` |
-| Eliminar con confirmación | `onsubmit="return confirm('...')"` en el form |
-
----
-
-## 8. Alertas y Mensajes Flash
-
-```html
-{{-- Éxito --}}
-@if(session('success'))
+@if (session('success'))
     <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
         <div class="d-flex align-items-center">
             <i class="fas fa-check-circle fa-lg me-3"></i>
@@ -313,31 +705,15 @@ Siempre al final, alineada a la derecha:
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
-
-{{-- Error --}}
-@if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
-        <div class="d-flex align-items-center">
-            <i class="fas fa-exclamation-circle fa-lg me-3"></i>
-            <div>{{ session('error') }}</div>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
 ```
 
-### Estructura obligatoria de alertas
-
-| Clase/Atributo | Propósito |
-|----------------|-----------|
-| `alert-dismissible fade show` | Permite cerrar con animación |
-| `border-0 shadow-sm` | Consistencia visual con las cards |
-| `role="alert"` | Accesibilidad |
-| `d-flex align-items-center` | Icono alineado al texto |
-| `fa-lg me-3` | Icono a la izquierda con margen |
-| `btn-close` + `data-bs-dismiss="alert"` | Botón nativo de Bootstrap para cerrar |
-
-### Mapa de colores de alertas
+| Elemento | Clase / Atributo | Propósito |
+|----------|-----------------|-----------|
+| Wrapper | `alert-dismissible fade show border-0 shadow-sm` | Animación + consistencia con cards |
+| Accesibilidad | `role="alert"` | Screen readers |
+| Contenido | `d-flex align-items-center` | Icono alineado al texto |
+| Icono | `fa-lg me-3` | A la izquierda con separación |
+| Cierre | `btn-close` + `data-bs-dismiss="alert"` | Nativo Bootstrap |
 
 | Tipo | Clase | Icono |
 |------|-------|-------|
@@ -348,411 +724,359 @@ Siempre al final, alineada a la derecha:
 
 ---
 
-## 9. Estados Vacíos (Empty States)
+## 13. Tarjetas (Cards)
 
-Cuando un listado no tiene registros:
+La card es la **unidad base** de contenido. Siempre `border-0 shadow-sm`.
 
 ```html
-<div class="text-center py-5">
-    <div class="mb-4">
-        <i class="fas fa-folder-open fa-4x text-muted"></i>
+{{-- Estándar --}}
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4">...</div>
+</div>
+
+{{-- Con header de color (formularios) --}}
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0 text-white"><i class="fas fa-plus-circle me-2"></i> Título</h5>
     </div>
-    <h5 class="text-muted">No hay registros</h5>
-    <p class="text-muted mb-4">Descripción con instrucción para el usuario.</p>
-    <a href="#" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i> Crear Primer Registro
-    </a>
+    <div class="card-body p-4">...</div>
 </div>
 ```
 
-### Reglas
-
-- Icono grande: `fa-4x text-muted`
-- Texto: `text-muted` para título y descripción
-- CTA: botón `btn-primary` para invitar a crear el primer registro
-- Centrado: `text-center py-5`
+| Variante | Clases adicionales | Uso |
+|----------|--------------------|-----|
+| Estándar | `border-0 shadow-sm` | Toda sección de backoffice |
+| Header primario | `card-header bg-primary text-white` | Formularios create/edit |
+| Header secundario | `card-header bg-secondary text-white` | Paneles auxiliares / sidebar |
+| KPI / Métrica | `border-0 shadow-sm text-center` | Tarjetas de cifras clave |
+| Front destacada | `shadow-lg border-0 rounded-4` | Hero sections en front público |
 
 ---
 
-## 10. Botones
-
-### Jerarquía de botones
+## 14. Botones
 
 | Nivel | Clase | Uso |
 |-------|-------|-----|
-| Primario | `btn btn-primary` | Acción principal: Guardar, Crear, Filtrar |
-| Secundario | `btn btn-secondary` | Cancelar, acciones auxiliares |
-| Outline primario | `btn btn-outline-primary` | Editar en tablas |
-| Outline danger | `btn btn-outline-danger` | Eliminar en tablas |
-| Outline secondary | `btn btn-outline-secondary` | Limpiar filtros |
-
-### Convenciones de iconos en botones
+| Primario | `btn btn-primary` | Acción principal: Guardar, Crear, Exportar |
+| Secundario | `btn btn-secondary` | Cancelar, Volver |
+| Outline primario | `btn btn-outline-primary` | Ver en tablas |
+| Outline secundario | `btn btn-outline-secondary` | Editar en tablas, Limpiar filtros |
+| Outline success | `btn btn-outline-success` | Confirmar, Aprobar |
+| Outline danger | `btn btn-outline-danger` | Eliminar, Rechazar |
+| Success sólido | `btn btn-success` | Exportar Excel |
 
 ```html
-{{-- Crear --}}
-<i class="fas fa-plus me-2"></i> Nuevo Registro
+{{-- Con texto: icono + me-2 --}}
+<button class="btn btn-primary">
+    <i class="fas fa-save me-2"></i> Guardar
+</button>
 
-{{-- Guardar --}}
-<i class="fas fa-save me-2"></i> Guardar
-
-{{-- Cancelar --}}
-<i class="fas fa-times me-2"></i> Cancelar
-
-{{-- Filtrar --}}
-<i class="fas fa-filter me-2"></i> Filtrar
-
-{{-- Limpiar filtro --}}
-<i class="fas fa-times me-1"></i> Limpiar
-
-{{-- Editar (solo icono en tabla) --}}
-<i class="fas fa-edit"></i>
-
-{{-- Eliminar (solo icono en tabla) --}}
-<i class="fas fa-trash"></i>
+{{-- Solo icono (tablas): con title y aria-label obligatorios --}}
+<button class="btn btn-outline-primary" title="Ver detalle" aria-label="Ver detalle">
+    <i class="fas fa-eye"></i>
+</button>
 ```
 
-> **Regla:** Botones con texto llevan icono con `me-2`. Botones de solo icono (en tablas) no llevan margin extra.
+### Acciones en tablas
+
+```html
+<div class="btn-group btn-group-sm">
+    <a href="{{ route('modulo.show', $item) }}"
+        class="btn btn-outline-primary" title="Ver">
+        <i class="fas fa-eye"></i>
+    </a>
+    <a href="{{ route('modulo.edit', $item) }}"
+        class="btn btn-outline-secondary" title="Editar">
+        <i class="fas fa-edit"></i>
+    </a>
+    <button wire:click="delete({{ $item->id }})"
+        wire:confirm="¿Estás seguro de eliminar este registro?"
+        class="btn btn-outline-danger" title="Eliminar">
+        <i class="fas fa-trash"></i>
+    </button>
+</div>
+```
 
 ---
 
-## 11. Badges
+## 15. Badges
 
 ```html
-{{-- Código o identificador --}}
-<span class="badge bg-primary">ABC-001</span>
-
-{{-- Conteo --}}
-<span class="badge bg-secondary">5</span>
-
-{{-- Estado informativo --}}
-<span class="badge bg-info">12</span>
+<span class="badge bg-primary">FOL-0001</span>   {{-- Folio / ID --}}
+<span class="badge bg-info">12 min</span>         {{-- Duración / dato numérico --}}
+<span class="badge bg-success">Activo</span>      {{-- Estado positivo --}}
+<span class="badge bg-danger">Inactivo</span>     {{-- Estado negativo --}}
+<span class="badge bg-warning">Pendiente</span>   {{-- Estado intermedio --}}
+<span class="badge bg-secondary">N/A</span>       {{-- Sin dato --}}
 ```
 
 | Color | Uso |
 |-------|-----|
-| `bg-primary` | Códigos, identificadores, tags principales |
-| `bg-secondary` | Conteos genéricos |
-| `bg-info` | Conteos informativos |
-| `bg-success` | Estados activos / aprobados |
-| `bg-warning` | Pendientes |
-| `bg-danger` | Rechazados / errores |
+| `bg-primary` | Folios, identificadores, categorías principales |
+| `bg-secondary` | Datos neutros, referencias |
+| `bg-info` | Duraciones, cantidades, dependencias |
+| `bg-success` | Activo, Aprobado, Confirmado, Asistió |
+| `bg-warning` | Pendiente, En revisión |
+| `bg-danger` | Inactivo, Rechazado, Cancelado, No asistió |
+| `bg-dark` | Casos especiales, "Otros" |
 
 ---
 
-## 12. Paginación
+## 16. Iconografía
 
-Siempre centrada debajo de la tabla:
+| Contexto | Librería | Prefijo |
+|----------|----------|---------|
+| Backoffice (vistas Blade) | FontAwesome 5 | `fas fa-*` |
+| Sidebar (menú lateral) | Tabler Icons | `ti ti-*` |
 
-```html
-<div class="d-flex justify-content-center mt-4">
-    {{ $items->appends(request()->query())->links('pagination::bootstrap-5') }}
-</div>
-```
-
-> Siempre usar `pagination::bootstrap-5` y `appends(request()->query())` para conservar filtros.
-
----
-
-## 13. Filtros y Búsquedas
-
-```html
-<form method="GET" action="{{ route('modulo.index') }}" class="mb-4">
-    <div class="row g-3 align-items-end">
-        <div class="col-lg-8">
-            <label class="form-label fw-semibold">
-                <i class="fas fa-search me-1"></i> Buscar:
-            </label>
-            <div class="input-group">
-                <span class="input-group-text bg-light border-end-0">
-                    <i class="fas fa-search text-muted"></i>
-                </span>
-                <input type="text" name="search" class="form-control border-start-0"
-                       placeholder="Buscar por..." value="{{ request('search') }}">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <button type="submit" class="btn btn-primary w-100">
-                <i class="fas fa-filter me-2"></i> Filtrar
-            </button>
-        </div>
-        <div class="col-lg-2">
-            @if(request()->has('search'))
-                <a href="{{ route('modulo.index') }}" class="btn btn-outline-secondary w-100">
-                    <i class="fas fa-times me-1"></i> Limpiar
-                </a>
-            @endif
-        </div>
-    </div>
-</form>
-```
-
-### Reglas
-
-- Método **GET** (no POST) para que la URL sea compartible
-- Input con `input-group` (icono de lupa a la izquierda)
-- Botón Filtrar: `btn btn-primary w-100`
-- Botón Limpiar: `btn btn-outline-secondary w-100`, solo visible si hay filtro activo
-- Grid: `row g-3 align-items-end` para alinear la base de los inputs con los botones
-
----
-
-## 14. Grid y Responsive
-
-### Breakpoints estándar usados
-
-| Clase | Ancho mínimo | Uso típico |
-|-------|-------------|------------|
-| `col-lg-*` | ≥992px | Layout principal (escritorio) |
-| `col-md-*` | ≥768px | Distribución de campos de formulario |
-| `col-sm-*` | ≥576px | Ajustes en móvil cuando es necesario |
-
-### Patrones comunes
-
-```html
-{{-- Listado con tabla --}}
-<div class="row">
-    <div class="col-lg-12">...</div>
-</div>
-
-{{-- Formulario centrado (Create) --}}
-<div class="row">
-    <div class="col-lg-8 mx-auto">...</div>
-</div>
-
-{{-- Formulario con panel lateral (Edit) --}}
-<div class="row">
-    <div class="col-lg-8">{{-- Formulario --}}</div>
-    <div class="col-lg-4">{{-- Panel auxiliar --}}</div>
-</div>
-
-{{-- Distribución de campos --}}
-<div class="row mb-4">
-    <div class="col-md-4">{{-- Campo corto --}}</div>
-    <div class="col-md-8">{{-- Campo largo --}}</div>
-</div>
-
-{{-- Vista front centrada --}}
-<div class="row justify-content-center">
-    <div class="col-lg-8">...</div>
-</div>
-```
-
----
-
-## 15. Iconografía
-
-Se usa **FontAwesome 5+** para todos los iconos. Nunca mezclar con otra librería de iconos.
-
-### Convenciones de tamaño
+**No mezclar las dos librerías en la misma vista.**
 
 | Clase | Uso |
 |-------|-----|
-| (sin tamaño) | Iconos en botones, labels, textos |
+| (sin clase) | Iconos en botones, labels, textos |
 | `fa-lg` | Iconos en alertas |
 | `fa-2x` | Icono circular del header de módulo |
 | `fa-4x` | Empty states, hero sections |
-
-### Separación del texto
 
 - Icono antes de texto: `me-1` o `me-2`
 - Icono después de texto: `ms-1` o `ms-2`
 
 ---
 
-## 16. Validación de Formularios
+## 17. Patrones Livewire
 
-Todos los inputs con validación server-side de Laravel:
+### Propiedades de filtros (PHP)
+
+```php
+public string $search = '';
+public string $filterStatus = '';
+public string $filterDateFrom = '';
+
+public function clearFilters(): void
+{
+    $this->reset(['search', 'filterStatus', 'filterDateFrom']);
+}
+```
+
+### Bindings en vista (Blade)
+
+```html
+wire:model.live.debounce.300ms="search"    {{-- Texto libre: debounce 300ms --}}
+wire:model.live="filterStatus"              {{-- Select: reactivo inmediato --}}
+wire:model.live="filterDateFrom"            {{-- Fecha: reactivo inmediato --}}
+```
+
+### Submit de formulario
+
+```html
+<form wire:submit="save">
+    {{-- campos --}}
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save me-2"></i> Guardar
+    </button>
+</form>
+```
+
+> No usar `wire:submit.prevent`. En Livewire v3, `prevent` está incluido automáticamente.
+
+### Confirmación de borrado (nativo)
+
+```html
+<button
+    wire:click="delete({{ $item->id }})"
+    wire:confirm="¿Estás seguro de eliminar este registro? Esta acción no se puede deshacer."
+    class="btn btn-outline-danger btn-sm"
+    title="Eliminar">
+    <i class="fas fa-trash"></i>
+</button>
+```
+
+### Loading state en botones
+
+```html
+<button wire:click="save" class="btn btn-primary">
+    <span wire:loading wire:target="save"
+        class="spinner-border spinner-border-sm me-2"></span>
+    <i wire:loading.remove wire:target="save"
+        class="fas fa-save me-2"></i>
+    Guardar
+</button>
+```
+
+---
+
+## 18. Grid y Responsive
+
+```html
+{{-- Listado completo --}}
+<div class="row">
+    <div class="col-lg-12">...</div>
+</div>
+
+{{-- Formulario centrado (Create / Edit) --}}
+<div class="row">
+    <div class="col-lg-8 mx-auto">...</div>
+</div>
+
+{{-- Formulario + panel lateral --}}
+<div class="row">
+    <div class="col-lg-8">{{-- Formulario --}}</div>
+    <div class="col-lg-4">{{-- Panel auxiliar --}}</div>
+</div>
+
+{{-- KPI cards (4 columnas) --}}
+<div class="row mb-4">
+    <div class="col-md-3">...</div>
+    <div class="col-md-3">...</div>
+    <div class="col-md-3">...</div>
+    <div class="col-md-3">...</div>
+</div>
+
+{{-- Campos de formulario --}}
+<div class="row mb-4">
+    <div class="col-md-4">{{-- Campo corto --}}</div>
+    <div class="col-md-8">{{-- Campo largo --}}</div>
+</div>
+```
+
+| Clase | Mínimo | Uso |
+|-------|--------|-----|
+| `col-lg-*` | 992px | Layout principal del módulo |
+| `col-md-*` | 768px | Campos de formulario y KPI cards |
+| `col-sm-*` | 576px | Ajustes móvil cuando sea necesario |
+
+---
+
+## 19. Validación de Formularios
+
+### Con Livewire
+
+```php
+// Componente PHP
+protected $rules = [
+    'name' => 'required|string|max:255',
+    'status' => 'boolean',
+];
+
+protected $messages = [
+    'name.required' => 'El nombre es obligatorio.',
+];
+```
 
 ```html
 <input type="text"
-       name="campo"
-       class="form-control @error('campo') is-invalid @enderror"
-       value="{{ old('campo') }}"
-       required>
-@error('campo')
+    wire:model="name"
+    class="form-control @error('name') is-invalid @enderror"
+    placeholder="...">
+@error('name')
     <div class="invalid-feedback">{{ $message }}</div>
 @enderror
 ```
 
-Para edición, el `old()` lleva fallback al modelo:
+### Con controlador tradicional
 
 ```html
-value="{{ old('campo', $modelo->campo) }}"
+<input type="text"
+    name="name"
+    class="form-control @error('name') is-invalid @enderror"
+    value="{{ old('name', $model->name ?? '') }}"
+    required>
+@error('name')
+    <div class="invalid-feedback">{{ $message }}</div>
+@enderror
 ```
 
-> **Nunca** usar validación JavaScript custom cuando Laravel ya provee `@error`.
+> Para edición siempre usar `old('campo', $model->campo)` para preservar el valor en caso de error de validación.
 
 ---
 
-## 17. Paneles Laterales
+## 20. Reglas de Estilo Prohibidas
 
-En vistas de edición con datos relacionados (usuarios, archivos, etc.):
-
-```html
-<div class="row">
-    {{-- Formulario principal --}}
-    <div class="col-lg-8">
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-edit me-2"></i> Editar Registro</h5>
-            </div>
-            <div class="card-body p-4">...</div>
-        </div>
-    </div>
-
-    {{-- Panel lateral --}}
-    <div class="col-lg-4">
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-secondary text-white">
-                <h6 class="mb-0"><i class="fas fa-users me-2"></i> Datos Relacionados</h6>
-            </div>
-            <div class="card-body p-4">
-                {{-- Listas con list-group --}}
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                        <div>
-                            <strong>Nombre</strong>
-                            <br><small class="text-muted">detalle</small>
-                        </div>
-                        <button class="btn btn-sm btn-outline-danger">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-```
-
-### Reglas del panel lateral
-
-| Elemento | Clase |
-|----------|-------|
-| Header | `bg-secondary text-white` (diferente del principal) |
-| Título | `h6 mb-0` (más pequeño que el principal) |
-| Lista | `list-group list-group-flush` |
-| Items | `d-flex justify-content-between align-items-center px-0` |
-| Estado vacío | `text-center text-muted py-4` con icono `fa-2x` |
-
----
-
-## 18. Vistas Front (Públicas)
-
-Las vistas públicas siguen un patrón distinto pero con los mismos componentes Bootstrap:
-
-```html
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            {{-- Encabezado con icono grande --}}
-            <div class="text-center mb-5">
-                <div class="mb-4">
-                    <i class="fas fa-home fa-4x text-primary"></i>
-                </div>
-                <h1 class="display-5 fw-bold mb-3">Título Principal</h1>
-                <p class="lead text-muted">Descripción del servicio.</p>
-            </div>
-
-            {{-- Card destacada --}}
-            <div class="card shadow-lg border-0 rounded-4 mb-5">
-                <div class="card-body p-5">
-                    {{-- Contenido principal --}}
-                </div>
-            </div>
-
-            {{-- Card informativa --}}
-            <div class="card border-0 bg-light">
-                <div class="card-body p-4">
-                    <h5 class="fw-bold mb-3">
-                        <i class="fas fa-info-circle text-info me-2"></i>
-                        ¿Necesitas ayuda?
-                    </h5>
-                    <p class="mb-2">
-                        <i class="fas fa-check text-success me-2"></i>
-                        <strong>Label:</strong> Contenido
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-```
-
-### Diferencias Front vs Backoffice
-
-| Aspecto | Backoffice | Front |
-|---------|-----------|-------|
-| Contenedor | `container-fluid py-4` | `container py-5` |
-| Ancho de contenido | `col-lg-12` | `col-lg-8` centrado |
-| Cards | `shadow-sm` | `shadow-lg rounded-4` |
-| Padding del body | `p-4` | `p-5` |
-| Títulos | `h3 fw-bold` | `display-5 fw-bold` |
-| Texto descriptivo | `text-muted` | `lead text-muted` |
-
----
-
-## 19. Reglas de Estilo Prohibidas
-
-| ❌ Prohibido | ✅ Alternativa Bootstrap |
-|-------------|------------------------|
+| ❌ Prohibido | ✅ Alternativa Bootstrap 5 |
+|-------------|--------------------------|
 | `style="margin-top: 20px"` | `mt-4` |
-| `style="padding: 15px"` | `p-3` |
+| `style="padding: 16px"` | `p-3` o `p-4` |
 | `style="display: flex"` | `d-flex` |
 | `style="text-align: center"` | `text-center` |
 | `style="font-weight: bold"` | `fw-bold` |
+| `style="font-weight: 600"` | `fw-semibold` |
 | `style="color: red"` | `text-danger` |
 | `style="background: #f8f9fa"` | `bg-light` |
 | `style="border-radius: 50%"` | `rounded-circle` |
 | `style="width: 100%"` | `w-100` |
-| CSS custom para grid | `row` + `col-*` |
+| `style="gap: 12px"` | `gap-3` |
+| `style="min-width: 200px"` | Usar columnas del grid |
+| `float: left` / `float: right` | `d-flex` o grid |
 | `<center>` | `text-center` o `mx-auto` |
-| `float: left/right` | `d-flex` o sistema de grid |
+| `window.confirm()` para borrado | `wire:confirm="..."` |
 
-> **Excepción:** `style="text-transform: uppercase"` está permitido cuando Bootstrap no ofrece la utilidad equivalente, o estilos de terceros (ej: Select2).
-
----
-
-## 20. Checklist para PR / Code Review
-
-Antes de enviar un Pull Request, verifica que tu vista cumple:
-
-- [ ] **Layout correcto**: `@extends('layouts.master')` para backoffice, `@extends('front.layouts.app')` para front
-- [ ] **Contenedor**: `container-fluid py-4` (back) o `container py-5` (front)
-- [ ] **Cards**: Todas usan `border-0 shadow-sm` y `card-body p-4`
-- [ ] **Formularios**: Labels con `form-label`, inputs con `form-control`, validación con `@error`
-- [ ] **Botones**: Jerarquía correcta (primary/secondary) con iconos FontAwesome
-- [ ] **Tablas**: `table-responsive` > `table table-hover align-middle` > `thead table-light`
-- [ ] **Alertas**: Patrón estándar con `d-flex`, icono, `btn-close` y `role="alert"`
-- [ ] **Empty states**: Icono `fa-4x`, textos `text-muted`, CTA con `btn-primary`
-- [ ] **Paginación**: `pagination::bootstrap-5` centrada con `appends()`
-- [ ] **Sin CSS inline**: No hay `style=""` salvo excepciones documentadas
-- [ ] **Responsive**: Funciona correctamente en `lg`, `md` y menores
-- [ ] **Accesibilidad**: `aria-label` en botones de icono, `role="alert"` en alertas
-- [ ] **Breadcrumb**: Presente y con la jerarquía correcta del módulo
+> **Excepción permitida:** Estilos de configuración de librerías de terceros (FullCalendar, Select2) sin alternativa Bootstrap equivalente.
 
 ---
 
-## Referencia rápida de spacing (Bootstrap 5)
+## 21. Checklist de Code Review
 
-| Clase | Valor |
-|-------|-------|
-| `*-0` | 0 |
-| `*-1` | 0.25rem (4px) |
-| `*-2` | 0.5rem (8px) |
-| `*-3` | 1rem (16px) |
-| `*-4` | 1.5rem (24px) |
-| `*-5` | 3rem (48px) |
+### Layout y estructura
 
-Donde `*` puede ser: `m` (margin), `p` (padding), `mt`, `mb`, `ms`, `me`, `mx`, `my`, `pt`, `pb`, etc.
+- [ ] Extiende `layouts.master` (backoffice) o `front.layouts.app` (front)
+- [ ] Breadcrumb presente con jerarquía correcta
+- [ ] Wrapper: `container-fluid py-4` (back) o `container py-5` (front)
+- [ ] El contenido interactivo está en un componente Livewire separado
+
+### Vistas de listado
+
+- [ ] Header de módulo con icono circular `bg-primary bg-opacity-10 rounded-circle`
+- [ ] Panel de filtros con `wire:model.live` y botón "Limpiar" condicional
+- [ ] Tabla: `table-hover align-middle` + `thead table-light` + `th fw-semibold`
+- [ ] Tabla envuelta en `table-responsive`
+- [ ] Estado vacío con icono `fa-4x text-muted` dentro del `card-body`
+- [ ] Paginación centrada con `pagination::bootstrap-5`
+
+### Formularios
+
+- [ ] Centrado en `col-lg-8 mx-auto`
+- [ ] Card header `bg-primary text-white` con icono de acción
+- [ ] Labels con `form-label`, requeridos con `<span class="text-danger">*</span>`
+- [ ] Validación con `@error` + `is-invalid` + `invalid-feedback`
+- [ ] Botones al final: `d-flex justify-content-end gap-2 mt-4`
+- [ ] Cancelar con `btn-secondary`, acción principal con `btn-primary`
+
+### Alertas
+
+- [ ] Patrón estándar: `d-flex align-items-center` + icono + `btn-close`
+- [ ] `role="alert"` presente
+- [ ] `border-0 shadow-sm` para consistencia con las cards
+
+### Estilo
+
+- [ ] Sin atributos `style=""` de layout, espaciado o color
+- [ ] Iconos: `fas fa-*` en vistas de contenido, `ti ti-*` solo en sidebar
+- [ ] Botones de solo icono tienen `title` y `aria-label`
+- [ ] Borrado usa `wire:confirm` (no `window.confirm()`)
+
+---
+
+## Referencia rápida de espaciado
+
+| Clase | Rem | Px aprox. |
+|-------|-----|-----------|
+| `*-0` | 0 | 0 |
+| `*-1` | 0.25rem | 4px |
+| `*-2` | 0.5rem | 8px |
+| `*-3` | 1rem | 16px |
+| `*-4` | 1.5rem | 24px |
+| `*-5` | 3rem | 48px |
+
+Prefijos: `m` (margin), `p` (padding) + dirección `t / b / s / e / x / y`.
 
 ---
 
 ## Documentos complementarios
 
-- [THEME_SYSTEM.md](THEME_SYSTEM.md) — Sistema de modo claro/oscuro y variables CSS
-- [CONTRALORIA_DESIGN_SYSTEM.md](CONTRALORIA_DESIGN_SYSTEM.md) — Sistema de diseño específico de Contraloría
+- [THEME_SYSTEM.md](THEME_SYSTEM.md) — Variables CSS, modo claro/oscuro
+- [CONTRALORIA_DESIGN_SYSTEM.md](CONTRALORIA_DESIGN_SYSTEM.md) — Design system de Contraloría
+- [EFIRMA_INTEGRATION.md](EFIRMA_INTEGRATION.md) — Integración con eFirma
 
 ---
 
-*Última actualización: Febrero 2026*
+*Última actualización: Mayo 2026*
