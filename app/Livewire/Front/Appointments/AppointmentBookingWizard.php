@@ -7,6 +7,7 @@ use App\Models\AppointmentBooking;
 use App\Models\BackofficeDependency;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class AppointmentBookingWizard extends Component
@@ -337,6 +338,36 @@ class AppointmentBookingWizard extends Component
         ]);
 
         // Redirigir al perfil ciudadano con el detalle de la cita
+        // Correo al ciudadano: confirmación de cita
+        if ($booking->email) {
+            $bookingEmail = $booking->email;
+            $bookingFolio = $booking->folio;
+            $bookingFecha = Carbon::parse($this->selectedDate)->format('d/m/Y');
+
+            Mail::send('_mail_notifications.citizen.appointment_confirmed', [
+                'nombre_ciudadano' => $booking->full_name,
+                'fecha_cita'       => $bookingFecha,
+                'hora_cita'        => $this->selectedSlot,
+                'folio_cita'       => $bookingFolio,
+            ], function ($m) use ($bookingEmail, $bookingFolio, $bookingFecha) {
+                $m->to($bookingEmail)
+                  ->subject('Tu cita de asesoría jurídica está confirmada — ' . $bookingFecha);
+            });
+        }
+
+        // Correo al administrador: nueva cita agendada
+        $adminFecha = Carbon::parse($this->selectedDate)->format('d/m/Y');
+        
+        Mail::send('_mail_notifications.admin.appointment_new', [
+            'folio_cita'       => $booking->folio,
+            'nombre_ciudadano' => $booking->full_name,
+            'fecha_cita'       => $adminFecha,
+            'hora_cita'        => $this->selectedSlot,
+        ], function ($m) use ($booking, $adminFecha) {
+            $m->to('juridico@valledesantiago.gob.mx')
+              ->subject('Nueva asesoría jurídica agendada — ' . $adminFecha . ' ' . $booking->start_time);
+        });
+
         return redirect()->route('citizen.appointments.show', [
             'booking' => $booking->id,
             'just_booked' => 1,

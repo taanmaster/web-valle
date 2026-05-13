@@ -4,6 +4,7 @@ namespace App\Livewire\Front\HR;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -76,7 +77,7 @@ class ApplyForm extends Component
             $cv_path = $filepath;
         }
 
-        HRApplication::create([
+        $application = HRApplication::create([
             'hr_vacancy_id' => $this->vacancy->id,
             'user_id' => Auth::id(),
             'first_name' => $this->first_name,
@@ -85,6 +86,45 @@ class ApplyForm extends Component
             'phone' => $this->phone,
             'cv_path' => $cv_path,
         ]);
+
+        // Variables para correos
+        $folio      = 'RH-' . str_pad($application->id, 6, '0', STR_PAD_LEFT);
+        $plazaArea  = $this->vacancy->position_name . ($this->vacancy->dependency ? ' — ' . $this->vacancy->dependency : '');
+        $nombreCompleto = $this->first_name . ' ' . $this->last_name;
+        $citizenEmail = $this->email;
+
+        // Correo al ciudadano: postulación recibida
+        Mail::send('_mail_notifications.citizen.hr_application_received', [
+            'nombre_ciudadano' => $nombreCompleto,
+            'folio'            => $folio,
+            'plaza_area'       => $plazaArea,
+            'fecha_recepcion'  => now()->format('d/m/Y'),
+        ], function ($m) use ($citizenEmail, $folio) {
+            $m->to($citizenEmail)
+              ->subject('Recibimos tu solicitud de empleo — Folio ' . $folio);
+        });
+
+        // Correo al ciudadano: confirmación de envío exitoso
+        Mail::send('_mail_notifications.citizen.hr_application_sent', [
+            'nombre_ciudadano' => $nombreCompleto,
+            'folio'            => $folio,
+            'plaza_area'       => $plazaArea,
+            'fecha_hora_envio' => now()->format('d/m/Y H:i'),
+        ], function ($m) use ($citizenEmail, $folio) {
+            $m->to($citizenEmail)
+              ->subject('Tu postulación fue enviada correctamente — Folio ' . $folio);
+        });
+
+        // Correo al administrador: nueva postulación
+        Mail::send('_mail_notifications.admin.hr_new_application', [
+            'nombre_servidor'  => 'Equipo de Recursos Humanos',
+            'folio'            => $folio,
+            'nombre_ciudadano' => $nombreCompleto,
+            'plaza_area'       => $plazaArea,
+        ], function ($m) use ($folio) {
+            $m->to('recursos.humanos@valledesantiago.gob.mx')
+              ->subject('Nueva postulación recibida — Folio ' . $folio);
+        });
 
         session()->flash('success', 'Tu aplicacion ha sido enviada correctamente.');
 

@@ -5,6 +5,7 @@ namespace App\Livewire\Front\Tourism;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\TourismThirdPartyRequest;
@@ -158,6 +159,28 @@ class ThirdPartyWizard extends Component
             'support_description' => $this->support_description,
             'signature_path' => $signaturePath,
         ]);
+
+        // Correo al ciudadano: solicitud recibida
+        if ($request->email) {
+            Mail::send('_mail_notifications.citizen.tourism_request_received', [
+                'nombre_ciudadano' => $request->full_name,
+                'folio'            => $request->folio,
+                'fecha_registro'   => $request->created_at->format('d/m/Y'),
+            ], function ($m) use ($request) {
+                $m->to($request->email)
+                  ->subject('Recibimos tu solicitud de apoyo — Folio ' . $request->folio);
+            });
+        }
+
+        // Correo al administrador: nueva solicitud de apoyo
+        Mail::send('_mail_notifications.admin.tourism_new_request', [
+            'folio'            => $request->folio,
+            'nombre_ciudadano' => $request->full_name,
+            'fecha_registro'   => $request->created_at->format('d/m/Y'),
+        ], function ($m) use ($request) {
+            $m->to('turismo@valledesantiago.gob.mx')
+              ->subject('Nueva solicitud de apoyo recibida — Folio ' . $request->folio);
+        });
 
         session()->flash('success', 'Tu solicitud de apoyo ha sido enviada correctamente. Folio: ' . $request->folio);
 

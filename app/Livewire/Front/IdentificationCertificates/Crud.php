@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\IdentificationCertificate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -143,6 +144,31 @@ class Crud extends Component
             'second_witness_address' => $this->second_witness_address,
             'second_witness_ine_file' => $second_witness_ine_url,
         ]);
+
+        // Correo al ciudadano: recepción de documentos
+        if ($certificate->email) {
+            Mail::send('_mail_notifications.citizen.document_received', [
+                'nombre_ciudadano' => $certificate->full_name,
+                'tipo_constancia'  => $certificate->certificate_type,
+                'folio'            => $certificate->folio,
+                'fecha_recepcion'  => $certificate->created_at->format('d/m/Y'),
+            ], function ($m) use ($certificate) {
+                $m->to($certificate->email)
+                  ->subject('Recibimos tus documentos — Folio ' . $certificate->folio);
+            });
+        }
+
+        // Correo al administrador: nuevo envío de documentos
+        Mail::send('_mail_notifications.admin.document_new_submission', [
+            'nombre_servidor'  => 'Equipo Secretaría de Ayuntamiento',
+            'folio'            => $certificate->folio,
+            'nombre_ciudadano' => $certificate->full_name,
+            'tipo_constancia'  => $certificate->certificate_type,
+            'fecha_recepcion'  => $certificate->created_at->format('d/m/Y'),
+        ], function ($m) use ($certificate) {
+            $m->to('secretaria.ayuntamiento@valledesantiago.gob.mx')
+              ->subject('Nueva solicitud recibida — Folio ' . $certificate->folio);
+        });
 
         Session::flash('success', 'Tu solicitud ha sido enviada correctamente. Folio: ' . $folio);
 
