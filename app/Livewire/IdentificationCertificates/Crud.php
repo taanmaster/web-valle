@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\IdentificationCertificate;
 use App\Models\IdentificationCertificatePayment;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -160,6 +161,36 @@ class Crud extends Component
                 'status' => $this->status,
             ]);
             $this->certificate->refresh();
+        }
+
+        // Notificación al ciudadano según el nuevo estatus
+        $email = $this->certificate->email ?? null;
+        if ($email) {
+            $folio  = $this->certificate->folio;
+            $nombre = $this->certificate->full_name;
+            $tipo   = $this->certificate->certificate_type;
+
+            if ($this->status === 'Aprobado') {
+                Mail::send('_mail_notifications.citizen.document_approved', [
+                    'nombre_ciudadano' => $nombre,
+                    'tipo_constancia'  => $tipo,
+                    'folio'            => $folio,
+                    'fecha_validacion' => now()->format('d/m/Y'),
+                ], function ($m) use ($email, $folio) {
+                    $m->to($email)
+                      ->subject('Tus documentos fueron aceptados — Folio ' . $folio);
+                });
+            } elseif ($this->status === 'Rechazado') {
+                Mail::send('_mail_notifications.citizen.document_rejected', [
+                    'nombre_ciudadano' => $nombre,
+                    'tipo_constancia'  => $tipo,
+                    'folio'            => $folio,
+                    'fecha_revision'   => now()->format('d/m/Y'),
+                ], function ($m) use ($email, $folio) {
+                    $m->to($email)
+                      ->subject('Necesitamos que corrijas tus documentos — Folio ' . $folio);
+                });
+            }
         }
 
         Session::flash('message', 'Actualizado correctamente.');
