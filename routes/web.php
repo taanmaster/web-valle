@@ -35,6 +35,7 @@ use App\Http\Controllers\RegulatoryImpactFrontController;
 use App\Http\Controllers\TourismBannerController;
 use App\Http\Controllers\TourismBlogController;
 use App\Http\Controllers\TourismThirdPartyRequestController;
+use App\Http\Controllers\HealthDirectionBlogController;
 
 // Recursos Humanos
 use App\Http\Controllers\HRVacancyController;
@@ -253,6 +254,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/agenda-regulatoria/dependencia/{id}', [
         'uses' => 'FrontController@regulatoryAgendaDependency',
         'as' => 'regulatory-agenda-dependency.show'
+    ]);
+
+    Route::get('/direccion_de_salud', [
+        'uses' => 'FrontController@healthDirection',
+        'as' => 'health_direction.index'
+    ]);
+
+    Route::get('/direccion_de_salud/{category}', [
+        'uses' => 'FrontController@healthDirectionList',
+        'as' => 'health_direction.list'
     ]);
 
     // Modulo Blog
@@ -1807,6 +1818,37 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'index' => 'tourism.third_party_requests.admin.index',
                 'show' => 'tourism.third_party_requests.admin.show',
                 'destroy' => 'tourism.third_party_requests.admin.destroy',
+            ]);
+        });
+
+        /* ------------------- */
+        /* ------------------- */
+        /* Health Direction */
+        Route::group(['prefix' => 'health-direction'], function () {
+            Route::resource('blog', HealthDirectionBlogController::class)->names([
+                'index' => 'health_direction.blog.admin.index',
+                'create' => 'health_direction.blog.admin.create',
+                'store' => 'health_direction.blog.admin.store',
+                'show' => 'health_direction.blog.admin.show',
+                'edit' => 'health_direction.blog.admin.edit',
+                'update' => 'health_direction.blog.admin.update',
+                'destroy' => 'health_direction.blog.admin.destroy',
+            ]);
+
+            // Dropzone routes for Health Direction Blog
+            Route::post('/blog/upload/{id}', [
+                'uses' => 'HealthDirectionBlogController@uploadFile',
+                'as' => 'dropzone.health_direction.blog.upload',
+            ]);
+
+            Route::get('/blog/fetch/{id}', [
+                'uses' => 'HealthDirectionBlogController@fetchFile',
+                'as' => 'dropzone.health_direction.blog.fetch',
+            ]);
+
+            Route::post('/blog/delete-file', [
+                'uses' => 'HealthDirectionBlogController@deleteFile',
+                'as' => 'dropzone.health_direction.blog.delete',
             ]);
         });
 

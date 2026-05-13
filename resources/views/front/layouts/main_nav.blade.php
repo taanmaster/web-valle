@@ -61,6 +61,13 @@
             </li>
 
             <li>
+                <a href="{{ route('health_direction.index') }}">
+                    <ion-icon name="shield-checkmark-outline"></ion-icon>
+                    <span>Dirección de Salud</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('secretary_of_assistance.index') }}">
                     <ion-icon name="people-circle-outline"></ion-icon>
                     <span>Secretaría de Ayuntamiento</span>
@@ -134,6 +141,13 @@
                 <a href="{{ route('contraloria.index') }}">
                     <ion-icon name="library-outline"></ion-icon>
                     <span>Contraloría</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('casa_mujer.index') }}">
+                    <ion-icon name="female-outline"></ion-icon>
+                    <span>Casa de la mujer</span>
                 </a>
             </li>
 
