@@ -7,7 +7,7 @@
         display: flex;
         flex-direction: column;
     }
-    
+
     .menu-label {
         font-size: 0.65rem;
         text-align: center;
@@ -20,7 +20,7 @@
         color: white !important;
     }
 
-    .leftbar-tab-menu .main-menu-inner .menu-body .nav-item .nav-link{
+    .leftbar-tab-menu .main-menu-inner .menu-body .nav-item .nav-link {
         align-items: start;
         height: auto !important;
     }
@@ -157,13 +157,20 @@
                         </a>
                     </li>
 
-                    @hasanyrole(['human_resources', 'all'])
                     <li class="nav-item">
-                        <a href="#valleHR" id="hr-tab" class="nav-link">
-                            <i class="ti ti-briefcase menu-icon"></i>
-                            <span class="menu-label">Recursos Humanos</span>
+                        <a href="#valleHealthDirection" id="health-direction-tab" class="nav-link">
+                            <i class="ti ti-stethoscope menu-icon"></i>
+                            <span class="menu-label">Dir. Salud</span>
                         </a>
                     </li>
+
+                    @hasanyrole(['human_resources', 'all'])
+                        <li class="nav-item">
+                            <a href="#valleHR" id="hr-tab" class="nav-link">
+                                <i class="ti ti-briefcase menu-icon"></i>
+                                <span class="menu-label">Recursos Humanos</span>
+                            </a>
+                        </li>
                     @endhasanyrole
 
                     @if (auth()->user()->hasRole('implan') || auth()->user()->hasRole('all'))
@@ -231,7 +238,8 @@
 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('appointment-bookings.dependency') }}">Citas de Mi Dependencia</a>
+                        <a class="nav-link" href="{{ route('appointment-bookings.dependency') }}">Citas de Mi
+                            Dependencia</a>
                     </li>
                 </ul>
 
@@ -313,7 +321,8 @@
 
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ route('institucional_development.regulatory_impact.index') }}">AIR y Exención</a>
+                                href="{{ route('institucional_development.regulatory_impact.index') }}">AIR y
+                                Exención</a>
                         </li>
                     </ul>
 
@@ -911,7 +920,8 @@
                         <a class="nav-link" href="{{ route('tourism.blog.admin.index') }}">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('tourism.third_party_requests.admin.index') }}">Apoyo a Terceros</a>
+                        <a class="nav-link" href="{{ route('tourism.third_party_requests.admin.index') }}">Apoyo a
+                            Terceros</a>
                     </li>
                 </ul>
 
@@ -922,6 +932,19 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('tourism.banners.index') }}">Banners</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="valleHealthDirection" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="health-direction-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Dirección de Salud</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('health_direction.blog.admin.index') }}">Blog</a>
                     </li>
                 </ul>
             </div>
@@ -937,7 +960,7 @@
                             <a class="nav-link" href="{{ route('backoffice.dependencies.index') }}">Dependencias</a>
                         </li>
                     </ul>
-                    
+
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('hr.vacancies.admin.index') }}">Vacantes</a>
@@ -1022,11 +1045,13 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('appointment-bookings.index') }}">Calendario de Citas</a>
+                            <a class="nav-link" href="{{ route('appointment-bookings.index') }}">Calendario de
+                                Citas</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('appointment-bookings.list') }}">Listado Total Agendadas</a>
+                            <a class="nav-link" href="{{ route('appointment-bookings.list') }}">Listado Total
+                                Agendadas</a>
                         </li>
                     </ul>
 
@@ -1088,7 +1113,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('urban_dev.workers.import') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('urban_dev.workers.import') }}"
+                    enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="mb-3">
