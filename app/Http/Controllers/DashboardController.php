@@ -9,6 +9,7 @@ use Carbon\Carbon;
 
 // Modelos
 use App\Models\Notification;
+use App\Models\EventsBlog;
 
 use Illuminate\Http\Request;
 
@@ -17,6 +18,16 @@ class DashboardController extends Controller
     public function index()
     {
         return view('dashboard');
+    }
+
+    public function home()
+    {
+        $events = EventsBlog::where('is_active', true)
+            ->orderBy('published_at', 'asc')
+            ->take(4)
+            ->get();
+
+        return view('home', compact('events'));
     }
 
     public function adminProfile()

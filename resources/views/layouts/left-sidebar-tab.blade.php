@@ -36,6 +36,15 @@
         <div class="main-icon-menu-body">
             <div class="position-reletive h-100" data-simplebar style="overflow-x: hidden;">
                 <ul class="nav nav-tabs" role="tablist" id="tab-menu">
+
+                    <li class="nav-item">
+                        <a href="#valleHome" id="health-direction-tab" class="nav-link">
+                            <i class="ti ti-home menu-icon"></i>
+                            <span class="menu-label">Home</span>
+                        </a>
+                    </li>
+
+
                     @if (auth()->user()->hasRole('dashboard') || auth()->user()->hasRole('all'))
                         <li class="nav-item">
                             <a href="#valleDashboard" id="dashboard-tab" class="nav-link">
@@ -221,6 +230,72 @@
         </div>
 
         <div class="menu-body navbar-vertical tab-content" data-simplebar>
+
+            <div id="valleHome" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dasboard-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Vistas Generales</h6>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('home') }}">Inicio</a>
+                    </li>
+                </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Eventos Conmemorativos</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('events_blog.admin.index') }}">Blog Eventos</a>
+                    </li>
+                </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Desempeño Laboral</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Bienestar Laboral</a>
+                    </li>
+                    <li>
+                        <a href="">Blog</a>
+                    </li>
+                </ul>
+
+
+                <div class="title-box">
+                    <h6 class="menu-title">Programa de Profesionalización</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Programa de Capacitación</a>
+                    </li>
+                    <li>
+                        <a href="">Blog</a>
+                    </li>
+                    <li>
+                        <a href="">Descargable</a>
+                    </li>
+                </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Comunicación y Vinculación</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Cumpleaños de Admin</a>
+                    </li>
+                    <li>
+                        <a href="">Alta de Cumpleaños</a>
+                    </li>
+                </ul>
+            </div>
+
+
             <div id="valleDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
                 aria-labelledby="dasboard-tab">
                 <div class="title-box">

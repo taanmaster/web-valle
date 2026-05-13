@@ -36,6 +36,7 @@ use App\Http\Controllers\TourismBannerController;
 use App\Http\Controllers\TourismBlogController;
 use App\Http\Controllers\TourismThirdPartyRequestController;
 use App\Http\Controllers\HealthDirectionBlogController;
+use App\Http\Controllers\EventsBlogController;
 
 // Recursos Humanos
 use App\Http\Controllers\HRVacancyController;
@@ -79,6 +80,8 @@ use App\Http\Controllers\BackofficeDocumentController;
 // Citas para Trámites
 use App\Http\Controllers\AppointmentController;
 
+//ADMIN
+use App\Http\Controllers\DashboardController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -321,8 +324,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /* ------------------- */
     /* ------------------- */
 
+    // Eventos Conmemorativos (Blog público)
+    Route::get('/eventos-conmemorativos', [EventsBlogController::class, 'frontIndex'])
+        ->name('events_blog.front.index');
+    Route::get('/eventos-conmemorativos/{slug}', [EventsBlogController::class, 'frontShow'])
+        ->name('events_blog.front.show');
+
     // Back-End Views
     Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin_access']], function () {
+        Route::get('/home', 'DashboardController@home')->name('home');
+
         Route::get('/', 'DashboardController@index')->name('dashboard');
         Route::post('/notification-manual', 'DashboardController@createNote')->name('create.manual.notification');
 
@@ -1624,6 +1635,24 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('dropzone/upload/{id}', 'BlogController@uploadFile')->name('dropzone.blog.upload');
             Route::get('dropzone/fetch/{id}', 'BlogController@fetchFile')->name('dropzone.blog.fetch');
             Route::post('dropzone/delete/', 'BlogController@deleteFile')->name('dropzone.blog.delete');
+        });
+
+        // Eventos Conmemorativos - Blog Admin
+        Route::resource('events-blog', EventsBlogController::class)->names([
+            'index'   => 'events_blog.admin.index',
+            'create'  => 'events_blog.admin.create',
+            'show'    => 'events_blog.admin.show',
+            'edit'    => 'events_blog.admin.edit',
+            'destroy' => 'events_blog.admin.destroy',
+        ]);
+
+        Route::group(['prefix' => 'events-blog'], function () {
+            Route::post('dropzone/upload/{id}', [EventsBlogController::class, 'uploadFile'])
+                ->name('dropzone.events_blog.upload');
+            Route::get('dropzone/fetch/{id}', [EventsBlogController::class, 'fetchFile'])
+                ->name('dropzone.events_blog.fetch');
+            Route::post('dropzone/delete', [EventsBlogController::class, 'deleteFile'])
+                ->name('dropzone.events_blog.delete');
         });
 
         /*Denuncia Ciudadana*/
