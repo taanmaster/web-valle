@@ -134,6 +134,10 @@ class FrontController extends Controller
             case 'extraordinary':
                 $gazettes = Gazette::orderBy('id', 'desc')->where('type', 'extraordinary')->paginate(10);
                 break;
+
+            case 'documents':
+                $gazettes = Gazette::orderBy('id', 'desc')->where('type', 'documents')->paginate(10);
+                break;
             default:
                 # code...
                 break;
@@ -153,14 +157,15 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
-
+        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
         return view('front.gazette.index')
             ->with('gazettes', $gazettes)
             ->with('type', $type)
             ->with('dates', $dates)
             ->with('ordinary_gazette_sessions', $ordinary_gazette_sessions)
             ->with('solemn_gazette_sessions', $solemn_gazette_sessions)
-            ->with('extraordinary_gazette_sessions', $extraordinary_gazette_sessions);
+            ->with('extraordinary_gazette_sessions', $extraordinary_gazette_sessions)
+            ->with('documents_gazette_sessions', $documents_gazette_sessions);
     }
 
     // Modulo Convocatorias de Transparencia
@@ -203,6 +208,7 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
+        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
 
         $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
             ->groupBy('date')
@@ -220,6 +226,7 @@ class FrontController extends Controller
             'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
             'solemn_gazette_sessions' => $solemn_gazette_sessions,
             'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
+            'documents_gazette_sessions' => $documents_gazette_sessions,
             'is_filtered' => true,
             'selected_date' => $date
         ]);
@@ -859,7 +866,29 @@ class FrontController extends Controller
     // Módulo Secretaría de Ayudantamiento
     public function secretaryOfAssistance()
     {
-        return view('front.secretary_of_assistance.index');
+        // Modulo Gacetas Municipales
+        Carbon::setLocale('es');
+        $gazettes = Gazette::with('files')->orderBy('id', 'desc')->limit(5)->get();
+        $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->get()
+            ->pluck('date')
+            ->map(function ($date) {
+                return Carbon::createFromFormat('Y-m', $date);
+            });
+
+        $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
+        $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
+        $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
+
+        return view('front.secretary_of_assistance.index')->with([
+            'gazettes' => $gazettes,
+            'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
+            'solemn_gazette_sessions' => $solemn_gazette_sessions,
+            'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
+            'dates' => $dates,
+        ]);
     }
 
     // Inicio de sesión administrativa

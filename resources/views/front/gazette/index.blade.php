@@ -45,6 +45,31 @@
 
                                     <h3>Sesiones Ordinarias H. Ayuntamiento 2024-2027</h3>
                                 @break
+
+                                @case('solemn')
+                                    <div class="card-icon bg-warning text-white d-flex align-items-center justify-content-center">
+                                        <ion-icon name="documents-outline"></ion-icon>
+                                    </div>
+
+                                    <h3>Sesiones Solemnes H. Ayuntamiento 2024-2027</h3>
+                                @break
+
+                                @case('extraordinary')
+                                    <div class="card-icon bg-primary text-white d-flex align-items-center justify-content-center">
+                                        <ion-icon name="documents-outline"></ion-icon>
+                                    </div>
+
+                                    <h3>Sesiones Extraordinarias H. Ayuntamiento 2024-2027</h3>
+                                @break
+
+                                @case('documents')
+                                    <div class="card-icon text-white d-flex align-items-center justify-content-center"
+                                        style="background-color: #E8813A">
+                                        <ion-icon name="documents-outline"></ion-icon>
+                                    </div>
+
+                                    <h3>Documentos Publicados H. Ayuntamiento 2024-2027</h3>
+                                @break
                             @endswitch
                         </div>
                     </div>

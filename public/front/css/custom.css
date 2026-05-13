@@ -1800,6 +1800,15 @@ a:hover {
     background-color: #2E4981;
 }
 
+.folder-orange .folder-body,
+.folder-orange .folder-head {
+    background-color: #E8813A;
+}
+
+.folder-orange .folder-text {
+    background-color: #B85E1E;
+}
+
 /* Dark mode folder enhancements */
 .dark-mode .folder-green .folder-body,
 .dark-mode .folder-green .folder-head {
@@ -1826,6 +1835,15 @@ a:hover {
 
 .dark-mode .folder-blue .folder-text {
     background-color: #1d4ed8;
+}
+
+.dark-mode .folder-orange .folder-body,
+.dark-mode .folder-orange .folder-head {
+    background-color: #f97316;
+}
+
+.dark-mode .folder-orange .folder-text {
+    background-color: #ea580c;
 }
 
 .folder-card {
