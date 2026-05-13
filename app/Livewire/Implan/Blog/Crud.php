@@ -56,6 +56,15 @@ class Crud extends Component
 
     public function save()
     {
+        $this->validate([
+            'image' => ['nullable', 'file', 'max:51200', 'mimes:jpg,jpeg,png,gif,webp,tiff,pdf,doc,docx,xls,xlsx,zip'],
+        ], [
+            'image.file'   => 'El archivo seleccionado no es válido.',
+            'image.max'    => 'El archivo no debe superar los 50 MB.',
+
+            'image.mimes'  => 'El tipo de archivo no está permitido. Se aceptan: imágenes (JPG, PNG, GIF, WEBP, TIFF), PDF, Word, Excel y ZIP.',
+        ]);
+
         if ($this->post != null) {
             // --- Subida de archivos si hay nuevos ---
             $file_url = $this->image ? $this->handleUpload($this->image) : $this->post->image;
