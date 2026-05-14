@@ -38,6 +38,8 @@ use App\Http\Controllers\TourismThirdPartyRequestController;
 use App\Http\Controllers\HealthDirectionBlogController;
 use App\Http\Controllers\EventsBlogController;
 use App\Http\Controllers\WelfareBlogController;
+use App\Http\Controllers\TrainingBlogController;
+use App\Http\Controllers\TrainingDownloadableController;
 use App\Http\Controllers\BirthdayController;
 
 // Recursos Humanos
@@ -1638,6 +1640,34 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('dropzone/fetch/{id}', 'BlogController@fetchFile')->name('dropzone.blog.fetch');
             Route::post('dropzone/delete/', 'BlogController@deleteFile')->name('dropzone.blog.delete');
         });
+
+        // Programa de Capacitación - Página principal admin
+        Route::get('/training', [TrainingBlogController::class, 'adminPage'])
+            ->name('training.admin.index');
+        Route::get('/training/detail/{id}', [TrainingBlogController::class, 'adminDetail'])
+            ->name('training.admin.detail');
+
+        // Programa de Capacitación - Blog Admin
+        Route::resource('training/blog', TrainingBlogController::class)->names([
+            'index'   => 'training_blog.admin.index',
+            'create'  => 'training_blog.admin.create',
+            'show'    => 'training_blog.admin.show',
+            'edit'    => 'training_blog.admin.edit',
+            'destroy' => 'training_blog.admin.destroy',
+        ]);
+
+        Route::group(['prefix' => 'training/blog'], function () {
+            Route::post('dropzone/upload/{id}', [TrainingBlogController::class, 'uploadFile'])
+                ->name('dropzone.training_blog.upload');
+            Route::get('dropzone/fetch/{id}', [TrainingBlogController::class, 'fetchFile'])
+                ->name('dropzone.training_blog.fetch');
+            Route::post('dropzone/delete', [TrainingBlogController::class, 'deleteFile'])
+                ->name('dropzone.training_blog.delete');
+        });
+
+        // Programa de Capacitación - Descargables
+        Route::get('/training/downloadables', [TrainingDownloadableController::class, 'index'])
+            ->name('training_downloadable.admin.index');
 
         // Bienestar Laboral - Página principal admin
         Route::get('/welfare', [WelfareBlogController::class, 'adminPage'])

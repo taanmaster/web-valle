@@ -271,13 +271,13 @@
 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="">Programa de Capacitación</a>
+                        <a class="nav-link" href="{{ route('training.admin.index') }}">Programa de Capacitación</a>
                     </li>
-                    <li>
-                        <a href="">Blog</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('training_blog.admin.index') }}">Blog</a>
                     </li>
-                    <li>
-                        <a href="">Descargable</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('training_downloadable.admin.index') }}">Descargable</a>
                     </li>
                 </ul>
 
