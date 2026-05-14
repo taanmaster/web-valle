@@ -29,10 +29,13 @@
                             PROGRAMA DE CAPACITACIÓN
                         </h2>
                         <div class="mt-4">
-                            <a href="{{ route('training_blog.admin.index') }}" class="btn px-5 py-2 fw-bold"
-                                style="background: #f5c842; color: #1a1a1a; border-radius: 50px; letter-spacing: 1px; font-size: .85rem;">
-                                CONOCE LAS CAPACITACIONES
-                            </a>
+                            @if ($latestDownloadable?->document_url)
+                                <a href="{{ $latestDownloadable->document_url }}" target="_blank"
+                                    download class="btn px-5 py-2 fw-bold"
+                                    style="background: #f5c842; color: #1a1a1a; border-radius: 50px; letter-spacing: 1px; font-size: .85rem;">
+                                    CONOCE LAS CAPACITACIONES
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GeneralBlog;
+use App\Models\TrainingDownloadable;
 use Illuminate\Http\Request;
 
 class TrainingBlogController extends Controller
@@ -14,7 +15,9 @@ class TrainingBlogController extends Controller
             ->latest('published_at')
             ->get();
 
-        return view('training.index', compact('posts'));
+        $latestDownloadable = TrainingDownloadable::latest()->first();
+
+        return view('training.index', compact('posts', 'latestDownloadable'));
     }
 
     public function adminDetail($id)
