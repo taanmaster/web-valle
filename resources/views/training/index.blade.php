@@ -45,7 +45,7 @@
                         <div class="col-md-6 mb-4">
                             <a href="{{ route('training.admin.detail', $post->id) }}" class="text-decoration-none">
                                 <div class="card" style="border-radius: 12px; overflow: hidden;">
-                                    <img src="{{ asset('images/training-blog/' . $post->hero_img) }}"
+                                    <img src="{{ $post->hero_img ?? asset('assets/images/empty.svg') }}"
                                         alt="{{ $post->title }}"
                                         style="height: 200px; object-fit: cover; width: 100%; background: #ccc;">
                                     <div class="card-body" style="background: #555; border-radius: 0 0 12px 12px;">

@@ -74,7 +74,7 @@
                         <div class="col-md-6 mb-4">
                             <a href="{{ route('welfare.admin.detail', $post->id) }}" class="text-decoration-none">
                                 <div class="card" style="border-radius:12px; overflow:hidden;">
-                                    <img src="{{ asset('images/welfare-blog/' . $post->hero_img) }}" alt="{{ $post->title }}"
+                                    <img src="{{ $post->hero_img ?? asset('assets/images/empty.svg') }}" alt="{{ $post->title }}"
                                         style="height:200px; object-fit:cover; width:100%; background:#ccc;">
                                     <div class="card-body" style="background:#555; border-radius:0 0 12px 12px;">
                                         <h6 class="text-white mb-1" style="font-weight:700; text-transform:uppercase;">

@@ -35,7 +35,7 @@
             @else
                 <div class="row justify-content-center">
                     <div class="col-md-10">
-                        <livewire:welfare-blog.entries-table />
+                        <livewire:general-blog.entries-table :type="'welfare'" />
                     </div>
                 </div>
             @endif

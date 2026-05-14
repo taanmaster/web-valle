@@ -33,8 +33,8 @@
             {{-- Hero --}}
             <div class="card mb-4"
                 style="border-radius: 16px; overflow: hidden; min-height: 380px; position: relative; background: #d0d0d0;">
-                @if ($post->hero_img && $post->hero_img !== 'empty-image.jpg')
-                    <img src="{{ asset('images/training-blog/' . $post->hero_img) }}"
+                @if ($post->hero_img)
+                    <img src="{{ $post->hero_img }}"
                         style="width: 100%; height: 380px; object-fit: cover; position: absolute; top: 0; left: 0;"
                         alt="">
                     <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.35);"></div>
@@ -42,13 +42,13 @@
                 <div
                     style="position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 380px; padding: 40px;">
                     <h1
-                        style="font-size: clamp(2rem,5vw,3.5rem); font-weight: 800; text-transform: uppercase; text-align: center; color: {{ $post->hero_img && $post->hero_img !== 'empty-image.jpg' ? '#fff' : '#555' }}; letter-spacing: 2px;">
+                        style="font-size: clamp(2rem,5vw,3.5rem); font-weight: 800; text-transform: uppercase; text-align: center; color: {{ $post->hero_img ? '#fff' : '#555' }}; letter-spacing: 2px;">
                         {{ $post->title }}
                     </h1>
                 </div>
                 @if ($post->published_at)
                     <div
-                        style="position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); color: {{ $post->hero_img && $post->hero_img !== 'empty-image.jpg' ? 'rgba(255,255,255,0.8)' : '#888' }}; font-size: 0.85rem;">
+                        style="position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); color: {{ $post->hero_img ? 'rgba(255,255,255,0.8)' : '#888' }}; font-size: 0.85rem;">
                         Publicado el
                         <strong>{{ \Carbon\Carbon::parse($post->published_at)->translatedFormat('M d, Y') }}</strong>
                     </div>
@@ -67,13 +67,13 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         @foreach ($post->images->take(1) as $image)
-                            <img src="{{ asset($image->image_path) }}" class="img-fluid w-100"
+                            <img src="{{ $image->image_path }}" class="img-fluid w-100"
                                 style="border-radius: 16px; object-fit: cover; height: 340px;" alt="">
                         @endforeach
                     </div>
                     <div class="col-md-6 d-flex flex-column" style="gap: 12px;">
                         @foreach ($post->images->skip(1)->take(2) as $image)
-                            <img src="{{ asset($image->image_path) }}" class="img-fluid w-100"
+                            <img src="{{ $image->image_path }}" class="img-fluid w-100"
                                 style="border-radius: 16px; object-fit: cover; height: 163px;" alt="">
                         @endforeach
                     </div>
@@ -92,7 +92,7 @@
                 <div class="row mb-4">
                     @foreach ($post->images->skip(3) as $image)
                         <div class="col-md-3 mb-3">
-                            <img src="{{ asset($image->image_path) }}" class="img-fluid w-100"
+                            <img src="{{ $image->image_path }}" class="img-fluid w-100"
                                 style="border-radius: 12px; object-fit: cover; height: 150px;" alt="">
                         </div>
                     @endforeach

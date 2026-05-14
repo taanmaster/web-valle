@@ -8,7 +8,7 @@
             <div class="col-md-12 mb-4">
                 <div class="card card-image card-image-banner wow fadeInUp" style="position:relative;">
                     <img class="card-img-top"
-                        src="{{ asset('images/events-blog/' . $entry->hero_img) }}"
+                        src="{{ $entry->hero_img ?? asset('assets/images/empty.svg') }}"
                         alt="{{ $entry->title }}"
                         style="max-height:420px;object-fit:cover;width:100%;">
                     <div class="overlay"></div>

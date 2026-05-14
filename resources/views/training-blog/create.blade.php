@@ -6,5 +6,5 @@
         @slot('li_2') Blog @endslot
         @slot('title') Nueva Entrada @endslot
     @endcomponent
-    <livewire:training-blog.crud :mode="$mode" />
+    <livewire:general-blog.crud :mode="$mode" :type="'training'" />
 @endsection

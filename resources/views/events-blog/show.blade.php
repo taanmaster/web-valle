@@ -15,5 +15,5 @@
         @endslot
     @endcomponent
 
-    <livewire:events-blog.crud :mode="$mode" :entry="$entry" />
+    <livewire:general-blog.crud :mode="$mode" :entry="$entry" :type="'events'" />
 @endsection

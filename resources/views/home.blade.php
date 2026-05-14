@@ -185,8 +185,8 @@
         @forelse($events as $event)
             <div class="col-6 col-md-3">
                 <a href="{{ route('events_blog.admin.detail', $event->id) }}" class="event-card d-block">
-                    @if ($event->hero_img && $event->hero_img !== 'empty-image.jpg')
-                        <img src="{{ asset('images/events-blog/' . $event->hero_img) }}"
+                    @if ($event->hero_img)
+                        <img src="{{ $event->hero_img }}"
                             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="">
                     @else
                         <div class="event-card-placeholder">

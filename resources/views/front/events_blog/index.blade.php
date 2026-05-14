@@ -39,7 +39,7 @@
                             <a href="{{ route('events_blog.front.show', $entry->slug) }}"
                                 class="text-decoration-none text-dark">
                                 <div class="card h-100 border-0 shadow-sm">
-                                    <img src="{{ asset('images/events-blog/' . $entry->hero_img) }}"
+                                    <img src="{{ $entry->hero_img ?? asset('assets/images/empty.svg') }}"
                                         class="card-img-top"
                                         style="height:220px;object-fit:cover;background:#e0e0e0;"
                                         alt="{{ $entry->title }}">

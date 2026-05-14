@@ -6,5 +6,5 @@
         @slot('li_2') Blog @endslot
         @slot('title') Ver @endslot
     @endcomponent
-    <livewire:welfare-blog.crud :mode="$mode" :entry="$entry" />
+    <livewire:general-blog.crud :mode="$mode" :entry="$entry" :type="'welfare'" />
 @endsection
