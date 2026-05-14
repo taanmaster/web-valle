@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 // Modelos
 use App\Models\Notification;
-use App\Models\EventsBlog;
+use App\Models\GeneralBlog;
 
 use Illuminate\Http\Request;
 
@@ -22,7 +22,7 @@ class DashboardController extends Controller
 
     public function home()
     {
-        $events = EventsBlog::where('is_active', true)
+        $events = GeneralBlog::where('type', 'events')->where('is_active', true)
             ->orderBy('published_at', 'asc')
             ->take(4)
             ->get();
