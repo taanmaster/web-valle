@@ -38,6 +38,7 @@ use App\Http\Controllers\TourismThirdPartyRequestController;
 use App\Http\Controllers\HealthDirectionBlogController;
 use App\Http\Controllers\EventsBlogController;
 use App\Http\Controllers\WelfareBlogController;
+use App\Http\Controllers\BirthdayController;
 
 // Recursos Humanos
 use App\Http\Controllers\HRVacancyController;
@@ -1681,6 +1682,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('dropzone/delete', [EventsBlogController::class, 'deleteFile'])
                 ->name('dropzone.events_blog.delete');
         });
+
+        // Cumpleaños de Administración
+        Route::get('/birthday', [BirthdayController::class, 'index'])
+            ->name('birthday.admin.index');
+        Route::get('/birthday/manage', [BirthdayController::class, 'manage'])
+            ->name('birthday.admin.manage');
 
         /*Denuncia Ciudadana*/
         Route::get('/citizen-complain', [

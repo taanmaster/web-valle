@@ -287,10 +287,10 @@
 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="">Cumpleaños de Admin</a>
+                        <a class="nav-link" href="{{ route('birthday.admin.index') }}">Cumpleaños de Admin</a>
                     </li>
-                    <li>
-                        <a href="">Alta de Cumpleaños</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('birthday.admin.manage') }}">Alta de Cumpleaños</a>
                     </li>
                 </ul>
             </div>
