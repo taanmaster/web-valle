@@ -13,18 +13,14 @@
             margin-bottom: 2rem;
         }
 
-        .birthday-hero-img {
+        .birthday-hero img {
             position: absolute;
-            top: 1.5rem;
-            right: 2rem;
-            width: 90px;
-            height: 90px;
-            background: #d4cfcf;
-            border-radius: .75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #aaa;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.45;
         }
 
         .birthday-hero h2 {
@@ -73,18 +69,18 @@
 
     {{-- Hero --}}
     <div class="birthday-hero">
-        <div class="birthday-hero-img">
-            <i class="ti ti-photo" style="font-size:2.5rem;"></i>
+        <img src="{{ asset('images/birthday.png') }}" alt="">
+        <div class="content z-3 position-relative top-0 left-0 right-0 bottom-0">
+            <h2>En su día especial reciban<br>nuestros mejores deseos</h2>
+
+            <p>
+                ¡Muchas felicidades! En esta administración creemos que los grandes cambios comienzan con personas felices y
+                motivadas. Hoy brindamos por tu vida y por la huella positiva que dejas en tu departamento. Que hoy sea un
+                día
+                para recargar baterías, disfrutar el camino y recordar que tu talento es nuestro mayor orgullo.
+                ¡Sigue brillando y transformando tu entorno!
+            </p>
         </div>
-
-        <h2>En su día especial reciban<br>nuestros mejores deseos</h2>
-
-        <p>
-            ¡Muchas felicidades! En esta administración creemos que los grandes cambios comienzan con personas felices y
-            motivadas. Hoy brindamos por tu vida y por la huella positiva que dejas en tu departamento. Que hoy sea un día
-            para recargar baterías, disfrutar el camino y recordar que tu talento es nuestro mayor orgullo.
-            ¡Sigue brillando y transformando tu entorno!
-        </p>
     </div>
 
     {{-- Grid de cumpleaños --}}

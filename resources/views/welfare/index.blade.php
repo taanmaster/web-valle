@@ -22,13 +22,22 @@
             <div class="row mb-4">
                 <div class="col-12">
                     <div class="card text-center"
-                        style="background:#e8e8e8; border:none; border-radius:16px; padding:60px 40px;">
-                        <h2 style="font-weight:800; letter-spacing:2px;">BIENESTAR LABORAL</h2>
-                        <p class="mt-3 mb-0 mx-auto" style="max-width:680px;">
-                            En esta administración, sabemos que detrás de cada trámite, cada proyecto y cada atención
-                            ciudadana, hay una persona increíble. Tú eres el motor de nuestra institución, y para que
-                            ese motor funcione al 100%, lo más importante es que tú te sientas bien.
-                        </p>
+                        style="background:#111; border:none; border-radius:16px; padding:60px 40px; position:relative; overflow:hidden;">
+
+                        <img src="{{ asset('images/bienestar.jpg') }}" alt="Bienestar Laboral"
+                            style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; opacity:.5;">
+
+                        <div style="position:relative; z-index:1;">
+                            <h2
+                                style="font-weight:800; letter-spacing:2px; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.5);">
+                                BIENESTAR LABORAL</h2>
+                            <p class="mt-3 mb-0 mx-auto"
+                                style="max-width:680px; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.5);">
+                                En esta administración, sabemos que detrás de cada trámite, cada proyecto y cada atención
+                                ciudadana, hay una persona increíble. Tú eres el motor de nuestra institución, y para que
+                                ese motor funcione al 100%, lo más importante es que tú te sientas bien.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,9 +63,10 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <div class="card h-100 d-flex align-items-center justify-content-center"
-                        style="background:#e0e0e0; border:none; border-radius:16px; min-height:180px;">
-                        <i class='bx bx-image-alt' style="font-size:2.5rem; color:#aaa;"></i>
+                    <div class="card d-flex align-items-center justify-content-center"
+                        style="background:#e0e0e0; border:none; border-radius:16px; height:280px;">
+                        <img src="{{ asset('images/bienestar-2.jpg') }}" alt="Bienestar Laboral"
+                            style="width:100%; height:100%; object-fit:cover; border-radius:16px;">
                     </div>
                 </div>
             </div>
@@ -74,7 +84,8 @@
                         <div class="col-md-6 mb-4">
                             <a href="{{ route('welfare.admin.detail', $post->id) }}" class="text-decoration-none">
                                 <div class="card" style="border-radius:12px; overflow:hidden;">
-                                    <img src="{{ $post->hero_img ?? asset('assets/images/empty.svg') }}" alt="{{ $post->title }}"
+                                    <img src="{{ $post->hero_img ?? asset('assets/images/empty.svg') }}"
+                                        alt="{{ $post->title }}"
                                         style="height:200px; object-fit:cover; width:100%; background:#ccc;">
                                     <div class="card-body" style="background:#555; border-radius:0 0 12px 12px;">
                                         <h6 class="text-white mb-1" style="font-weight:700; text-transform:uppercase;">

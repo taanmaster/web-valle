@@ -23,20 +23,28 @@
                 <div class="col-12">
                     {{-- Imagen de fondo pendiente por proporcionar --}}
                     <div class="card text-center"
-                        style="background: #d6d6d6; border: none; border-radius: 16px; padding: 80px 40px; position: relative; overflow: hidden;">
-                        <h2
-                            style="font-weight: 800; letter-spacing: 3px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.4);">
-                            PROGRAMA DE CAPACITACIÓN
-                        </h2>
-                        <div class="mt-4">
-                            @if ($latestDownloadable?->document_url)
-                                <a href="{{ $latestDownloadable->document_url }}" target="_blank"
-                                    download class="btn px-5 py-2 fw-bold"
-                                    style="background: #f5c842; color: #1a1a1a; border-radius: 50px; letter-spacing: 1px; font-size: .85rem;">
-                                    CONOCE LAS CAPACITACIONES
-                                </a>
-                            @endif
-                        </div>
+                        style="background: #111; border: none; border-radius: 16px; padding: 80px 40px; position: relative; overflow: hidden; height: 500px;">
+
+                        <video autoplay muted loop playsinline
+                            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: .55;">
+                            <source src="{{ asset('images/video-bienestar.webm') }}" type="video/webm">
+                        </video>
+
+                        <div style="position: relative; z-index: 1;">
+                            <h2
+                                style="font-weight: 800; letter-spacing: 3px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.4);">
+                                PROGRAMA DE CAPACITACIÓN
+                            </h2>
+                            <div class="mt-4">
+                                @if ($latestDownloadable?->document_url)
+                                    <a href="{{ $latestDownloadable->document_url }}" target="_blank" download
+                                        class="btn px-5 py-2 fw-bold"
+                                        style="background: #f5c842; color: #1a1a1a; border-radius: 50px; letter-spacing: 1px; font-size: .85rem;">
+                                        CONOCE LAS CAPACITACIONES
+                                    </a>
+                                @endif
+                            </div>
+                        </div>{{-- /z-index wrapper --}}
                     </div>
                 </div>
             </div>
