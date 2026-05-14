@@ -37,6 +37,7 @@ use App\Http\Controllers\TourismBlogController;
 use App\Http\Controllers\TourismThirdPartyRequestController;
 use App\Http\Controllers\HealthDirectionBlogController;
 use App\Http\Controllers\EventsBlogController;
+use App\Http\Controllers\WelfareBlogController;
 
 // Recursos Humanos
 use App\Http\Controllers\HRVacancyController;
@@ -1637,6 +1638,30 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('dropzone/delete/', 'BlogController@deleteFile')->name('dropzone.blog.delete');
         });
 
+        // Bienestar Laboral - Página principal admin
+        Route::get('/welfare', [WelfareBlogController::class, 'adminPage'])
+            ->name('welfare.admin.index');
+        Route::get('/welfare/detail/{id}', [WelfareBlogController::class, 'adminDetail'])
+            ->name('welfare.admin.detail');
+
+        // Bienestar Laboral - Blog Admin
+        Route::resource('welfare/blog', WelfareBlogController::class)->names([
+            'index'   => 'welfare_blog.admin.index',
+            'create'  => 'welfare_blog.admin.create',
+            'show'    => 'welfare_blog.admin.show',
+            'edit'    => 'welfare_blog.admin.edit',
+            'destroy' => 'welfare_blog.admin.destroy',
+        ]);
+
+        Route::group(['prefix' => 'welfare/blog'], function () {
+            Route::post('dropzone/upload/{id}', [WelfareBlogController::class, 'uploadFile'])
+                ->name('dropzone.welfare_blog.upload');
+            Route::get('dropzone/fetch/{id}', [WelfareBlogController::class, 'fetchFile'])
+                ->name('dropzone.welfare_blog.fetch');
+            Route::post('dropzone/delete', [WelfareBlogController::class, 'deleteFile'])
+                ->name('dropzone.welfare_blog.delete');
+        });
+
         // Eventos Conmemorativos - Blog Admin
         Route::resource('events-blog', EventsBlogController::class)->names([
             'index'   => 'events_blog.admin.index',
@@ -1647,6 +1672,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
         ]);
 
         Route::group(['prefix' => 'events-blog'], function () {
+            Route::get('detail/{id}', [EventsBlogController::class, 'adminDetail'])
+                ->name('events_blog.admin.detail');
             Route::post('dropzone/upload/{id}', [EventsBlogController::class, 'uploadFile'])
                 ->name('dropzone.events_blog.upload');
             Route::get('dropzone/fetch/{id}', [EventsBlogController::class, 'fetchFile'])

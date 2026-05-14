@@ -176,7 +176,7 @@
     {{-- Eventos Conmemorativos --}}
     <div class="d-flex align-items-center justify-content-between mb-3">
         <h4 class="section-title mb-0">Eventos conmemorativos</h4>
-        <a href="{{ route('events.index') }}" class="section-link">
+        <a href="{{ route('events_blog.admin.index') }}" class="section-link">
             Ver más eventos &nbsp;<i class="ti ti-arrow-right"></i>
         </a>
     </div>
@@ -184,20 +184,23 @@
     <div class="row g-3 mb-4">
         @forelse($events as $event)
             <div class="col-6 col-md-3">
-                @if ($event->blog_url)
-                    <a href="{{ $event->blog_url }}" class="event-card d-block" target="_blank">
+                <a href="{{ route('events_blog.admin.detail', $event->id) }}" class="event-card d-block">
+                    @if ($event->hero_img && $event->hero_img !== 'empty-image.jpg')
+                        <img src="{{ asset('images/events-blog/' . $event->hero_img) }}"
+                            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="">
                     @else
-                        <a href="{{ route('events.show', $event->id) }}" class="event-card d-block">
-                @endif
-                <div class="event-card-placeholder">
-                    <i class="ti ti-calendar-event" style="font-size: 2.5rem; color: #bbb;"></i>
-                </div>
-                <div class="event-card-body">
-                    <p class="event-card-title">{{ $event->name }}</p>
-                    <p class="event-card-date">
-                        {{ \Carbon\Carbon::parse($event->date_start)->format('d M Y') }}
-                    </p>
-                </div>
+                        <div class="event-card-placeholder">
+                            <i class="ti ti-calendar-event" style="font-size: 2.5rem; color: #bbb;"></i>
+                        </div>
+                    @endif
+                    <div class="event-card-body" style="position:relative;z-index:1;">
+                        <p class="event-card-title">{{ $event->title }}</p>
+                        @if ($event->published_at)
+                            <p class="event-card-date">
+                                {{ \Carbon\Carbon::parse($event->published_at)->format('d M Y') }}
+                            </p>
+                        @endif
+                    </div>
                 </a>
             </div>
         @empty

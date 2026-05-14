@@ -257,10 +257,10 @@
 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="">Bienestar Laboral</a>
+                        <a class="nav-link" href="{{ route('welfare.admin.index') }}">Bienestar Laboral</a>
                     </li>
-                    <li>
-                        <a href="">Blog</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('welfare_blog.admin.index') }}">Blog</a>
                     </li>
                 </ul>
 

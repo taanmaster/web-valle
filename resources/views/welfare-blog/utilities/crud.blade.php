@@ -2,7 +2,6 @@
     <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css" />
-
     <style>
         .dropzone {
             min-height: 10rem;
@@ -69,9 +68,9 @@
                     <label class="col-form-label">Contenido 1 (Primer parte del artículo)</label>
                 </div>
                 <div class="col-md" wire:ignore>
-                    <input id="eb_content_1" type="hidden" wire:model.defer="content_1"
+                    <input id="wb_content_1" type="hidden" wire:model.defer="content_1"
                         @if ($mode == 1) disabled @endif value="{{ $content_1 }}">
-                    <trix-editor wire:ignore input="eb_content_1" id="trix-eb-content_1"
+                    <trix-editor wire:ignore input="wb_content_1" id="trix-wb-content_1"
                         @if ($mode == 1) disabled @endif></trix-editor>
                 </div>
             </div>
@@ -81,9 +80,9 @@
                     <label class="col-form-label">Contenido 2 (Segunda parte del artículo)</label>
                 </div>
                 <div class="col-md" wire:ignore>
-                    <input id="eb_content_2" type="hidden" wire:model.defer="content_2"
+                    <input id="wb_content_2" type="hidden" wire:model.defer="content_2"
                         @if ($mode == 1) disabled @endif value="{{ $content_2 }}">
-                    <trix-editor wire:ignore input="eb_content_2" id="trix-eb-content_2"
+                    <trix-editor wire:ignore input="wb_content_2" id="trix-wb-content_2"
                         @if ($mode == 1) disabled @endif></trix-editor>
                 </div>
             </div>
@@ -96,7 +95,7 @@
                     <input type="file" class="form-control" wire:model="hero_img"
                         @if ($mode == 1) disabled @endif>
                     @if ($mode != 0 && $entry && $entry->hero_img && $entry->hero_img !== 'empty-image.jpg')
-                        <img src="{{ asset('images/events-blog/' . $entry->hero_img) }}" class="img-thumbnail mt-2"
+                        <img src="{{ asset('images/welfare-blog/' . $entry->hero_img) }}" class="img-thumbnail mt-2"
                             style="max-height:120px;" alt="Portada actual">
                     @endif
                 </div>
@@ -112,7 +111,7 @@
 
             @if ($mode != 1)
                 <div class="m-3 d-flex justify-content-end" style="gap: 12px">
-                    <a href="{{ route('events_blog.admin.index') }}" style="max-width: 110px"
+                    <a href="{{ route('welfare_blog.admin.index') }}" style="max-width: 110px"
                         class="btn btn-secondary btn-sm">Cancelar</a>
                     <button type="submit" style="max-width: 110px" class="btn btn-primary btn-sm">Guardar
                         datos</button>
@@ -125,83 +124,73 @@
                 <label class="col-form-label">Imágenes adicionales</label>
             </div>
 
-            <div id="eb_uploaded_image"></div>
+            <div id="wb_uploaded_image"></div>
             <hr>
 
             <div class="col-md-12">
-                <form action="{{ route('dropzone.events_blog.upload', $entry->id) }}" method="POST"
-                    enctype="multipart/form-data" class="dropzone" id="ebDropzoneForm">
+                <form action="{{ route('dropzone.welfare_blog.upload', $entry->id) }}" method="POST"
+                    enctype="multipart/form-data" class="dropzone" id="wbDropzoneForm">
                     @csrf
                     <div class="dz-message" data-dz-message>
                         <span>
                             <img src="{{ asset('assets/images/illustrations/upload.svg') }}"
                                 class="me-auto ms-auto d-block" width="40%" alt="">
-                            <br>
-                            Arrastra y suelta aquí tus imagenes o da click para buscar
+                            <br>Arrastra y suelta aquí tus imagenes o da click para buscar
                         </span>
                     </div>
                 </form>
-
                 <p class="text-bold"><small>Peso máximo por archivo: 10MB</small></p>
-
                 <div align="center">
-                    <button type="button" class="btn btn-info" id="eb-submit-all">Subir Imágenes</button>
+                    <button type="button" class="btn btn-info" id="wb-submit-all">Subir Imágenes</button>
                 </div>
             </div>
         @endif
-
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const editor1 = document.querySelector('#trix-eb-content_1');
-            const editor2 = document.querySelector('#trix-eb-content_2');
+            const e1 = document.querySelector('#trix-wb-content_1');
+            const e2 = document.querySelector('#trix-wb-content_2');
 
-            if (editor1) {
-                editor1.addEventListener('trix-change', function() {
-                    const value = document.querySelector('#eb_content_1').value;
-                    Livewire.dispatch('updateEventsContent1', {
-                        'payload': value
+            if (e1) {
+                e1.addEventListener('trix-change', function() {
+                    Livewire.dispatch('updateWelfareContent1', {
+                        payload: document.querySelector('#wb_content_1').value
                     });
                 });
             }
-
-            if (editor2) {
-                editor2.addEventListener('trix-change', function() {
-                    const value = document.querySelector('#eb_content_2').value;
-                    Livewire.dispatch('updateEventsContent2', {
-                        'payload': value
+            if (e2) {
+                e2.addEventListener('trix-change', function() {
+                    Livewire.dispatch('updateWelfareContent2', {
+                        payload: document.querySelector('#wb_content_2').value
                     });
                 });
             }
 
             document.addEventListener('livewire:load', function() {
                 setTimeout(() => {
-                    const c1 = document.querySelector('#eb_content_1');
-                    const c2 = document.querySelector('#eb_content_2');
-                    const e1 = document.querySelector('#trix-eb-content_1');
-                    const e2 = document.querySelector('#trix-eb-content_2');
-
-                    if (c1 && e1) e1.editor.loadHTML(c1.value);
-                    if (c2 && e2) e2.editor.loadHTML(c2.value);
+                    const c1 = document.querySelector('#wb_content_1');
+                    const c2 = document.querySelector('#wb_content_2');
+                    const ed1 = document.querySelector('#trix-wb-content_1');
+                    const ed2 = document.querySelector('#trix-wb-content_2');
+                    if (c1 && ed1) ed1.editor.loadHTML(c1.value);
+                    if (c2 && ed2) ed2.editor.loadHTML(c2.value);
                 }, 300);
             });
         });
     </script>
-
 </div>
 
 @if ($mode == 2)
     @push('scripts')
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
-
         <script>
             Dropzone.autoDiscover = false;
 
-            const ebDropzone = new Dropzone("#ebDropzoneForm", {
-                url: "{{ route('dropzone.events_blog.upload', $entry->id) }}",
+            const wbDropzone = new Dropzone("#wbDropzoneForm", {
+                url: "{{ route('dropzone.welfare_blog.upload', $entry->id) }}",
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
@@ -212,49 +201,42 @@
                 acceptedFiles: ".png,.jpg,.jpeg,.gif,.bmp",
                 maxFilesize: 15,
                 addRemoveLinks: true,
-                dictDefaultMessage: "Arrastra y suelta tus imágenes aquí o da click para subir.",
                 init: function() {
                     let dz = this;
-
-                    document.getElementById("eb-submit-all").addEventListener("click", function() {
-                        if (dz.getQueuedFiles().length > 0) {
-                            dz.processQueue();
-                        } else {
-                            alert("No hay imágenes para subir.");
-                        }
+                    document.getElementById("wb-submit-all").addEventListener("click", function() {
+                        dz.getQueuedFiles().length > 0 ? dz.processQueue() : alert(
+                            "No hay imágenes para subir.");
                     });
-
                     dz.on("queuecomplete", function() {
                         dz.removeAllFiles();
-                        loadEbImages();
+                        loadWbImages();
                     });
                 }
             });
 
-            loadEbImages();
+            loadWbImages();
 
-            function loadEbImages() {
+            function loadWbImages() {
                 $.ajax({
-                    url: "{{ route('dropzone.events_blog.fetch', $entry->id) }}",
+                    url: "{{ route('dropzone.welfare_blog.fetch', $entry->id) }}",
                     success: function(data) {
-                        $('#eb_uploaded_image').html(data);
+                        $('#wb_uploaded_image').html(data);
                     }
                 });
             }
 
             $(document).on('click', '.remove_file', function() {
-                var imagePath = $(this).attr('id');
-                if (!imagePath) return;
-
+                var path = $(this).attr('id');
+                if (!path) return;
                 $.ajax({
-                    url: "{{ route('dropzone.events_blog.delete') }}",
+                    url: "{{ route('dropzone.welfare_blog.delete') }}",
                     type: 'POST',
                     data: {
-                        image_path: imagePath,
+                        image_path: path,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function() {
-                        loadEbImages();
+                        loadWbImages();
                     }
                 });
             });

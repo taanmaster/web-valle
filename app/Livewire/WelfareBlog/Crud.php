@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\EventsBlog;
+namespace App\Livewire\WelfareBlog;
 
 use Livewire\Component;
 
@@ -10,7 +10,8 @@ use Livewire\Attributes\On;
 use Intervention\Image\Facades\Image as Image;
 use Livewire\WithFileUploads;
 
-use App\Models\EventsBlog;
+use App\Models\WelfareBlog;
+use App\Models\WelfareBlogImage;
 
 class Crud extends Component
 {
@@ -50,13 +51,13 @@ class Crud extends Component
         $this->published_at = $this->entry->published_at;
     }
 
-    #[On('updateEventsContent1')]
+    #[On('updateWelfareContent1')]
     public function updateContent1($payload)
     {
         $this->content_1 = $payload;
     }
 
-    #[On('updateEventsContent2')]
+    #[On('updateWelfareContent2')]
     public function updateContent2($payload)
     {
         $this->content_2 = $payload;
@@ -78,13 +79,11 @@ class Crud extends Component
                 $imageCoverName = Str::random(8) . '_cover.' . $this->hero_img->getClientOriginalExtension();
                 Image::make($this->hero_img)->resize(960, null, function ($constraint) {
                     $constraint->aspectRatio();
-                })->save(public_path('images/events-blog/' . $imageCoverName));
+                })->save(public_path('images/welfare-blog/' . $imageCoverName));
 
                 if ($this->entry->hero_img && $this->entry->hero_img !== 'empty-image.jpg') {
-                    $old = public_path('images/events-blog/' . $this->entry->hero_img);
-                    if (file_exists($old)) {
-                        unlink($old);
-                    }
+                    $old = public_path('images/welfare-blog/' . $this->entry->hero_img);
+                    if (file_exists($old)) unlink($old);
                 }
             } else {
                 $imageCoverName = $this->entry->hero_img;
@@ -99,19 +98,19 @@ class Crud extends Component
                 'published_at' => $this->published_at,
             ]);
 
-            return redirect()->route('events_blog.admin.index');
+            return redirect()->route('welfare_blog.admin.index');
         }
 
         if ($this->hero_img instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
             $imageCoverName = Str::random(8) . '_cover.' . $this->hero_img->getClientOriginalExtension();
             Image::make($this->hero_img)->resize(960, null, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save(public_path('images/events-blog/' . $imageCoverName));
+            })->save(public_path('images/welfare-blog/' . $imageCoverName));
         } else {
             $imageCoverName = 'empty-image.jpg';
         }
 
-        $newEntry = EventsBlog::create([
+        $newEntry = WelfareBlog::create([
             'title'        => $this->title,
             'slug'         => Str::slug($this->title),
             'description'  => $this->description,
@@ -124,21 +123,20 @@ class Crud extends Component
         if (!empty($this->photos)) {
             foreach ($this->photos as $photo) {
                 $filename = Str::random(8) . '_image.' . $photo->getClientOriginalExtension();
-                $location = public_path('images/events-blog/');
-                $photo->move($location, $filename);
+                $photo->move(public_path('images/welfare-blog/'), $filename);
 
-                \App\Models\EventsBlogImage::create([
-                    'events_blog_id' => $newEntry->id,
-                    'image_path'     => 'images/events-blog/' . $filename,
+                WelfareBlogImage::create([
+                    'welfare_blog_id' => $newEntry->id,
+                    'image_path'      => 'images/welfare-blog/' . $filename,
                 ]);
             }
         }
 
-        return redirect()->route('events_blog.admin.edit', $newEntry->id);
+        return redirect()->route('welfare_blog.admin.edit', $newEntry->id);
     }
 
     public function render()
     {
-        return view('events-blog.utilities.crud');
+        return view('welfare-blog.utilities.crud');
     }
 }

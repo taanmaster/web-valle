@@ -17,6 +17,13 @@ class EventsBlogController extends Controller
         ]);
     }
 
+    public function adminDetail($id)
+    {
+        $entry = EventsBlog::with('images')->findOrFail($id);
+
+        return view('events-blog.detail', compact('entry'));
+    }
+
     public function create()
     {
         $mode = 0;
