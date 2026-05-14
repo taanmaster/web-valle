@@ -1656,15 +1656,6 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'destroy' => 'training_blog.admin.destroy',
         ]);
 
-        Route::group(['prefix' => 'training/blog'], function () {
-            Route::post('dropzone/upload/{id}', [TrainingBlogController::class, 'uploadFile'])
-                ->name('dropzone.training_blog.upload');
-            Route::get('dropzone/fetch/{id}', [TrainingBlogController::class, 'fetchFile'])
-                ->name('dropzone.training_blog.fetch');
-            Route::post('dropzone/delete', [TrainingBlogController::class, 'deleteFile'])
-                ->name('dropzone.training_blog.delete');
-        });
-
         // Programa de Capacitación - Descargables
         Route::get('/training/downloadables', [TrainingDownloadableController::class, 'index'])
             ->name('training_downloadable.admin.index');
@@ -1684,15 +1675,6 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'destroy' => 'welfare_blog.admin.destroy',
         ]);
 
-        Route::group(['prefix' => 'welfare/blog'], function () {
-            Route::post('dropzone/upload/{id}', [WelfareBlogController::class, 'uploadFile'])
-                ->name('dropzone.welfare_blog.upload');
-            Route::get('dropzone/fetch/{id}', [WelfareBlogController::class, 'fetchFile'])
-                ->name('dropzone.welfare_blog.fetch');
-            Route::post('dropzone/delete', [WelfareBlogController::class, 'deleteFile'])
-                ->name('dropzone.welfare_blog.delete');
-        });
-
         // Eventos Conmemorativos - Blog Admin
         Route::resource('events-blog', EventsBlogController::class)->names([
             'index'   => 'events_blog.admin.index',
@@ -1701,17 +1683,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'edit'    => 'events_blog.admin.edit',
             'destroy' => 'events_blog.admin.destroy',
         ]);
-
-        Route::group(['prefix' => 'events-blog'], function () {
-            Route::get('detail/{id}', [EventsBlogController::class, 'adminDetail'])
-                ->name('events_blog.admin.detail');
-            Route::post('dropzone/upload/{id}', [EventsBlogController::class, 'uploadFile'])
-                ->name('dropzone.events_blog.upload');
-            Route::get('dropzone/fetch/{id}', [EventsBlogController::class, 'fetchFile'])
-                ->name('dropzone.events_blog.fetch');
-            Route::post('dropzone/delete', [EventsBlogController::class, 'deleteFile'])
-                ->name('dropzone.events_blog.delete');
-        });
+        Route::get('events-blog/detail/{id}', [EventsBlogController::class, 'adminDetail'])
+            ->name('events_blog.admin.detail');
 
         // Cumpleaños de Administración
         Route::get('/birthday', [BirthdayController::class, 'index'])
