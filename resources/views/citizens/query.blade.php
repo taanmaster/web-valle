@@ -1,52 +1,79 @@
 @extends('layouts.master')
-@section('title')Intranet @endsection
+@section('title') Intranet @endsection
+
 @section('content')
-<!-- this is breadcrumbs -->
-@component('components.breadcrumb')
-@slot('li_1') Intranet @endslot
-@slot('li_2') Documentos @endslot
-@slot('title') Particulares @endslot
-@endcomponent
+    @component('components.breadcrumb')
+        @slot('li_1') Intranet @endslot
+        @slot('li_2') Apoyos Económicos @endslot
+        @slot('title') Resultados de Búsqueda @endslot
+    @endcomponent
 
-<div class="row layout-spacing">
-    <div class="main-content">
-        <div class="row">
-            <div class="col-md-12">
-                <h3>Resultados de Búsqueda <div class="badge badge-info">{{ $citizens->count() }}</div></h3>
-                @if(Request::input('query') == NULL)
-                @else
-                <p>Elementos que contienen: "{{ Request::input('query') }}"</p>
-                @endif
-                <hr>
-            </div>	
-        </div>
+    <div class="container-fluid py-4">
 
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-4">
-                                <h4 class="mt-0 header-title mb-4">Listado de Particulares</h4>
-                            </div>
-        
-                            <div class="col-8 text-end">
-                                @include('citizens.utilities._search_options')
-                            </div>
+        {{-- HEADER DE MÓDULO --}}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                            <i class="fas fa-search fa-2x text-primary"></i>
                         </div>
-                        
-                        @if($citizens->count())
-                            @include('citizens.utilities._table')
-                        @else
-                        <div class="text-center my-5">
-                            <h4 class="mb-0">¡No hay resultados con esa búsqueda!</h4>
-                            <p>Mejora tus términos de búsqueda o utiliza la búsqueda avanzada.</p>
+                        <div>
+                            <h3 class="mb-1 fw-bold">Resultados de Búsqueda</h3>
+                            <p class="text-muted mb-0">
+                                @if(Request::input('query'))
+                                    Resultados para: <strong>"{{ Request::input('query') }}"</strong> &mdash;
+                                @endif
+                                <span class="badge bg-info">{{ $citizens->count() }} resultado(s)</span>
+                            </p>
                         </div>
-                        @endif
+                    </div>
+                    <div class="col-lg-4 text-end">
+                        <a href="{{ route('citizens.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i> Volver al listado
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- FILTROS --}}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                <form role="search" action="{{ route('back.citizens.query') }}" class="row g-3 align-items-end">
+                    <div class="col-md-10">
+                        <label class="form-label fw-semibold">Buscar particular</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input class="form-control" type="search" name="query" value="{{ Request::input('query') }}" placeholder="Nombre o CURP del particular...">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {{-- TABLA O ESTADO VACÍO --}}
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                @if($citizens->count())
+                    @include('citizens.utilities._table')
+                @else
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-folder-open fa-4x text-muted"></i>
+                        </div>
+                        <h5 class="text-muted">¡No hay resultados con esa búsqueda!</h5>
+                        <p class="text-muted mb-4">Mejora tus términos o utiliza la búsqueda avanzada.</p>
+                        <a href="{{ route('citizens.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i> Volver al listado
+                        </a>
+                    </div>
+                @endif
+            </div>
+        </div>
+
     </div>
-</div>
 @endsection

@@ -16,6 +16,8 @@ use App\Models\FinancialSupport;
 use App\Models\FinancialSupportType;
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\FinancialSupportImport;
 
 class FinancialSupportController extends Controller
 {
@@ -65,12 +67,11 @@ class FinancialSupportController extends Controller
 
     public function reportQuery(Request $request)
     {
-        /* Defining Dates */
-        $date_start = $request->date_start ?? Carbon::now()->format('Y-m-d');
-        $date_end = $request->date_end ?? Carbon::now()->format('Y-m-d');
+        $date_start = $request->date_start ?? Carbon::now()->startOfMonth()->format('Y-m-d');
+        $date_end   = $request->date_end   ?? Carbon::now()->endOfMonth()->format('Y-m-d');
 
-        $start_of_day = Carbon::parse($date_start)->startOfMonth();
-        $end_of_day = Carbon::parse($date_start)->endOfMonth();
+        $start_of_day = Carbon::parse($date_start)->startOfDay();
+        $end_of_day   = Carbon::parse($date_end)->endOfDay();
 
         // Indicadores
         $num_apoyos_mes = FinancialSupport::whereBetween('created_at', [$start_of_day, $end_of_day])->count();
@@ -82,7 +83,9 @@ class FinancialSupportController extends Controller
             ->with('num_apoyos_mes', $num_apoyos_mes)
             ->with('cantidad_invertida_apoyos', $cantidad_invertida_apoyos)
             ->with('cantidad_particulares_nuevos', $cantidad_particulares_nuevos)
-            ->with('cantidad_particulares_apoyados', $cantidad_particulares_apoyados);
+            ->with('cantidad_particulares_apoyados', $cantidad_particulares_apoyados)
+            ->with('date_start', $date_start)
+            ->with('date_end', $date_end);
     }
 
     public function create()
@@ -169,6 +172,30 @@ class FinancialSupportController extends Controller
 
         Session::flash('success', 'Se eliminó la información de manera exitosa.');
         return redirect()->back();
+    }
+
+    public function import(Request $request)
+    {
+        $archivo = $request->file('import_file');
+        $filename_excel = 'apoyos_importados_' . Carbon::now()->format('d_m_y_H_i_s') . '.' . $archivo->getClientOriginalExtension();
+        $location = public_path('excel/');
+        $archivo->move($location, $filename_excel);
+
+        try {
+            $import = new FinancialSupportImport();
+            Excel::import($import, public_path('excel/' . $filename_excel));
+
+            if (!empty($import->rowErrors)) {
+                Session::flash('import_row_errors', $import->rowErrors);
+            }
+
+            Session::flash('success', 'Importación completada. Los registros válidos fueron procesados correctamente.');
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            Session::flash('error', 'Ocurrió un error al procesar el archivo: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**

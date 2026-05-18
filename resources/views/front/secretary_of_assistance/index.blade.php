@@ -100,6 +100,23 @@
             </div>
         </div>
 
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card card-normal wow fadeInUp">
+                    <div class="card-title">
+                        <div class="d-flex gap-3">
+                            <div class="card-icon bg-primary text-white d-flex align-items-center justify-content-center">
+                                <ion-icon name="documents-outline"></ion-icon>
+                            </div>
+                            <h3>Gaceta Municipal</h3>
+                        </div>
+                    </div>
+
+                    @include('front.gazette.utilities._folder_cards')
+                </div>
+            </div>
+        </div>
+
         <div class="row justify-content-center mb-4">
             <div class="col-md-12">
                 <div class="card card-image card-image-banner justify-content-center wow fadeInUp">

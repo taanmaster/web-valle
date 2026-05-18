@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\User;
 use App\Models\UserInfo;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -72,6 +73,27 @@ class CreateNewUser implements CreatesNewUsers
             'model_id' => null, // Se puede asignar más tarde si es necesario
             'additional_data' => $additionalData,
         ]);
+
+        // Correo al ciudadano: bienvenida al portal
+        Mail::send('_mail_notifications.citizen.account_created', [
+            'nombre_ciudadano' => $user->name,
+            'correo_usuario'   => $user->email,
+            'fecha_registro'   => now()->format('d/m/Y'),
+        ], function ($m) use ($user) {
+            $m->to($user->email)
+              ->subject('Tu cuenta ha sido creada — Bienvenido al portal municipal');
+        });
+
+        // Correo al administrador: nuevo usuario registrado
+        Mail::send('_mail_notifications.admin.new_user_registered', [
+            'nombre_servidor'  => 'Administrador',
+            'nombre_ciudadano' => $user->name,
+            'correo_ciudadano' => $user->email,
+            'fecha_registro'   => now()->format('d/m/Y'),
+        ], function ($m) use ($user) {
+            $m->to('atencion@valledesantiago.gob.mx')
+              ->subject('Nuevo ciudadano registrado en el sistema');
+        });
 
         return $user;
     }

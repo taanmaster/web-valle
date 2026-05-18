@@ -35,6 +35,12 @@ use App\Http\Controllers\RegulatoryImpactFrontController;
 use App\Http\Controllers\TourismBannerController;
 use App\Http\Controllers\TourismBlogController;
 use App\Http\Controllers\TourismThirdPartyRequestController;
+use App\Http\Controllers\HealthDirectionBlogController;
+use App\Http\Controllers\EventsBlogController;
+use App\Http\Controllers\WelfareBlogController;
+use App\Http\Controllers\TrainingBlogController;
+use App\Http\Controllers\TrainingDownloadableController;
+use App\Http\Controllers\BirthdayController;
 
 // Recursos Humanos
 use App\Http\Controllers\HRVacancyController;
@@ -78,6 +84,8 @@ use App\Http\Controllers\BackofficeDocumentController;
 // Citas para Trámites
 use App\Http\Controllers\AppointmentController;
 
+//ADMIN
+use App\Http\Controllers\DashboardController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -255,6 +263,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'regulatory-agenda-dependency.show'
     ]);
 
+    Route::get('/direccion_de_salud', [
+        'uses' => 'FrontController@healthDirection',
+        'as' => 'health_direction.index'
+    ]);
+
+    Route::get('/direccion_de_salud/{category}', [
+        'uses' => 'FrontController@healthDirectionList',
+        'as' => 'health_direction.list'
+    ]);
+
     // Modulo Blog
     Route::get('/blog', [
         'uses' => 'FrontController@blog',
@@ -310,8 +328,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
     /* ------------------- */
     /* ------------------- */
 
+    // Eventos Conmemorativos (Blog público)
+    Route::get('/eventos-conmemorativos', [EventsBlogController::class, 'frontIndex'])
+        ->name('events_blog.front.index');
+    Route::get('/eventos-conmemorativos/{slug}', [EventsBlogController::class, 'frontShow'])
+        ->name('events_blog.front.show');
+
     // Back-End Views
     Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin_access']], function () {
+        Route::get('/home', 'DashboardController@home')->name('home');
+
         Route::get('/', 'DashboardController@index')->name('dashboard');
         Route::post('/notification-manual', 'DashboardController@createNote')->name('create.manual.notification');
 
@@ -1109,6 +1135,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('properties/{id}/account-statement/print', [CTOPropertyController::class, 'printAccountStatement'])->name('properties.account-statement.print');
 
             /* Apoyos Económicos */
+            Route::post('/importacion-apoyos', [
+                'uses' => 'FinancialSupportController@import',
+                'as' => 'financial_supports.import',
+            ]);
+
             Route::resource('financial_supports', FinancialSupportController::class);
 
             Route::get('/financial_supports/funciones/busqueda', [
@@ -1610,6 +1641,57 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('dropzone/delete/', 'BlogController@deleteFile')->name('dropzone.blog.delete');
         });
 
+        // Programa de Capacitación - Página principal admin
+        Route::get('/training', [TrainingBlogController::class, 'adminPage'])
+            ->name('training.admin.index');
+        Route::get('/training/detail/{id}', [TrainingBlogController::class, 'adminDetail'])
+            ->name('training.admin.detail');
+
+        // Programa de Capacitación - Blog Admin
+        Route::resource('training/blog', TrainingBlogController::class)->names([
+            'index'   => 'training_blog.admin.index',
+            'create'  => 'training_blog.admin.create',
+            'show'    => 'training_blog.admin.show',
+            'edit'    => 'training_blog.admin.edit',
+            'destroy' => 'training_blog.admin.destroy',
+        ]);
+
+        // Programa de Capacitación - Descargables
+        Route::get('/training/downloadables', [TrainingDownloadableController::class, 'index'])
+            ->name('training_downloadable.admin.index');
+
+        // Bienestar Laboral - Página principal admin
+        Route::get('/welfare', [WelfareBlogController::class, 'adminPage'])
+            ->name('welfare.admin.index');
+        Route::get('/welfare/detail/{id}', [WelfareBlogController::class, 'adminDetail'])
+            ->name('welfare.admin.detail');
+
+        // Bienestar Laboral - Blog Admin
+        Route::resource('welfare/blog', WelfareBlogController::class)->names([
+            'index'   => 'welfare_blog.admin.index',
+            'create'  => 'welfare_blog.admin.create',
+            'show'    => 'welfare_blog.admin.show',
+            'edit'    => 'welfare_blog.admin.edit',
+            'destroy' => 'welfare_blog.admin.destroy',
+        ]);
+
+        // Eventos Conmemorativos - Blog Admin
+        Route::resource('events-blog', EventsBlogController::class)->names([
+            'index'   => 'events_blog.admin.index',
+            'create'  => 'events_blog.admin.create',
+            'show'    => 'events_blog.admin.show',
+            'edit'    => 'events_blog.admin.edit',
+            'destroy' => 'events_blog.admin.destroy',
+        ]);
+        Route::get('events-blog/detail/{id}', [EventsBlogController::class, 'adminDetail'])
+            ->name('events_blog.admin.detail');
+
+        // Cumpleaños de Administración
+        Route::get('/birthday', [BirthdayController::class, 'index'])
+            ->name('birthday.admin.index');
+        Route::get('/birthday/manage', [BirthdayController::class, 'manage'])
+            ->name('birthday.admin.manage');
+
         /*Denuncia Ciudadana*/
         Route::get('/citizen-complain', [
             'uses' => 'CitizenComplainController@index',
@@ -1802,6 +1884,37 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'index' => 'tourism.third_party_requests.admin.index',
                 'show' => 'tourism.third_party_requests.admin.show',
                 'destroy' => 'tourism.third_party_requests.admin.destroy',
+            ]);
+        });
+
+        /* ------------------- */
+        /* ------------------- */
+        /* Health Direction */
+        Route::group(['prefix' => 'health-direction'], function () {
+            Route::resource('blog', HealthDirectionBlogController::class)->names([
+                'index' => 'health_direction.blog.admin.index',
+                'create' => 'health_direction.blog.admin.create',
+                'store' => 'health_direction.blog.admin.store',
+                'show' => 'health_direction.blog.admin.show',
+                'edit' => 'health_direction.blog.admin.edit',
+                'update' => 'health_direction.blog.admin.update',
+                'destroy' => 'health_direction.blog.admin.destroy',
+            ]);
+
+            // Dropzone routes for Health Direction Blog
+            Route::post('/blog/upload/{id}', [
+                'uses' => 'HealthDirectionBlogController@uploadFile',
+                'as' => 'dropzone.health_direction.blog.upload',
+            ]);
+
+            Route::get('/blog/fetch/{id}', [
+                'uses' => 'HealthDirectionBlogController@fetchFile',
+                'as' => 'dropzone.health_direction.blog.fetch',
+            ]);
+
+            Route::post('/blog/delete-file', [
+                'uses' => 'HealthDirectionBlogController@deleteFile',
+                'as' => 'dropzone.health_direction.blog.delete',
             ]);
         });
 

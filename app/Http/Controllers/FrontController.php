@@ -64,6 +64,9 @@ use App\Models\ImplanBlog;
 use App\Models\TourismBanner;
 use App\Models\TourismBlog;
 
+// Dirección de Salud
+use App\Models\HealthDirectionBlog;
+
 // Recursos Humanos
 use App\Models\HRVacancy;
 
@@ -86,6 +89,7 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
+        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
 
         // Modulo Transparencia
         // Cargar las dependencias que quieren mostrar en la página de inicio de Transparencia
@@ -105,6 +109,7 @@ class FrontController extends Controller
             'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
             'solemn_gazette_sessions' => $solemn_gazette_sessions,
             'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
+            'documents_gazette_sessions' => $documents_gazette_sessions,
             'dates' => $dates,
             'dependencies' => $dependencies,
             'banners' => $banners,
@@ -134,6 +139,10 @@ class FrontController extends Controller
             case 'extraordinary':
                 $gazettes = Gazette::orderBy('id', 'desc')->where('type', 'extraordinary')->paginate(10);
                 break;
+
+            case 'documents':
+                $gazettes = Gazette::orderBy('id', 'desc')->where('type', 'documents')->paginate(10);
+                break;
             default:
                 # code...
                 break;
@@ -153,14 +162,15 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
-
+        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
         return view('front.gazette.index')
             ->with('gazettes', $gazettes)
             ->with('type', $type)
             ->with('dates', $dates)
             ->with('ordinary_gazette_sessions', $ordinary_gazette_sessions)
             ->with('solemn_gazette_sessions', $solemn_gazette_sessions)
-            ->with('extraordinary_gazette_sessions', $extraordinary_gazette_sessions);
+            ->with('extraordinary_gazette_sessions', $extraordinary_gazette_sessions)
+            ->with('documents_gazette_sessions', $documents_gazette_sessions);
     }
 
     // Modulo Convocatorias de Transparencia
@@ -203,6 +213,7 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
+        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
 
         $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
             ->groupBy('date')
@@ -220,6 +231,7 @@ class FrontController extends Controller
             'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
             'solemn_gazette_sessions' => $solemn_gazette_sessions,
             'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
+            'documents_gazette_sessions' => $documents_gazette_sessions,
             'is_filtered' => true,
             'selected_date' => $date
         ]);
@@ -859,7 +871,51 @@ class FrontController extends Controller
     // Módulo Secretaría de Ayudantamiento
     public function secretaryOfAssistance()
     {
-        return view('front.secretary_of_assistance.index');
+        // Modulo Gacetas Municipales
+        Carbon::setLocale('es');
+        $gazettes = Gazette::with('files')->orderBy('id', 'desc')->limit(5)->get();
+        $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->get()
+            ->pluck('date')
+            ->map(function ($date) {
+                return Carbon::createFromFormat('Y-m', $date);
+            });
+
+        $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
+        $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
+        $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
+
+        return view('front.secretary_of_assistance.index')->with([
+            'gazettes' => $gazettes,
+            'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
+            'solemn_gazette_sessions' => $solemn_gazette_sessions,
+            'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
+            'dates' => $dates,
+        ]);
+    }
+
+    //Inicio de Dirección de Salud
+    public function healthDirectionList($category)
+    {
+        $allowed = ['Taller', 'Campaña', 'Platica', 'Evento'];
+
+        if (!in_array($category, $allowed)) {
+            abort(404);
+        }
+
+        return view('front.health_direction.list', compact('category'));
+    }
+
+    public function healthDirection()
+    {
+        $talleres  = HealthDirectionBlog::where('category', 'Taller')->latest()->take(2)->get();
+        $campanas  = HealthDirectionBlog::where('category', 'Campaña')->latest()->take(2)->get();
+        $eventos   = HealthDirectionBlog::where('category', 'Evento')->latest()->take(2)->get();
+        $platicas  = HealthDirectionBlog::where('category', 'Platica')->latest()->take(2)->get();
+
+        return view('front.health_direction.index', compact('talleres', 'campanas', 'eventos', 'platicas'));
     }
 
     // Inicio de sesión administrativa

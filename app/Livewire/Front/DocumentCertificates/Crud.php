@@ -5,6 +5,7 @@ namespace App\Livewire\Front\DocumentCertificates;
 use Livewire\Component;
 use App\Models\DocumentCertificate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class Crud extends Component
@@ -77,6 +78,31 @@ class Crud extends Component
             'request_intent' => $this->request_intent,
             'status'         => 'Solicitud nueva',
         ]);
+
+        // Correo al ciudadano: recepción de documentos
+        if ($certificate->email) {
+            Mail::send('_mail_notifications.citizen.document_received', [
+                'nombre_ciudadano' => $certificate->full_name,
+                'tipo_constancia'  => $certificate->filename,
+                'folio'            => $certificate->folio,
+                'fecha_recepcion'  => $certificate->created_at->format('d/m/Y'),
+            ], function ($m) use ($certificate) {
+                $m->to($certificate->email)
+                  ->subject('Recibimos tus documentos — Folio ' . $certificate->folio);
+            });
+        }
+
+        // Correo al administrador: nuevo envío de documentos
+        Mail::send('_mail_notifications.admin.document_new_submission', [
+            'nombre_servidor'  => 'Equipo Secretaría de Ayuntamiento',
+            'folio'            => $certificate->folio,
+            'nombre_ciudadano' => $certificate->full_name,
+            'tipo_constancia'  => $certificate->filename,
+            'fecha_recepcion'  => $certificate->created_at->format('d/m/Y'),
+        ], function ($m) use ($certificate) {
+            $m->to('secretaria.ayuntamiento@valledesantiago.gob.mx')
+              ->subject('Nueva solicitud recibida — Folio ' . $certificate->folio);
+        });
 
         Session::flash('success', 'Tu solicitud ha sido enviada correctamente. Folio: ' . $folio);
 
