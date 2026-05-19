@@ -13,6 +13,9 @@
                     @case('extraordinary')
                         <p class="badge bg-warning mb-0">Sesiones Extraordinarias</p>
                         @break
+                    @case('document')
+                        <p class="badge bg-info mb-0">Documentos H. Ayuntamiento</p>
+                        @break
                     @default
                 @endswitch
 

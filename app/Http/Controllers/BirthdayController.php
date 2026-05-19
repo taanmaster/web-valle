@@ -8,7 +8,10 @@ class BirthdayController extends Controller
 {
     public function index()
     {
-        $birthdays = Birthday::orderBy('birthday_date')->get();
+        $currentMonth = now()->month;
+        $birthdays = Birthday::whereMonth('birthday_date', $currentMonth)
+            ->orderBy('birthday_date')
+            ->get();
 
         return view('birthday.index', compact('birthdays'));
     }

@@ -57,7 +57,7 @@
          </a>
      </div>
      <div class="col-md-6 my-4 mb-md-0">
-         <a href="{{ route('gazette.list', 'documents') }}" class="folder-card folder-orange">
+         <a href="{{ route('gazette.list', 'document') }}" class="folder-card folder-orange">
              <div class="folder-head"></div>
              <div class="folder-body">
                  <div class="folder-document"></div>
