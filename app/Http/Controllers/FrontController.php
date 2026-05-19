@@ -886,12 +886,14 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
+        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
 
         return view('front.secretary_of_assistance.index')->with([
             'gazettes' => $gazettes,
             'ordinary_gazette_sessions' => $ordinary_gazette_sessions,
             'solemn_gazette_sessions' => $solemn_gazette_sessions,
             'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
+            'documents_gazette_sessions' => $documents_gazette_sessions,
             'dates' => $dates,
         ]);
     }
