@@ -224,8 +224,8 @@
                 <h5>Desempeño Laboral</h5>
                 <p>Agrupa iniciativas relacionadas al desarrollo y evaluación del personal.</p>
                 <ul>
-                    <li><a href="#">Sistema de evaluación de desempeño</a></li>
-                    <li><a href="#">Bienestar laboral</a></li>
+                    <li><a href="javascript:void(0)">Sistema de evaluación de desempeño</a></li>
+                    <li><a href="{{ route('welfare.admin.index') }}">Bienestar laboral</a></li>
                 </ul>
             </div>
         </div>
@@ -243,7 +243,7 @@
                 <p>El objetivo es ayudarte a lograr un balance entre tu desarrollo profesional y tu vida personal.</p>
                 <p>Explora la oferta académica y comienza hoy.</p>
                 <ul>
-                    <li><a href="#">Programas de capacitación</a></li>
+                    <li><a href="{{ route('training.admin.index') }}">Programas de capacitación</a></li>
                 </ul>
             </div>
         </div>
@@ -254,8 +254,8 @@
                 <h5>Comunicación y Vinculación Organizacional Interdepartamental</h5>
                 <p>Espacio para fortalecer la cultura organizacional y comunicación interna.</p>
                 <ul>
-                    <li><a href="#">Cumpleaños de la administración</a></li>
-                    <li><a href="#">Programas de identidad</a></li>
+                    <li><a href="{{ route('birthday.admin.index') }}">Cumpleaños de la administración</a></li>
+                    <li><a href="javascript:void(0)">Programas de identidad</a></li>
                 </ul>
             </div>
         </div>

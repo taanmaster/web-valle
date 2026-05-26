@@ -62,7 +62,7 @@
                                     <h3>Sesiones Extraordinarias H. Ayuntamiento 2024-2027</h3>
                                 @break
 
-                                @case('documents')
+                                @case('document')
                                     <div class="card-icon text-white d-flex align-items-center justify-content-center"
                                         style="background-color: #E8813A">
                                         <ion-icon name="documents-outline"></ion-icon>

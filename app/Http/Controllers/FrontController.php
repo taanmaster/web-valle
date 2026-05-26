@@ -89,7 +89,7 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
-        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
+        $documents_gazette_sessions = Gazette::where('type', 'document')->count();
 
         // Modulo Transparencia
         // Cargar las dependencias que quieren mostrar en la página de inicio de Transparencia
@@ -140,11 +140,12 @@ class FrontController extends Controller
                 $gazettes = Gazette::orderBy('id', 'desc')->where('type', 'extraordinary')->paginate(10);
                 break;
 
-            case 'documents':
-                $gazettes = Gazette::orderBy('id', 'desc')->where('type', 'documents')->paginate(10);
+            case 'document':
+                $gazettes = Gazette::orderBy('id', 'desc')->where('type', 'document')->paginate(10);
                 break;
             default:
-                # code...
+                $gazettes = Gazette::orderBy('id', 'desc')->paginate(10);
+                $type = 'all';
                 break;
         }
 
@@ -162,7 +163,7 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
-        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
+        $documents_gazette_sessions = Gazette::where('type', 'document')->count();
         return view('front.gazette.index')
             ->with('gazettes', $gazettes)
             ->with('type', $type)
@@ -213,7 +214,7 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
-        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
+        $documents_gazette_sessions = Gazette::where('type', 'document')->count();
 
         $dates = Gazette::selectRaw('DATE_FORMAT(meeting_date, "%Y-%m") as date')
             ->groupBy('date')
@@ -886,7 +887,7 @@ class FrontController extends Controller
         $ordinary_gazette_sessions = Gazette::where('type', 'ordinary')->count();
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
-        $documents_gazette_sessions = Gazette::where('type', 'documents')->count();
+        $documents_gazette_sessions = Gazette::where('type', 'document')->count();
 
         return view('front.secretary_of_assistance.index')->with([
             'gazettes' => $gazettes,
