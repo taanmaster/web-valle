@@ -20,6 +20,7 @@ class TsrAccountDueIncomeReceipt extends Model
         'denominations',
         'total_card',
         'total_check',
+        'total_transfer',
         'account',
         'total',
     ];

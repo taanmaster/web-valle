@@ -5,19 +5,13 @@ namespace App\Livewire\TsrAccountsDue\Reports;
 use Livewire\Component;
 
 // Ayudantes
-use Str;
-use Auth;
-use Session;
-use Livewire\Attributes\Validate;
-use Livewire\Attributes\On;
-use Livewire\WithPagination;
 use Carbon\Carbon;
 
 //Modelos
-use App\Models\TsrAccountDueIncome;
 use App\Models\TsrAccountDueIncomeReceipt;
-use App\Models\TransparencyDependency;
 use App\Models\TsrAccountDueCustomeReport;
+use App\Models\BackofficeDependency;
+use App\Models\TsrAccountDueIncome;
 
 class Custome extends Component
 {
@@ -28,6 +22,8 @@ class Custome extends Component
     public $end_date = '';
     public $cashier = '';
     public $cashier_user = '';
+    public $dependency_name = '';
+    public $concept = '';
     public $orderBy = 'concept';
     public $account = '';
     public $selectedMethods = [];
@@ -36,6 +32,8 @@ class Custome extends Component
     public $cashiers;
     public $userCashiers;
     public $bankAccounts;
+    public $dependencies;
+    public $concepts;
     public $paymentsMethods;
     public $orderDirection = 'asc';
 
@@ -44,6 +42,8 @@ class Custome extends Component
         $this->cashiers = TsrAccountDueIncomeReceipt::select('cashier')->distinct()->pluck('cashier');
         $this->userCashiers = TsrAccountDueIncomeReceipt::select('cashier_user')->distinct()->pluck('cashier_user');
         $this->bankAccounts = TsrAccountDueIncomeReceipt::select('account')->distinct()->pluck('account');
+        $this->dependencies = BackofficeDependency::select('name')->orderBy('name')->pluck('name');
+        $this->concepts = TsrAccountDueIncome::select('concept')->distinct()->pluck('concept');
 
         $inicio = Carbon::now()->startOfWeek();
 
@@ -73,6 +73,8 @@ class Custome extends Component
 
         $report->cashier_user = $this->cashier_user;
         $report->cashier = $this->cashier;
+        $report->dependency_name = $this->dependency_name;
+        $report->concept = $this->concept;
 
         $report->start_date = $this->start_date;
         $report->end_date = $this->end_date;
@@ -114,6 +116,18 @@ class Custome extends Component
             $query->where('account', $this->account);
         }
 
+        if ($this->dependency_name || $this->concept) {
+            $query->whereHas('income', function ($query) {
+                if ($this->dependency_name) {
+                    $query->where('department', $this->dependency_name);
+                }
+
+                if ($this->concept) {
+                    $query->where('concept', $this->concept);
+                }
+            });
+        }
+
         // Filtrado por métodos de pago
         if (!empty($this->selectedMethods)) {
             // Inicializar una consulta de tipo "or"
@@ -123,8 +137,12 @@ class Custome extends Component
                         case 'Tarjeta':
                             $query->orWhere('total_card', '>', 0);
                             break;
+                        case 'Cheque':
                         case 'Voucher':
                             $query->orWhere('total_check', '>', 0);
+                            break;
+                        case 'Transferencia':
+                            $query->orWhere('total_transfer', '>', 0);
                             break;
                         case 'Efectivo':
                             $query->orWhere('total_cash', '>', 0);

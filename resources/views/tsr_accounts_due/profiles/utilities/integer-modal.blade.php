@@ -3,14 +3,27 @@
         {{ csrf_field() }}
         <div class="modal-body">
             <div class="container-fluid">
+                <div class="alert alert-info border-0 shadow-sm" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fa-lg me-3"></i>
+                        <div>
+                            Define tipo de entero y datos de pago. La cantidad en texto se genera automáticamente al capturar el monto.
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <label for="dependency_name" class="col-form-label">Dependencia*</label>
-                        <select name="dependency_name" id="dependency_name" wire:model="dependency_name"
+                        <label for="backoffice_dependency_id" class="form-label fw-semibold">Dependencia <span class="text-danger">*</span></label>
+                        <select name="backoffice_dependency_id" id="backoffice_dependency_id"
+                            wire:model="backoffice_dependency_id"
                             class="form-select" required @if ($integer != null) disabled @endif>
-                            <option selected>Seleccionar dependencia</option>
+                            <option value="">Seleccionar dependencia</option>
+                            @if ($integer != null && empty($backoffice_dependency_id) && !empty($dependency_name))
+                                <option value="" selected>{{ $dependency_name }}</option>
+                            @endif
                             @foreach ($dependencies as $dependency)
-                                <option value="{{ $dependency->name }}">{{ $dependency->name }}</option>
+                                <option value="{{ $dependency->id }}">{{ $dependency->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -18,7 +31,7 @@
                     {{-- Tipo de entero --}}
                     @if ($integer == null)
                         <div class="col-md-12 mb-3">
-                            <label class="col-form-label">Tipo de Entero*</label>
+                            <label class="form-label fw-semibold">Tipo de Entero <span class="text-danger">*</span></label>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="integer_type"
                                     wire:model.live="integer_type" id="integer_type_recaudacion" value="recaudacion">
@@ -39,7 +52,7 @@
                     {{-- Formulario de folios (solo para recaudación) --}}
                     @if ($integer_type === 'recaudacion' && $integer == null)
                         <div class="col-md-12 mb-3">
-                            <div class="card p-3">
+                            <div class="card border-0 shadow-sm p-3">
                                 <h6 class="mb-3">Agregar Folios</h6>
                                 <div class="row mb-2">
                                     <div class="col-md-5">
@@ -103,7 +116,7 @@
                     {{-- Mostrar folios existentes cuando se visualiza un entero --}}
                     @if ($integer != null && count($folios) > 0)
                         <div class="col-md-12 mb-3">
-                            <div class="card p-3">
+                            <div class="card border-0 shadow-sm p-3">
                                 <h6 class="mb-3">Folios Registrados</h6>
                                 <table class="table table-sm table-bordered">
                                     <thead>
@@ -134,7 +147,7 @@
                     @endif
 
                     <div class="col-md-12">
-                        <div class="card pb-4 pt-3">
+                        <div class="card border-0 shadow-sm pb-4 pt-3">
                             <div class="container-fluid">
                                 @if ($integer != null)
                                     <div class="row mb-3">
@@ -149,23 +162,17 @@
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <label for="qty_text" class="col-form-label">La cantidad de</label>
-                                            </div>
-                                            <div class="col">
-                                                <input @if ($integer != null || $integer_type === 'recaudacion') disabled @endif type="text"
-                                                    name="qty_text" wire:model="qty_text" class="form-control" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                        <label for="qty_integer" class="col-form-label">Cantidad (número)</label>
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">$</span>
                                             <input @if ($integer != null || $integer_type === 'recaudacion') disabled @endif type="number"
-                                                name="qty_integer" wire:model="qty_integer" class="form-control"
+                                                name="qty_integer" wire:model.live="qty_integer" class="form-control"
                                                 required>
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="qty_text" class="col-form-label">Cantidad (texto)</label>
+                                        <input type="text" name="qty_text" wire:model="qty_text" class="form-control" readonly required>
                                     </div>
                                 </div>
 

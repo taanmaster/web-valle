@@ -1,35 +1,62 @@
 <div>
-    <div class="row layout-spacing">
-        <div class="main-content">
-            <div class="row align-items-center mb-4">
-                <div class="col text-start">
-                    @if ($profile != null)
-                        @switch($mode)
-                            @case(1)
-                                <h2>Perfil de la cuenta</h2>
-                            @break
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                            <i class="fas fa-id-card fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            @if ($profile != null)
+                                @switch($mode)
+                                    @case(1)
+                                        <h3 class="mb-1 fw-bold">Perfil de la cuenta</h3>
+                                    @break
 
-                            @case(2)
-                                <h2>Editar cuenta</h2>
-                            @break
-                        @endswitch
-                    @else
-                        <h2>Alta de nueva cuenta</h2>
-                    @endif
+                                    @case(2)
+                                        <h3 class="mb-1 fw-bold">Editar cuenta</h3>
+                                    @break
+                                @endswitch
+                            @else
+                                <h3 class="mb-1 fw-bold">Alta de nueva cuenta</h3>
+                            @endif
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-clipboard-list me-1"></i>
+                                Captura y valida datos del contribuyente para habilitar su flujo de cobro.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-3 text-end">
+                <div class="col-lg-4 text-end">
                     @if ($mode == 1)
-
-                    <!-- Button trigger modal -->
-                    <a href="javascript:void(0)" class="btn btn-sm btn-primary create-p-btn" data-id="{{ $profile->id }}">
-                        Generar nuevo entero
-                    </a>
-
-                    <a href="{{ route('account_due_profiles.index') }}" class="btn btn-secondary btn-sm"
-                        style="max-width: 110px">Regresar</a>
+                        <a href="javascript:void(0)" class="btn btn-primary btn-sm create-p-btn" data-id="{{ $profile->id }}">
+                            <i class="fas fa-plus me-1"></i> Generar nuevo entero
+                        </a>
                     @endif
+                    <a href="{{ route('account_due_profiles.index') }}" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-arrow-left me-1"></i> Regresar
+                    </a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info border-0 shadow-sm" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-info-circle fa-lg me-3"></i>
+            <div>
+                @if ($mode == 1)
+                    Verifica los datos del perfil antes de generar un entero provisional.
+                @else
+                    Completa los datos del contribuyente para crear la cuenta por cobrar.
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
             <form method="POST" wire:submit="save" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
@@ -136,11 +163,11 @@
                 @endif
 
                 @if ($mode != 1)
-                    <div class="m-3 d-flex justify-content-end" style="gap: 12px">
-                        <a href="{{ route('account_due_profiles.index') }}" style="max-width: 110px"
-                            class="btn btn-secondary btn-sm">Cancelar</a>
-                        <button type="submit" style="max-width: 110px" class="btn btn-dark btn-sm">Guardar
-                            datos</button>
+                    <div class="m-3 d-flex justify-content-end gap-2 mt-4">
+                        <a href="{{ route('account_due_profiles.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fas fa-save me-1"></i> Guardar datos
+                        </button>
                     </div>
                 @endif
             </form>
@@ -148,10 +175,16 @@
     </div>
 
     @if ($mode == 1 && $profile->integers->count() > 0)
-    <div class="mt-4">
-        <h5>Enteros provisionales de Pago</h5>
-        <livewire:tsr_accounts_due.provisional_integer.table :profile="$profile->id"/>
-    </div>
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-header bg-light border-0">
+                <h5 class="mb-0 fw-semibold">
+                    <i class="fas fa-file-invoice-dollar text-primary me-2"></i> Enteros provisionales de pago
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <livewire:tsr_accounts_due.provisional_integer.table :profile="$profile->id"/>
+            </div>
+        </div>
     @endif
 
     @if ($mode == 1)
@@ -159,9 +192,9 @@
         <div class="modal fade" id="enteroModalProfile" tabindex="-1" aria-labelledby="enteroModalProfileLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                <h1 class="modal-title fs-5" id="enteroModalProfileLabel">Entero Provisional para Pago</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-primary text-white">
+                <h1 class="modal-title fs-5 text-white" id="enteroModalProfileLabel">Entero Provisional para Pago</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <livewire:tsr_accounts_due.profiles.integer-modal/>
             </div>
@@ -172,19 +205,23 @@
 
     @push('scripts')
         <script>
-            var enteroModalProfile = new bootstrap.Modal(document.getElementById('enteroModalProfile'), {
-                keyboard: false
-            });
+            const enteroModalProfileElement = document.getElementById('enteroModalProfile');
 
-            document.querySelectorAll('.create-p-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const profileId = this.getAttribute('data-id');
-                    enteroModalProfile.show();
-                    Livewire.dispatch('selectProfile', {
-                        id: profileId
+            if (enteroModalProfileElement) {
+                var enteroModalProfile = new bootstrap.Modal(enteroModalProfileElement, {
+                    keyboard: false
+                });
+
+                document.querySelectorAll('.create-p-btn').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        const profileId = this.getAttribute('data-id');
+                        enteroModalProfile.show();
+                        Livewire.dispatch('selectProfile', {
+                            id: profileId
+                        });
                     });
                 });
-            });
+            }
         </script>
     @endpush
 </div>

@@ -21,11 +21,11 @@ class TsrAccountDueIncomeReceiptController extends Controller
      */
     public function create($id)
     {
-        $mode = 0;
-
         $income = TsrAccountDueIncome::findOrFail($id);
 
-        return view('tsr_accounts_due.incomes_receipts.create')->with('mode', $mode)->with('income', $income);
+        return redirect()
+            ->route('account_due_incomes.show', $income->id)
+            ->with('message', 'Para generar el recibo utiliza el modal dentro del detalle de ingreso.');
     }
 
     /**

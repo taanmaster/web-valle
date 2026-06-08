@@ -12,9 +12,7 @@
         @slot('title') Ingreso de caja @endslot
     @endcomponent
 
-    <div class="row layout-spacing">
-        <div class="main-content">
-            <livewire:tsr_accounts_due.incomes.crud :mode="$mode"/>
-        </div>
+    <div class="container-fluid py-4">
+        <livewire:tsr_accounts_due.incomes.crud :mode="$mode"/>
     </div>
 @endsection

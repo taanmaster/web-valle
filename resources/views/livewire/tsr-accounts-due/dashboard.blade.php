@@ -1,79 +1,120 @@
 <div>
-
-    <div class="row mb-3">
-        <div class="col-md-3">
-            <label for="">Rango de fechas</label>
-            <div class="input-group mb-3">
-                <input type="date" class="form-control" wire:model.live="start_date">
-                <span class="input-group-text">a</span>
-                <input type="date" class="form-control" wire:model.live="end_date">
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex align-items-center">
+                <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                    <i class="fas fa-chart-line fa-2x text-primary"></i>
+                </div>
+                <div>
+                    <h3 class="mb-1 fw-bold">
+                        <i class="fas fa-coins text-primary me-2"></i> Dashboard de Cuentas por Cobrar
+                    </h3>
+                    <p class="text-muted mb-0">
+                        <i class="fas fa-clipboard-list me-1"></i>
+                        Revisa indicadores, actividad de cobro y movimientos recientes del módulo.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="alert alert-info border-0 shadow-sm" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-info-circle fa-lg me-3"></i>
+            <div>
+                Ajusta el rango de fechas para actualizar gráficas y totales del periodo que deseas analizar.
+            </div>
+        </div>
+    </div>
 
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-lg-3">
+                    <label class="form-label fw-semibold">Fecha desde:</label>
+                    <input type="date" class="form-control" wire:model.live="start_date">
+                </div>
+                <div class="col-lg-3">
+                    <label class="form-label fw-semibold">Fecha hasta:</label>
+                    <input type="date" class="form-control" wire:model.live="end_date">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row mb-3">
         <div class="col-md-8">
-            <div class="card h-100">
-                <div class="card-header">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-light border-0">
                     <h4 class="card-title">Estados de cuenta</h4>
-                </div><!--end card-header-->
+                </div>
                 <div class="card-body">
                     <canvas id="lineChart" width="1809" height="600"></canvas>
-                </div><!--end card-body-->
+                </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card h-100">
-                <div class="card-header">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-light border-0">
                     <h4 class="card-title">Ingresos</h4>
-                </div><!--end card-header-->
+                </div>
                 <div class="card-body">
-                    <canvas id="barChart" style="height: 100%"></canvas>
-                </div><!--end card-body-->
+                    <canvas id="barChart" class="h-100"></canvas>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="row align-items-center">
         <div class="col-md-3">
-            <div class="card text-center">
-                <h2>{{ $activeAccounts }}</h2>
-                <h4>Cuentas activas</h4>
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body py-3">
+                    <h2 class="fw-bold text-primary mb-1">{{ $activeAccounts }}</h2>
+                    <small class="text-muted">Cuentas activas</small>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center">
-                <h2>--</h2>
-                <h4>Contribuyentes con adeudo</h4>
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body py-3">
+                    <h2 class="fw-bold text-warning mb-1">--</h2>
+                    <small class="text-muted">Contribuyentes con adeudo</small>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center">
-                <h2>${{ number_format($total, 2) }}</h2>
-                <h4>Monto en total</h4>
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body py-3">
+                    <h2 class="fw-bold text-success mb-1">${{ number_format($total, 2) }}</h2>
+                    <small class="text-muted">Monto total</small>
+                </div>
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="card text-center">
-                        <h4>--</h4>
-                        <h6>Vencido</h6>
+                    <div class="card border-0 shadow-sm text-center">
+                        <div class="card-body py-3">
+                            <h4 class="fw-bold text-danger mb-1">--</h4>
+                            <small class="text-muted">Vencido</small>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card text-center">
-                        <h4>--</h4>
-                        <h6>Próx. Vencer</h6>
+                    <div class="card border-0 shadow-sm text-center">
+                        <div class="card-body py-3">
+                            <h4 class="fw-bold text-warning mb-1">--</h4>
+                            <small class="text-muted">Próx. vencer</small>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card text-center">
-                        <h4>--</h4>
-                        <h6>Cobrado</h6>
+                    <div class="card border-0 shadow-sm text-center">
+                        <div class="card-body py-3">
+                            <h4 class="fw-bold text-success mb-1">--</h4>
+                            <small class="text-muted">Cobrado</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -82,13 +123,24 @@
 
     <div class="row mb-3">
         <div class="col-md-8">
-            <div class="card p-3 h-100">
+            <div class="card border-0 shadow-sm p-3 h-100">
                 <div class="row mb-3 justify-content-between align-items-center">
                     <div class="col-md-4">
                         <select name="selectDependency" id="selectDependency" wire:model.live="selectDependency"
                             class="form-select">
+                            <option value="">Todas las dependencias</option>
                             @foreach ($dependencies as $dependency)
                                 <option value="{{ $dependency->name }}">{{ $dependency->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <select name="selectConcept" id="selectConcept" wire:model.live="selectConcept"
+                            class="form-select">
+                            <option value="">Todos los conceptos</option>
+                            @foreach ($concepts as $concept)
+                                <option value="{{ $concept }}">{{ $concept }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -101,14 +153,14 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
                             <tr>
-                                <th>Folio</th>
-                                <th>Fecha</th>
-                                <th>Monto</th>
-                                <th>Nombre de contribuyente</th>
-                                <th>Concepto de cobro</th>
+                                <th class="fw-semibold">Folio</th>
+                                <th class="fw-semibold">Fecha</th>
+                                <th class="fw-semibold">Monto</th>
+                                <th class="fw-semibold">Nombre de contribuyente</th>
+                                <th class="fw-semibold">Concepto de cobro</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -132,7 +184,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card p-3 h-100">
+            <div class="card border-0 shadow-sm p-3 h-100">
                 <div class="row mb-3 justify-content-between align-items-center">
                     <div class="col-md-3">
                         <h4>Actividad</h4>
@@ -146,7 +198,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-hover align-middle">
                         <tbody>
                             @foreach ($incomes as $income)
                                 <tr>
@@ -164,7 +216,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card p-3">
+            <div class="card border-0 shadow-sm p-3">
                 <div class="row mb-3 justify-content-between align-items-center">
                     <div class="col-md-3">
                         <h4>Ingresos</h4>
@@ -178,17 +230,17 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
                             <tr>
-                                <th>Folio</th>
-                                <th>Fecha</th>
-                                <th>Monto</th>
-                                <th>Nombre de contribuyente</th>
-                                <th>Concepto de cobro</th>
-                                <th>Medio de pago</th>
-                                <th>Asignación</th>
-                                <th>Recibido por</th>
+                                <th class="fw-semibold">Folio</th>
+                                <th class="fw-semibold">Fecha</th>
+                                <th class="fw-semibold">Monto</th>
+                                <th class="fw-semibold">Nombre de contribuyente</th>
+                                <th class="fw-semibold">Concepto de cobro</th>
+                                <th class="fw-semibold">Medio de pago</th>
+                                <th class="fw-semibold">Asignación</th>
+                                <th class="fw-semibold">Recibido por</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -210,7 +262,10 @@
                                             <p>Tarjeta</p>
                                         @endif
                                         @if ($income->total_check > 0)
-                                            <p>Voucher</p>
+                                            <p>Cheque</p>
+                                        @endif
+                                        @if (($income->total_transfer ?? 0) > 0)
+                                            <p>Transferencia</p>
                                         @endif
                                     </td>
                                     <td>{{ $income->income->department }}</td>

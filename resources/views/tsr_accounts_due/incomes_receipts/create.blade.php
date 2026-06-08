@@ -16,9 +16,7 @@
         @endslot
     @endcomponent
 
-    <div class="row layout-spacing">
-        <div class="main-content">
-            <livewire:tsr_accounts_due.incomes_receipts.crud :mode="$mode" :income="$income" />
-        </div>
+    <div class="container-fluid py-4">
+        <livewire:tsr_accounts_due.incomes_receipts.crud :mode="$mode" :income="$income" />
     </div>
 @endsection

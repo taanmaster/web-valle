@@ -5,22 +5,16 @@ namespace App\Livewire\TsrAccountsDue\IncomesReceipts;
 use Livewire\Component;
 
 // Ayudantes
-use Str;
 use Auth;
-use Session;
 use Carbon\Carbon;
 use Livewire\Attributes\Validate;
-use Livewire\Attributes\On;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 //Modelos
-use App\Models\TsrAccountDueIncome;
 use App\Models\TsrAccountDueIncomeReceipt;
 
 class Crud extends Component
 {
     public $mode = 0;
-    public $step = 1;
 
     public $income;
     public $today;
@@ -51,6 +45,7 @@ class Crud extends Component
     public $qty_integer = '';
     public $depositor = '';
     public $total_cash = '';
+    public $total_transfer = 0;
     public $denominations = '';
     public $denominations_cashier = '';
     public $denominations_payed = '';
@@ -67,11 +62,98 @@ class Crud extends Component
         $this->created_date = $this->today;
 
         $this->account_due_income_id = $this->income->id;
+        $this->cashier_user = Auth::user()->name ?? '';
+        $this->depositor = $this->income->name ?? '';
+        $this->qty_integer = $this->income->qty_integer ?? '';
+        $this->qty_text = $this->income->qty_text ?? '';
+    }
+
+    public function updatedQtyInteger($value)
+    {
+        if ($value === '' || $value === null) {
+            $this->qty_text = '';
+            return;
+        }
+
+        $this->qty_text = $this->formatAmountToWords((float) $value);
+    }
+
+    private function formatAmountToWords(float $totalAmt, string $currency = 'PESOS'): string
+    {
+        $enteros = (int) floor($totalAmt);
+        $decimales = str_pad((int) round(($totalAmt - $enteros) * 100), 2, '0', STR_PAD_LEFT);
+
+        return $this->numToWordsPDF($enteros) . ' ' . $currency . ' CON ' . $decimales . '/100';
+    }
+
+    private function numToWordsPDF(int $n): string
+    {
+        if ($n === 0) {
+            return 'CERO';
+        }
+
+        $u = [
+            '', 'UN', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE',
+            'DIEZ', 'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE', 'DIECISEIS', 'DIECISIETE',
+            'DIECIOCHO', 'DIECINUEVE', 'VEINTE'
+        ];
+        $d = ['', '', 'VEINTI', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'];
+        $c = [
+            '', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS', 'CUATROCIENTOS', 'QUINIENTOS',
+            'SEISCIENTOS', 'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'
+        ];
+
+        if ($n <= 20) {
+            return $u[$n];
+        }
+
+        if ($n === 100) {
+            return 'CIEN';
+        }
+
+        if ($n < 100) {
+            $dz = intdiv($n, 10);
+            $un = $n % 10;
+
+            if ($un === 0) {
+                return $d[$dz];
+            }
+
+            return $dz === 2
+                ? 'VEINTI' . strtolower($u[$un])
+                : $d[$dz] . ' Y ' . $u[$un];
+        }
+
+        if ($n < 1000) {
+            $cv = intdiv($n, 100);
+            $r = $n % 100;
+            return $r === 0 ? $c[$cv] : $c[$cv] . ' ' . $this->numToWordsPDF($r);
+        }
+
+        if ($n < 2000) {
+            return 'MIL' . ($n % 1000 > 0 ? ' ' . $this->numToWordsPDF($n % 1000) : '');
+        }
+
+        if ($n < 1000000) {
+            $m = intdiv($n, 1000);
+            $r = $n % 1000;
+            return $this->numToWordsPDF($m) . ' MIL' . ($r > 0 ? ' ' . $this->numToWordsPDF($r) : '');
+        }
+
+        if ($n < 2000000) {
+            return 'UN MILLON' . ($n % 1000000 > 0 ? ' ' . $this->numToWordsPDF($n % 1000000) : '');
+        }
+
+        $m = intdiv($n, 1000000);
+        $r = $n % 1000000;
+
+        return $this->numToWordsPDF($m) . ' MILLONES' . ($r > 0 ? ' ' . $this->numToWordsPDF($r) : '');
     }
 
     public function changeStep($num)
     {
-        $this->step = $num;
+        // Flujo simplificado: se conserva el metodo para compatibilidad,
+        // pero el recibo ya no utiliza pasos.
     }
 
     public function updatedDenominaciones()
@@ -88,14 +170,51 @@ class Crud extends Component
         }
     }
 
+    public function updatedTotalCash()
+    {
+        $this->syncTotals();
+    }
+
+    public function updatedTotalCard()
+    {
+        $this->syncTotals();
+    }
+
+    public function updatedTotalCheck()
+    {
+        $this->syncTotals();
+    }
+
+    public function updatedTotalTransfer()
+    {
+        $this->syncTotals();
+    }
+
+    private function syncTotals(): void
+    {
+        $totalCash = (float) ($this->total_cash ?: 0);
+        $totalCard = (float) ($this->total_card ?: 0);
+        $totalCheck = (float) ($this->total_check ?: 0);
+        $totalTransfer = (float) ($this->total_transfer ?: 0);
+
+        $total = $totalCash + $totalCard + $totalCheck + $totalTransfer;
+
+        $this->qty_integer = $total;
+        $this->total = $total;
+        $this->qty_text = $this->formatAmountToWords($total);
+    }
+
     public function save()
     {
-        // Crear un array con las denominaciones que se van a guardar
-        $saveDeno = array_filter($this->denominaciones, function ($cantidad) {
-            return $cantidad > 0; // Solo guardar denominaciones con cantidad mayor a 0
-        });
+        $totalCash = (float) ($this->total_cash ?: 0);
+        $totalCard = (float) ($this->total_card ?: 0);
+        $totalCheck = (float) ($this->total_check ?: 0);
+        $totalTransfer = (float) ($this->total_transfer ?: 0);
+        $total = $totalCash + $totalCard + $totalCheck + $totalTransfer;
 
-        $total = intval($this->total_value) + intval($this->total_card) + $this->total_check;
+        $this->qty_integer = $total;
+        $this->total = $total;
+        $this->qty_text = $this->formatAmountToWords($total);
 
         TsrAccountDueIncomeReceipt::create([
             'account_due_income_id' => $this->account_due_income_id,
@@ -104,15 +223,23 @@ class Crud extends Component
             'qty_text' => $this->qty_text,
             'qty_integer' => $this->qty_integer,
             'depositor' => $this->depositor,
-            'total_cash' => $this->total_value,
-            'denominations' => json_encode($saveDeno),
+            'total_cash' => $totalCash,
+            'denominations' => null,
             'denominations_cashier' => $this->denominations_cashier,
             'denominations_payed' => $this->denominations_payed,
-            'total_card' => $this->total_card,
-            'total_check' => $this->total_check,
+            'total_card' => $totalCard,
+            'total_check' => $totalCheck,
+            'total_transfer' => $totalTransfer,
             'account' => $this->account,
             'total' => $total,
         ]);
+
+        if (!empty($this->income?->provisional_integer_id)) {
+            $integer = $this->income->integer;
+            if ($integer) {
+                $integer->update(['status' => 'cobrado']);
+            }
+        }
 
         session()->flash('message', 'Cobro registrado con éxito.');
 

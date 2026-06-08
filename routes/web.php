@@ -1262,6 +1262,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                     'as' => 'account_due.cashbox',
                 ]);
 
+                Route::post('cashbox/daily-cut', [
+                    'uses' => 'TsrAccountsDueController@storeDailyCut',
+                    'as' => 'account_due.cashbox.daily_cut',
+                ]);
+
                 Route::resource('profiles', TsrAccountDueProfileController::class)->names([
                     'index' => 'account_due_profiles.index',
                     'create' => 'account_due_profiles.create',
@@ -1320,6 +1325,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::get('/daily_cashier_report_export/{id}', [
                     'uses' => 'TsrAccountsDueController@exportDaily',
                     'as' => 'account_due_daily.export',
+                ]);
+
+                Route::get('/daily_cashier_report_export_excel/{id}', [
+                    'uses' => 'TsrAccountsDueController@exportDailyExcel',
+                    'as' => 'account_due_daily.export_excel',
                 ]);
 
                 Route::get('cashier_report', [

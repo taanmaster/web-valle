@@ -5,15 +5,13 @@ namespace App\Livewire\TsrAccountsDue\Profiles;
 use Livewire\Component;
 
 // Ayudantes
-use Str;
-use Auth;
 use Session;
 use Carbon\Carbon;
 use Livewire\Attributes\Validate;
 use Livewire\Attributes\On;
 
 // Modelos
-use App\Models\TransparencyDependency;
+use App\Models\BackofficeDependency;
 use App\Models\TsrAccountDueProvisionalInteger;
 use App\Models\TsrAccountDueProvisionalIntegerFolio;
 use App\Models\TsrAccountDueProfile;
@@ -43,6 +41,7 @@ class IntegerModal extends Component
     // Campos
     #[Validate('required')]
     public $account_due_profile_id = '';
+    public $backoffice_dependency_id = '';
     public $dependency_name = '';
     public $qty_text = '';
     public $qty_integer = '';
@@ -55,6 +54,7 @@ class IntegerModal extends Component
     public $payment_date = '';
     public $created_by = '';
     public $director = '';
+    public $status = 'generado';
 
 
     #[On('selectInteger')]
@@ -77,8 +77,8 @@ class IntegerModal extends Component
 
     public function mount()
     {
-        // Cargar las dependencias de transparencia
-        $this->dependencies = TransparencyDependency::where('belongs_to_treasury', true)->get();
+        // Cargar dependencias RH (backoffice)
+        $this->dependencies = BackofficeDependency::orderBy('name')->get();
 
         $this->today = Carbon::now()->format('Y-m-d');
 
@@ -100,6 +100,7 @@ class IntegerModal extends Component
     {
         $this->folio = $this->integer->id;
         $this->account_due_profile_id = $this->integer->account_due_profile_id;
+        $this->backoffice_dependency_id = $this->integer->backoffice_dependency_id;
         $this->dependency_name = $this->integer->dependency_name;
         $this->qty_text = $this->integer->qty_text;
         $this->qty_integer = $this->integer->qty_integer;
@@ -113,6 +114,7 @@ class IntegerModal extends Component
         $this->payment_date = $this->integer->created_at;
         $this->created_by = $this->integer->created_by;
         $this->payment_date = $this->integer->created_at->format('Y-m-d');
+        $this->status = $this->integer->status ?? 'generado';
 
         // Cargar folios existentes
         $this->folios = $this->integer->folios->map(function ($folio) {
@@ -124,6 +126,17 @@ class IntegerModal extends Component
 
         // Cargar el tipo de entero desde la base de datos
         $this->integer_type = $this->integer->type ?? '';
+    }
+
+    public function updatedBackofficeDependencyId($value)
+    {
+        if (empty($value)) {
+            $this->dependency_name = '';
+            return;
+        }
+
+        $dependency = BackofficeDependency::find($value);
+        $this->dependency_name = $dependency?->name ?? '';
     }
 
     public function updatedIntegerType($value)
@@ -171,92 +184,93 @@ class IntegerModal extends Component
         }
 
         $this->qty_integer = $total;
-        $this->qty_text = $this->numberToWords($total);
+        $this->qty_text = $this->formatAmountToWords($total);
     }
 
-    public function numberToWords($number)
+    public function updatedQtyInteger($value)
     {
-        $units = ['', 'UN', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE'];
-        $tens = ['', 'DIEZ', 'VEINTE', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'];
-        $teens = ['DIEZ', 'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE', 'DIECISEIS', 'DIECISIETE', 'DIECIOCHO', 'DIECINUEVE'];
-        $hundreds = ['', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS', 'CUATROCIENTOS', 'QUINIENTOS', 'SEISCIENTOS', 'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'];
-
-        $number = round($number, 2);
-        $intPart = (int) $number;
-        $decPart = round(($number - $intPart) * 100);
-
-        if ($intPart == 0) {
-            $result = 'CERO';
-        } else {
-            $result = '';
-
-            // Millones
-            if ($intPart >= 1000000) {
-                $millions = (int) ($intPart / 1000000);
-                if ($millions == 1) {
-                    $result .= 'UN MILLON ';
-                } else {
-                    $result .= $this->convertHundreds($millions, $units, $tens, $teens, $hundreds) . ' MILLONES ';
-                }
-                $intPart = $intPart % 1000000;
-            }
-
-            // Miles
-            if ($intPart >= 1000) {
-                $thousands = (int) ($intPart / 1000);
-                if ($thousands == 1) {
-                    $result .= 'MIL ';
-                } else {
-                    $result .= $this->convertHundreds($thousands, $units, $tens, $teens, $hundreds) . ' MIL ';
-                }
-                $intPart = $intPart % 1000;
-            }
-
-            // Cientos
-            if ($intPart > 0) {
-                if ($intPart == 100) {
-                    $result .= 'CIEN';
-                } else {
-                    $result .= $this->convertHundreds($intPart, $units, $tens, $teens, $hundreds);
-                }
-            }
+        if ($this->integer_type === 'recaudacion') {
+            return;
         }
 
-        $result = trim($result);
+        if ($value === '' || $value === null) {
+            $this->qty_text = '';
+            return;
+        }
 
-        // Agregar centavos
-        $result .= ' PESOS ' . str_pad($decPart, 2, '0', STR_PAD_LEFT) . '/100 M.N.';
-
-        return $result;
+        $this->qty_text = $this->formatAmountToWords((float) $value);
     }
 
-    private function convertHundreds($number, $units, $tens, $teens, $hundreds)
+    private function formatAmountToWords(float $totalAmt, string $currency = 'PESOS'): string
     {
-        $result = '';
+        $enteros = (int) floor($totalAmt);
+        $decimales = str_pad((int) round(($totalAmt - $enteros) * 100), 2, '0', STR_PAD_LEFT);
 
-        if ($number >= 100) {
-            if ($number == 100) {
-                return 'CIEN';
-            }
-            $result .= $hundreds[(int) ($number / 100)] . ' ';
-            $number = $number % 100;
+        return $this->numToWordsPDF($enteros) . ' ' . $currency . ' CON ' . $decimales . '/100';
+    }
+
+    private function numToWordsPDF(int $n): string
+    {
+        if ($n === 0) {
+            return 'CERO';
         }
 
-        if ($number >= 20) {
-            $ten = (int) ($number / 10);
-            $unit = $number % 10;
-            if ($unit == 0) {
-                $result .= $tens[$ten];
-            } else {
-                $result .= $tens[$ten] . ' Y ' . $units[$unit];
-            }
-        } elseif ($number >= 10) {
-            $result .= $teens[$number - 10];
-        } elseif ($number > 0) {
-            $result .= $units[$number];
+        $u = [
+            '', 'UN', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE',
+            'DIEZ', 'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE', 'DIECISEIS', 'DIECISIETE',
+            'DIECIOCHO', 'DIECINUEVE', 'VEINTE'
+        ];
+        $d = ['', '', 'VEINTI', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'];
+        $c = [
+            '', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS', 'CUATROCIENTOS', 'QUINIENTOS',
+            'SEISCIENTOS', 'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'
+        ];
+
+        if ($n <= 20) {
+            return $u[$n];
         }
 
-        return trim($result);
+        if ($n === 100) {
+            return 'CIEN';
+        }
+
+        if ($n < 100) {
+            $dz = intdiv($n, 10);
+            $un = $n % 10;
+
+            if ($un === 0) {
+                return $d[$dz];
+            }
+
+            return $dz === 2
+                ? 'VEINTI' . strtolower($u[$un])
+                : $d[$dz] . ' Y ' . $u[$un];
+        }
+
+        if ($n < 1000) {
+            $cv = intdiv($n, 100);
+            $r = $n % 100;
+            return $r === 0 ? $c[$cv] : $c[$cv] . ' ' . $this->numToWordsPDF($r);
+        }
+
+        if ($n < 2000) {
+            return 'MIL' . ($n % 1000 > 0 ? ' ' . $this->numToWordsPDF($n % 1000) : '');
+        }
+
+        if ($n < 1000000) {
+            $m = intdiv($n, 1000);
+            $r = $n % 1000;
+            return $this->numToWordsPDF($m) . ' MIL' . ($r > 0 ? ' ' . $this->numToWordsPDF($r) : '');
+        }
+
+        if ($n < 2000000) {
+            return 'UN MILLON' . ($n % 1000000 > 0 ? ' ' . $this->numToWordsPDF($n % 1000000) : '');
+        }
+
+        $m = intdiv($n, 1000000);
+        $r = $n % 1000000;
+
+        return $this->numToWordsPDF($m) . ' MILLONES' . ($r > 0 ? ' ' . $this->numToWordsPDF($r) : '');
     }
 
     public function save()
@@ -266,6 +280,7 @@ class IntegerModal extends Component
         // Crear un nuevo registro de TsrAccountDueProvisionalInteger
         $provisionalInteger = TsrAccountDueProvisionalInteger::create([
             'account_due_profile_id' => $this->account_due_profile_id,
+            'backoffice_dependency_id' => $this->backoffice_dependency_id,
             'dependency_name' => $this->dependency_name,
             'qty_text' => $this->qty_text,
             'qty_integer' => $this->qty_integer,
@@ -278,6 +293,7 @@ class IntegerModal extends Component
             'created_by' => $this->created_by,
             'director' => $this->director,
             'type' => $this->integer_type,
+            'status' => $this->status,
         ]);
 
         // Guardar los folios si el tipo es recaudación
@@ -304,6 +320,7 @@ class IntegerModal extends Component
     public function resetForm()
     {
         $this->account_due_profile_id = '';
+        $this->backoffice_dependency_id = '';
         $this->dependency_name = '';
         $this->qty_text = '';
         $this->qty_integer = '';
@@ -316,6 +333,7 @@ class IntegerModal extends Component
         $this->payment_date = '';
         $this->created_by = '';
         $this->director = '';
+        $this->status = 'generado';
 
         // Reiniciar el tipo de entero y folios
         $this->integer_type = '';

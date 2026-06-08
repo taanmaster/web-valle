@@ -11,6 +11,7 @@ class TsrAccountDueProvisionalInteger extends Model
 
     protected $fillable = [
         'account_due_profile_id',
+        'backoffice_dependency_id',
         'dependency_name',
         'qty_text',
         'qty_integer',
@@ -23,11 +24,17 @@ class TsrAccountDueProvisionalInteger extends Model
         'created_by',
         'director',
         'type',
+        'status',
     ];
 
     public function profile()
     {
         return $this->belongsTo(TsrAccountDueProfile::class, 'account_due_profile_id');
+    }
+
+    public function backofficeDependency()
+    {
+        return $this->belongsTo(BackofficeDependency::class, 'backoffice_dependency_id');
     }
 
     public function incomes()

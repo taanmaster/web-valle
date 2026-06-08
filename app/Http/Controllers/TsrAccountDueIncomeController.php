@@ -64,8 +64,10 @@ class TsrAccountDueIncomeController extends Controller
     {
         $receipt = TsrAccountDueIncomeReceipt::find($id);
 
-        $pdf = PDF::loadView('tsr_accounts_due.incomes_receipts.utilities.pdf', [
-            'receipt' => $receipt
+        $pdf = Pdf::loadView('tsr_accounts_due.incomes_receipts.utilities.pdf', [
+            'receipt' => $receipt,
+            'printedAt' => now(),
+            'printedBy' => auth()->user()?->name ?? 'Sistema',
         ])->setPaper('A4');
 
         return $pdf->download();

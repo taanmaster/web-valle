@@ -6,18 +6,14 @@ use Livewire\Component;
 
 // Ayudantes
 use Str;
-use Auth;
 use Session;
 use Carbon\Carbon;
 use Livewire\Attributes\Validate;
-use Livewire\Attributes\On;
 
 //Modelos
 use App\Models\TsrAccountDueIncome;
 use App\Models\TsrAccountDueProvisionalInteger;
 use App\Models\TsrRevenueLawRateAndFee;
-use App\Models\TsrRevenueLawIncome;
-use App\Models\TsrAdminRevenueColletionSection;
 use App\Models\TsrRevenueLawConcept;
 use App\Models\TsrAdminRevenueColletionVariant;
 use Livewire\WithPagination;
@@ -72,6 +68,7 @@ class Crud extends Component
     public $concept = '';
     #[Validate('required')]
     public $folio = '';
+    #[Validate('required')]
     public $provisional_integer_id = '';
     public $qty_text = '';
     public $qty_integer = '';
@@ -148,7 +145,7 @@ class Crud extends Component
         $this->basis = $integer->basis;
 
         $this->searchFolio = '';
-        $this->concept = '';
+        $this->concept = $integer->concept;
 
 
         switch ($integer->basis) {
@@ -199,6 +196,17 @@ class Crud extends Component
     {
         $this->validate();
 
+        $integer = TsrAccountDueProvisionalInteger::find($this->provisional_integer_id);
+
+        if ($integer) {
+            // En el flujo simplificado, estos datos se heredan del entero y no se recapturan en ingreso.
+            $this->department = $integer->dependency_name;
+            $this->concept = $integer->concept;
+            $this->qty_text = $integer->qty_text;
+            $this->qty_integer = $integer->qty_integer;
+            $this->basis = $integer->basis;
+        }
+
         TsrAccountDueIncome::create([
             'department' => $this->department,
             'concept' => $this->concept,
@@ -217,6 +225,10 @@ class Crud extends Component
             'locality' => $this->locality,
             'basis' => $this->basis
         ]);
+
+        if ($integer && $integer->status !== 'cobrado') {
+            $integer->update(['status' => 'recibido']);
+        }
 
         // Crear el perfil
         $this->income = TsrAccountDueIncome::where('code', $this->code)->first();

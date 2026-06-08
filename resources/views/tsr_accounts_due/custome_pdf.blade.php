@@ -1,18 +1,48 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Recibo</title>
+    <title>Reporte Personalizado de Caja</title>
     <style>
+        @page {
+            margin: 18mm 12mm 16mm 12mm;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 12px;
+            padding: 0;
             background-color: #f8f9fa;
+        }
+
+        .header {
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
+
+        .header table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .header td {
+            border: none;
+            padding: 0;
+        }
+
+        .header .title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .header .meta {
+            text-align: right;
+            line-height: 1.4;
         }
 
         .table-responsive {
@@ -63,10 +93,34 @@
                 page-break-inside: avoid;
             }
         }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: -10mm;
+            text-align: center;
+            font-size: 10px;
+            color: #4b5563;
+        }
     </style>
 </head>
 
 <body>
+    <div class="header">
+        <table>
+            <tr>
+                <td>
+                    <div class="title">REPORTE PERSONALIZADO DE CAJA</div>
+                    <div>MUNICIPIO DE VALLE DE SANTIAGO, GTO. - AYUNTAMIENTO 2024 - 2027</div>
+                </td>
+                <td class="meta">
+                    <div>Impreso: {{ ($printedAt ?? now())->format('d/m/Y H:i') }}</div>
+                    <div>Usuario: {{ $printedBy ?? 'Sistema' }}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -111,6 +165,17 @@
             </tfoot>
         </table>
     </div>
+
+    <div class="footer">
+        Impreso por {{ $printedBy ?? 'Sistema' }}
+    </div>
+
+    <script type="text/php">
+        if (isset($pdf)) {
+            $font = $fontMetrics->get_font("helvetica", "normal");
+            $pdf->page_text(500, 815, "Pagina {PAGE_NUM} de {PAGE_COUNT}", $font, 9, [0.35,0.35,0.35]);
+        }
+    </script>
 </body>
 
 </html>

@@ -37,4 +37,9 @@ class TsrAccountDueIncome extends Model
     {
         return $this->hasOne(TsrAccountDueIncomeReceipt::class, 'account_due_income_id');
     }
+
+    public function receipts()
+    {
+        return $this->hasMany(TsrAccountDueIncomeReceipt::class, 'account_due_income_id');
+    }
 }
