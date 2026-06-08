@@ -16,9 +16,7 @@
         @endslot
     @endcomponent
 
-    <div class="row layout-spacing">
-        <div class="main-content">
-            <livewire:tsr_accounts_due.profiles.crud :mode="$mode"/>
-        </div>
+    <div class="container-fluid py-4">
+        <livewire:tsr_accounts_due.profiles.crud :mode="$mode"/>
     </div>
 @endsection
