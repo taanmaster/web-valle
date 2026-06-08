@@ -34,34 +34,76 @@
         </style>
     @endpush
 
-    <div class="row layout-spacing">
-        <div class="main-content">
-            <div class="row align-items-center mb-4">
-                <div class="col text-start">
-                    @if ($income != null)
-                        @switch($mode)
-                            @case(1)
-                                <h2>Detalle de ingreso</h2>
-                            @break
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                            <i class="fas fa-file-invoice-dollar fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            @if ($income != null)
+                                @switch($mode)
+                                    @case(1)
+                                        <h3 class="mb-1 fw-bold">Detalle de ingreso</h3>
+                                    @break
 
-                            @case(2)
-                                <h2>Editar ingreso</h2>
-                            @break
-                        @endswitch
-                    @else
-                        <h2>Nuevo ingreso</h2>
-                    @endif
+                                    @case(2)
+                                        <h3 class="mb-1 fw-bold">Editar ingreso</h3>
+                                    @break
+                                @endswitch
+                            @else
+                                <h3 class="mb-1 fw-bold">Nuevo ingreso</h3>
+                            @endif
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-clipboard-list me-1"></i>
+                                El ingreso hereda datos del entero provisional y consolida la operación de cobro.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-3 text-end">
+                <div class="col-lg-4 text-end">
                     @if ($mode == 1)
-                        <a href="{{ route('account_due_income_receipts.create', $income->id) }}"
-                            class="btn btn-outline-primary btn-sm me-2">Generar Recibo</a>
+                        <button type="button" class="btn btn-outline-primary btn-sm me-2" data-bs-toggle="modal"
+                            data-bs-target="#receiptModal">
+                            Generar Recibo
+                        </button>
 
-                        <a href="{{ route('account_due_incomes.index') }}" class="btn btn-secondary btn-sm"
-                            style="max-width: 110px">Regresar</a>
+                        @if ($income->receipts->count() > 0)
+                            <span class="badge bg-success me-2">{{ $income->receipts->count() }} recibo(s)</span>
+                        @endif
                     @endif
+                    <a href="{{ route('account_due_incomes.index') }}" class="btn btn-secondary btn-sm">Regresar</a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    @if (session('message'))
+        <div class="alert alert-info border-0 shadow-sm" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-info-circle fa-lg me-3"></i>
+                <div>{{ session('message') }}</div>
+            </div>
+        </div>
+    @endif
+
+    <div class="alert alert-info border-0 shadow-sm" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-info-circle fa-lg me-3"></i>
+            <div>
+                @if ($mode == 0)
+                    Busca el entero por folio y selecciónalo para completar automáticamente el concepto y monto.
+                @else
+                    Revisa los datos del ingreso antes de generar o imprimir su recibo.
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
             <form method="POST" wire:submit="save" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
@@ -105,11 +147,15 @@
                                     <p>No existe</p>
                                 @endif
                             </div>
+
+                            <small class="text-muted d-block mt-2">
+                                El concepto y la cantidad se toman del entero provisional seleccionado.
+                            </small>
                         </div>
                     </div>
                 @endif
 
-                @if ($mode == 0)
+                @if (false && $mode == 0)
                     <div class="row align-items-center m-3">
                         <div class="col-md-12">
                             <label for="name" class="col-form-label">Buscar
@@ -134,7 +180,7 @@
                                 placeholder="Buscar por nombre">
                             <div
                                 class="position-absolute drop-search concept-search p-3 pt-4 @if ($searchConcept == null) d-none @endif">
-                                <div class="container" style="overflow: scroll">
+                                <div class="container overflow-auto">
                                     @switch($concept_type)
                                         @case('Costos')
                                             <div class="row mb-3">
@@ -501,57 +547,91 @@
                 </div>
 
                 @if ($mode != 1)
-                    <div class="m-3 d-flex justify-content-end" style="gap: 12px">
-                        <a href="{{ route('account_due_profiles.index') }}" style="max-width: 110px"
+                    <div class="m-3 d-flex justify-content-end gap-2 mt-4">
+                        <a href="{{ route('account_due_incomes.index') }}"
                             class="btn btn-secondary btn-sm">Cancelar</a>
-                        <button type="submit" style="max-width: 110px" class="btn btn-dark btn-sm">Guardar
-                            datos</button>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fas fa-save me-1"></i> Guardar datos
+                        </button>
                     </div>
                 @endif
             </form>
         </div>
     </div>
 
-    @if ($mode == 1 && $income->receipt != null)
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>#Recibo</th>
-                        <th>Fecha y hora</th>
-                        <th>Usuario de caja</th>
-                        <th>Caja</th>
-                        <th>Ingreso</th>
-                        <th>Cuenta</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ $income->receipt->id }}</td>
-                        <td>{{ $income->receipt->created_at->format('d/m/Y h:m') }}</td>
-                        <td>{{ $income->receipt->cashier_user }}</td>
-                        <td>{{ $income->receipt->cashier }}</td>
+    @if ($mode == 1 && $income->receipts->count() > 0)
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-header bg-light border-0">
+                <h5 class="mb-0 fw-semibold">
+                    <i class="fas fa-receipt text-primary me-2"></i> Recibos asociados
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="fw-semibold"># Recibo</th>
+                                <th class="fw-semibold">Fecha y hora</th>
+                                <th class="fw-semibold">Usuario de caja</th>
+                                <th class="fw-semibold">Caja</th>
+                                <th class="fw-semibold">Ingreso</th>
+                                <th class="fw-semibold">Cuenta</th>
+                                <th class="fw-semibold text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($income->receipts->sortByDesc('created_at') as $receipt)
+                                <tr>
+                                    <td><span class="badge bg-primary">{{ $receipt->id }}</span></td>
+                                    <td>{{ $receipt->created_at->format('d/m/Y h:m') }}</td>
+                                    <td>{{ $receipt->cashier_user }}</td>
+                                    <td>{{ $receipt->cashier }}</td>
 
-                        @php
-                            $value = (int) $income->receipt->qty_integer;
-                        @endphp
+                                    @php
+                                        $value = (int) $receipt->qty_integer;
+                                    @endphp
 
-                        <td>{{ number_format($value, 2) }}</td>
-                        <td>{{ $income->receipt->account }}</td>
-                        <td>
-
-                            @if ($income->receipt->total_cash > 0)
-                                <a href="{{ route('account_due_incomes.close', $income->receipt->id) }}"
-                                    class="btn btn-primary btn-sm">Imprimir</a>
-                            @endif
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                    <td>${{ number_format($value, 2) }}</td>
+                                    <td>{{ $receipt->account }}</td>
+                                    <td class="text-center">
+                                        @if ($receipt->total_cash > 0)
+                                            <a href="{{ route('account_due_incomes.close', $receipt->id) }}"
+                                                class="btn btn-outline-primary btn-sm" title="Imprimir recibo" aria-label="Imprimir recibo">
+                                                <i class="fas fa-print"></i>
+                                            </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     @else
-        <h2>No hay recibo de este ingreso</h2>
+        <div class="alert alert-warning border-0 shadow-sm mt-4" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle fa-lg me-3"></i>
+                <div>No hay recibo generado para este ingreso.</div>
+            </div>
+        </div>
+    @endif
+
+    @if ($mode == 1)
+        <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title text-white" id="receiptModalLabel">Generar Recibo de Pago</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <livewire:tsr_accounts_due.incomes_receipts.crud :mode="0" :income="$income" />
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
     <div class="row"></div>
 </div>
