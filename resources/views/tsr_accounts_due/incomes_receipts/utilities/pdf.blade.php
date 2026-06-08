@@ -1,157 +1,228 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Recibo</title>
+    <title>Recibo Oficial</title>
 
     <style>
+        @page {
+            margin: 20mm 12mm 18mm 12mm;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-            background-color: #f9f9f9;
+            font-size: 12px;
+            color: #1f2937;
         }
 
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-
-        table {
+        .header {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
         }
 
-        th,
-        td {
+        .header td {
+            vertical-align: top;
+        }
+
+        .logo {
+            width: 120px;
+        }
+
+        .municipio {
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .submunicipio {
+            font-size: 12px;
+            color: #374151;
+            margin-top: 2px;
+        }
+
+        .meta {
+            text-align: right;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .ticket {
+            border: 1px solid #d1d5db;
             padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
         }
 
-        th {
-            background-color: #551312;
-            color: white;
+        .row {
+            display: table;
+            width: 100%;
         }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .row .col {
+            display: table-cell;
+            vertical-align: top;
         }
 
-        tr:hover {
-            background-color: #f1f1f1;
+        .mb-8 {
+            margin-bottom: 8px;
         }
 
-        .margin-top {
-            margin-top: 20px;
+        .mb-12 {
+            margin-bottom: 12px;
         }
 
-        .w-half {
-            width: 50%;
+        .label {
+            color: #6b7280;
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+
+        .value {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .line {
+            border-top: 1px dashed #9ca3af;
+            margin: 10px 0;
+        }
+
+        .concepto {
+            border: 1px solid #d1d5db;
+            padding: 8px;
+            min-height: 58px;
+        }
+
+        .importe {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .amount-words {
+            text-align: center;
+            font-style: italic;
+            margin: 10px 0;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: -12mm;
+            font-size: 10px;
+            color: #4b5563;
+            text-align: center;
+        }
+
+        .sat {
+            border: 1px solid #d1d5db;
+            padding: 8px;
+            font-size: 10px;
+            text-align: center;
+            min-height: 82px;
         }
     </style>
 </head>
 
 <body>
-    <table class="w-full">
+    @php
+        $income = $receipt->income;
+        $amountText = $receipt->qty_text ?: ($income->qty_text ?? '');
+    @endphp
+
+    <table class="header">
         <tr>
-            <td class="w-half">
-                <img src="{{ asset('front/img/logo-valle.png') }}" alt="" style="height: 150px">
+            <td style="width: 22%;">
+                <img src="{{ public_path('front/img/logo-valle.png') }}" class="logo" alt="Logo Valle">
             </td>
-            <td class="w-half">
-                <h2>Recibo oficial</h2>
+            <td style="width: 48%;">
+                <p class="municipio">VALLE DE SANTIAGO</p>
+                <p class="submunicipio">Municipio de Valle de Santiago, Gto.</p>
+                <p class="submunicipio">Ayuntamiento 2024 - 2027</p>
+            </td>
+            <td style="width: 30%;" class="meta">
+                <div><strong>{{ str_pad((string) $receipt->id, 6, '0', STR_PAD_LEFT) }}</strong></div>
+                <div>RECIBO OFICIAL</div>
+                <div>Fecha: {{ $receipt->created_at->format('d/m/Y') }}</div>
+                <div>Folio: {{ $receipt->id }}</div>
+                <div>Entero: {{ $income->folio ?? 'N/A' }}</div>
             </td>
         </tr>
     </table>
 
-    <table class="w-full">
-        <tr>
-            <td class="w-half">
-                {{ $receipt->created_at->format('Y-m-d') }}
-            </td>
-            <td class="w-half">
-                <h2>Recibo de ingreso</h2>
-            </td>
-        </tr>
-    </table>
+    <div class="ticket">
+        <div class="row mb-8">
+            <div class="col" style="width: 75%;">
+                <div class="label">Contribuyente</div>
+                <div class="value">{{ $income->name ?? 'N/A' }}</div>
+            </div>
+            <div class="col" style="width: 25%; text-align:right;">
+                <div class="label">Importe</div>
+                <div class="importe">${{ number_format((float) ($receipt->total ?? 0), 2) }}</div>
+            </div>
+        </div>
 
-    <div class="margin-top">
-        <table>
-            <thead>
-                <tr>
-                    <th>Denominación</th>
-                    <th>Cantidad</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $denominaciones = json_decode($receipt->denominations, true) ?? [];
-                    $total_value = 0;
-                @endphp
+        <div class="row mb-8">
+            <div class="col" style="width: 100%;">
+                <div class="label">Concepto</div>
+                <div class="concepto">{{ $income->concept ?? 'N/A' }}</div>
+            </div>
+        </div>
 
-                @foreach ($denominaciones as $valor => $cantidad)
-                    @if ($cantidad > 0)
-                        @php
-                            $total = $valor * $cantidad;
-                            $total_value += $total;
-                        @endphp
-                        <tr>
-                            <td>{{ $valor }}</td>
-                            <td>{{ $cantidad }}</td>
-                            <td>{{ $total }}</td>
-                        </tr>
-                    @endif
-                @endforeach
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td></td>
-                    <td><strong>{{ $total_value }}</strong></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row mb-8">
+            <div class="col" style="width: 100%;">
+                <div class="label">Observaciones</div>
+                <div>{{ $income->observations ?: 'Sin observaciones.' }}</div>
+            </div>
+        </div>
+
+        <div class="amount-words">({{ $amountText }})</div>
+
+        <div class="line"></div>
+
+        <div class="row">
+            <div class="col" style="width: 72%;">
+                <div class="label">Reg. de caja</div>
+                <div>Folio {{ $income->folio ?? 'N/A' }} - Caja {{ $receipt->cashier ?: 'N/A' }}</div>
+            </div>
+            <div class="col" style="width: 28%; text-align:right;">
+                <div class="label">Total</div>
+                <div class="value">${{ number_format((float) ($receipt->total ?? 0), 2) }}</div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 10px;">
+            <div class="col" style="width: 72%;">
+                <div class="label">Usuario de caja</div>
+                <div>{{ $receipt->cashier_user ?: 'N/A' }}</div>
+            </div>
+            <div class="col" style="width: 28%;">
+                <div class="sat">
+                    PALACIO MUNICIPAL S/N<br>
+                    TEL: (456) 64 300 59<br>
+                    VALLE DE SANTIAGO, GTO<br>
+                    RFC MVS850101ST5
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div style="margin-top: 50px">
-
-
-        <table>
-            <tbody>
-                <tr>
-                    <td style="text-align: center">
-                        Firma y nombre de cajero
-                        <br>
-                        <strong>{{ $receipt->cashier_user }}</strong>
-                    </td>
-                    <td style="text-align: center">
-                        Firma y nombre de depositante
-                        <br>
-                        <strong>{{ $receipt->income->name }}</strong>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+    <div class="footer">
+        Impreso: {{ ($printedAt ?? now())->format('d/m/Y H:i') }} | Usuario: {{ $printedBy ?? 'Sistema' }}
     </div>
 
-    <table class="w-full">
-        <tr>
-            <td class="w-half">
-                <h2>MUNICIPIO DE VALLE DE SANTIAGO, GTO.</h2>
-                <h3>AYUNTAMIENTO 2024 - 2027</h3>
-            </td>
-            <td class="w-half">
-
-            </td>
-        </tr>
-    </table>
+    <script type="text/php">
+        if (isset($pdf)) {
+            $font = $fontMetrics->get_font("helvetica", "normal");
+            $pdf->page_text(500, 815, "Pagina {PAGE_NUM} de {PAGE_COUNT}", $font, 9, [0.35,0.35,0.35]);
+        }
+    </script>
 </body>
 
 </html>
