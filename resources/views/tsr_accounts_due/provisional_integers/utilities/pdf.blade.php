@@ -1,19 +1,48 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Recibo</title>
+    <title>Entero Provisional</title>
 
     <style>
+        @page {
+            margin: 18mm 12mm 16mm 12mm;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f7f9fc;
-            padding: 20px;
+            background-color: #ffffff;
+            padding: 0;
             color: #333;
+        }
+
+        .header {
+            margin-bottom: 10px;
+        }
+
+        .header table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .header .logo {
+            width: 90px;
+        }
+
+        .header .title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .header .meta {
+            text-align: right;
+            font-size: 11px;
+            line-height: 1.4;
         }
 
         .receipt-table {
@@ -39,9 +68,9 @@
         }
 
         .receipt-title {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
         .section-header {
@@ -86,10 +115,38 @@
         .small {
             font-size: 13px;
         }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: -10mm;
+            text-align: center;
+            font-size: 10px;
+            color: #4b5563;
+        }
     </style>
 </head>
 
 <body>
+    <div class="header">
+        <table>
+            <tr>
+                <td style="width: 22%;"><img src="{{ public_path('front/img/logo-valle.png') }}" class="logo" alt="Logo"></td>
+                <td style="width: 53%;">
+                    <p class="title">MUNICIPIO DE VALLE DE SANTIAGO, GTO.</p>
+                    <div>AYUNTAMIENTO 2024 - 2027</div>
+                    <div>TESORERIA MUNICIPAL</div>
+                </td>
+                <td style="width: 25%;" class="meta">
+                    <div>Impreso: {{ ($printedAt ?? now())->format('d/m/Y H:i') }}</div>
+                    <div>Usuario: {{ $printedBy ?? 'Sistema' }}</div>
+                    <div>Folio: {{ $integer->id }}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
     <div class="receipt-title">Entero provisional</div>
 
     <table class="receipt-table">
@@ -134,6 +191,10 @@
             <td colspan="3">{{ $integer->payment_method }}</td>
         </tr>
         <tr>
+            <th>Estatus</th>
+            <td colspan="3">{{ strtoupper($integer->status ?? 'generado') }}</td>
+        </tr>
+        <tr>
             <th>Fecha</th>
             <td colspan="3">Valle de Santiago, Gto. a
                 {{ \Carbon\Carbon::parse($integer->created_at)->format('d/m/Y') }}</td>
@@ -145,6 +206,17 @@
             <td>{{ $integer->director }}</td>
         </tr>
     </table>
+
+    <div class="footer">
+        Documento generado por {{ $printedBy ?? 'Sistema' }}
+    </div>
+
+    <script type="text/php">
+        if (isset($pdf)) {
+            $font = $fontMetrics->get_font("helvetica", "normal");
+            $pdf->page_text(500, 815, "Pagina {PAGE_NUM} de {PAGE_COUNT}", $font, 9, [0.35,0.35,0.35]);
+        }
+    </script>
 </body>
 
 </html>
