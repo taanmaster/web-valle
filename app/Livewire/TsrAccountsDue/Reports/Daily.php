@@ -5,17 +5,11 @@ namespace App\Livewire\TsrAccountsDue\Reports;
 use App\Models\TsrAccountDueDailyReport;
 use App\Models\TsrAccountDueIncome;
 use App\Models\TsrAccountDueIncomeReceipt;
+use App\Models\BackofficeDependency;
 use Livewire\WithPagination;
 use Livewire\Component;
 
 // Ayudantes
-use Str;
-use Auth;
-use Session;
-use Carbon\Carbon;
-use Livewire\Attributes\Validate;
-use Livewire\Attributes\On;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class Daily extends Component
 {
@@ -23,25 +17,41 @@ class Daily extends Component
     use WithPagination;
 
     public $concepts;
+    public $dependencies;
 
     public $cashiers;
     public $userCashiers;
 
     public $cashier = '';
     public $cashier_user = '';
+    public $dependency_name = '';
+    public $concept = '';
 
     public function mount()
     {
         $this->concepts = TsrAccountDueIncome::select('concept')->distinct()->pluck('concept');
+        $this->dependencies = BackofficeDependency::select('name')->orderBy('name')->pluck('name');
         $this->cashiers = TsrAccountDueIncomeReceipt::select('cashier')->distinct()->pluck('cashier');
         $this->userCashiers = TsrAccountDueIncomeReceipt::select('cashier_user')->distinct()->pluck('cashier_user');
     }
 
     public function save()
     {
+        return $this->createReportAndRedirect('account_due_daily.export');
+    }
+
+    public function exportExcel()
+    {
+        return $this->createReportAndRedirect('account_due_daily.export_excel');
+    }
+
+    private function createReportAndRedirect(string $routeName)
+    {
         $report = new TsrAccountDueDailyReport;
         $report->cashier_user = $this->cashier_user;
         $report->cashier = $this->cashier;
+        $report->dependency_name = $this->dependency_name;
+        $report->concept = $this->concept;
 
         $report->save();
 
@@ -49,17 +59,23 @@ class Daily extends Component
 
         session()->flash('message', 'Reporte registrado con éxito.');
 
-        return redirect()->route('account_due_daily.export', $id);
+        return redirect()->route($routeName, $id);
     }
 
     public function render()
     {
         $incomes = [];
 
-        foreach ($this->concepts as $concept) {
+        $conceptsToRender = $this->concept ? collect([$this->concept]) : $this->concepts;
+
+        foreach ($conceptsToRender as $concept) {
 
             $query = TsrAccountDueIncomeReceipt::whereHas('income', function ($query) use ($concept) {
                 $query->where('concept', $concept);
+
+                if ($this->dependency_name) {
+                    $query->where('department', $this->dependency_name);
+                }
             });
 
 

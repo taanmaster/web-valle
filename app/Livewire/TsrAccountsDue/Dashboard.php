@@ -11,7 +11,7 @@ use App\Models\TsrAccountDueIncome;
 use App\Models\TsrAccountDueIncomeReceipt;
 use App\Models\TsrAccountDueProfile;
 use App\Models\TsrAccountDueProvisionalInteger;
-use App\Models\TransparencyDependency;
+use App\Models\BackofficeDependency;
 
 class Dashboard extends Component
 {
@@ -20,8 +20,10 @@ class Dashboard extends Component
 
     // Dependencias de tesorería
     public $dependencies = [];
+    public $concepts = [];
 
     public $selectDependency;
+    public $selectConcept = '';
 
     public $activeAccounts = '';
 
@@ -34,8 +36,9 @@ class Dashboard extends Component
 
     public function mount()
     {
-        // Cargar las dependencias de transparencia
-        $this->dependencies = TransparencyDependency::where('belongs_to_treasury', true)->get();
+        // Cargar dependencias RH
+        $this->dependencies = BackofficeDependency::orderBy('name')->get();
+        $this->concepts = TsrAccountDueIncome::select('concept')->distinct()->pluck('concept');
 
         $inicio = Carbon::now()->startOfWeek();
 
@@ -43,7 +46,7 @@ class Dashboard extends Component
         $this->start_date = $inicio->format('Y-m-d');
 
         $this->end_date = Carbon::now()->format('Y-m-d');
-        $this->selectDependency = $this->dependencies->first()->name;
+        $this->selectDependency = '';
 
         $this->activeAccounts = TsrAccountDueProfile::get()->count();
 
@@ -83,6 +86,18 @@ class Dashboard extends Component
             $query->whereDate('created_at', '<=', $this->end_date);
         }
 
+        if ($this->selectDependency || $this->selectConcept) {
+            $query->whereHas('income', function ($query) {
+                if ($this->selectDependency) {
+                    $query->where('department', $this->selectDependency);
+                }
+
+                if ($this->selectConcept) {
+                    $query->where('concept', $this->selectConcept);
+                }
+            });
+        }
+
         $incomes = $query->latest()->paginate(8);
 
 
@@ -97,6 +112,10 @@ class Dashboard extends Component
 
         if ($this->selectDependency) {
             $querytwo->where('department', $this->selectDependency);
+        }
+
+        if ($this->selectConcept) {
+            $querytwo->where('concept', $this->selectConcept);
         }
 
         $ingresos = $querytwo->latest()->paginate(8);
