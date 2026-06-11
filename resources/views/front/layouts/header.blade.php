@@ -1,12 +1,12 @@
 <section class="header-bar">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 {{--
                 <p class="mb-0">Horarios Presidencia: <strong>Lunes a Viernes de 8:00 am - 4:00 pm</strong></p>
                  --}}
             </div>
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div class="d-flex justify-content-end flex-column flex-md-row gap-3">
                     <a href="{{ route('appointments.search') }}"
                         class="btn d-flex align-items-center btn-warning position-relative gap-2">
