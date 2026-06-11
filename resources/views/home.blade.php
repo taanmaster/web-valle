@@ -255,7 +255,7 @@
                 <p>Espacio para fortalecer la cultura organizacional y comunicación interna.</p>
                 <ul>
                     <li><a href="{{ route('birthday.admin.index') }}">Cumpleaños de la administración</a></li>
-                    <li><a href="javascript:void(0)">Programas de identidad</a></li>
+                    <li><a href="{{ route('identity_program.admin.portal') }}">Programas de identidad</a></li>
                 </ul>
             </div>
         </div>

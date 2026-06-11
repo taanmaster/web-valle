@@ -293,6 +293,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('training_downloadable.admin.index') }}">Descargable</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('identity_program.admin.index') }}">Programa de
+                            Identidad</a>
+                    </li>
                 </ul>
 
                 <div class="title-box">
