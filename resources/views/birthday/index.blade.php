@@ -41,29 +41,58 @@
             line-height: 1.65;
         }
 
-        .birthday-card {
+        /* Visor de foto del mes */
+        .bd-viewer {
+            border-radius: 1rem;
             background: #ebebeb;
-            border-radius: .75rem;
-            padding: 1.1rem 1.25rem 1rem;
+            overflow: hidden;
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 2rem;
         }
 
-        .birthday-card .bd-date {
-            font-size: .78rem;
-            color: #888;
-            margin-bottom: .4rem;
+        .bd-viewer img {
+            width: 100%;
+            height: 100%;
+            max-height: 640px;
+            object-fit: cover;
+            display: block;
         }
 
-        .birthday-card .bd-name {
-            font-size: .9rem;
-            font-weight: 700;
-            color: #1a1a1a;
+        .bd-viewer .bd-empty {
+            text-align: center;
+            color: #aaa;
+            padding: 4rem 1rem;
+        }
+
+        .bd-photo-swap {
+            transition: opacity .25s ease, transform .25s ease;
+            opacity: 1;
+            transform: scale(1);
+            width: 100%;
+        }
+
+        .bd-photo-swap.is-fading {
+            opacity: 0;
+            transform: scale(.985);
+        }
+
+        /* Botones de mes */
+        .bd-month-btn {
+            width: 100%;
+            padding: .9rem 0;
+            border-radius: 50rem;
+            font-weight: 600;
+            letter-spacing: .05em;
             text-transform: uppercase;
-            margin-bottom: .2rem;
+            font-size: .85rem;
         }
 
-        .birthday-card .bd-area {
-            font-size: .82rem;
-            color: #666;
+        @media (prefers-reduced-motion: reduce) {
+            .bd-photo-swap { transition: none; }
         }
     </style>
 
@@ -83,29 +112,82 @@
         </div>
     </div>
 
-    {{-- Grid de cumpleaños --}}
-    <div class="row g-3">
-        @forelse ($birthdays as $birthday)
-            <div class="col-12 col-md-4">
-                <div class="birthday-card">
-                    <p class="bd-date">{{ \Carbon\Carbon::parse($birthday->birthday_date)->format('d/m/y') }}</p>
-                    <p class="bd-name">{{ $birthday->name }}</p>
-                    <p class="bd-area">{{ $birthday->area }}</p>
+    {{-- Foto del mes --}}
+    <div class="bd-viewer">
+        <div id="bd-photo-container" class="bd-photo-swap">
+            @php $current = $months->firstWhere('num', $currentMonth); @endphp
+            @if ($current && $current['photo'])
+                <img id="bd-photo" src="{{ $current['photo'] }}" alt="Cumpleaños de {{ $current['name'] }}">
+            @else
+                <div class="bd-empty" id="bd-photo">
+                    <i class="ti ti-cake" style="font-size:3rem;"></i>
+                    <p class="mb-0 fw-semibold mt-2">Aún no hay foto para {{ $current['name'] ?? 'este mes' }}</p>
                 </div>
-            </div>
-        @empty
-            <div class="col-12">
-                <div class="d-flex flex-column align-items-center justify-content-center py-5 text-center"
-                    style="background:#f5f3f3; border-radius:1rem; gap:12px;">
-                    <i class="ti ti-cake" style="font-size:3rem; color:#ccc;"></i>
-                    <p class="mb-0 fw-semibold" style="color:#aaa; font-size:.95rem;">
-                        Aún no hay cumpleaños registrados
-                    </p>
-                    <a href="{{ route('birthday.admin.manage') }}" class="btn btn-sm btn-primary mt-1">
-                        Agregar cumpleaños
-                    </a>
-                </div>
-            </div>
-        @endforelse
+            @endif
+        </div>
     </div>
+
+    {{-- Botones de meses --}}
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3 mb-4" role="group" aria-label="Meses de cumpleaños">
+        @foreach ($months as $month)
+            <div class="col">
+                <button type="button"
+                    class="btn bd-month-btn {{ $month['num'] === $currentMonth ? 'btn-primary active' : 'btn-light' }}"
+                    data-month="{{ $month['num'] }}"
+                    data-photo="{{ $month['photo'] ?? '' }}"
+                    data-name="{{ $month['name'] }}"
+                    @if ($month['num'] === $currentMonth) aria-pressed="true" @endif>
+                    {{ $month['name'] }}
+                </button>
+            </div>
+        @endforeach
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.getElementById('bd-photo-container');
+            const buttons = document.querySelectorAll('.bd-month-btn');
+
+            // Pre-carga de fotos para que el cambio sea instantáneo
+            buttons.forEach(btn => {
+                if (btn.dataset.photo) {
+                    const img = new Image();
+                    img.src = btn.dataset.photo;
+                }
+            });
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    if (this.classList.contains('active')) return;
+
+                    // Estado activo (Bootstrap)
+                    buttons.forEach(b => {
+                        b.classList.remove('btn-primary', 'active');
+                        b.classList.add('btn-light');
+                        b.removeAttribute('aria-pressed');
+                    });
+                    this.classList.remove('btn-light');
+                    this.classList.add('btn-primary', 'active');
+                    this.setAttribute('aria-pressed', 'true');
+
+                    const photo = this.dataset.photo;
+                    const name = this.dataset.name;
+
+                    // Fade out → swap → fade in
+                    container.classList.add('is-fading');
+                    setTimeout(() => {
+                        if (photo) {
+                            container.innerHTML = '<img id="bd-photo" src="' + photo +
+                                '" alt="Cumpleaños de ' + name + '">';
+                        } else {
+                            container.innerHTML = '<div class="bd-empty" id="bd-photo">' +
+                                '<i class="ti ti-cake" style="font-size:3rem;"></i>' +
+                                '<p class="mb-0 fw-semibold mt-2">Aún no hay foto para ' + name + '</p></div>';
+                        }
+                        container.classList.remove('is-fading');
+                    }, 250);
+                });
+            });
+        });
+    </script>
 @endsection
