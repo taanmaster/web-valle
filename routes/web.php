@@ -9,6 +9,8 @@ use App\Http\Controllers\RegulatoryAgendaDependencyController;
 // Comunicación Social
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PanteonController;
+use App\Http\Controllers\AyudaController;
+use App\Http\Controllers\AyudaFrontController;
 
 // DIF
 use App\Http\Controllers\CitizenMedicalProfileController;
@@ -273,6 +275,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'uses' => 'FrontController@healthDirectionList',
         'as' => 'health_direction.list'
     ]);
+
+    // Módulo de Ayuda — Front
+    Route::get('/ayuda', [AyudaFrontController::class, 'index'])->name('ayuda.front.index');
+    Route::get('/ayuda/{slug}', [AyudaFrontController::class, 'show'])->name('ayuda.front.show')
+        ->where('slug', '[\w\d\-\_]+');
 
     // Modulo Blog
     Route::get('/blog', [
@@ -1644,6 +1651,18 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'create' => 'blog.admin.create',
             'destroy' => 'blog.admin.destroy',
         ]);
+
+        // Módulo de Ayuda — Admin
+        Route::resource('ayuda', AyudaController::class)->names([
+            'index'   => 'ayuda.admin.index',
+            'create'  => 'ayuda.admin.create',
+            'show'    => 'ayuda.admin.show',
+            'edit'    => 'ayuda.admin.edit',
+            'destroy' => 'ayuda.admin.destroy',
+        ])->except(['store', 'update']);
+
+        Route::get('/guias', [AyudaController::class, 'guiasIndex'])->name('ayuda.admin.guias');
+        Route::get('/guias/{slug}', [AyudaController::class, 'guiaDetalle'])->name('ayuda.admin.guia.show');
 
         // Panteones
         Route::resource('panteones', PanteonController::class)->names([

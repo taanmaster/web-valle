@@ -199,6 +199,13 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="#valleAyuda" id="authentication-tab" class="nav-link">
+                            <i class="ti ti-briefcase menu-icon"></i>
+                            <span class="menu-label">Ayuda</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="#vallePanteon" id="authentication-tab" class="nav-link">
                             <i class="ti ti-briefcase menu-icon"></i>
                             <span class="menu-label">Panteón</span>
@@ -1123,6 +1130,25 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('panteones.admin.index') }}">Panteones</a>
+                    </li>
+                </ul>
+
+                @if (auth()->user()->hasRole('all'))
+                    <div class="mt-3 px-3">
+                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                        <span class="badge bg-success me-1 mb-1">Todos los usuarios</span>
+                    </div>
+                @endif
+            </div>
+
+            <div id="valleAyuda" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="authentication-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Ayuda</h6>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('ayuda.admin.index') }}">Guías</a>
                     </li>
                 </ul>
 
