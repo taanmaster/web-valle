@@ -300,6 +300,19 @@
                 </ul>
 
                 <div class="title-box">
+                    <h6 class="menu-title">Mis Beneficios</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('benefits.admin.index') }}">Entradas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('benefits.admin.portal') }}">Portal</a>
+                    </li>
+                </ul>
+
+                <div class="title-box">
                     <h6 class="menu-title">Comunicación y Vinculación</h6>
                 </div>
 
