@@ -11,6 +11,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PanteonController;
 use App\Http\Controllers\AyudaController;
 use App\Http\Controllers\AyudaFrontController;
+use App\Http\Controllers\IdentityProgramController;
 
 // DIF
 use App\Http\Controllers\CitizenMedicalProfileController;
@@ -1672,6 +1673,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'edit'    => 'panteones.admin.edit',
             'destroy' => 'panteones.admin.destroy',
         ])->except(['store', 'update']);
+
+        // Programa de Identidad
+        Route::resource('programa-identidad', IdentityProgramController::class)->names([
+            'index'   => 'identity_program.admin.index',
+            'create'  => 'identity_program.admin.create',
+            'show'    => 'identity_program.admin.show',
+            'edit'    => 'identity_program.admin.edit',
+            'destroy' => 'identity_program.admin.destroy',
+        ])->except(['store', 'update']);
+
+        Route::get('/programa-identidad-portal', [IdentityProgramController::class, 'portal'])
+            ->name('identity_program.admin.portal');
+        Route::get('/programa-identidad-portal/{slug}', [IdentityProgramController::class, 'detail'])
+            ->name('identity_program.admin.detail');
 
         /* Repositorio funciones Asincronas */
         Route::group(['prefix' => 'blogAdmin'], function () {
