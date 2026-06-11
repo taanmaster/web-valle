@@ -12,6 +12,7 @@ use App\Http\Controllers\PanteonController;
 use App\Http\Controllers\AyudaController;
 use App\Http\Controllers\AyudaFrontController;
 use App\Http\Controllers\IdentityProgramController;
+use App\Http\Controllers\BenefitController;
 
 // DIF
 use App\Http\Controllers\CitizenMedicalProfileController;
@@ -1687,6 +1688,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ->name('identity_program.admin.portal');
         Route::get('/programa-identidad-portal/{slug}', [IdentityProgramController::class, 'detail'])
             ->name('identity_program.admin.detail');
+
+        // Mis Beneficios
+        Route::resource('mis-beneficios', BenefitController::class)->names([
+            'index'   => 'benefits.admin.index',
+            'create'  => 'benefits.admin.create',
+            'show'    => 'benefits.admin.show',
+            'edit'    => 'benefits.admin.edit',
+            'destroy' => 'benefits.admin.destroy',
+        ])->except(['store', 'update']);
+
+        Route::get('/mis-beneficios-portal', [BenefitController::class, 'portal'])
+            ->name('benefits.admin.portal');
+        Route::get('/mis-beneficios-portal/{slug}', [BenefitController::class, 'detail'])
+            ->name('benefits.admin.detail');
 
         /* Repositorio funciones Asincronas */
         Route::group(['prefix' => 'blogAdmin'], function () {
