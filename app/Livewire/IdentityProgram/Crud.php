@@ -8,6 +8,7 @@ use Livewire\Attributes\On;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Purifier;
 
 use App\Models\IdentityProgram;
 use App\Models\IdentityProgramImage;
@@ -100,6 +101,10 @@ class Crud extends Component
             'published_at' => 'nullable|date',
             'newPhotos.*'  => 'image|max:15360',
         ]);
+
+        // Sanitizar HTML del editor antes de persistir
+        $this->content_1 = $this->content_1 ? Purifier::clean($this->content_1) : $this->content_1;
+        $this->content_2 = $this->content_2 ? Purifier::clean($this->content_2) : $this->content_2;
 
         if ($this->entry !== null) {
             if ($this->hero_img instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
