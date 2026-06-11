@@ -8,6 +8,7 @@ use App\Http\Controllers\RegulatoryAgendaDependencyController;
 
 // Comunicación Social
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\PanteonController;
 
 // DIF
 use App\Http\Controllers\CitizenMedicalProfileController;
@@ -1643,6 +1644,15 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'create' => 'blog.admin.create',
             'destroy' => 'blog.admin.destroy',
         ]);
+
+        // Panteones
+        Route::resource('panteones', PanteonController::class)->names([
+            'index'   => 'panteones.admin.index',
+            'create'  => 'panteones.admin.create',
+            'show'    => 'panteones.admin.show',
+            'edit'    => 'panteones.admin.edit',
+            'destroy' => 'panteones.admin.destroy',
+        ])->except(['store', 'update']);
 
         /* Repositorio funciones Asincronas */
         Route::group(['prefix' => 'blogAdmin'], function () {
