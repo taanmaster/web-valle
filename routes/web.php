@@ -13,6 +13,8 @@ use App\Http\Controllers\AyudaController;
 use App\Http\Controllers\AyudaFrontController;
 use App\Http\Controllers\IdentityProgramController;
 use App\Http\Controllers\BenefitController;
+use App\Http\Controllers\GeneralCalendarController;
+use App\Http\Controllers\GeneralCalendarFrontController;
 
 // DIF
 use App\Http\Controllers\CitizenMedicalProfileController;
@@ -282,6 +284,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/ayuda', [AyudaFrontController::class, 'index'])->name('ayuda.front.index');
     Route::get('/ayuda/{slug}', [AyudaFrontController::class, 'show'])->name('ayuda.front.show')
         ->where('slug', '[\w\d\-\_]+');
+
+    // Calendario General — Front (agendado de citas)
+    Route::get('/calendario-general', [GeneralCalendarFrontController::class, 'index'])
+        ->name('general_calendar.front.index');
 
     // Modulo Blog
     Route::get('/blog', [
@@ -1702,6 +1708,15 @@ Route::namespace('App\Http\Controllers')->group(function () {
             ->name('benefits.admin.portal');
         Route::get('/mis-beneficios-portal/{slug}', [BenefitController::class, 'detail'])
             ->name('benefits.admin.detail');
+
+        // Calendario General — Trámites
+        Route::resource('calendario-tramites', GeneralCalendarController::class)->names([
+            'index'   => 'general_calendar.admin.index',
+            'create'  => 'general_calendar.admin.create',
+            'show'    => 'general_calendar.admin.show',
+            'edit'    => 'general_calendar.admin.edit',
+            'destroy' => 'general_calendar.admin.destroy',
+        ])->except(['store', 'update']);
 
         /* Repositorio funciones Asincronas */
         Route::group(['prefix' => 'blogAdmin'], function () {
