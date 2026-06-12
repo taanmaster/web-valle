@@ -216,8 +216,9 @@
                                 @if ($slot['available'])
                                     <span class="gc-slot free">{{ $slot['start'] }}</span>
                                 @else
+                                    {{-- Datos del ciudadano con doble escape: el tooltip los inyecta como HTML --}}
                                     <span class="gc-slot booked" data-bs-toggle="tooltip" data-bs-html="true"
-                                        title="<strong>{{ $slot['appointment']->folio }}</strong><br>{{ $slot['appointment']->full_name }}<br>{{ $slot['appointment']->email }}<br>{{ $slot['appointment']->phone }}">
+                                        title="<strong>{{ $slot['appointment']->folio }}</strong><br>{{ e($slot['appointment']->full_name) }}<br>{{ e($slot['appointment']->email) }}<br>{{ e($slot['appointment']->phone) }}">
                                         {{ $slot['start'] }}
                                     </span>
                                 @endif
