@@ -181,6 +181,7 @@
                     <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
                         <h6 class="fw-bold mb-0">Configuración de disponibilidad por día</h6>
                         <span class="badge bg-light text-secondary border">NOTA: Delimitado a 30 min por cita</span>
+                        <span class="badge bg-light text-secondary border">Solo en los días de atención del trámite</span>
                     </div>
 
                     <div class="row mb-2">
@@ -188,15 +189,20 @@
                         <div class="col"><small class="text-muted">Bloques de citas</small></div>
                     </div>
 
-                    {{-- Grid de bloques por día --}}
+                    {{-- Grid de bloques por día (solo días de atención habilitados) --}}
                     @foreach ($days as $dayNum => $dayLetter)
-                        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap" wire:key="day-{{ $dayNum }}">
-                            <span class="gc-day-label" title="{{ $dayNames[$dayNum] }}">{{ $dayLetter }}</span>
+                        @php $dayEnabled = in_array($dayNum, $attention_days); @endphp
+                        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap {{ $dayEnabled ? '' : 'opacity-50' }}"
+                            wire:key="day-{{ $dayNum }}">
+                            <span class="gc-day-label"
+                                title="{{ $dayNames[$dayNum] }}{{ $dayEnabled ? '' : ' (fuera de los días de atención)' }}">
+                                {{ $dayLetter }}
+                            </span>
                             @for ($i = 0; $i < \App\Livewire\GeneralCalendar\Crud::BLOCKS_PER_DAY; $i++)
                                 <input type="time" step="1800"
                                     class="form-control form-control-sm" style="width: 105px;"
                                     wire:model="blocks.{{ $dayNum }}.{{ $i }}"
-                                    @if($mode===1) disabled @endif>
+                                    @if($mode===1 || !$dayEnabled) disabled @endif>
                             @endfor
                         </div>
                     @endforeach
@@ -214,11 +220,13 @@
                         <div class="d-flex gap-2 flex-wrap" id="gc-slots-viewer">
                             @forelse ($viewSlots as $slot)
                                 @if ($slot['available'])
-                                    <span class="gc-slot free">{{ $slot['start'] }}</span>
+                                    <span class="gc-slot free"
+                                        wire:key="slot-{{ $view_date }}-{{ $slot['start'] }}">{{ $slot['start'] }}</span>
                                 @else
-                                    {{-- Datos del ciudadano con doble escape: el tooltip los inyecta como HTML --}}
-                                    <span class="gc-slot booked" data-bs-toggle="tooltip" data-bs-html="true"
-                                        title="<strong>{{ $slot['appointment']->folio }}</strong><br>{{ e($slot['appointment']->full_name) }}<br>{{ e($slot['appointment']->email) }}<br>{{ e($slot['appointment']->phone) }}">
+                                    {{-- Tooltip en modo texto: los datos vienen del formulario público --}}
+                                    <span class="gc-slot booked" data-bs-toggle="tooltip"
+                                        wire:key="slot-{{ $view_date }}-{{ $slot['start'] }}"
+                                        title="{{ $slot['appointment']->folio }} · {{ $slot['appointment']->full_name }} · {{ $slot['appointment']->email }} · {{ $slot['appointment']->phone }}">
                                         {{ $slot['start'] }}
                                     </span>
                                 @endif
@@ -321,15 +329,13 @@
 @push('scripts')
 <script>
     document.addEventListener('livewire:initialized', () => {
-        initGcTooltips();
-        Livewire.hook('morph.updated', () => initGcTooltips());
-    });
-
-    function initGcTooltips() {
-        document.querySelectorAll('#gc-slots-viewer [data-bs-toggle="tooltip"]').forEach(el => {
-            bootstrap.Tooltip.getOrCreateInstance(el);
+        // Tooltip delegado: sobrevive a los re-renders de Livewire porque la
+        // instancia vive en body y se resuelve por selector al hacer hover.
+        new bootstrap.Tooltip(document.body, {
+            selector: '#gc-slots-viewer [data-bs-toggle="tooltip"]',
+            container: 'body'
         });
-    }
+    });
 </script>
 @endpush
 </div>

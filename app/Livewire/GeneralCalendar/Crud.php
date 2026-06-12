@@ -186,10 +186,15 @@ class Crud extends Component
             }
         }
 
-        // Sincronizar bloques: se reemplazan por los capturados
+        // Sincronizar bloques: se reemplazan por los capturados.
+        // Solo se aceptan bloques en los días de atención del trámite.
         $this->procedure->blocks()->delete();
 
         foreach ($this->blocks as $day => $times) {
+            if (!in_array($day, $this->attention_days)) {
+                continue;
+            }
+
             $unique = array_unique(array_filter($times, fn ($t) => $t !== '' && $t !== null));
             foreach ($unique as $time) {
                 $this->procedure->blocks()->create([

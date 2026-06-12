@@ -44,6 +44,20 @@ class AppointmentForm extends Component
     public function updatedFecha(): void
     {
         $this->horario = '';
+        $this->resetValidation('fecha');
+
+        if (!$this->fecha || !$this->selectedProcedure) {
+            return;
+        }
+
+        // Solo días de la semana con bloques de disponibilidad configurados
+        $dayOfWeek = Carbon::parse($this->fecha)->dayOfWeek;
+
+        if (!in_array($dayOfWeek, $this->selectedProcedure->availableDaysOfWeek())) {
+            $this->addError('fecha', 'Este trámite no atiende ese día. Días con citas disponibles: '
+                . ($this->selectedProcedure->availableDayNamesList() ?: 'ninguno por el momento') . '.');
+            $this->fecha = '';
+        }
     }
 
     public function getSelectedProcedureProperty(): ?GeneralCalendarProcedure
@@ -115,6 +129,14 @@ class AppointmentForm extends Component
 
         if (!$procedure) {
             $this->addError('procedure_id', 'El trámite seleccionado ya no está disponible.');
+
+            return;
+        }
+
+        // El día de la semana debe tener disponibilidad configurada
+        if (!in_array(Carbon::parse($this->fecha)->dayOfWeek, $procedure->availableDaysOfWeek())) {
+            $this->addError('fecha', 'Este trámite no atiende ese día. Días con citas disponibles: '
+                . ($procedure->availableDayNamesList() ?: 'ninguno por el momento') . '.');
 
             return;
         }

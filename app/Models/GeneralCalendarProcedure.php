@@ -80,6 +80,36 @@ class GeneralCalendarProcedure extends Model
     }
 
     /**
+     * Días de la semana (0-6) que tienen bloques de citas configurados.
+     */
+    public function availableDaysOfWeek(): array
+    {
+        return $this->blocks()
+            ->reorder()
+            ->distinct()
+            ->pluck('day_of_week')
+            ->map(fn ($d) => (int) $d)
+            ->all();
+    }
+
+    /**
+     * Nombres de los días con bloques, en orden L-D (ej: "Lunes, Viernes").
+     */
+    public function availableDayNamesList(): string
+    {
+        $available = $this->availableDaysOfWeek();
+
+        $names = [];
+        foreach (array_keys(self::DAYS) as $day) {
+            if (in_array($day, $available)) {
+                $names[] = self::DAY_NAMES[$day];
+            }
+        }
+
+        return implode(', ', $names);
+    }
+
+    /**
      * Bloques de 30 min para una fecha: configurados para ese día de la semana,
      * excluyendo cierres, citas ya agendadas y horas pasadas si es hoy.
      *

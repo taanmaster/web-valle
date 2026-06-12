@@ -78,6 +78,12 @@
                         <label class="form-label">Fecha</label>
                         <input type="date" class="form-control rounded-pill @error('fecha') is-invalid @enderror"
                             wire:model.live="fecha" min="{{ now()->toDateString() }}">
+                        @php $diasDisponibles = $this->selectedProcedure->availableDayNamesList(); @endphp
+                        @if ($diasDisponibles)
+                            <small class="text-muted d-block mt-1">Días con citas disponibles: {{ $diasDisponibles }}.</small>
+                        @else
+                            <small class="text-muted d-block mt-1">Este trámite aún no tiene horarios de citas disponibles.</small>
+                        @endif
                         @error('fecha')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                     </div>
 
