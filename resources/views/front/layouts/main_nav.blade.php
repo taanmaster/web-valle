@@ -152,6 +152,13 @@
             </li>
 
             <li>
+                <a href="{{ route('general_calendar.front.index') }}">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    <span>Calendario General</span>
+                </a>
+            </li>
+
+            <li>
                 <div class="switch">
                     <input type="checkbox" id="mode" checked>
                     <label for="mode">

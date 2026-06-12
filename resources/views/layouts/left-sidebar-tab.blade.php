@@ -1040,6 +1040,17 @@
                         <a class="nav-link" href="{{ route('tourism.banners.index') }}">Banners</a>
                     </li>
                 </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Calendario General</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('general_calendar.admin.index') }}">Trámites
+                            Calendario</a>
+                    </li>
+                </ul>
             </div>
 
             <div id="valleHealthDirection" class="main-icon-menu-pane tab-pane" role="tabpanel"
