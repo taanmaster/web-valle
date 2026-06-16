@@ -2155,6 +2155,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::delete('/altas/{id}/archivo/{fileId}', [App\Http\Controllers\SupplierController::class, 'deleteFile'])->name('supplier.alta.deleteFile');
         Route::delete('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'destroy'])->name('supplier.alta.destroy');
 
+        // Formatos descargables (Word)
+        Route::get('/formatos/{format}', [App\Http\Controllers\SupplierController::class, 'downloadFormat'])->name('supplier.formato.download');
+
         // Licitaciones
         Route::get('/licitaciones', [SupplierBiddingController::class, 'index'])->name('supplier.bidding.index');
         Route::get('/licitaciones/{id}', [SupplierBiddingController::class, 'show'])->name('supplier.bidding.show');

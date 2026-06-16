@@ -35,6 +35,7 @@ class Supplier extends Model
         'curp',
         'chamber_registration',
         'business_line',
+        'social_media',
 
         // Persona Moral
         'legal_name',
@@ -201,19 +202,16 @@ class Supplier extends Model
      */
     public function getRequiredDocuments()
     {
+        // Formatos descargables generados como Word (HTML → .doc).
+        // 'word_format' apunta a la clave de la ruta supplier.formato.download.
+        $formatDocs = [
+            ['name' => 'Formato de Alta', 'slug' => 'formato-de-alta', 'word_format' => 'formato-alta'],
+            ['name' => 'Carta Manifiesto', 'slug' => 'carta-manifiesto', 'word_format' => 'carta-manifiesto'],
+            ['name' => 'Constancia de Enterado', 'slug' => 'constancia-de-enterado', 'word_format' => 'constancia-enterado'],
+            ['name' => 'Formato Datos Bancarios', 'slug' => 'formato-datos-bancarios', 'word_format' => 'datos-bancarios'],
+        ];
+
         $commonDocs = [
-            [
-                'name' => 'Formato de Alta',
-                'slug' => 'formato-de-alta',
-                'has_resource' => true,
-                'resource_file' => 'formato_alta.docx'
-            ],
-            [
-                'name' => 'Formato de Datos Fiscales',
-                'slug' => 'formato-de-datos-fiscales',
-                'has_resource' => true,
-                'resource_file' => 'formato_datos_fiscales.docx'
-            ],
             ['name' => 'Constancia de Situación Fiscal', 'slug' => 'constancia-de-situacion-fiscal'],
             ['name' => 'Catálogo de Bienes y Servicios', 'slug' => 'catalogo-de-bienes-y-servicios'],
             ['name' => 'Comprobante de Domicilio', 'slug' => 'comprobante-de-domicilio'],
@@ -222,16 +220,20 @@ class Supplier extends Model
         ];
 
         if ($this->person_type === 'fisica') {
-            return array_merge($commonDocs, [
+            return array_merge($formatDocs, $commonDocs, [
                 ['name' => 'Copia Certificada de Identificación Oficial del Solicitante', 'slug' => 'copia-certificada-de-identificacion-oficial-del-solicitante'],
-            ]);
-        } else {
-            return array_merge($commonDocs, [
                 ['name' => 'Copia Certificada de Identificación Oficial del Representante Legal', 'slug' => 'copia-certificada-de-identificacion-oficial-del-representante-legal'],
-                ['name' => 'Acta Constitutiva', 'slug' => 'acta-constitutiva'],
-                ['name' => 'Poder Notarial', 'slug' => 'poder-notarial'],
+                ['name' => 'Copia Acta de Nacimiento', 'slug' => 'copia-acta-de-nacimiento'],
+                ['name' => 'Copia Carátula del Estado de Cuenta Bancario', 'slug' => 'copia-caratula-estado-de-cuenta-bancario'],
             ]);
         }
+
+        return array_merge($formatDocs, $commonDocs, [
+            ['name' => 'Copia Certificada de Identificación Oficial del Representante Legal', 'slug' => 'copia-certificada-de-identificacion-oficial-del-representante-legal'],
+            ['name' => 'Acta Constitutiva', 'slug' => 'acta-constitutiva'],
+            ['name' => 'Poder Notarial', 'slug' => 'poder-notarial'],
+            ['name' => 'Copia Carátula del Estado de Cuenta Bancario', 'slug' => 'copia-caratula-estado-de-cuenta-bancario'],
+        ]);
     }
 
     /**
