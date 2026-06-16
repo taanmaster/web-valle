@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\User;
 use App\Models\UserInfo;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -74,26 +75,38 @@ class CreateNewUser implements CreatesNewUsers
             'additional_data' => $additionalData,
         ]);
 
-        // Correo al ciudadano: bienvenida al portal
-        Mail::send('_mail_notifications.citizen.account_created', [
-            'nombre_ciudadano' => $user->name,
-            'correo_usuario'   => $user->email,
-            'fecha_registro'   => now()->format('d/m/Y'),
-        ], function ($m) use ($user) {
-            $m->to($user->email)
-              ->subject('Tu cuenta ha sido creada — Bienvenido al portal municipal');
-        });
+        // Envío de correos de notificación.
+        // Se aísla en try/catch para que una falla del servicio de correo
+        // no interrumpa el registro del usuario (que ya quedó persistido).
+        try {
+            // Correo al ciudadano: bienvenida al portal
+            Mail::send('_mail_notifications.citizen.account_created', [
+                'nombre_ciudadano' => $user->name,
+                'correo_usuario'   => $user->email,
+                'fecha_registro'   => now()->format('d/m/Y'),
+            ], function ($m) use ($user) {
+                $m->to($user->email)
+                  ->subject('Tu cuenta ha sido creada — Bienvenido al portal municipal');
+            });
 
-        // Correo al administrador: nuevo usuario registrado
-        Mail::send('_mail_notifications.admin.new_user_registered', [
-            'nombre_servidor'  => 'Administrador',
-            'nombre_ciudadano' => $user->name,
-            'correo_ciudadano' => $user->email,
-            'fecha_registro'   => now()->format('d/m/Y'),
-        ], function ($m) use ($user) {
-            $m->to('atencion@valledesantiago.gob.mx')
-              ->subject('Nuevo ciudadano registrado en el sistema');
-        });
+            // Correo al administrador: nuevo usuario registrado
+            Mail::send('_mail_notifications.admin.new_user_registered', [
+                'nombre_servidor'  => 'Administrador',
+                'nombre_ciudadano' => $user->name,
+                'correo_ciudadano' => $user->email,
+                'fecha_registro'   => now()->format('d/m/Y'),
+            ], function ($m) use ($user) {
+                $m->to('atencion@valledesantiago.gob.mx')
+                  ->subject('Nuevo ciudadano registrado en el sistema');
+            });
+        } catch (\Throwable $e) {
+            // No bloqueamos el registro si el correo falla; solo lo registramos.
+            Log::error('Error al enviar correos de registro de usuario', [
+                'user_id' => $user->id,
+                'email'   => $user->email,
+                'error'   => $e->getMessage(),
+            ]);
+        }
 
         return $user;
     }
