@@ -198,6 +198,20 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="#valleAyuda" id="authentication-tab" class="nav-link">
+                            <i class="ti ti-briefcase menu-icon"></i>
+                            <span class="menu-label">Ayuda</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#vallePanteon" id="authentication-tab" class="nav-link">
+                            <i class="ti ti-briefcase menu-icon"></i>
+                            <span class="menu-label">Panteón</span>
+                        </a>
+                    </li>
+
                     @if (auth()->user()->hasRole('configuration') || auth()->user()->hasRole('all'))
                         <li class="nav-item">
                             <a href="#valleConfiguration" id="authentication-tab" class="nav-link">
@@ -278,6 +292,23 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('training_downloadable.admin.index') }}">Descargable</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('identity_program.admin.index') }}">Programa de
+                            Identidad</a>
+                    </li>
+                </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Mis Beneficios</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('benefits.admin.index') }}">Entradas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('benefits.admin.portal') }}">Portal</a>
                     </li>
                 </ul>
 
@@ -1009,6 +1040,17 @@
                         <a class="nav-link" href="{{ route('tourism.banners.index') }}">Banners</a>
                     </li>
                 </ul>
+
+                <div class="title-box">
+                    <h6 class="menu-title">Calendario General</h6>
+                </div>
+
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('general_calendar.admin.index') }}">Trámites
+                            Calendario</a>
+                    </li>
+                </ul>
             </div>
 
             <div id="valleHealthDirection" class="main-icon-menu-pane tab-pane" role="tabpanel"
@@ -1097,6 +1139,44 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('document_certificates.index') }}">Certificaciones de
                             Documentos</a>
+                    </li>
+                </ul>
+
+                @if (auth()->user()->hasRole('all'))
+                    <div class="mt-3 px-3">
+                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                        <span class="badge bg-success me-1 mb-1">Todos los usuarios</span>
+                    </div>
+                @endif
+            </div>
+
+            <div id="vallePanteon" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="authentication-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Panteón</h6>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('panteones.admin.index') }}">Panteones</a>
+                    </li>
+                </ul>
+
+                @if (auth()->user()->hasRole('all'))
+                    <div class="mt-3 px-3">
+                        <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                        <span class="badge bg-success me-1 mb-1">Todos los usuarios</span>
+                    </div>
+                @endif
+            </div>
+
+            <div id="valleAyuda" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                aria-labelledby="authentication-tab">
+                <div class="title-box">
+                    <h6 class="menu-title">Ayuda</h6>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('ayuda.admin.index') }}">Guías</a>
                     </li>
                 </ul>
 

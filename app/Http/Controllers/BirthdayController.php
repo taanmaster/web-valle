@@ -8,12 +8,19 @@ class BirthdayController extends Controller
 {
     public function index()
     {
-        $currentMonth = now()->month;
-        $birthdays = Birthday::whereMonth('birthday_date', $currentMonth)
-            ->orderBy('birthday_date')
-            ->get();
+        // Fotos por mes (1-12), null si el mes no tiene registro
+        $photos = Birthday::pluck('photo', 'month');
 
-        return view('birthday.index', compact('birthdays'));
+        $months = collect(Birthday::MONTHS)->map(fn ($name, $num) => [
+            'num'   => $num,
+            'name'  => $name,
+            'photo' => $photos[$num] ?? null,
+        ])->values();
+
+        return view('birthday.index', [
+            'months'       => $months,
+            'currentMonth' => now()->month,
+        ]);
     }
 
     public function manage()

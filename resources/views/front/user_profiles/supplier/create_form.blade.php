@@ -17,8 +17,9 @@
                                     <ion-icon name="create-outline"></ion-icon> Alta de Proveedor
                                 </h5>
                                 <p class="text-muted mb-0">
-                                    <strong>Folio:</strong> {{ $supplier->registration_number }} | 
-                                    <strong>Tipo:</strong> {{ $supplier->person_type_formatted }} | 
+                                    <strong>Número de Alta:</strong> {{ $supplier->registration_number }} |
+                                    <strong>Fecha de creación:</strong> {{ $supplier->created_at->format('d/m/Y') }} |
+                                    <strong>Tipo:</strong> {{ $supplier->person_type_formatted }} |
                                     {!! $supplier->status_badge !!}
                                 </p>
                             </div>
@@ -148,9 +149,15 @@
                                                     </small>
                                                 </div>
                                                 <div class="d-flex gap-2">
-                                                    @if(isset($doc['has_resource']) && $doc['has_resource'])
-                                                        <a href="{{ asset('front/formats/' . $doc['resource_file']) }}" 
-                                                           class="btn btn-sm btn-outline-success" 
+                                                    @if(isset($doc['word_format']))
+                                                        <a href="{{ route('supplier.formato.download', $doc['word_format']) }}"
+                                                           class="btn btn-sm btn-outline-success"
+                                                           title="Descargar formato en Word para llenar">
+                                                            <ion-icon name="download-outline"></ion-icon> Descargar Recurso (Word)
+                                                        </a>
+                                                    @elseif(isset($doc['has_resource']) && $doc['has_resource'])
+                                                        <a href="{{ asset('front/formats/' . $doc['resource_file']) }}"
+                                                           class="btn btn-sm btn-outline-success"
                                                            download
                                                            title="Descargar formato para llenar">
                                                             <ion-icon name="download-outline"></ion-icon> Descargar Recurso (Word)
@@ -380,33 +387,42 @@
                     formData.append('document_slug', documentSlug);
                     formData.append('_token', csrfToken);
 
-                    // Mostrar loading
+                    // Mostrar loading (referencia propia de esta subida)
                     const filesList = document.getElementById('files-' + documentSlug);
-                    const loadingHtml = `
-                        <div class="alert alert-info loading-upload">
-                            <ion-icon name="hourglass-outline" class="spinning"></ion-icon> Subiendo archivo...
-                        </div>
-                    `;
-                    filesList.insertAdjacentHTML('beforeend', loadingHtml);
+                    const loadingEl = document.createElement('div');
+                    loadingEl.className = 'alert alert-info loading-upload';
+                    loadingEl.innerHTML = '<ion-icon name="hourglass-outline" class="spinning"></ion-icon> Subiendo archivo...';
+                    filesList.appendChild(loadingEl);
 
                     fetch(uploadUrl, {
                         method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json'
+                        },
                         body: formData
                     })
-                    .then(response => response.json())
+                    .then(async response => {
+                        // Aunque falle (422 validación), el cuerpo es JSON gracias al header Accept
+                        const data = await response.json().catch(() => ({}));
+                        if (!response.ok) {
+                            const msg = data.message
+                                || (data.errors ? Object.values(data.errors)[0][0] : 'No se pudo subir el archivo.');
+                            throw new Error(msg);
+                        }
+                        return data;
+                    })
                     .then(data => {
                         if (data.success) {
-                            // Recargar la página para mostrar el archivo
                             location.reload();
                         } else {
-                            alert('Error al subir el archivo: ' + data.message);
-                            document.querySelector('.loading-upload').remove();
+                            throw new Error(data.message || 'No se pudo subir el archivo.');
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Error al subir el archivo');
-                        document.querySelector('.loading-upload').remove();
+                        loadingEl.remove();
+                        alert('Error al subir el archivo: ' + error.message);
                     });
 
                     // Limpiar input

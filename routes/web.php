@@ -8,6 +8,13 @@ use App\Http\Controllers\RegulatoryAgendaDependencyController;
 
 // Comunicación Social
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\PanteonController;
+use App\Http\Controllers\AyudaController;
+use App\Http\Controllers\AyudaFrontController;
+use App\Http\Controllers\IdentityProgramController;
+use App\Http\Controllers\BenefitController;
+use App\Http\Controllers\GeneralCalendarController;
+use App\Http\Controllers\GeneralCalendarFrontController;
 
 // DIF
 use App\Http\Controllers\CitizenMedicalProfileController;
@@ -272,6 +279,15 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'uses' => 'FrontController@healthDirectionList',
         'as' => 'health_direction.list'
     ]);
+
+    // Módulo de Ayuda — Front
+    Route::get('/ayuda', [AyudaFrontController::class, 'index'])->name('ayuda.front.index');
+    Route::get('/ayuda/{slug}', [AyudaFrontController::class, 'show'])->name('ayuda.front.show')
+        ->where('slug', '[\w\d\-\_]+');
+
+    // Calendario General — Front (agendado de citas)
+    Route::get('/calendario-general', [GeneralCalendarFrontController::class, 'index'])
+        ->name('general_calendar.front.index');
 
     // Modulo Blog
     Route::get('/blog', [
@@ -1644,6 +1660,64 @@ Route::namespace('App\Http\Controllers')->group(function () {
             'destroy' => 'blog.admin.destroy',
         ]);
 
+        // Módulo de Ayuda — Admin
+        Route::resource('ayuda', AyudaController::class)->names([
+            'index'   => 'ayuda.admin.index',
+            'create'  => 'ayuda.admin.create',
+            'show'    => 'ayuda.admin.show',
+            'edit'    => 'ayuda.admin.edit',
+            'destroy' => 'ayuda.admin.destroy',
+        ])->except(['store', 'update']);
+
+        Route::get('/guias', [AyudaController::class, 'guiasIndex'])->name('ayuda.admin.guias');
+        Route::get('/guias/{slug}', [AyudaController::class, 'guiaDetalle'])->name('ayuda.admin.guia.show');
+
+        // Panteones
+        Route::resource('panteones', PanteonController::class)->names([
+            'index'   => 'panteones.admin.index',
+            'create'  => 'panteones.admin.create',
+            'show'    => 'panteones.admin.show',
+            'edit'    => 'panteones.admin.edit',
+            'destroy' => 'panteones.admin.destroy',
+        ])->except(['store', 'update']);
+
+        // Programa de Identidad
+        Route::resource('programa-identidad', IdentityProgramController::class)->names([
+            'index'   => 'identity_program.admin.index',
+            'create'  => 'identity_program.admin.create',
+            'show'    => 'identity_program.admin.show',
+            'edit'    => 'identity_program.admin.edit',
+            'destroy' => 'identity_program.admin.destroy',
+        ])->except(['store', 'update']);
+
+        Route::get('/programa-identidad-portal', [IdentityProgramController::class, 'portal'])
+            ->name('identity_program.admin.portal');
+        Route::get('/programa-identidad-portal/{slug}', [IdentityProgramController::class, 'detail'])
+            ->name('identity_program.admin.detail');
+
+        // Mis Beneficios
+        Route::resource('mis-beneficios', BenefitController::class)->names([
+            'index'   => 'benefits.admin.index',
+            'create'  => 'benefits.admin.create',
+            'show'    => 'benefits.admin.show',
+            'edit'    => 'benefits.admin.edit',
+            'destroy' => 'benefits.admin.destroy',
+        ])->except(['store', 'update']);
+
+        Route::get('/mis-beneficios-portal', [BenefitController::class, 'portal'])
+            ->name('benefits.admin.portal');
+        Route::get('/mis-beneficios-portal/{slug}', [BenefitController::class, 'detail'])
+            ->name('benefits.admin.detail');
+
+        // Calendario General — Trámites
+        Route::resource('calendario-tramites', GeneralCalendarController::class)->names([
+            'index'   => 'general_calendar.admin.index',
+            'create'  => 'general_calendar.admin.create',
+            'show'    => 'general_calendar.admin.show',
+            'edit'    => 'general_calendar.admin.edit',
+            'destroy' => 'general_calendar.admin.destroy',
+        ])->except(['store', 'update']);
+
         /* Repositorio funciones Asincronas */
         Route::group(['prefix' => 'blogAdmin'], function () {
             Route::post('dropzone/upload/{id}', 'BlogController@uploadFile')->name('dropzone.blog.upload');
@@ -2080,6 +2154,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/altas/{id}/archivo', [App\Http\Controllers\SupplierController::class, 'uploadFile'])->name('supplier.alta.uploadFile');
         Route::delete('/altas/{id}/archivo/{fileId}', [App\Http\Controllers\SupplierController::class, 'deleteFile'])->name('supplier.alta.deleteFile');
         Route::delete('/altas/{id}', [App\Http\Controllers\SupplierController::class, 'destroy'])->name('supplier.alta.destroy');
+
+        // Formatos descargables (Word)
+        Route::get('/formatos/{format}', [App\Http\Controllers\SupplierController::class, 'downloadFormat'])->name('supplier.formato.download');
 
         // Licitaciones
         Route::get('/licitaciones', [SupplierBiddingController::class, 'index'])->name('supplier.bidding.index');

@@ -197,10 +197,12 @@
                         class="list-group-item list-group-item-action {{ $currentRoute === 'supplier.profile.edit' ? 'active' : '' }}">
                         <ion-icon name="create-outline"></ion-icon> Editar Perfil
                     </a>
+                    {{--
                     <a href="{{ route('citizen.profile.identification_certificates') }}"
                         class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.profile.identification_certificates') ? 'active' : '' }}">
                         <ion-icon name="id-card-outline"></ion-icon> Constancias de Identificación
                     </a>
+                     --}}
                     <a href="{{ route('supplier.alta.index') }}"
                         class="list-group-item list-group-item-action {{ $currentRoute === 'supplier.alta.index' || $currentRoute === 'supplier.alta.form' || $currentRoute === 'supplier.alta.show' ? 'active' : '' }}">
                         <ion-icon name="document-attach-outline"></ion-icon> Altas Proveedor

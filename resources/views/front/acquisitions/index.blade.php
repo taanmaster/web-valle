@@ -51,11 +51,11 @@
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.2s">
                             <span class="checklist-number">3</span>
-                            <span class="checklist-text">Presentar la solicitud correspondiente debidamente elaborada y firmada por el representante legal o por el interesado personalmente</span>
+                            <span class="checklist-text">Presentar la solicitud correspondiente debidamente elaborada y firmada por el representante legal o por el interesado personalmente.</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.25s">
                             <span class="checklist-number">4</span>
-                            <span class="checklist-text">Constancia de situación fiscal</span>
+                            <span class="checklist-text">Constancia de situación fiscal (con fecha de impresión no mayor a 15 días naturales a la solicitud)</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.3s">
                             <span class="checklist-number">5</span>
@@ -63,15 +63,15 @@
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.35s">
                             <span class="checklist-number">6</span>
-                            <span class="checklist-text">En caso de que sea un representante legal acreditar su personalidad en original o copia certificada</span>
+                            <span class="checklist-text">En caso de que sea un representante legal acreditar su personalidad con copia certificada (poder notarial)</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.4s">
                             <span class="checklist-number">7</span>
-                            <span class="checklist-text">Proporcionar catálogo, y listado de bienes o servicios, según sea el caso</span>
+                            <span class="checklist-text">Proporcionar catálogo, y listado de bienes o servicios, según sea el caso.</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.45s">
                             <span class="checklist-number">8</span>
-                            <span class="checklist-text">Comprobante original o certificado actualizado de domicilio</span>
+                            <span class="checklist-text">Comprobante original o certificado actualizado de domicilio.</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.5s">
                             <span class="checklist-number">9</span>
@@ -79,17 +79,39 @@
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.55s">
                             <span class="checklist-number">10</span>
-                            <span class="checklist-text">Opinión de cumplimiento</span>
+                            <span class="checklist-text">Opinión de cumplimiento de obligaciones fiscales, en sentido positivo, con fecha de emisión no mayor a 15 días naturales anterior a la solicitud.</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.6s">
                             <span class="checklist-number">11</span>
-                            <span class="checklist-text">Datos Bancarios</span>
+                            <span class="checklist-text">Copia acta de nacimiento</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.65s">
                             <span class="checklist-number">12</span>
-                            <span class="checklist-text">Carátula del Banco</span>
+                            <span class="checklist-text">Copia de carátula del estado de cuenta bancario</span>
+                        </li>
+                        <li class="checklist-item wow fadeInUp" data-wow-delay="0.7s">
+                            <span class="checklist-number">13</span>
+                            <span class="checklist-text">Constancia de enterado</span>
+                        </li>
+                        <li class="checklist-item wow fadeInUp" data-wow-delay="0.75s">
+                            <span class="checklist-number">14</span>
+                            <span class="checklist-text">Carta manifiesto</span>
+                        </li>
+                        <li class="checklist-item wow fadeInUp" data-wow-delay="0.8s">
+                            <span class="checklist-number">15</span>
+                            <span class="checklist-text">Datos Bancarios</span>
                         </li>
                     </ul>
+
+                    <div class="requirements-note wow fadeInUp" data-wow-delay="0.85s">
+                        <span class="requirements-note-label">Nota:</span>
+                        <p class="mb-0">
+                            Se deberá cubrir el costo de la inscripción por un monto de <strong>$1,000.00</strong>
+                            (mil pesos 00/100 M.N) de acuerdo al <strong>artículo 13 de las Disposiciones
+                            Administrativas de Recaudación para el ejercicio fiscal 2026</strong> del Municipio de
+                            Valle de Santiago, Gto.
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -113,23 +135,23 @@
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.2s">
                             <span class="checklist-number">3</span>
-                            <span class="checklist-text">Presentar la solicitud correspondiente debidamente elaborada y firmada por el representante legal</span>
+                            <span class="checklist-text">Presentar la solicitud correspondiente debidamente elaborada y firmada por el representante legal.</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.25s">
                             <span class="checklist-number">4</span>
-                            <span class="checklist-text">Constancia de situación fiscal</span>
+                            <span class="checklist-text">Constancia de situación fiscal (con fecha de impresión no mayor a 15 días naturales a la solicitud)</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.3s">
                             <span class="checklist-number">5</span>
-                            <span class="checklist-text">Copia certificada de identificación oficial del representante legal</span>
+                            <span class="checklist-text">Copia certificada de identificación oficial del representante legal.</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.35s">
                             <span class="checklist-number">6</span>
-                            <span class="checklist-text">Proporcionar catálogo, y listado de bienes o servicios, según sea el caso</span>
+                            <span class="checklist-text">Proporcionar catálogo, y listado de bienes o servicios, según sea el caso.</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.4s">
                             <span class="checklist-number">7</span>
-                            <span class="checklist-text">Copia certificada de Acta constitutiva, así como de su última modificación si existiere</span>
+                            <span class="checklist-text">Copia certificada de Acta constitutiva, así como de su última modificación si existiere.</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.45s">
                             <span class="checklist-number">8</span>
@@ -137,29 +159,47 @@
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.5s">
                             <span class="checklist-number">9</span>
-                            <span class="checklist-text">Comprobante original o certificado actualizado de domicilio de la persona moral</span>
+                            <span class="checklist-text">Comprobante original o certificado actualizado de domicilio de la persona moral.</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.55s">
                             <span class="checklist-number">10</span>
-                            <span class="checklist-text">Constancia de Situación Fiscal de los accionistas</span>
+                            <span class="checklist-text">CURP de los accionistas</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.6s">
                             <span class="checklist-number">11</span>
-                            <span class="checklist-text">CURP de los accionistas</span>
+                            <span class="checklist-text">Opinión de cumplimiento de obligaciones fiscales, en sentido positivo, con fecha de emisión no mayor a 15 días naturales anteriores a la solicitud</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.65s">
                             <span class="checklist-number">12</span>
-                            <span class="checklist-text">Opinión de cumplimiento</span>
+                            <span class="checklist-text">Copia del acta de nacimiento del representante legal</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.7s">
                             <span class="checklist-number">13</span>
-                            <span class="checklist-text">Datos Bancarios</span>
+                            <span class="checklist-text">Constancia de Situación Fiscal de los accionistas</span>
                         </li>
                         <li class="checklist-item wow fadeInUp" data-wow-delay="0.75s">
                             <span class="checklist-number">14</span>
-                            <span class="checklist-text">Carátula del Banco</span>
+                            <span class="checklist-text">Copia de la carátula del estado de cuenta bancario</span>
+                        </li>
+                        <li class="checklist-item wow fadeInUp" data-wow-delay="0.8s">
+                            <span class="checklist-number">15</span>
+                            <span class="checklist-text">Constancia de enterado</span>
+                        </li>
+                        <li class="checklist-item wow fadeInUp" data-wow-delay="0.85s">
+                            <span class="checklist-number">16</span>
+                            <span class="checklist-text">Carta manifiesto</span>
                         </li>
                     </ul>
+
+                    <div class="requirements-note wow fadeInUp" data-wow-delay="0.9s">
+                        <span class="requirements-note-label">Nota:</span>
+                        <p class="mb-0">
+                            Se deberá cubrir el costo de la inscripción por un monto de <strong>$1,000.00</strong>
+                            (mil pesos 00/100 M.N) de acuerdo al <strong>artículo 13 de las Disposiciones
+                            Administrativas de Recaudación para el ejercicio fiscal 2026</strong> del Municipio de
+                            Valle de Santiago, Gto.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -365,6 +405,34 @@
         .checklist-text {
             font-size: 13px;
         }
+    }
+
+    /* Nota de requisitos */
+    .requirements-note {
+        margin-top: 18px;
+        padding: 16px 18px;
+        background: #f1f3f5;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+    }
+
+    .requirements-note-label {
+        display: block;
+        font-weight: 700;
+        color: #6c757d;
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .requirements-note p {
+        color: #868e96;
+        font-size: 12.5px;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .requirements-note strong {
+        color: #495057;
     }
 </style>
 @endpush

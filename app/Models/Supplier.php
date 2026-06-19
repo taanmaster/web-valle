@@ -35,6 +35,7 @@ class Supplier extends Model
         'curp',
         'chamber_registration',
         'business_line',
+        'social_media',
 
         // Persona Moral
         'legal_name',
@@ -201,37 +202,39 @@ class Supplier extends Model
      */
     public function getRequiredDocuments()
     {
-        $commonDocs = [
-            [
-                'name' => 'Formato de Alta',
-                'slug' => 'formato-de-alta',
-                'has_resource' => true,
-                'resource_file' => 'formato_alta.docx'
-            ],
-            [
-                'name' => 'Formato de Datos Fiscales',
-                'slug' => 'formato-de-datos-fiscales',
-                'has_resource' => true,
-                'resource_file' => 'formato_datos_fiscales.docx'
-            ],
+        // Prefijo común a ambos tipos, en el orden del checklist de entregables.
+        // Los 4 primeros son formatos descargables como Word (HTML → .doc):
+        // 'word_format' apunta a la clave de la ruta supplier.formato.download.
+        $docs = [
+            ['name' => 'Formato de Alta', 'slug' => 'formato-de-alta', 'word_format' => 'formato-alta'],
+            ['name' => 'Carta Manifiesto', 'slug' => 'carta-manifiesto', 'word_format' => 'carta-manifiesto'],
+            ['name' => 'Constancia de Enterado', 'slug' => 'constancia-de-enterado', 'word_format' => 'constancia-enterado'],
+            ['name' => 'Formato Datos Bancarios', 'slug' => 'formato-datos-bancarios', 'word_format' => 'datos-bancarios'],
             ['name' => 'Constancia de Situación Fiscal', 'slug' => 'constancia-de-situacion-fiscal'],
+            ['name' => 'Copia Certificada de Identificación Oficial del Solicitante', 'slug' => 'copia-certificada-de-identificacion-oficial-del-solicitante'],
+            ['name' => 'Copia Certificada de Identificación Oficial del Representante Legal', 'slug' => 'copia-certificada-de-identificacion-oficial-del-representante-legal'],
             ['name' => 'Catálogo de Bienes y Servicios', 'slug' => 'catalogo-de-bienes-y-servicios'],
             ['name' => 'Comprobante de Domicilio', 'slug' => 'comprobante-de-domicilio'],
-            ['name' => 'CURP', 'slug' => 'curp'],
-            ['name' => 'Opinión de Cumplimiento', 'slug' => 'opinion-de-cumplimiento'],
         ];
 
+        // Cola específica por tipo (aquí varían CURP, acta de nacimiento y la
+        // constancia fiscal de accionistas que solo aplica a persona moral).
         if ($this->person_type === 'fisica') {
-            return array_merge($commonDocs, [
-                ['name' => 'Copia Certificada de Identificación Oficial del Solicitante', 'slug' => 'copia-certificada-de-identificacion-oficial-del-solicitante'],
-            ]);
-        } else {
-            return array_merge($commonDocs, [
-                ['name' => 'Copia Certificada de Identificación Oficial del Representante Legal', 'slug' => 'copia-certificada-de-identificacion-oficial-del-representante-legal'],
-                ['name' => 'Acta Constitutiva', 'slug' => 'acta-constitutiva'],
-                ['name' => 'Poder Notarial', 'slug' => 'poder-notarial'],
+            return array_merge($docs, [
+                ['name' => 'CURP', 'slug' => 'curp'],
+                ['name' => 'Opinión de Cumplimiento', 'slug' => 'opinion-de-cumplimiento'],
+                ['name' => 'Copia Acta de Nacimiento', 'slug' => 'copia-acta-de-nacimiento'],
+                ['name' => 'Copia Carátula del Estado de Cuenta Bancario', 'slug' => 'copia-caratula-estado-de-cuenta-bancario'],
             ]);
         }
+
+        return array_merge($docs, [
+            ['name' => 'CURP de Accionistas', 'slug' => 'curp-de-accionistas'],
+            ['name' => 'Opinión de Cumplimiento', 'slug' => 'opinion-de-cumplimiento'],
+            ['name' => 'Copia Acta de Nacimiento del Representante Legal', 'slug' => 'copia-acta-de-nacimiento-del-representante-legal'],
+            ['name' => 'Constancia de la Situación Fiscal de los Accionistas', 'slug' => 'constancia-situacion-fiscal-accionistas'],
+            ['name' => 'Copia Carátula del Estado de Cuenta Bancario', 'slug' => 'copia-caratula-estado-de-cuenta-bancario'],
+        ]);
     }
 
     /**

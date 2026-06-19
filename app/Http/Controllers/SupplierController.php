@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class SupplierController extends Controller
 {
@@ -138,14 +139,21 @@ class SupplierController extends Controller
      */
     public function uploadFile(Request $request, $id)
     {
-        $request->validate([
-            'file' => 'required|file|max:10240', // 10MB max
-            'document_slug' => 'required|string',
-            'document_name' => 'required|string',
-        ]);
-
         $supplier = Supplier::where('user_id', Auth::id())
             ->findOrFail($id);
+
+        // Solo se aceptan slugs que pertenezcan al checklist del proveedor
+        $allowedSlugs = collect($supplier->getRequiredDocuments())->pluck('slug')->all();
+
+        $request->validate([
+            'file' => 'required|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png', // 10MB máx.
+            'document_slug' => ['required', 'string', Rule::in($allowedSlugs)],
+            'document_name' => 'required|string',
+        ], [
+            'file.mimes'       => 'El archivo debe ser PDF, Word o imagen (JPG/PNG).',
+            'file.max'         => 'El archivo no debe pesar más de 10 MB.',
+            'document_slug.in' => 'El documento indicado no pertenece a este trámite.',
+        ]);
 
         if ($request->hasFile('file')) {
             $document = $request->file('file');
@@ -229,6 +237,29 @@ class SupplierController extends Controller
     }
 
     /**
+     * Descarga un formato digital como documento de Word (HTML → .doc).
+     * Son plantillas en blanco que el proveedor transcribe a su hoja membretada.
+     */
+    public function downloadFormat($format)
+    {
+        $formats = [
+            'formato-alta'        => ['view' => 'front.user_profiles.supplier.formats.formato_alta',        'file' => 'Formato de Alta'],
+            'carta-manifiesto'    => ['view' => 'front.user_profiles.supplier.formats.carta_manifiesto',    'file' => 'Carta de Manifiesto'],
+            'constancia-enterado' => ['view' => 'front.user_profiles.supplier.formats.constancia_enterado', 'file' => 'Constancia de Enterado'],
+            'datos-bancarios'     => ['view' => 'front.user_profiles.supplier.formats.datos_bancarios',     'file' => 'Formato de Datos Bancarios'],
+        ];
+
+        abort_unless(isset($formats[$format]), 404);
+
+        $html = view($formats[$format]['view'])->render();
+
+        return response($html, 200, [
+            'Content-Type'        => 'application/msword; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $formats[$format]['file'] . '.doc"',
+        ]);
+    }
+
+    /**
      * Obtiene las reglas de validación según el tipo de persona
      */
     private function getValidationRules($personType)
@@ -244,6 +275,7 @@ class SupplierController extends Controller
             'fax' => 'nullable|string|max:20',
             'mobile_phone' => 'nullable|string|max:20',
             'nextel_phone' => 'nullable|string|max:20',
+            'social_media' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ];
 
