@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
@@ -156,6 +157,17 @@ class AcquisitionSupplierController extends Controller
         // Si ambas aprobaciones están marcadas, cambiar estado a 'aprobacion'
         if ($approval->link_approval && $approval->director_approval) {
             $supplier->update(['status' => 'pago_pendiente']);
+
+            // Correo al proveedor: pago pendiente (6.6)
+            if ($supplier->email) {
+                Mail::send('_mail_notifications.citizen.supplier_payment_pending', [
+                    'folio' => $supplier->registration_number,
+                ], function ($m) use ($supplier) {
+                    $m->to($supplier->email)
+                      ->subject('Tu solicitud está lista — realiza tu pago de trámite — Folio ' . $supplier->registration_number);
+                });
+            }
+
             Session::flash('success', 'El alta de proveedor ha sido aprobada. Ahora debe realizarse el pago.');
         } else {
             Session::flash('success', 'Las autorizaciones se guardaron correctamente y han sido bloqueadas.');
@@ -174,11 +186,54 @@ class AcquisitionSupplierController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $supplier = Supplier::findOrFail($id);
+        $supplier = Supplier::with('user')->findOrFail($id);
         $supplier->update([
             'status' => $request->status,
             'notes' => $request->notes,
         ]);
+
+        $folio          = $supplier->registration_number;
+        $emailProveedor = $supplier->email;
+
+        // Correo al administrativo: solicitud en validación (6.3)
+        if ($request->status === 'validacion') {
+            Mail::send('_mail_notifications.admin.supplier_validation_pending', [
+                'folio' => $folio,
+            ], function ($m) use ($folio) {
+                $m->to('adquisiciones@valledesantiago.gob.mx')
+                  ->subject('Documentos de proveedor en validación — Folio ' . $folio);
+            });
+        }
+
+        // Correo al proveedor: solicitud aprobada (6.4)
+        if ($request->status === 'aprobacion' && $emailProveedor) {
+            Mail::send('_mail_notifications.citizen.supplier_request_approved', [
+                'folio' => $folio,
+            ], function ($m) use ($emailProveedor, $folio) {
+                $m->to($emailProveedor)
+                  ->subject('Tu solicitud fue aprobada — Folio ' . $folio);
+            });
+        }
+
+        // Correo al proveedor: pago pendiente (6.6)
+        if ($request->status === 'pago_pendiente' && $emailProveedor) {
+            Mail::send('_mail_notifications.citizen.supplier_payment_pending', [
+                'folio' => $folio,
+            ], function ($m) use ($emailProveedor, $folio) {
+                $m->to($emailProveedor)
+                  ->subject('Tu solicitud está lista — realiza tu pago de trámite — Folio ' . $folio);
+            });
+        }
+
+        // Correo al proveedor: proceso completado / alta en padrón (6.7)
+        if ($request->status === 'padron_activo' && $emailProveedor) {
+            Mail::send('_mail_notifications.citizen.supplier_process_completed', [
+                'folio' => $folio,
+            ], function ($m) use ($emailProveedor, $folio) {
+                $m->to($emailProveedor)
+                  ->subject('Proceso completo — Folio ' . $folio);
+            });
+        }
 
         Session::flash('success', 'El estado del alta se actualizó correctamente.');
 
@@ -254,8 +309,15 @@ class AcquisitionSupplierController extends Controller
             'status' => 'unread',
         ]);
 
-        // Idea a futuro: Se puede implementar el envío de email o notificación adicional
-        // Mail::to($supplier->user->email)->send(new SupplierContactMail($request->message));
+        // Correo al proveedor: observación pendiente (6.5)
+        if ($supplier->email) {
+            Mail::send('_mail_notifications.citizen.supplier_request_observation', [
+                'folio' => $supplier->registration_number,
+            ], function ($m) use ($supplier) {
+                $m->to($supplier->email)
+                  ->subject('Tu solicitud requiere una actualización — Folio ' . $supplier->registration_number);
+            });
+        }
 
         Session::flash('success', 'El mensaje ha sido enviado y guardado correctamente.');
 
