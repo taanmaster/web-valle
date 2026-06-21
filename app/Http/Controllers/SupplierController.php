@@ -23,34 +23,12 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Supplier::where('user_id', Auth::id())
-            ->with('files')
-            ->orderBy('created_at', 'desc');
+        // El filtrado y la paginación los maneja el componente Livewire
+        // App\Livewire\Front\Supplier\AltaTable. Aquí solo determinamos si el
+        // proveedor tiene altas para decidir entre el estado vacío y la tabla.
+        $hasSuppliers = Supplier::where('user_id', Auth::id())->exists();
 
-        // Filtro por estado
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        // Filtro por tipo de persona
-        if ($request->filled('person_type')) {
-            $query->where('person_type', $request->person_type);
-        }
-
-        // Filtro por nombre de empresa
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('legal_name', 'like', "%{$search}%")
-                  ->orWhere('business_name', 'like', "%{$search}%")
-                  ->orWhere('owner_name', 'like', "%{$search}%")
-                  ->orWhere('registration_number', 'like', "%{$search}%");
-            });
-        }
-
-        $suppliers = $query->paginate(10);
-
-        return view('front.user_profiles.supplier.create', compact('suppliers'));
+        return view('front.user_profiles.supplier.create', compact('hasSuppliers'));
     }
 
     /**
@@ -73,6 +51,7 @@ class SupplierController extends Controller
         $supplier = Supplier::create([
             'user_id' => Auth::id(),
             'person_type' => $request->person_type,
+            // Nace en 'solicitud'; el admin la aprueba (Enlace + Director) para pasarla a 'pago_pendiente'
             'status' => 'solicitud',
             'email' => Auth::user()->email,
         ]);

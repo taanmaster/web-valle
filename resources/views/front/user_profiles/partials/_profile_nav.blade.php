@@ -207,6 +207,10 @@
                         class="list-group-item list-group-item-action {{ $currentRoute === 'supplier.alta.index' || $currentRoute === 'supplier.alta.form' || $currentRoute === 'supplier.alta.show' ? 'active' : '' }}">
                         <ion-icon name="document-attach-outline"></ion-icon> Altas Proveedor
                     </a>
+                    <a href="{{ route('citizen.orders.index') }}"
+                        class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.orders') ? 'active' : '' }}">
+                        <ion-icon name="card-outline"></ion-icon> Mis Pagos en Línea
+                    </a>
                     <a href="{{ route('supplier.bidding.index') }}"
                         class="list-group-item list-group-item-action {{ $currentRoute === 'supplier.bidding.index' || $currentRoute === 'supplier.bidding.show' ? 'active' : '' }}">
                         <ion-icon name="document-attach-outline"></ion-icon> Mis Licitaciones

@@ -248,6 +248,9 @@ class PaymentGatewayController extends Controller
                         return $order;
                     });
 
+                    // Avanza los trámites vinculados (ej. alta de proveedor → padron_activo)
+                    $dbOrder->applyPaidSideEffects();
+
                     session(['checkout_order_id' => $dbOrder->id]);
 
                     return redirect()->route('bajiopay.complete');

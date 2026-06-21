@@ -125,7 +125,10 @@ class WebhookController extends Controller
 				$order->paid_at = Carbon::now();
 				$order->paid_amount = $order->total;
 				$order->save();
-				
+
+				// Avanza los trámites vinculados (ej. alta de proveedor → padron_activo)
+				$order->applyPaidSideEffects();
+
 				return response()->json(['mensaje' => 'Orden Pagada Exitosamente.', 'order' => $reference, 'gateway' => $gateway]);
 			}else{
 				return response()->json(['mensaje' => 'Orden no encontrada.', 'order' => $reference, 'gateway' => $gateway]);
@@ -186,6 +189,9 @@ class WebhookController extends Controller
                             'paid_amount'       => $order->total,
                             'payment_reference' => $clRef,
                         ]);
+
+                        // Avanza los trámites vinculados (ej. alta de proveedor → padron_activo)
+                        $order->applyPaidSideEffects();
                     }
                 } elseif ($nlStatus === '02') {
                     // Rechazo

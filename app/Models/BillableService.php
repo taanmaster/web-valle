@@ -12,8 +12,9 @@ class BillableService extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'unit_price' => 'decimal:2',
-        'is_active'  => 'boolean',
+        'unit_price'         => 'decimal:2',
+        'is_active'          => 'boolean',
+        'requires_procedure' => 'boolean',
     ];
 
     public function cartItems()

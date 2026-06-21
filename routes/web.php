@@ -2104,7 +2104,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/citas/{booking}/confirmar', 'CitizenProfileController@confirmAppointment')->name('citizen.appointments.confirm');
         Route::post('/citas/{booking}/cancelar', 'CitizenProfileController@cancelAppointment')->name('citizen.appointments.cancel');
 
-        // Servicios Municipales en Línea
+    });
+
+    // ── Módulo de pagos en línea (carrito, checkout, órdenes) ───────────────
+    // Compartido: lo usan tanto ciudadanos como proveedores para pagar trámites.
+    Route::group(['prefix' => 'ciudadanos', 'middleware' => ['auth', 'role:citizen|supplier'], 'namespace' => 'Front'], function () {
+
+        // Catálogo de servicios
         Route::get('/servicios', 'ServicesController@index')->name('citizen.services.index');
 
         // Carrito
@@ -2112,7 +2118,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/carrito/agregar', 'CartController@store')->name('citizen.cart.store');
         Route::patch('/carrito/items/{cartItem}', 'CartController@update')->name('citizen.cart.update');
         Route::delete('/carrito/items/{cartItem}', 'CartController@destroy')->name('citizen.cart.destroy');
+
+        // Vinculación de trámites al carrito
         Route::post('/constancias_de_identificacion/{id}/pagar-en-linea', 'CartController@addCertificateToCart')->name('citizen.identification_certificate.pay_online');
+        Route::post('/alta-proveedor/{id}/pagar-en-linea', 'CartController@addSupplierAltaToCart')->name('citizen.supplier_alta.pay_online');
 
         // Checkout
         Route::get('/checkout', 'CheckoutController@index')->name('citizen.checkout.index');
