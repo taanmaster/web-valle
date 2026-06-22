@@ -5,10 +5,10 @@
     @endphp
 
     {{-- Hero --}}
-    <div class="rounded-4 p-5 mb-4 text-center text-white"
-        style="background: linear-gradient(135deg,#2d3a8c,#5b6fd6); min-height: 160px; display:flex; flex-direction:column; justify-content:center;">
-        <small class="opacity-75 mb-1">Bienvenidos al</small>
-        <h3 class="fw-bold mb-0">Módulo de ayuda y guía para<br>ciudadanos y servidores públicos</h3>
+    <div class="rounded-4 p-5 mb-4 text-center"
+        style="background: grey; min-height: 160px; display:flex; flex-direction:column; justify-content:center;">
+        <small class="opacity-75 mb-1 text-white">Bienvenidos al</small>
+        <h3 class="fw-bold mb-0 text-white">Módulo de ayuda y guía para<br>ciudadanos y servidores públicos</h3>
     </div>
 
     <p class="text-center text-muted mb-4" style="max-width:680px; margin:auto;">
@@ -20,8 +20,7 @@
     {{-- Filtros --}}
     <div class="d-flex flex-wrap gap-2 align-items-center justify-content-center mb-4">
         <span class="fw-semibold text-muted me-1">Filtrar por</span>
-        <select class="form-select form-select-sm rounded-pill" style="width:auto;"
-            wire:model.live="filter_dependencia">
+        <select class="form-select form-select-sm rounded-pill" style="width:auto;" wire:model.live="filter_dependencia">
             <option value="">DEPENDENCIA</option>
             @foreach ($dependencias as $dep)
                 <option value="{{ $dep->name }}">{{ $dep->name }}</option>
@@ -36,8 +35,7 @@
         <h6 class="fw-bold mb-3">Categorías</h6>
         <div class="d-flex flex-wrap gap-2">
             @foreach ($categorias as $cat)
-                <button type="button"
-                    wire:click="setCategoria({{ $cat->id }})"
+                <button type="button" wire:click="setCategoria({{ $cat->id }})"
                     class="btn btn-sm rounded-pill px-3 fw-semibold text-uppercase"
                     style="background: {{ $filter_categoria == $cat->id ? '#2d3a8c' : '#e8eaff' }};
                            color: {{ $filter_categoria == $cat->id ? '#fff' : '#2d3a8c' }};">
@@ -45,7 +43,8 @@
                 </button>
             @endforeach
             @if ($filter_categoria || $filter_dependencia || $filter_titulo)
-                <button type="button" wire:click="$set('filter_categoria','');$set('filter_dependencia','');$set('filter_titulo','')"
+                <button type="button"
+                    wire:click="$set('filter_categoria','');$set('filter_dependencia','');$set('filter_titulo','')"
                     class="btn btn-sm btn-link text-danger p-0 ms-2">
                     Limpiar
                 </button>
