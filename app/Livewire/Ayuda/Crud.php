@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Guia;
 use App\Models\GuiaPaso;
 use App\Models\GuiaCambio;
-use App\Models\TransparencyDependency;
+use App\Models\BackofficeDependency;
 
 class Crud extends Component
 {
@@ -43,7 +43,7 @@ class Crud extends Component
 
     public function mount(): void
     {
-        $this->dependencias  = TransparencyDependency::orderBy('name')->get();
+        $this->dependencias  = BackofficeDependency::orderBy('name')->get();
         $this->fecha_entrada = Carbon::now()->toDateString();
 
         if ($this->guia !== null) {

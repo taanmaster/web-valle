@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 use App\Models\GeneralCalendarProcedure;
 use App\Models\GeneralCalendarClosure;
-use App\Models\TransparencyDependency;
+use App\Models\BackofficeDependency;
 
 class Crud extends Component
 {
@@ -50,7 +50,7 @@ class Crud extends Component
 
     public function mount(): void
     {
-        $this->dependencias = TransparencyDependency::orderBy('name')->get();
+        $this->dependencias = BackofficeDependency::orderBy('name')->get();
         $this->created_date = Carbon::now()->format('Y-m-d');
         $this->view_date    = Carbon::now()->format('Y-m-d');
 
