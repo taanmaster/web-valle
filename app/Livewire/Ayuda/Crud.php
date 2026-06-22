@@ -79,6 +79,26 @@ class Crud extends Component
         ])->toArray();
     }
 
+    // ─── S3 upload helper ────────────────────────────────────────
+
+    /**
+     * Sube un archivo a S3 usando streaming (sin ACL público explícito).
+     * El bucket sirve los objetos mediante su política pública, igual que
+     * el resto de módulos. Usar storePublicly() falla silenciosamente
+     * cuando el bucket tiene los ACL deshabilitados (AccessDenied).
+     */
+    private function uploadToS3($file, string $directory): string
+    {
+        $path   = $directory . '/' . $file->hashName();
+        $stream = fopen($file->getRealPath(), 'r+');
+        Storage::disk('s3')->put($path, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        return $path;
+    }
+
     // ─── Auto-save (edit mode only) ──────────────────────────────
 
     public function updated(string $name, $value): void
@@ -161,7 +181,7 @@ class Crud extends Component
         }
 
         $oldPath  = $this->guia->imagen_portada;
-        $path     = $this->imagen_portada->storePublicly('ayuda/portadas', 's3');
+        $path     = $this->uploadToS3($this->imagen_portada, 'ayuda/portadas');
         $this->guia->update(['imagen_portada' => $path]);
 
         GuiaCambio::create([
@@ -238,7 +258,7 @@ class Crud extends Component
         }
 
         $oldPath = $step['imagen_apoyo_path'];
-        $path    = $file->storePublicly('ayuda/pasos/imagenes', 's3');
+        $path    = $this->uploadToS3($file, 'ayuda/pasos/imagenes');
         $idx     = array_search($step, $this->steps);
         $this->steps[$idx]['imagen_apoyo_path'] = $path;
 
@@ -270,7 +290,7 @@ class Crud extends Component
         }
 
         $oldPath = $step['archivo_adjunto_path'];
-        $path    = $file->storePublicly('ayuda/pasos/archivos', 's3');
+        $path    = $this->uploadToS3($file, 'ayuda/pasos/archivos');
         $idx     = array_search($step, $this->steps);
         $this->steps[$idx]['archivo_adjunto_path'] = $path;
 
@@ -429,7 +449,7 @@ class Crud extends Component
 
         $coverPath = $this->guia?->imagen_portada;
         if ($this->imagen_portada && !is_string($this->imagen_portada)) {
-            $coverPath = $this->imagen_portada->storePublicly('ayuda/portadas', 's3');
+            $coverPath = $this->uploadToS3($this->imagen_portada, 'ayuda/portadas');
         }
 
         $data = [
@@ -457,11 +477,11 @@ class Crud extends Component
             foreach ($this->steps as $step) {
                 $imagePath = null;
                 if (isset($this->stepImages[$step['tempKey']]) && $this->stepImages[$step['tempKey']]) {
-                    $imagePath = $this->stepImages[$step['tempKey']]->storePublicly('ayuda/pasos/imagenes', 's3');
+                    $imagePath = $this->uploadToS3($this->stepImages[$step['tempKey']], 'ayuda/pasos/imagenes');
                 }
                 $filePath = null;
                 if (isset($this->stepFiles[$step['tempKey']]) && $this->stepFiles[$step['tempKey']]) {
-                    $filePath = $this->stepFiles[$step['tempKey']]->storePublicly('ayuda/pasos/archivos', 's3');
+                    $filePath = $this->uploadToS3($this->stepFiles[$step['tempKey']], 'ayuda/pasos/archivos');
                 }
 
                 GuiaPaso::create([
