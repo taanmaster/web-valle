@@ -159,6 +159,13 @@
             </li>
 
             <li>
+                <a href="{{ route('ayuda.front.index') }}">
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <span>Ayuda</span>
+                </a>
+            </li>
+
+            <li>
                 <div class="switch">
                     <input type="checkbox" id="mode" checked>
                     <label for="mode">

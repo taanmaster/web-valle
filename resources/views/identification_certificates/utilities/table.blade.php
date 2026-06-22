@@ -98,12 +98,17 @@
                                         class="btn btn-sm btn-primary">
                                         <i class="fas fa-eye"></i> Ver
                                     </a>
-                                    @if ($certificate->status === 'Pago pendiente')
+                                    @php $constanciaPagada = in_array($certificate->id, $paidCertificateIds ?? []); @endphp
+                                    @if ($constanciaPagada)
+                                        <span class="badge bg-success-subtle text-success border border-success px-3 py-2 ms-1">
+                                            <ion-icon name="checkmark-circle"></ion-icon> Pagada
+                                        </span>
+                                    @elseif ($certificate->status === 'Pago pendiente')
                                         <form action="{{ route('citizen.identification_certificate.pay_online', $certificate->id) }}"
                                               method="POST" class="d-inline ms-1">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-success">
-                                                <ion-icon name="card-outline"></ion-icon> Pagar en línea
+                                            <button type="submit" class="btn btn-sm btn-warning fw-semibold">
+                                                <ion-icon name="cart-outline"></ion-icon> Agregar a carrito
                                             </button>
                                         </form>
                                     @endif

@@ -6,6 +6,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\IdentificationCertificate;
+use App\Models\OrderItem;
 
 class Table extends Component
 {
@@ -84,9 +85,17 @@ class Table extends Component
 
         $certificates = $query->orderBy('created_at', 'desc')->paginate(10);
 
+        // Constancias que ya tienen un pago en línea liquidado → ocultar "Agregar a carrito"
+        $paidCertificateIds = OrderItem::where('related_model_type', IdentificationCertificate::class)
+            ->whereIn('related_model_id', $certificates->pluck('id'))
+            ->whereHas('order', fn ($q) => $q->where('payment_status', 'Pagado'))
+            ->pluck('related_model_id')
+            ->all();
+
         return view('identification_certificates.utilities.table', [
-            'certificates' => $certificates,
-            'mode'         => $this->mode,
+            'certificates'       => $certificates,
+            'mode'               => $this->mode,
+            'paidCertificateIds' => $paidCertificateIds,
         ]);
     }
 }

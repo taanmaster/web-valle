@@ -15,4 +15,16 @@ class IdentificationCertificate extends Model
     {
         return $this->hasOne(IdentificationCertificatePayment::class, 'certificate_id');
     }
+
+    /**
+     * Efecto al confirmarse el pago en línea de la constancia.
+     * Lo invoca Order::applyPaidSideEffects() cuando la orden vinculada queda "Pagado".
+     * Avanza la constancia de 'Pago pendiente' a 'Pago recibido'.
+     */
+    public function onOnlinePaymentCompleted(Order $order): void
+    {
+        if ($this->status === 'Pago pendiente') {
+            $this->update(['status' => 'Pago recibido']);
+        }
+    }
 }

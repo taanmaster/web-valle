@@ -11,7 +11,10 @@ class ServicesController extends Controller
 {
     public function index()
     {
-        $services  = BillableService::where('is_active', true)->orderBy('name')->get();
+        $services  = BillableService::where('is_active', true)
+            ->where('requires_procedure', false) // los servicios solo-por-trámite no se listan en el catálogo
+            ->orderBy('name')
+            ->get();
         $cart      = Auth::user()->cart()->with('items')->first();
         $cartCount = $cart ? $cart->items->sum('quantity') : 0;
 

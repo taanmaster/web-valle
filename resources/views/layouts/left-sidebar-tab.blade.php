@@ -785,6 +785,9 @@
                                 Citatorios
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.costs.index') }}">Costos de Trámites</a>
+                        </li>
                     </ul>
 
                     <div class="title-box">
@@ -1175,6 +1178,9 @@
                     <h6 class="menu-title">Ayuda</h6>
                 </div>
                 <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('ayuda.admin.guias') }}">Portal de guías</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('ayuda.admin.index') }}">Guías</a>
                     </li>

@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\BillableService;
 use App\Models\IdentificationCertificate;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,6 +30,12 @@ class CartController extends Controller
         $service = BillableService::where('id', $request->billable_service_id)
             ->where('is_active', true)
             ->firstOrFail();
+
+        // Servicios solo-por-trámite no se agregan genéricamente; van por su flujo (ej. alta de proveedor)
+        if ($service->requires_procedure) {
+            return redirect()->back()
+                ->with('error', 'Este servicio solo puede pagarse desde su trámite correspondiente.');
+        }
 
         $cart = $this->getOrCreateCart();
 
@@ -53,6 +60,11 @@ class CartController extends Controller
         $this->authorizeCartItem($cartItem);
 
         $request->validate(['quantity' => 'required|integer|min:1|max:99']);
+
+        // Trámites vinculados: 1 por orden (regla de negocio). No se permite cambiar la cantidad.
+        if ($cartItem->related_model_id) {
+            return redirect()->route('citizen.cart.index');
+        }
 
         $cartItem->update(['quantity' => $request->quantity]);
 
@@ -109,8 +121,53 @@ class CartController extends Controller
             'related_user_id'     => $certificate->user_id,
         ]);
 
-        return redirect()->route('citizen.cart.index')
-            ->with('success', 'Constancia "' . $certificate->folio . '" agregada al carrito. Procede al pago.');
+        // Vuelve al listado de constancias y dispara el modal de confirmación
+        return redirect()->route('citizen.profile.identification_certificates')
+            ->with('cart_added_folio', $certificate->folio);
+    }
+
+    /**
+     * Pagar en línea una Solicitud de Alta de Proveedor.
+     * Misma mecánica que addCertificateToCart: vacía el carrito (1 trámite por orden)
+     * y vincula la alta (modelo, folio, usuario) al item.
+     */
+    public function addSupplierAltaToCart(Request $request, int $id)
+    {
+        $supplier = Supplier::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        if ($supplier->status !== 'pago_pendiente') {
+            return redirect()->back()
+                ->with('error', 'Solo se pueden pagar en línea las altas con estatus "Pago pendiente".');
+        }
+
+        $service = BillableService::where('name', 'Solicitud Alta de Proveedor')
+            ->where('is_active', true)
+            ->first();
+
+        if (!$service) {
+            return redirect()->back()
+                ->with('error', 'El servicio de pago no está disponible en este momento.');
+        }
+
+        $cart = $this->getOrCreateCart();
+
+        // Regla: 1 trámite por orden — vaciar carrito antes de agregar
+        $cart->items()->delete();
+
+        $cart->items()->create([
+            'billable_service_id' => $service->id,
+            'quantity'            => 1,
+            'related_model_type'  => Supplier::class,
+            'related_model_id'    => $supplier->id,
+            'related_folio'       => $supplier->registration_number,
+            'related_user_id'     => $supplier->user_id,
+        ]);
+
+        // Vuelve al listado de altas y dispara el modal de confirmación
+        return redirect()->route('supplier.alta.index')
+            ->with('cart_added_folio', $supplier->registration_number);
     }
 
     // -------------------------------------------------------------------------

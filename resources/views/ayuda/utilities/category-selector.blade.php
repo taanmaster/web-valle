@@ -1,15 +1,15 @@
 <div class="position-relative" style="max-width: 320px;">
 
     {{-- Trigger --}}
-    <div wire:click="toggle"
-        class="d-flex align-items-center gap-2 px-3 py-2 border rounded-3 bg-white"
+    <div wire:click="toggle" class="d-flex align-items-center gap-2 px-3 py-2 border rounded-3 bg-white"
         style="cursor: {{ $mode === 1 ? 'default' : 'pointer' }}; min-height: 40px;">
         @if ($selected)
             <span class="badge rounded-pill" style="background:#e8eaff; color:#3d4eac; font-weight:500;">
                 {{ $selected->nombre }}
             </span>
             @if ($mode !== 1)
-                <button type="button" wire:click.stop="deselect" class="btn-close ms-auto" style="font-size:0.6rem;"></button>
+                <button type="button" wire:click.stop="deselect" class="btn-close ms-auto"
+                    style="font-size:0.6rem;"></button>
             @endif
         @else
             <span class="text-muted small">{{ $mode === 1 ? 'Sin categoría' : 'Seleccionar categoría...' }}</span>
@@ -26,12 +26,8 @@
 
             {{-- Search --}}
             <div class="p-2 border-bottom">
-                <input type="text"
-                    class="form-control form-control-sm border-0 bg-light"
-                    placeholder="Buscar categoría..."
-                    wire:model.live="search"
-                    wire:keydown.escape="close"
-                    autofocus>
+                <input type="text" class="form-control form-control-sm border-0 bg-light"
+                    placeholder="Buscar categoría..." wire:model.live="search" wire:keydown.escape="close" autofocus>
             </div>
 
             {{-- List --}}
@@ -44,12 +40,14 @@
                         <span wire:click="select({{ $cat->id }})" class="flex-grow-1 small fw-medium">
                             {{ $cat->nombre }}
                         </span>
-                        <button type="button"
-                            wire:click.stop="deleteCategory({{ $cat->id }})"
-                            class="btn btn-sm p-0 lh-1"
-                            style="color: {{ $cat->guias_count > 0 ? '#ccc' : '#e74c3c' }}; cursor: {{ $cat->guias_count > 0 ? 'not-allowed' : 'pointer' }};"
-                            title="{{ $cat->guias_count > 0 ? 'Tiene '.$cat->guias_count.' guía(s) — no se puede eliminar' : 'Eliminar categoría' }}">
-                            <i class="bx bx-x fs-5"></i>
+                        <button type="button" wire:click.stop="deleteCategory({{ $cat->id }})"
+                            @disabled($cat->guias_count > 0)
+                            class="btn btn-sm p-0 lh-1 d-inline-flex align-items-center justify-content-center rounded flex-shrink-0"
+                            style="width:20px; height:20px; color: {{ $cat->guias_count > 0 ? '#ccc' : '#e74c3c' }}; background:transparent; border:0; cursor: {{ $cat->guias_count > 0 ? 'not-allowed' : 'pointer' }}; transition:background .15s, color .15s;"
+                            @if ($cat->guias_count == 0) onmouseenter="this.style.background='#fdecec'; this.style.color='#c0392b';"
+                                onmouseleave="this.style.background='transparent'; this.style.color='#e74c3c';" @endif
+                            title="{{ $cat->guias_count > 0 ? 'Tiene ' . $cat->guias_count . ' guía(s) — no se puede eliminar' : 'Eliminar categoría' }}">
+                            <i class="ti ti-trash menu-icon"></i>
                         </button>
                     </li>
                 @empty

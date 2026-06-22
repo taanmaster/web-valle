@@ -50,16 +50,24 @@
                                     <tr>
                                         <td>
                                             <div class="fw-semibold">{{ $item->billableService->name }}</div>
+                                            @if($item->related_folio)
+                                                <div class="text-muted small">Folio: {{ $item->related_folio }}</div>
+                                            @endif
                                             <div class="text-muted small">${{ number_format($item->billableService->unit_price, 2) }} c/u</div>
                                         </td>
                                         <td class="text-center">
-                                            <form action="{{ route('citizen.cart.update', $item) }}" method="POST" class="d-flex align-items-center justify-content-center gap-1">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" name="quantity" value="{{ max(1, $item->quantity - 1) }}" class="btn btn-outline-secondary btn-sm px-2">−</button>
+                                            @if($item->related_model_id)
+                                                {{-- Trámite vinculado: 1 por orden (regla de negocio) --}}
                                                 <span class="fw-bold mx-1">{{ $item->quantity }}</span>
-                                                <button type="submit" name="quantity" value="{{ $item->quantity + 1 }}" class="btn btn-outline-secondary btn-sm px-2">+</button>
-                                            </form>
+                                            @else
+                                                <form action="{{ route('citizen.cart.update', $item) }}" method="POST" class="d-flex align-items-center justify-content-center gap-1">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" name="quantity" value="{{ max(1, $item->quantity - 1) }}" class="btn btn-outline-secondary btn-sm px-2">−</button>
+                                                    <span class="fw-bold mx-1">{{ $item->quantity }}</span>
+                                                    <button type="submit" name="quantity" value="{{ $item->quantity + 1 }}" class="btn btn-outline-secondary btn-sm px-2">+</button>
+                                                </form>
+                                            @endif
                                         </td>
                                         <td class="text-end fw-semibold">
                                             ${{ number_format($item->billableService->unit_price * $item->quantity, 2) }}

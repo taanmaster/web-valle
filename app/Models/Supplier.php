@@ -198,6 +198,18 @@ class Supplier extends Model
     }
 
     /**
+     * Efecto al confirmarse el pago en línea de la solicitud de alta.
+     * Lo invoca Order::applyPaidSideEffects() cuando la orden vinculada queda "Pagado".
+     * Avanza el alta de 'pago_pendiente' a 'padron_activo'.
+     */
+    public function onOnlinePaymentCompleted(Order $order): void
+    {
+        if ($this->status === 'pago_pendiente') {
+            $this->update(['status' => 'padron_activo']);
+        }
+    }
+
+    /**
      * Obtiene la lista de documentos requeridos según el tipo de persona
      */
     public function getRequiredDocuments()

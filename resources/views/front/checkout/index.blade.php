@@ -29,7 +29,12 @@
                         <tbody>
                             @foreach($cart->items as $item)
                             <tr>
-                                <td>{{ $item->billableService->name }}</td>
+                                <td>
+                                    {{ $item->billableService->name }}
+                                    @if($item->related_folio)
+                                        <span class="text-muted small d-block">Folio: {{ $item->related_folio }}</span>
+                                    @endif
+                                </td>
                                 <td class="text-center">{{ $item->quantity }}</td>
                                 <td class="text-end">${{ number_format($item->billableService->unit_price * $item->quantity, 2) }}</td>
                             </tr>
