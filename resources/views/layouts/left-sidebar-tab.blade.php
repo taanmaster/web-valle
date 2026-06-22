@@ -785,6 +785,9 @@
                                 Citatorios
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.costs.index') }}">Costos de Trámites</a>
+                        </li>
                     </ul>
 
                     <div class="title-box">

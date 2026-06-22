@@ -67,6 +67,7 @@ use App\Http\Controllers\UrbanDevRequestNoteController;
 use App\Http\Controllers\UrbanDevRequestFileController;
 use App\Http\Controllers\UrbanDevWorkerController;
 use App\Http\Controllers\UrbanDevKPIsController;
+use App\Http\Controllers\UrbanDevCostController;
 
 // Adquisiciones
 use App\Http\Controllers\AcquisitionEndorsementController;
@@ -529,6 +530,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         /* Desarrollo Urbano */
         Route::group(['prefix' => 'urban_dev'], function () {
+            // Actualización de costos de trámites y servicios (solo montos)
+            Route::get('costos', [UrbanDevCostController::class, 'index'])->name('urban_dev.costs.index');
+            Route::get('costos/{slug}/editar', [UrbanDevCostController::class, 'edit'])->name('urban_dev.costs.edit');
+            Route::put('costos/{slug}', [UrbanDevCostController::class, 'update'])->name('urban_dev.costs.update');
+
             Route::resource('requests', UrbanDevRequestController::class)->names([
                 'index' => 'urban_dev.requests.index',
                 'create' => 'urban_dev.requests.create',

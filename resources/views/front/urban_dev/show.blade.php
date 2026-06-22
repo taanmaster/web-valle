@@ -169,6 +169,15 @@
         ];
 
         $tramite_actual = $tramites_config[$tramite] ?? null;
+
+        // Costos administrados desde el back (solo montos). Si existen, reemplazan
+        // a los del config; el resto del contenido (pasos, descripción) no cambia.
+        if ($tramite_actual && isset($dbCosts) && $dbCosts->isNotEmpty()) {
+            $tramite_actual['costs'] = $dbCosts->map(fn ($c) => [
+                'description' => $c->description,
+                'price'       => $c->formatted_price,
+            ])->toArray();
+        }
     @endphp
 
     @if($tramite_actual)

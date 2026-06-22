@@ -507,7 +507,15 @@ class FrontController extends Controller
 
     public function urbanDevDetail($tramite)
     {
-        return view('front.urban_dev.show')->with('tramite', $tramite);
+        // Costos administrados desde el back; si no hay, el blade usa el config por defecto
+        $dbCosts = \App\Models\UrbanDevCost::where('tramite_slug', $tramite)
+            ->orderBy('position')
+            ->get();
+
+        return view('front.urban_dev.show', [
+            'tramite' => $tramite,
+            'dbCosts' => $dbCosts,
+        ]);
     }
 
     // Pantalla Casa de la Mujer
