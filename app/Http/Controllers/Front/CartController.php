@@ -8,6 +8,7 @@ use App\Models\CartItem;
 use App\Models\BillableService;
 use App\Models\IdentificationCertificate;
 use App\Models\Supplier;
+use App\Models\UrbanDevRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -168,6 +169,52 @@ class CartController extends Controller
         // Vuelve al listado de altas y dispara el modal de confirmación
         return redirect()->route('supplier.alta.index')
             ->with('cart_added_folio', $supplier->registration_number);
+    }
+
+    /**
+     * Pagar en línea un trámite de Desarrollo Urbano.
+     * El monto NO viene del catálogo de BillableService sino del concepto de costo
+     * (UrbanDevCost) que el admin asignó al resolver el expediente; se guarda como
+     * ítem ad-hoc con snapshot de nombre y precio.
+     */
+    public function addUrbanDevToCart(Request $request, int $id)
+    {
+        $tramite = UrbanDevRequest::with('cost')
+            ->where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        if ($tramite->status !== 'resolved') {
+            return redirect()->back()
+                ->with('error', 'Solo se pueden pagar en línea los trámites con estatus "Resolución".');
+        }
+
+        // El admin debe haber asignado el concepto de costo (y por ende el monto)
+        if (!$tramite->cost || $tramite->payment_amount === null || (float) $tramite->payment_amount <= 0) {
+            return redirect()->back()
+                ->with('error', 'Este trámite aún no tiene un costo asignado. Contacta a Desarrollo Urbano.');
+        }
+
+        $serviceName = $tramite->getRequestTypeLabelAttribute() . ' — ' . $tramite->cost->description;
+
+        $cart = $this->getOrCreateCart();
+
+        // Regla: 1 trámite por orden — vaciar carrito antes de agregar
+        $cart->items()->delete();
+
+        $cart->items()->create([
+            'billable_service_id' => null,
+            'service_name'        => $serviceName,
+            'unit_price'          => $tramite->payment_amount,
+            'quantity'            => 1,
+            'related_model_type'  => UrbanDevRequest::class,
+            'related_model_id'    => $tramite->id,
+            'related_folio'       => 'UD-' . str_pad((string) $tramite->id, 5, '0', STR_PAD_LEFT),
+            'related_user_id'     => $tramite->user_id,
+        ]);
+
+        return redirect()->route('citizen.profile.urban_dev_requests')
+            ->with('cart_added_folio', 'UD-' . str_pad((string) $tramite->id, 5, '0', STR_PAD_LEFT));
     }
 
     // -------------------------------------------------------------------------

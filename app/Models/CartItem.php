@@ -21,8 +21,20 @@ class CartItem extends Model
         return $this->belongsTo(BillableService::class);
     }
 
+    /** Nombre a mostrar: del catálogo o el snapshot ad-hoc. */
+    public function getServiceLabelAttribute(): string
+    {
+        return $this->billableService->name ?? $this->service_name ?? 'Servicio';
+    }
+
+    /** Precio unitario: del catálogo o el snapshot ad-hoc. */
+    public function getUnitPriceValueAttribute(): float
+    {
+        return (float) ($this->billableService->unit_price ?? $this->unit_price ?? 0);
+    }
+
     public function getSubtotalAttribute()
     {
-        return $this->billableService->unit_price * $this->quantity;
+        return $this->unit_price_value * $this->quantity;
     }
 }

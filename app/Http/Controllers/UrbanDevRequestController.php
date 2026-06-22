@@ -115,7 +115,12 @@ class UrbanDevRequestController extends Controller
         // Cargar archivos relacionados y el inspector
         $urbanDevRequest->load(['files', 'user', 'inspector']);
 
-        return view('urban_dev.requests.show', compact('urbanDevRequest'));
+        // Conceptos de costo del tipo de trámite (para asignar el monto a cobrar)
+        $costOptions = \App\Models\UrbanDevCost::where('tramite_slug', $urbanDevRequest->request_type)
+            ->orderBy('position')
+            ->get();
+
+        return view('urban_dev.requests.show', compact('urbanDevRequest', 'costOptions'));
     }
 
     public function edit($id)
@@ -179,9 +184,20 @@ class UrbanDevRequestController extends Controller
             'payment_ref_number_1' => 'nullable|string|max:255',
             'payment_ref_number_2' => 'nullable|string|max:255',
             'payment_amount' => 'nullable|numeric|min:0',
+            'urban_dev_cost_id' => 'nullable|exists:urban_dev_costs,id',
             'inspection_validity_start' => 'nullable|date',
             'inspection_validity_end' => 'nullable|date|after_or_equal:inspection_validity_start',
         ]);
+
+        // El concepto de costo define el monto a pagar en línea (viene del back de costos).
+        $paymentAmount = $request->payment_amount;
+        if ($request->urban_dev_cost_id) {
+            $cost = \App\Models\UrbanDevCost::find($request->urban_dev_cost_id);
+            // Solo se acepta un concepto del mismo tipo de trámite del expediente
+            if ($cost && $cost->tramite_slug === $urbanDevRequest->request_type) {
+                $paymentAmount = $cost->amount;
+            }
+        }
 
         // Actualizar los campos
         $urbanDevRequest->update([
@@ -192,7 +208,8 @@ class UrbanDevRequestController extends Controller
             'payment_date' => $request->payment_date,
             'payment_ref_number_1' => $request->payment_ref_number_1,
             'payment_ref_number_2' => $request->payment_ref_number_2,
-            'payment_amount' => $request->payment_amount,
+            'payment_amount' => $paymentAmount,
+            'urban_dev_cost_id' => $request->urban_dev_cost_id,
             'inspection_validity_start' => $request->inspection_validity_start,
             'inspection_validity_end' => $request->inspection_validity_end,
         ]);

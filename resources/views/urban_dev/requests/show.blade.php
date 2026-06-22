@@ -639,15 +639,47 @@
                                    class="form-control" value="{{ $urbanDevRequest->payment_date?->format('Y-m-d') }}">
                         </div>
 
+                        @if(isset($costOptions) && $costOptions->isNotEmpty())
+                            <div class="col-md-8 mb-3">
+                                <label for="urban_dev_cost_id" class="form-label">
+                                    Concepto de costo <small class="text-muted">(define el monto del pago en línea)</small>
+                                </label>
+                                <select name="urban_dev_cost_id" id="urban_dev_cost_id" class="form-select">
+                                    <option value="">Sin concepto asignado</option>
+                                    @foreach($costOptions as $opt)
+                                        <option value="{{ $opt->id }}" data-amount="{{ $opt->amount }}"
+                                            {{ $urbanDevRequest->urban_dev_cost_id == $opt->id ? 'selected' : '' }}>
+                                            {{ $opt->description }} — {{ $opt->formatted_price }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+
                         <div class="col-md-4 mb-3">
                             <label for="payment_amount" class="form-label">Monto</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
-                                <input type="number" name="payment_amount" id="payment_amount" 
+                                <input type="number" name="payment_amount" id="payment_amount"
                                        class="form-control" step="0.01" value="{{ $urbanDevRequest->payment_amount }}"
                                        placeholder="0.00">
                             </div>
                         </div>
+
+                        @if(isset($costOptions) && $costOptions->isNotEmpty())
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const sel = document.getElementById('urban_dev_cost_id');
+                                    const amt = document.getElementById('payment_amount');
+                                    if (sel && amt) {
+                                        sel.addEventListener('change', function () {
+                                            const a = this.options[this.selectedIndex].getAttribute('data-amount');
+                                            if (a) amt.value = a;
+                                        });
+                                    }
+                                });
+                            </script>
+                        @endif
 
                         <div class="col-md-4 mb-3">
                             <label for="payment_ref_number_1" class="form-label">Folio de Entero por Desarrollo</label>

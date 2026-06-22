@@ -33,7 +33,7 @@ class PaymentGatewayController extends Controller
         }
 
         // Calcular total
-        $total = $cart->items->sum(fn($item) => $item->billableService->unit_price * $item->quantity);
+        $total = $cart->items->sum(fn($item) => $item->unit_price_value * $item->quantity);
         // Las APIs esperan el monto en centavos (entero)
         $totalCentavos = (int) round($total * 100);
 
@@ -85,10 +85,10 @@ class PaymentGatewayController extends Controller
                             OrderItem::create([
                                 'order_id'            => $order->id,
                                 'billable_service_id' => $item->billable_service_id,
-                                'service_name'        => $item->billableService->name,
-                                'unit_price'          => $item->billableService->unit_price,
+                                'service_name'        => $item->service_label,
+                                'unit_price'          => $item->unit_price_value,
                                 'quantity'            => $item->quantity,
-                                'subtotal'            => $item->billableService->unit_price * $item->quantity,
+                                'subtotal'            => $item->unit_price_value * $item->quantity,
                                 'related_model_type'  => $item->related_model_type,
                                 'related_model_id'    => $item->related_model_id,
                                 'related_folio'       => $item->related_folio,
@@ -162,10 +162,10 @@ class PaymentGatewayController extends Controller
                             OrderItem::create([
                                 'order_id'            => $order->id,
                                 'billable_service_id' => $item->billable_service_id,
-                                'service_name'        => $item->billableService->name,
-                                'unit_price'          => $item->billableService->unit_price,
+                                'service_name'        => $item->service_label,
+                                'unit_price'          => $item->unit_price_value,
                                 'quantity'            => $item->quantity,
-                                'subtotal'            => $item->billableService->unit_price * $item->quantity,
+                                'subtotal'            => $item->unit_price_value * $item->quantity,
                                 'related_model_type'  => $item->related_model_type,
                                 'related_model_id'    => $item->related_model_id,
                                 'related_folio'       => $item->related_folio,
@@ -232,10 +232,10 @@ class PaymentGatewayController extends Controller
                             OrderItem::create([
                                 'order_id'            => $order->id,
                                 'billable_service_id' => $item->billable_service_id,
-                                'service_name'        => $item->billableService->name,
-                                'unit_price'          => $item->billableService->unit_price,
+                                'service_name'        => $item->service_label,
+                                'unit_price'          => $item->unit_price_value,
                                 'quantity'            => $item->quantity,
-                                'subtotal'            => $item->billableService->unit_price * $item->quantity,
+                                'subtotal'            => $item->unit_price_value * $item->quantity,
                                 'related_model_type'  => $item->related_model_type,
                                 'related_model_id'    => $item->related_model_id,
                                 'related_folio'       => $item->related_folio,

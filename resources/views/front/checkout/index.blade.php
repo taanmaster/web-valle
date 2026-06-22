@@ -30,20 +30,20 @@
                             @foreach($cart->items as $item)
                             <tr>
                                 <td>
-                                    {{ $item->billableService->name }}
+                                    {{ $item->service_label }}
                                     @if($item->related_folio)
                                         <span class="text-muted small d-block">Folio: {{ $item->related_folio }}</span>
                                     @endif
                                 </td>
                                 <td class="text-center">{{ $item->quantity }}</td>
-                                <td class="text-end">${{ number_format($item->billableService->unit_price * $item->quantity, 2) }}</td>
+                                <td class="text-end">${{ number_format($item->unit_price_value * $item->quantity, 2) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
                         <tfoot class="table-light">
                             <tr>
                                 <th colspan="2">TOTAL</th>
-                                <th class="text-end">${{ number_format($cart->items->sum(fn($i) => $i->billableService->unit_price * $i->quantity), 2) }}</th>
+                                <th class="text-end">${{ number_format($cart->items->sum(fn($i) => $i->unit_price_value * $i->quantity), 2) }}</th>
                             </tr>
                         </tfoot>
                     </table>

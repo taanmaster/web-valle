@@ -49,11 +49,11 @@
                                     @foreach($cart->items as $item)
                                     <tr>
                                         <td>
-                                            <div class="fw-semibold">{{ $item->billableService->name }}</div>
+                                            <div class="fw-semibold">{{ $item->service_label }}</div>
                                             @if($item->related_folio)
                                                 <div class="text-muted small">Folio: {{ $item->related_folio }}</div>
                                             @endif
-                                            <div class="text-muted small">${{ number_format($item->billableService->unit_price, 2) }} c/u</div>
+                                            <div class="text-muted small">${{ number_format($item->unit_price_value, 2) }} c/u</div>
                                         </td>
                                         <td class="text-center">
                                             @if($item->related_model_id)
@@ -70,7 +70,7 @@
                                             @endif
                                         </td>
                                         <td class="text-end fw-semibold">
-                                            ${{ number_format($item->billableService->unit_price * $item->quantity, 2) }}
+                                            ${{ number_format($item->unit_price_value * $item->quantity, 2) }}
                                         </td>
                                         <td class="text-end">
                                             <form action="{{ route('citizen.cart.destroy', $item) }}" method="POST">
@@ -91,7 +91,7 @@
                             <div>
                                 <span class="text-muted">Total:</span>
                                 <span class="fs-4 fw-bold ms-2">
-                                    ${{ number_format($cart->items->sum(fn($i) => $i->billableService->unit_price * $i->quantity), 2) }}
+                                    ${{ number_format($cart->items->sum(fn($i) => $i->unit_price_value * $i->quantity), 2) }}
                                 </span>
                             </div>
                             <a href="{{ route('citizen.checkout.index') }}" class="btn btn-success">

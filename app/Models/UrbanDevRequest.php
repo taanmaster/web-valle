@@ -22,6 +22,7 @@ class UrbanDevRequest extends Model
         'payment_ref_number_1',
         'payment_ref_number_2',
         'payment_amount',
+        'urban_dev_cost_id',
         'inspection_validity_start',
         'inspection_validity_end',
     ];
@@ -57,6 +58,29 @@ class UrbanDevRequest extends Model
     public function inspector()
     {
         return $this->belongsTo(\App\Models\User::class, 'inspector_id');
+    }
+
+    /**
+     * Concepto de costo asignado (define el monto a pagar en línea).
+     */
+    public function cost()
+    {
+        return $this->belongsTo(\App\Models\UrbanDevCost::class, 'urban_dev_cost_id');
+    }
+
+    /**
+     * Efecto al confirmarse el pago en línea del expediente.
+     * Lo invoca Order::applyPaidSideEffects() cuando la orden vinculada queda "Pagado".
+     * Registra la fecha de pago en el expediente (no hay estatus posterior a Resolución).
+     */
+    public function onOnlinePaymentCompleted(\App\Models\Order $order): void
+    {
+        if (empty($this->payment_date)) {
+            $this->update([
+                'payment_date'         => now(),
+                'payment_ref_number_1' => $this->payment_ref_number_1 ?: $order->folio,
+            ]);
+        }
     }
 
     /**

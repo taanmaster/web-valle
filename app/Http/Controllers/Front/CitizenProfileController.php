@@ -130,7 +130,14 @@ class CitizenProfileController extends Controller
             ]);
         }
 
-        return view('front.user_profiles.citizen.urban_dev_requests', compact('urbanDevRequests'));
+        // Expedientes que ya tienen un pago en línea liquidado → ocultar "Agregar a carrito"
+        $paidRequestIds = \App\Models\OrderItem::where('related_model_type', \App\Models\UrbanDevRequest::class)
+            ->whereIn('related_model_id', $urbanDevRequests->pluck('id'))
+            ->whereHas('order', fn ($q) => $q->where('payment_status', 'Pagado'))
+            ->pluck('related_model_id')
+            ->all();
+
+        return view('front.user_profiles.citizen.urban_dev_requests', compact('urbanDevRequests', 'paidRequestIds'));
     }
 
     public function settings()

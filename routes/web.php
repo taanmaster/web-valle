@@ -2128,6 +2128,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         // Vinculación de trámites al carrito
         Route::post('/constancias_de_identificacion/{id}/pagar-en-linea', 'CartController@addCertificateToCart')->name('citizen.identification_certificate.pay_online');
         Route::post('/alta-proveedor/{id}/pagar-en-linea', 'CartController@addSupplierAltaToCart')->name('citizen.supplier_alta.pay_online');
+        Route::post('/desarrollo-urbano/{id}/pagar-en-linea', 'CartController@addUrbanDevToCart')->name('citizen.urban_dev_request.pay_online');
 
         // Checkout
         Route::get('/checkout', 'CheckoutController@index')->name('citizen.checkout.index');
