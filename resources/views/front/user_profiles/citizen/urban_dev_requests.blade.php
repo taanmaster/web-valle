@@ -9,6 +9,12 @@
                 @include('front.user_profiles.partials._profile_nav')
             </div>
             <div class="col-md-9">
+                @if(session('error'))
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <ion-icon name="alert-circle-outline"></ion-icon> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
                 <div class="card wow fadeInUp">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -275,7 +281,7 @@
                                                             <span class="badge bg-success-subtle text-success border border-success px-3 py-2 ms-1">
                                                                 <ion-icon name="checkmark-circle"></ion-icon> Pagado
                                                             </span>
-                                                        @elseif ($request->status === 'resolved' && $request->payment_amount && (float) $request->payment_amount > 0)
+                                                        @elseif ($request->status === 'resolved')
                                                             <form action="{{ route('citizen.urban_dev_request.pay_online', $request->id) }}"
                                                                 method="POST" class="d-inline ms-1">
                                                                 @csrf
