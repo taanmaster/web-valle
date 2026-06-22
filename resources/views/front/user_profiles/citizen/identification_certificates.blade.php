@@ -29,4 +29,46 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal: artículo agregado al carrito --}}
+    @if(session('cart_added_folio'))
+        <div class="modal fade" id="cartAddedModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+                <div class="modal-content" style="border-radius: 14px; border: none;">
+                    <div class="modal-body p-4 text-center">
+                        <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+                            <ion-icon name="checkmark-circle" style="font-size: 1.6rem; color: #198754;"></ion-icon>
+                            <h5 class="fw-bold mb-0">Artículo agregado a tu carrito</h5>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center gap-3 my-4">
+                            <ion-icon name="document-text-outline" style="font-size: 2rem; color: #212529;"></ion-icon>
+                            <div class="text-start">
+                                <div class="fw-semibold">Trámite</div>
+                                <div class="text-muted small">Folio: {{ session('cart_added_folio') }}</div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <a href="{{ route('citizen.cart.index') }}" class="btn btn-dark fw-semibold text-uppercase">
+                                Ver carrito
+                            </a>
+                            <a href="{{ route('citizen.checkout.index') }}" class="btn btn-dark fw-semibold text-uppercase">
+                                Pagar pedido
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const el = document.getElementById('cartAddedModal');
+                if (el) new bootstrap.Modal(el).show();
+            });
+        </script>
+        @endpush
+    @endif
 @endsection

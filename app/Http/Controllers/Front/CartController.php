@@ -121,8 +121,9 @@ class CartController extends Controller
             'related_user_id'     => $certificate->user_id,
         ]);
 
-        return redirect()->route('citizen.cart.index')
-            ->with('success', 'Constancia "' . $certificate->folio . '" agregada al carrito. Procede al pago.');
+        // Vuelve al listado de constancias y dispara el modal de confirmación
+        return redirect()->route('citizen.profile.identification_certificates')
+            ->with('cart_added_folio', $certificate->folio);
     }
 
     /**

@@ -115,6 +115,7 @@
                                     <thead class="table-dark">
                                         <tr>
                                             <th class="text-white"><i class="fas fa-barcode me-1"></i> Folio</th>
+                                            <th class="text-white"><i class="fas fa-file-signature me-1"></i> Trámite</th>
                                             <th class="text-white"><i class="fas fa-user me-1"></i> Ciudadano</th>
                                             <th class="text-white"><i class="fas fa-calendar-alt me-1"></i> Fecha</th>
                                             <th class="text-white"><i class="fas fa-credit-card me-1"></i> Método</th>
@@ -132,6 +133,22 @@
                                                 <span class="badge bg-dark">
                                                     <i class="fas fa-barcode me-1"></i>{{ $order->folio }}
                                                 </span>
+                                            </td>
+                                            <td>
+                                                @php
+                                                    $rel = $order->items->firstWhere('related_folio', '!=', null);
+                                                    $tramiteLabel = $rel ? match ($rel->related_model_type) {
+                                                        'App\\Models\\Supplier'                  => 'Alta de Proveedor',
+                                                        'App\\Models\\IdentificationCertificate' => 'Constancia de Identificación',
+                                                        default                                  => class_basename($rel->related_model_type),
+                                                    } : null;
+                                                @endphp
+                                                @if($rel)
+                                                    <span class="badge bg-primary bg-opacity-10 text-primary">{{ $tramiteLabel }}</span>
+                                                    <div><small class="text-muted">{{ $rel->related_folio }}</small></div>
+                                                @else
+                                                    <span class="text-muted">—</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <div class="d-flex align-items-center">
