@@ -34,8 +34,7 @@
         </style>
     @endpush
 
-    <form method="POST" wire:submit="save" enctype="multipart/form-data">
-        {{ csrf_field() }}
+    <form wire:submit="save">
         @switch($step)
             @case(1)
                 <div class="card wow fadeInUp p-4">
@@ -48,32 +47,44 @@
 
                     <br>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="true" wire:model="is_agree" id="is_agree">
-                        <label class="form-check-label" for="checkDefault">
+                        <input class="form-check-input @error('is_agree') is-invalid @enderror" type="checkbox" value="true"
+                            wire:model="is_agree" id="is_agree">
+                        <label class="form-check-label" for="is_agree">
                             Estoy de acuerdo en el manejo de mis datos personales
                         </label>
+                        @error('is_agree')
+                            <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                        @enderror
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="true" wire:model="is_aware" id="is_aware">
-                        <label class="form-check-label" for="checkDefault">
+                        <input class="form-check-input @error('is_aware') is-invalid @enderror" type="checkbox" value="true"
+                            wire:model="is_aware" id="is_aware">
+                        <label class="form-check-label" for="is_aware">
                             Estoy consciente de que esta plataforma es ÚNICAMENTE para registrar inconformidades referentes al
                             actuar de servidores públicos municipales, deficiencias en el servicio público y/o falta de
                             seguimiento
                             a solicitudes en dependencias municipales
                         </label>
+                        @error('is_aware')
+                            <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                        @enderror
                     </div>
                     <br><br><br>
 
                     <div class="mb-3">
                         <label class="form-label">Usted presenta una: (Obligatorio)</label>
-                        <select class="form-select" name="subject" wire:model="subject" required>
-                            <option selected>Selecciona una opción</option>
+                        <select class="form-select @error('subject') is-invalid @enderror" name="subject" wire:model="subject"
+                            required>
+                            <option value="">Selecciona una opción</option>
                             <option value="Queja">Queja</option>
                             <option value="Denuncia">Denuncia</option>
                             <option value="Sugerencia">Sugerencia</option>
                             <option value="Solicitud">Solicitud</option>
                         </select>
+                        @error('subject')
+                            <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                        @enderror
                     </div>
                 </div>
 
@@ -110,9 +121,17 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h4>Dinos quien eres:</h4>
-                                <p>(Debes anexar una copia de tu INE)</p>
+                                <p>(Debes anexar una copia de tu INE: p)</p>
 
-                                <input type="file" name="ine" id="ine" wire:model.live="ine" class="form-control">
+                                <input type="file" name="ine" id="ine" wire:model.live="ine"
+                                    class="form-control @error('ine') is-invalid @enderror"
+                                    accept="image/jpeg,image/png,application/pdf">
+                                <small class="d-block mt-1">
+                                    Imagen <strong>JPG o PNG</strong>, o archivo <strong>PDF</strong>. Máximo 10 MB.
+                                </small>
+                                @error('ine')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
                                 <br>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="true" id="anonymus"
@@ -131,33 +150,59 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label for="name" class="col-form-label">Nombre</label>
-                                <input type="text" name="name" wire:model.live="name" class="form-control" required>
+                                <input type="text" name="name" wire:model.live="name"
+                                    class="form-control @error('name') is-invalid @enderror" required>
+                                @error('name')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
                             </div>
                             <div class="col-md-8">
                                 <label for="address" class="col-form-label">Calle y número</label>
-                                <input type="address" name="address" wire:model.live="address" class="form-control" required>
+                                <input type="text" name="address" wire:model.live="address"
+                                    class="form-control @error('address') is-invalid @enderror" required>
+                                @error('address')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="suburb" class="col-form-label">Colonia</label>
-                                <input type="text" name="suburb" wire:model.live="suburb" class="form-control" required>
+                                <input type="text" name="suburb" wire:model.live="suburb"
+                                    class="form-control @error('suburb') is-invalid @enderror" required>
+                                @error('suburb')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
                             </div>
                             <div class="col-md-8">
                                 <label for="town" class="col-form-label">Municipio</label>
-                                <input type="text" name="town" wire:model.live="town" class="form-control" required>
+                                <input type="text" name="town" wire:model.live="town"
+                                    class="form-control @error('town') is-invalid @enderror" required>
+                                @error('town')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="phone" class="col-form-label">Teléfono</label>
-                                <input type="text" name="phone" wire:model.live="phone" class="form-control" required>
+                                <input type="tel" name="phone" wire:model.live="phone"
+                                    class="form-control @error('phone') is-invalid @enderror" inputmode="numeric"
+                                    maxlength="10" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    placeholder="10 dígitos" required>
+                                @error('phone')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
                             </div>
                             <div class="col-md-8">
                                 <label for="email" class="col-form-label">Correo electrónico</label>
-                                <input type="email" name="email" wire:model.live="email" class="form-control" required>
+                                <input type="email" name="email" wire:model.live="email"
+                                    class="form-control @error('email') is-invalid @enderror" required>
+                                @error('email')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
                             </div>
                         </div>
 
@@ -221,12 +266,27 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label for="complain" class="col-form-label">Descripción</label>
-                                <textarea class="form-control" wire:model="complain" name="complain" rows="3"></textarea>
+                                <textarea class="form-control @error('complain') is-invalid @enderror" wire:model="complain" name="complain"
+                                    rows="3"></textarea>
+                                @error('complain')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
                             </div>
                             <div class="col-md-12">
                                 <label for="file" class="col-form-label">Pruebas (Seleccione uno o multiples
                                     archivos)</label>
-                                <input type="file" name="files" wire:model="files" class="form-control" multiple>
+                                <input type="file" name="files" wire:model="files" class="form-control" multiple
+                                    accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
+                                <small class="text-muted d-block mt-1">
+                                    Archivos permitidos: <strong>JPG, PNG, PDF, DOC o DOCX</strong>.
+                                    Máximo 5 archivos, 10 MB cada uno.
+                                </small>
+                                @error('files')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
+                                @error('files.*')
+                                    <span class="text-danger d-block mt-1"><small>{{ $message }}</small></span>
+                                @enderror
                             </div>
                         </div>
 
@@ -271,7 +331,8 @@
                             </div>
                             <div class="col-md-6 d-flex justify-content-end mt-3">
                                 <button type="submit" class="btn btn-primary">Enviar</button>
-                                <button type="button" wire:click="clean" class="btn btn-secondary ms-2">Borrar datos</button>
+                                <button type="button" wire:click="clean" class="btn btn-secondary ms-2">Borrar
+                                    datos</button>
                             </div>
                         </div>
                     </div>
@@ -341,17 +402,32 @@
                         'theme': 'light',
                         'callback': function(response) {
                             @this.set('captcha', response);
+                        },
+                        'expired-callback': function() {
+                            @this.set('captcha', null);
                         }
                     });
                     captchaRendered = true;
                 }
             }
 
+            // Reiniciar el captcha si la verificación falla en el servidor
+            document.addEventListener('livewire:init', function() {
+                Livewire.on('reset-captcha', function() {
+                    if (typeof grecaptcha !== 'undefined' && grecaptcha.reset) {
+                        grecaptcha.reset();
+                    }
+                });
+            });
+
             // Intentar renderizar cuando Livewire actualiza el DOM (cambio de step)
             document.addEventListener('livewire:navigated', renderCaptcha);
 
             // Para Livewire 3 - escuchar actualizaciones del componente
-            Livewire.hook('morph.updated', ({ el, component }) => {
+            Livewire.hook('morph.updated', ({
+                el,
+                component
+            }) => {
                 setTimeout(renderCaptcha, 100);
             });
 

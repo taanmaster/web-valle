@@ -57,6 +57,11 @@ class Form extends Component
 
     public $files = [];
 
+    // Tipos de archivo permitidos
+    const INE_MIMES   = 'jpg,jpeg,png,pdf';
+    const FILE_MIMES  = 'jpg,jpeg,png,pdf,doc,docx';
+    const MAX_KB      = 10240; // 10 MB por archivo
+
     public $state;
     public $folio;
 
@@ -69,7 +74,7 @@ class Form extends Component
     public function nextStep()
     {
         try {
-            $this->validate($this->rulesForStep());
+            $this->validate($this->rulesForStep(), $this->messagesForStep());
         } catch (\Illuminate\Validation\ValidationException $e) {
 
             $this->dispatch('issue', message: 'Completa los campos requeridos antes de continuar.');
@@ -90,40 +95,52 @@ class Form extends Component
         $this->captchaHtml = captcha_img('flat');
     }
 
-    public function updatedCaptcha($token)
+    /**
+     * Verifica el token de reCAPTCHA contra Google.
+     * Se hace al momento del envío para evitar estados intermedios
+     * en los que el formulario "a veces" no permite finalizar.
+     */
+    protected function verifyCaptcha(): bool
     {
-        $response = Http::post(
-            'https://www.google.com/recaptcha/api/siteverify?secret=' .
-                config('services.recaptcha.secret_key') .
-                '&response=' . $token
-        );
+        if (empty($this->captcha) || $this->captcha === true) {
+            return false;
+        }
 
-        $success = $response->json()['success'];
-
-        if (! $success) {
-            throw ValidationException::withMessages([
-                'captcha' => __('Refresca la pantalla e intenta de nuevo!'),
+        try {
+            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret'   => config('services.recaptcha.secret_key'),
+                'response' => $this->captcha,
             ]);
-        } else {
-            $this->captcha = true;
+
+            return (bool) ($response->json('success') ?? false);
+        } catch (\Throwable $e) {
+            return false;
         }
     }
 
 
     public function save()
     {
-        // Validar que el captcha haya sido verificado (se valida en updatedCaptcha)
-        if ($this->captcha !== true) {
+        // Verificar el captcha en el momento del envío
+        if (! $this->verifyCaptcha()) {
+            $this->captcha = null;
+            $this->dispatch('reset-captcha');
+
             throw ValidationException::withMessages([
-                'captcha' => 'Por favor, completa el captcha antes de enviar.',
+                'captcha' => 'No pudimos validar el captcha. Vuelve a marcarlo e intenta de nuevo.',
             ]);
         }
 
         $this->validate([
             'complain' => 'required|string|min:10',
+            'files'    => 'nullable|array|max:5',
+            'files.*'  => 'file|mimes:' . self::FILE_MIMES . '|max:' . self::MAX_KB,
         ], [
             'complain.required' => 'La descripción es obligatoria.',
-            'complain.min' => 'La descripción debe tener al menos 10 caracteres.',
+            'complain.min'      => 'La descripción debe tener al menos 10 caracteres.',
+            'files.max'         => 'Puedes adjuntar como máximo 5 archivos.',
+            'files.*.mimes'     => 'Solo se permiten archivos JPG, PNG, PDF, DOC o DOCX.',
+            'files.*.max'       => 'Cada archivo no debe superar los 10 MB.',
         ]);
 
 
@@ -151,7 +168,9 @@ class Form extends Component
         // Imagen responsiva en Banner
         $ineFilename = null;
 
-        if ($this->ine) {
+        // El PDF se guarda tal cual (vía handleUpload más abajo); solo las
+        // imágenes se redimensionan con GD.
+        if ($this->ine && str_starts_with((string) $this->ine->getClientMimeType(), 'image/')) {
             $image = $this->ine;
 
             // Nombre del archivo
@@ -160,12 +179,19 @@ class Form extends Component
             // Ruta en public/
             $location = public_path('ine/' . $ineFilename);
 
-            // Redimensionar y guardar (opcional)
-            Image::make($image)
-                ->resize(1280, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                })
-                ->save($location);
+            // Redimensionar y guardar (opcional). Se protege con try/catch
+            // para que un archivo no soportado nunca aborte el envío completo.
+            try {
+                Image::make($image)
+                    ->resize(1280, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })
+                    ->save($location);
+            } catch (\Throwable $e) {
+                throw ValidationException::withMessages([
+                    'ine' => 'No pudimos procesar la imagen del INE. Asegúrate de subir una imagen JPG o PNG, o un PDF.',
+                ]);
+            }
         }
 
         $complain = new CitizenComplain;
@@ -229,19 +255,55 @@ class Form extends Component
                 return [
                     'name'    => 'required|string|min:3',
                     'email'   => 'required|email',
-                    'phone'   => 'required|string|min:10',
+                    'phone'   => ['required', 'regex:/^[0-9]{10}$/'],
 
                     // Campos que también pides en Step 2
                     'address' => 'required|string',
                     'suburb'  => 'required|string',
                     'town'    => 'required|string',
 
-                    'ine'     => 'required',
+                    // El INE acepta imagen (JPG/PNG) o PDF. Las imágenes se
+                    // redimensionan con GD; el PDF se guarda tal cual.
+                    'ine'     => 'required|mimes:' . self::INE_MIMES . '|max:' . self::MAX_KB,
                 ];
 
             case 3:
                 return [
                     'complain' => 'required|string|min:10',
+                ];
+
+            default:
+                return [];
+        }
+    }
+
+    public function messagesForStep()
+    {
+        switch ($this->step) {
+
+            case 1:
+                return [
+                    'is_agree.required' => 'Debes aceptar el manejo de tus datos personales.',
+                    'is_agree.accepted' => 'Debes aceptar el manejo de tus datos personales.',
+                    'is_aware.required' => 'Debes confirmar que conoces el uso de esta plataforma.',
+                    'is_aware.accepted' => 'Debes confirmar que conoces el uso de esta plataforma.',
+                    'subject.required'  => 'Selecciona el tipo de trámite que presentas.',
+                    'subject.min'       => 'Selecciona una opción válida.',
+                ];
+
+            case 2:
+                return [
+                    'name.required'    => 'El nombre es obligatorio.',
+                    'email.required'   => 'El correo electrónico es obligatorio.',
+                    'email.email'      => 'Ingresa un correo electrónico válido.',
+                    'phone.required'   => 'El teléfono es obligatorio.',
+                    'phone.regex'      => 'El teléfono debe contener exactamente 10 dígitos (solo números).',
+                    'address.required' => 'La calle y número son obligatorios.',
+                    'suburb.required'  => 'La colonia es obligatoria.',
+                    'town.required'    => 'El municipio es obligatorio.',
+                    'ine.required'     => 'Debes adjuntar una copia de tu INE.',
+                    'ine.mimes'        => 'El INE debe ser una imagen JPG o PNG, o un archivo PDF.',
+                    'ine.max'          => 'El archivo del INE no debe superar los 10 MB.',
                 ];
 
             default:
