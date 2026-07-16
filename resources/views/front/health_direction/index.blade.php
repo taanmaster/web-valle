@@ -111,14 +111,17 @@
             @if (isset($talleres) && $talleres->count() > 0)
                 @foreach ($talleres->take(2) as $blog)
                     <div class="col-md-6 mb-3">
-                        <div class="card card-image wow fadeInUp" style="height: 220px">
-                            <img class="card-img-top" src="{{ asset('images/health_direction/blog/' . $blog->hero_img) }}"
-                                alt="{{ $blog->title }}">
-                            <div class="overlay"></div>
-                            <div class="card-content">
-                                <h5 class="mb-0">{{ $blog->title }}</h5>
+                        <a href="{{ route('health_direction.detail', $blog->slug) }}"
+                            class="text-decoration-none d-block h-100">
+                            <div class="card card-image wow fadeInUp" style="height: 220px">
+                                <img class="card-img-top" src="{{ asset('images/health_direction/blog/' . $blog->hero_img) }}"
+                                    alt="{{ $blog->title }}">
+                                <div class="overlay"></div>
+                                <div class="card-content">
+                                    <h5 class="mb-0">{{ $blog->title }}</h5>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endforeach
             @else
@@ -148,14 +151,17 @@
             @if (isset($campanas) && $campanas->count() > 0)
                 @foreach ($campanas->take(2) as $blog)
                     <div class="col-md-6 mb-3">
-                        <div class="card card-image wow fadeInUp" style="height: 220px">
-                            <img class="card-img-top" src="{{ asset('images/health_direction/blog/' . $blog->hero_img) }}"
-                                alt="{{ $blog->title }}">
-                            <div class="overlay"></div>
-                            <div class="card-content">
-                                <h5 class="mb-0">{{ $blog->title }}</h5>
+                        <a href="{{ route('health_direction.detail', $blog->slug) }}"
+                            class="text-decoration-none d-block h-100">
+                            <div class="card card-image wow fadeInUp" style="height: 220px">
+                                <img class="card-img-top" src="{{ asset('images/health_direction/blog/' . $blog->hero_img) }}"
+                                    alt="{{ $blog->title }}">
+                                <div class="overlay"></div>
+                                <div class="card-content">
+                                    <h5 class="mb-0">{{ $blog->title }}</h5>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endforeach
             @else
@@ -183,15 +189,18 @@
                 @if (isset($eventos) && $eventos->count() > 0)
                     @foreach ($eventos->take(2) as $blog)
                         <div class="mb-3">
-                            <div class="card card-image wow fadeInUp" style="height: 190px">
-                                <img class="card-img-top"
-                                    src="{{ asset('images/health_direction/blog/' . $blog->hero_img) }}"
-                                    alt="{{ $blog->title }}">
-                                <div class="overlay"></div>
-                                <div class="card-content">
-                                    <h5 class="mb-0">{{ $blog->title }}</h5>
+                            <a href="{{ route('health_direction.detail', $blog->slug) }}"
+                                class="text-decoration-none d-block">
+                                <div class="card card-image wow fadeInUp" style="height: 190px">
+                                    <img class="card-img-top"
+                                        src="{{ asset('images/health_direction/blog/' . $blog->hero_img) }}"
+                                        alt="{{ $blog->title }}">
+                                    <div class="overlay"></div>
+                                    <div class="card-content">
+                                        <h5 class="mb-0">{{ $blog->title }}</h5>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @endforeach
                 @else
@@ -215,15 +224,18 @@
                 @if (isset($platicas) && $platicas->count() > 0)
                     @foreach ($platicas->take(2) as $blog)
                         <div class="mb-3">
-                            <div class="card card-image wow fadeInUp" style="height: 190px">
-                                <img class="card-img-top"
-                                    src="{{ asset('images/health_direction/blog/' . $blog->hero_img) }}"
-                                    alt="{{ $blog->title }}">
-                                <div class="overlay"></div>
-                                <div class="card-content">
-                                    <h5 class="mb-0">{{ $blog->title }}</h5>
+                            <a href="{{ route('health_direction.detail', $blog->slug) }}"
+                                class="text-decoration-none d-block">
+                                <div class="card card-image wow fadeInUp" style="height: 190px">
+                                    <img class="card-img-top"
+                                        src="{{ asset('images/health_direction/blog/' . $blog->hero_img) }}"
+                                        alt="{{ $blog->title }}">
+                                    <div class="overlay"></div>
+                                    <div class="card-content">
+                                        <h5 class="mb-0">{{ $blog->title }}</h5>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @endforeach
                 @else

@@ -919,6 +919,13 @@ class FrontController extends Controller
         return view('front.health_direction.list', compact('category'));
     }
 
+    public function healthDirectionDetail($slug)
+    {
+        $blog = HealthDirectionBlog::where('slug', $slug)->firstOrFail();
+
+        return view('front.health_direction.show')->with('blog', $blog);
+    }
+
     public function healthDirection()
     {
         $talleres  = HealthDirectionBlog::where('category', 'Taller')->latest()->take(2)->get();

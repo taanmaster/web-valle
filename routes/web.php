@@ -276,10 +276,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'health_direction.index'
     ]);
 
+    Route::get('/direccion_de_salud/entrada/{slug}', [
+        'uses' => 'FrontController@healthDirectionDetail',
+        'as' => 'health_direction.detail'
+    ]);
+
     Route::get('/direccion_de_salud/{category}', [
         'uses' => 'FrontController@healthDirectionList',
         'as' => 'health_direction.list'
     ]);
+
+    Route::get('/direccion_de_salud/entrada/{slug}', [
+        'uses' => 'FrontController@healthDirectionDetail',
+        'as' => 'health_direction.detail'
+    ])->where('slug', '[\w\d\-\_]+');
 
     // Módulo de Ayuda — Front
     Route::get('/ayuda', [AyudaFrontController::class, 'index'])->name('ayuda.front.index');
