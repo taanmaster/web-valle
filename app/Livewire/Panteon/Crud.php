@@ -5,6 +5,7 @@ namespace App\Livewire\Panteon;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
 use Carbon\Carbon;
 use Str;
 use Illuminate\Support\Facades\Storage;
@@ -57,6 +58,64 @@ class Crud extends Component
     // Monto a pagar
     public $monto = '';
     public $cantidad_letra = '';
+
+    public function updatedConcepto()
+    {
+        $this->tipo = '';
+    }
+
+    #[Computed]
+    public function tipoOptions(): array
+    {
+        return $this->tipoOptionsPorConcepto()[$this->concepto] ?? [];
+    }
+
+    protected function tipoOptionsPorConcepto(): array
+    {
+        return [
+            'Inhumaciones por quinquenio' => [
+                'En fosa de 1.10x2.50 metros',
+                'En fosa de 0.90x1.00 metros',
+                'En gaveta mural de niño de 0.90x1.00 metros',
+                'En gaveta mural',
+                'Inhumación de miembros o fetos',
+            ],
+            'Inhumaciones a perpetuidad' => [
+                'En fosa con gaveta de 1.10x2.50 metros',
+                'En fosa con gaveta de 0.90x1.00 metros',
+                'En fosa de 1.00x2.50 metros',
+                'En fosa de 0.90x1.00 metros',
+                'En gaveta mural',
+                'Inhumaciones de miembros o fetos',
+            ],
+            'Costo del terreno en panteón' => [
+                'Terreno de 2.50 x 1.10 metros (adulto)',
+                'Terreno de 1.00 x 0.90 metros (niño)',
+                'Gaveta de 2.50 x 1.10 metros (adulto)',
+                'Gaveta de 1.00 x 0.90 metros (niño)',
+                'Depósito de restos a perpetuidad niño',
+                'Depósito de restos a perpetuidad adulto',
+            ],
+            'Permisos' => [
+                'Permiso para colocar lápida en fosa o gaveta y construcción de monumentos',
+                'Permiso para traslado de cadáveres fuera del municipio',
+                'Permiso para la cremación de cadáveres',
+            ],
+            'Reposiciones' => [
+                'Reposición lateral de gaveta de 1.10 x 2.50 metros',
+                'Reposición lateral de gaveta de 0.90 x 1.00 metros',
+                'Reposición de losa (adulto) cada una',
+                'Reposición de losa (niño) cada una',
+                'Reposición frontal de gaveta (adulto)',
+                'Reposición frontal de gaveta (niño)',
+            ],
+            'Extras' => [
+                'Demolición de monumentos o planchas por metro',
+                'Exhumación de restos',
+                'Depósito de cenizas o restos humanos arraigados a perpetuidad',
+            ],
+        ];
+    }
 
     public function mount()
     {
