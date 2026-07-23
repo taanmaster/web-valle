@@ -9,9 +9,55 @@ class UrbanDevRequest extends Model
 {
     use HasFactory;
 
+    /**
+     * Tipos de trámite que generan un apartado de captura para Catastro.
+     */
+    public const CASTRO_REQUEST_TYPES = [
+        'uso-de-suelo',
+        'licencia-de-construccion',
+    ];
+
+    /**
+     * Al crearse una solicitud de Permiso de Construcción o Permiso de Uso de
+     * Suelo se genera automáticamente el apartado para que Catastro llene la
+     * información del predio.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (UrbanDevRequest $request) {
+            // Generar folio alfanumérico a partir de fecha, hora e id.
+            if (empty($request->folio)) {
+                $request->folio = $request->buildFolio();
+                $request->saveQuietly();
+            }
+
+            if (in_array($request->request_type, self::CASTRO_REQUEST_TYPES)) {
+                $request->castro()->create([
+                    'status'          => 'pendiente',
+                    'fecha_solicitud' => $request->created_at,
+                    'cuenta_predial'  => $request->cuenta_predial,
+                ]);
+            }
+        });
+    }
+
+    /**
+     * Construye el folio de la solicitud: UD-{AAMMDD}-{HHMMSS}-{ID}.
+     * Alfanumérico y determinístico a partir de la fecha, hora e id.
+     */
+    public function buildFolio(): string
+    {
+        $fecha = ($this->created_at ?? now())->format('ymd-His');
+
+        return 'UD-' . $fecha . '-' . str_pad((string) $this->id, 4, '0', STR_PAD_LEFT);
+    }
+
     protected $fillable = [
         'user_id',
+        'folio',
         'status',
+        'mode',
+        'cuenta_predial',
         'request_type',
         'description',
         'inspector_id',
@@ -50,6 +96,23 @@ class UrbanDevRequest extends Model
     public function files()
     {
         return $this->hasMany(\App\Models\UrbanDevRequestFile::class);
+    }
+
+    /**
+     * Formato único de solicitud (uno por solicitud).
+     */
+    public function format()
+    {
+        return $this->hasOne(\App\Models\UrbanDevFormat::class, 'urban_dev_request_id');
+    }
+
+    /**
+     * Apartado de captura de predio de Catastro (uno por solicitud).
+     * Solo existe para Permiso de Uso de Suelo y Permiso de Construcción.
+     */
+    public function castro()
+    {
+        return $this->hasOne(\App\Models\UrbanDevCastroRequest::class, 'urban_dev_request_id');
     }
 
     /**
@@ -123,13 +186,13 @@ class UrbanDevRequest extends Model
     public function getRequestTypeLabelAttribute()
     {
         $types = [
-            'uso-de-suelo' => 'Licencia de Uso de Suelo',
+            'uso-de-suelo' => 'Permiso de Uso de Suelo',
             'constancia-de-factibilidad' => 'Constancia de Factibilidad',
             'permiso-de-anuncios' => 'Permiso de Anuncios y Toldos',
             'certificacion-numero-oficial' => 'Certificación de Número Oficial',
             'permiso-de-division' => 'Permiso de División',
             'uso-de-via-publica' => 'Uso de Vía Pública',
-            'licencia-de-construccion' => 'Licencia de Construcción',
+            'licencia-de-construccion' => 'Permiso de Construcción',
             'permiso-construccion-panteones' => 'Permiso de Construcción en Panteones',
             // Valores legacy
             'uso_suelo' => 'Uso de Suelo',
@@ -138,7 +201,7 @@ class UrbanDevRequest extends Model
             'certificacion_numero_oficial' => 'Certificación de Número Oficial',
             'permiso_division' => 'Permiso de División',
             'uso_via_publica' => 'Uso de Vía Pública',
-            'licencia_construccion' => 'Licencia de Construcción',
+            'licencia_construccion' => 'Permiso de Construcción',
             'permiso_construccion_panteones' => 'Permiso de Construcción en Panteones',
             'general' => 'General'
         ];
@@ -167,21 +230,21 @@ class UrbanDevRequest extends Model
     public function getUserAddressAttribute()
     {
         $citizen = \App\Models\Citizen::where('email', $this->user->email)->first();
-        
+
         if (!$citizen) {
             return 'No disponible';
         }
 
         $addressParts = [];
-        
+
         if ($citizen->street) {
             $addressParts[] = $citizen->street;
         }
-        
+
         if ($citizen->colony) {
             $addressParts[] = $citizen->colony;
         }
-        
+
         if ($citizen->address && !in_array($citizen->address, $addressParts)) {
             $addressParts[] = $citizen->address;
         }

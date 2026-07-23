@@ -545,6 +545,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('costos/{slug}/editar', [UrbanDevCostController::class, 'edit'])->name('urban_dev.costs.edit');
             Route::put('costos/{slug}', [UrbanDevCostController::class, 'update'])->name('urban_dev.costs.update');
 
+            Route::resource('catastro', UrbanDevCastroRequestController::class)
+                ->only(['index', 'show', 'destroy'])
+                ->names([
+                    'index' => 'urban_dev.catastro.index',
+                    'show' => 'urban_dev.catastro.show',
+                    'destroy' => 'urban_dev.catastro.destroy',
+                ]);
+
             Route::resource('requests', UrbanDevRequestController::class)->names([
                 'index' => 'urban_dev.requests.index',
                 'create' => 'urban_dev.requests.create',
@@ -2104,6 +2112,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/desarrollo-urbano/{urbanDevRequest}', 'CitizenProfileController@showUrbanDevRequest')->name('citizen.urban_dev.show');
         Route::get('/desarrollo-urbano/{urbanDevRequest}/editar', 'CitizenProfileController@editUrbanDevRequest')->name('citizen.urban_dev.edit');
         Route::put('/desarrollo-urbano/{urbanDevRequest}/actualizar', 'CitizenProfileController@updateUrbanDevRequest')->name('citizen.urban_dev.update');
+        // Guardado ligero de los "Detalles del trámite" (cuenta predial, etc.) vía AJAX
+        Route::post('/desarrollo-urbano/{urbanDevRequest}/detalles', 'CitizenProfileController@saveUrbanDevDetails')->name('citizen.urban_dev.details.save');
         Route::delete('/desarrollo-urbano/{urbanDevRequest}/eliminar', 'CitizenProfileController@destroyUrbanDevRequest')->name('citizen.urban_dev.destroy');
 
         // Rutas para archivos de desarrollo urbano

@@ -112,8 +112,8 @@ class UrbanDevRequestController extends Controller
     {
         $urbanDevRequest = UrbanDevRequest::findOrFail($id);
 
-        // Cargar archivos relacionados y el inspector
-        $urbanDevRequest->load(['files', 'user', 'inspector']);
+        // Cargar archivos relacionados, el inspector y la captura de Catastro
+        $urbanDevRequest->load(['files', 'user', 'inspector', 'castro']);
 
         // Conceptos de costo del tipo de trámite (para asignar el monto a cobrar)
         $costOptions = \App\Models\UrbanDevCost::where('tramite_slug', $urbanDevRequest->request_type)
