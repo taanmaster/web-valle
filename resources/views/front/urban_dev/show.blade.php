@@ -173,12 +173,32 @@
                         ['description' => 'Residencial y departamentos por m2', 'price' => '$14.61'],
                     ],
                     'steps' => [
-                        'Formato de solicitud para Licencia de Uso Suelo Dicho formato deberá estar firmado por el propietario del predio, representante legal o el arrendador, según sea el caso.',
-                        'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio.',
-                        'Copia del último pago del predial.',
-                        'Copia de identificación de la persona que acredita la propiedad.',
-                        'Croquis de ubicación del inmueble',
-                        'Si el proyecto es mayor a 40m2, se debe presentar proyecto arquitectonico, en dos tantos físicos. Con escala 1:100 O 1:50 elaborados, avaldaos y firmados por DRO',
+                        'Formato único de solicitud.',
+                        'Identificación oficial.',
+                        'Carta Poder, si actúa a nombre y representación del propietario.',
+                        'Documento que acredite de la Propiedad.',
+                        'Croquis ubicación del inmueble.',
+                        'Fotografías del predio.',
+                        'Número de predial del inmueble.',
+                        'En caso de arrendar el inmueble, anexar contrato de arrendamiento simple y escritura pública o documento que acredite la propiedad, si el contrato es notariado se omite la escritura pública.',
+                        'Personas Morales. Presentar Acta Constitutiva, e instrumento notariado que acredite la personalidad de los representantes (poder legal).',
+                        'Copia de identificación oficial del arrendador o representante legal según sea el caso.',
+                        [
+                            'text' =>
+                                'Planos del Proyecto Ejecutivo. Proyecto Arquitectónico (2 tantos), escala de 1:100 ó 1:50 elaborados, avalados y firmados por el Director Responsable de Obra (DRO).',
+                            'substeps' => [
+                                'Planta (s) arquitectónica (s) señalando ejes y cotas.',
+                                'Secciones Longitudinal y Transversal (uno de ellos deberá de atravesar el área de escaleras, cuando el proyecto así lo considere) señalando ejes y cotas.',
+                                'Planta de Azoteas. Indicando: pretiles, B.A.P., pendientes del relleno, tinaco).',
+                                'Fachada (s), señalando ejes y cotas.',
+                                'Calculo de cajones de estacionamiento (s).',
+                            ],
+                        ],
+                        'Planos de Diseño Estructural. Formato 90 × 60 (2 tantos), firmado y sellado por el Director Responsable de Obra (DRO).',
+                        'Memoria de cálculo del Proyecto.',
+                        'Constancia de Medio Ambiente, (será solicitado por la Autoridad Administrativa responsable del trámite cuando este así lo quiera).',
+                        'Constancia de Impacto Vial, (será solicitado por la Autoridad Administrativa responsable del trámite cuando este así lo quiera).',
+                        'Vo.Bo. de Protección Civil, (será solicitado por la Autoridad Administrativa responsable del trámite cuando este así lo quiera).',
                     ],
                 ],
                 'permiso-construccion-panteones' => [
@@ -334,7 +354,14 @@
                                                 <div class="card border-left-{{ $tramite_actual['color'] }}">
                                                     <div class="card-body">
                                                         <h6 class="mb-2">Paso {{ $index + 1 }}</h6>
-                                                        <p class="mb-0">{{ $step }}</p>
+                                                        <p class="mb-0">{{ is_array($step) ? $step['text'] : $step }}</p>
+                                                        @if (is_array($step) && !empty($step['substeps']))
+                                                            <ul class="mb-0 mt-2">
+                                                                @foreach ($step['substeps'] as $substep)
+                                                                    <li>{{ $substep }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>

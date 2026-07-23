@@ -600,6 +600,7 @@ class CitizenProfileController extends Controller
         $validator = Validator::make($request->all(), [
             'request_type' => 'required|string',
             'description' => 'nullable|string|max:1000',
+            'request_modality' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
@@ -616,6 +617,7 @@ class CitizenProfileController extends Controller
             $urbanDevRequest = \App\Models\UrbanDevRequest::create([
                 'user_id' => Auth::id(),
                 'request_type' => $request->request_type,
+                'mode' => $request->request_modality,
                 'description' => $request->description,
                 'status' => 'new'
             ]);
@@ -750,6 +752,47 @@ class CitizenProfileController extends Controller
 
             Session::flash('error', 'Error al actualizar la solicitud. Por favor, inténtalo de nuevo.');
             return back()->withInput();
+        }
+    }
+
+    /**
+     * Guardado ligero (AJAX) de los "Detalles del trámite": cuenta predial, etc.
+     * Se usa para autoguardar campos individuales sin reenviar todo el formulario.
+     */
+    public function saveUrbanDevDetails(Request $request, $id)
+    {
+        $urbanDevRequest = \App\Models\UrbanDevRequest::findOrFail($id);
+
+        // Verificar que la solicitud pertenece al usuario autenticado
+        if ($urbanDevRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'cuenta_predial' => 'nullable|string|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $urbanDevRequest->update(
+                $request->only(['cuenta_predial'])
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Detalles guardados.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al guardar los detalles.'
+            ], 500);
         }
     }
 
