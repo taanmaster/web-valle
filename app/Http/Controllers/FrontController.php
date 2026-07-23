@@ -3,72 +3,51 @@
 namespace App\Http\Controllers;
 
 // Ayudantes
-use App\Http\Controllers\Controller;
-use Str;
-use Auth;
-use Session;
-use Carbon\Carbon;
-
-// Modelos Comunicación Social
-use App\Models\Popup;
 use App\Models\Banner;
-use App\Models\Headerband;
-use App\Models\DifBanner;
-
-// Modelos Gaceta Municipal
-use App\Models\Gazette;
-use App\Models\TrnProposal as Proposal;
-
-// Modelos Transparencia
-use App\Models\TransparencyDependency;
-use App\Models\TransparencyObligation;
-use App\Models\TransparencyDocument;
-
-// Modelos Catastro/Predial
+// Modelos Comunicación Social
+use App\Models\Blog;
 use App\Models\CTOProperty;
 use App\Models\CTOPropertyTax;
-use Barryvdh\DomPDF\Facade\Pdf;
-
+use App\Models\DifBanner;
+// Modelos Gaceta Municipal
+use App\Models\Event;
+use App\Models\Gazette;
+// Modelos Transparencia
+use App\Models\Headerband;
+use App\Models\HealthDirectionBlog;
+use App\Models\HRVacancy;
+// Modelos Catastro/Predial
+use App\Models\ImplanAchievement;
+use App\Models\ImplanBanner;
+use App\Models\ImplanBlog;
 // Modelos Textos Legales
-use App\Models\LegalText;
-
+use App\Models\ImplanProject;
 // Modelos Agenda Regulatoria
-use App\Models\RegulatoryAgendaDependency;
-use App\Models\RegulatoryAgendaRegulation;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-
-//Modelos Mejora Regulatoria
 use App\Models\InstitucionalDevelopmentBanner;
-
-
+use App\Models\LegalText;
+use App\Models\MunicipalRegulation;
+// Modelos Mejora Regulatoria
+use App\Models\Popup;
 // Modelos Blog
-use App\Models\Blog;
-
+use App\Models\RegulatoryAgendaDependency;
 // Modelos Denuncia Ciudadana
-use App\Models\CitizenComplaint;
-use App\Models\CitizenComplaintFile;
 
 // Modelo Eventos
-use App\Models\Event;
-use App\Models\MunicipalRegulation;
 use App\Models\ServiceRequest;
-
-//IMPLAN
-use App\Models\ImplanBanner;
-use App\Models\ImplanProject;
-use App\Models\ImplanAchievement;
-use App\Models\ImplanBlog;
-
-//Tourism
 use App\Models\TourismBanner;
 use App\Models\TourismBlog;
-
+// IMPLAN
+use App\Models\TransparencyDependency;
+use App\Models\TransparencyDocument;
+use App\Models\TransparencyObligation;
+use App\Models\TrnProposal as Proposal;
+// Tourism
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 // Dirección de Salud
-use App\Models\HealthDirectionBlog;
-
+use Illuminate\Http\Request;
 // Recursos Humanos
-use App\Models\HRVacancy;
+use Illuminate\Support\Facades\Mail;
 
 class FrontController extends Controller
 {
@@ -99,7 +78,7 @@ class FrontController extends Controller
         $popup = Popup::where('is_active', true)->orderBy('updated_at', 'desc')->first();
         $headerbands = Headerband::where('is_active', true)->orderBy('priority', 'asc')->get();
 
-        //Cargar Dependencias regulatorias
+        // Cargar Dependencias regulatorias
         $regulation_dependencies = RegulatoryAgendaDependency::all();
 
         $events = Event::where('is_active', true)->orderBy('date_start', 'asc')->paginate(90);
@@ -116,7 +95,7 @@ class FrontController extends Controller
             'popup' => $popup,
             'headerbands' => $headerbands,
             'regulation_dependencies' => $regulation_dependencies,
-            'events' => $events
+            'events' => $events,
         ]);
     }
 
@@ -164,6 +143,7 @@ class FrontController extends Controller
         $solemn_gazette_sessions = Gazette::where('type', 'solemn')->count();
         $extraordinary_gazette_sessions = Gazette::where('type', 'extraordinary')->count();
         $documents_gazette_sessions = Gazette::where('type', 'document')->count();
+
         return view('front.gazette.index')
             ->with('gazettes', $gazettes)
             ->with('type', $type)
@@ -177,12 +157,12 @@ class FrontController extends Controller
     // Modulo Convocatorias de Transparencia
     public function proposalsList()
     {
-       $proposals = Proposal::where('in_index', true)
-           ->orderBy('id', 'desc')
-           ->paginate(10);
+        $proposals = Proposal::where('in_index', true)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
         return view('front.proposals.index')
-        ->with('proposals', $proposals);
+            ->with('proposals', $proposals);
     }
 
     public function gazetteDetail($type, $slug)
@@ -234,7 +214,7 @@ class FrontController extends Controller
             'extraordinary_gazette_sessions' => $extraordinary_gazette_sessions,
             'documents_gazette_sessions' => $documents_gazette_sessions,
             'is_filtered' => true,
-            'selected_date' => $date
+            'selected_date' => $date,
         ]);
     }
 
@@ -287,7 +267,7 @@ class FrontController extends Controller
                 break;
 
             default:
-                # code...
+                // code...
                 break;
         }
 
@@ -367,7 +347,7 @@ class FrontController extends Controller
             'dependency' => TransparencyDependency::find($dependency),
             'obligation' => $obligation,
             'documents' => $documents,
-            'dates' => $dates
+            'dates' => $dates,
         ]);
     }
 
@@ -470,7 +450,7 @@ class FrontController extends Controller
                 return view('front.urban_dev.auditors_detail')->with([
                     'type' => $type,
                     'workers' => $workers,
-                    'title' => $title
+                    'title' => $title,
                 ]);
                 break;
 
@@ -483,7 +463,7 @@ class FrontController extends Controller
                 return view('front.urban_dev.civil_defense_detail')->with([
                     'type' => $type,
                     'workers' => $workers,
-                    'title' => $title
+                    'title' => $title,
                 ]);
                 break;
 
@@ -501,7 +481,7 @@ class FrontController extends Controller
         return view('front.urban_dev.contacts')->with([
             'type' => $type,
             'workers' => $workers,
-            'title' => $title
+            'title' => $title,
         ]);
     }
 
@@ -523,7 +503,6 @@ class FrontController extends Controller
     {
         return view('front.casa_mujer');
     }
-
 
     // Pantallas DIF
     public function dif()
@@ -559,7 +538,7 @@ class FrontController extends Controller
             'posts' => $posts,
             'fav_posts' => $fav_posts,
             'mode' => $mode,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -580,7 +559,7 @@ class FrontController extends Controller
         return view('front.blog.list')->with([
             'posts' => $posts,
             'mode' => $mode,
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
@@ -594,7 +573,7 @@ class FrontController extends Controller
         return view('front.blog.list')->with([
             'posts' => $posts,
             'mode' => $mode,
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
@@ -689,7 +668,9 @@ class FrontController extends Controller
 
     public function showTramite($id)
     {
-        $request = ServiceRequest::findOrFail($id);
+        $request = ServiceRequest::with(['costs', 'requirementItems', 'relatedProcedures'])
+            ->where('status', ServiceRequest::STATUS_PUBLISHED)
+            ->findOrFail($id);
 
         return view('front.tramites_y_servicios.show')->with('request', $request);
     }
@@ -829,7 +810,7 @@ class FrontController extends Controller
             ->where('location_account', $request->location_account)
             ->first();
 
-        if (!$property) {
+        if (! $property) {
             return redirect()->route('predial.search')
                 ->with('error', 'No se encontró ningún predio con los datos proporcionados. Verifica tu teléfono y cuenta catastral.');
         }
@@ -849,7 +830,7 @@ class FrontController extends Controller
 
         $pdf = PDF::loadView('cto.property_taxes.print', compact('propertyTax'))->setPaper('A4');
 
-        $filename = 'recibo_predial_' . ($propertyTax->folio ?? $propertyTax->id) . '.pdf';
+        $filename = 'recibo_predial_'.($propertyTax->folio ?? $propertyTax->id).'.pdf';
 
         return $pdf->download($filename);
     }
@@ -866,7 +847,7 @@ class FrontController extends Controller
 
         $pdf = PDF::loadView('cto.properties.print_account_statement', compact('property', 'years'))->setPaper('A4');
 
-        $filename = 'estado_cuenta_' . ($property->location_account ?? $property->id) . '.pdf';
+        $filename = 'estado_cuenta_'.($property->location_account ?? $property->id).'.pdf';
 
         return $pdf->download($filename);
     }
@@ -907,12 +888,12 @@ class FrontController extends Controller
         ]);
     }
 
-    //Inicio de Dirección de Salud
+    // Inicio de Dirección de Salud
     public function healthDirectionList($category)
     {
         $allowed = ['Taller', 'Campaña', 'Platica', 'Evento'];
 
-        if (!in_array($category, $allowed)) {
+        if (! in_array($category, $allowed)) {
             abort(404);
         }
 
@@ -928,10 +909,10 @@ class FrontController extends Controller
 
     public function healthDirection()
     {
-        $talleres  = HealthDirectionBlog::where('category', 'Taller')->latest()->take(2)->get();
-        $campanas  = HealthDirectionBlog::where('category', 'Campaña')->latest()->take(2)->get();
-        $eventos   = HealthDirectionBlog::where('category', 'Evento')->latest()->take(2)->get();
-        $platicas  = HealthDirectionBlog::where('category', 'Platica')->latest()->take(2)->get();
+        $talleres = HealthDirectionBlog::where('category', 'Taller')->latest()->take(2)->get();
+        $campanas = HealthDirectionBlog::where('category', 'Campaña')->latest()->take(2)->get();
+        $eventos = HealthDirectionBlog::where('category', 'Evento')->latest()->take(2)->get();
+        $platicas = HealthDirectionBlog::where('category', 'Platica')->latest()->take(2)->get();
 
         return view('front.health_direction.index', compact('talleres', 'campanas', 'eventos', 'platicas'));
     }
@@ -950,19 +931,19 @@ class FrontController extends Controller
                 'message' => 'Este es un correo de prueba para verificar que las notificaciones por correo funcionan correctamente.',
             ];
 
-            Mail::send('front.mail_notifications._test_mail', $data, function($message) {
+            Mail::send('front.mail_notifications._test_mail', $data, function ($message) {
                 $message->to('web@valledesantiago.gob.mx', 'Web TaanSystems')->subject('¡Felicidades! Prueba Exitosa');
                 $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
             });
 
             return response()->json([
                 'success' => true,
-                'message' => "Correo de prueba enviado correctamente a web@valledesantiago.gob.mx.",
+                'message' => 'Correo de prueba enviado correctamente a web@valledesantiago.gob.mx.',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al enviar el correo: ' . $e->getMessage(),
+                'message' => 'Error al enviar el correo: '.$e->getMessage(),
             ], 500);
         }
     }
