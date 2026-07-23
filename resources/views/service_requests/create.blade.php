@@ -12,13 +12,11 @@
             Trámites y servicios
         @endslot
         @slot('title')
-            Trámites
+            Nuevo trámite
         @endslot
     @endcomponent
 
-    <div class="row layout-spacing">
-        <div class="main-content">
-            <livewire:service-requests.crud :mode="$mode" />
-        </div>
+    <div class="container-fluid py-4">
+        <livewire:service-requests.crud :mode="$mode" />
     </div>
 @endsection
