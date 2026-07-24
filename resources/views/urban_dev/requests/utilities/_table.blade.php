@@ -28,21 +28,21 @@
                             </div>
                         </td>
                         <td>
-                            @if($request->payment_ref_number_1)
+                            @if ($request->payment_ref_number_1)
                                 <span class="badge bg-success">{{ $request->payment_ref_number_1 }}</span>
                             @else
                                 <span class="text-muted">-</span>
                             @endif
                         </td>
                         <td>
-                            @if($request->inspector_license_number)
+                            @if ($request->inspector_license_number)
                                 <span class="badge bg-info text-dark">{{ $request->inspector_license_number }}</span>
                             @else
                                 <span class="text-muted">-</span>
                             @endif
                         </td>
                         <td>
-                            @if($request->payment_ref_number_2)
+                            @if ($request->payment_ref_number_2)
                                 <span class="badge bg-warning text-dark">{{ $request->payment_ref_number_2 }}</span>
                             @else
                                 <span class="text-muted">-</span>
@@ -50,15 +50,17 @@
                         </td>
                         <td>
                             <span class="fw-bold">{{ $request->request_type_label }}</span>
-                            <br><span class="badge bg-{{ $request->status_color }} mb-0">{{ $request->status_label }}</span>
+                            <br><span
+                                class="badge bg-{{ $request->status_color }} mb-0">{{ $request->status_label }}</span>
                         </td>
                         <td>
                             <small>{{ Str::limit($request->user_address, 50) }}</small>
                         </td>
                         <td>
-                            @if($request->inspection_start_date)
-                                <small class="fw-bold text-success">{{ $request->inspection_start_date->format('d/m/Y') }}</small>
-                                @if($request->inspector)
+                            @if ($request->inspection_start_date)
+                                <small
+                                    class="fw-bold text-success">{{ $request->inspection_start_date->format('d/m/Y') }}</small>
+                                @if ($request->inspector)
                                     <br><small class="text-muted">{{ $request->inspector->name }}</small>
                                 @endif
                             @else

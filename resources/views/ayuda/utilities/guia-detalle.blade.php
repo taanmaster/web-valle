@@ -1,156 +1,367 @@
-<div>
+<div class="guia-detalle" x-data="{ zoom: null, zoomAlt: '' }" @keydown.escape.window="zoom = null">
     @php
         $isAdmin = $this->context === 'admin';
         $indexRoute = $isAdmin ? 'ayuda.admin.guias' : 'ayuda.front.index';
     @endphp
 
-    {{-- Cover hero --}}
-    <div class="rounded-4 mb-4 position-relative overflow-hidden"
-        style="min-height:220px; background:#d9d9d9;">
-        @if ($guia->imagen_portada)
-            <img src="{{ \Storage::disk('s3')->url($guia->imagen_portada) }}"
-                class="w-100 h-100 position-absolute" style="object-fit:cover; top:0; left:0;">
-        @endif
-        <div class="position-absolute bottom-0 start-0 end-0 p-4"
-            style="background:linear-gradient(transparent,rgba(0,0,0,.55));">
-            <h3 class="fw-bold text-white mb-2 text-uppercase">{{ $guia->titulo }}</h3>
-            <div class="d-flex gap-3">
-                <span class="d-flex align-items-center gap-1 text-white-50 small">
-                    <span class="rounded-circle bg-secondary d-inline-block" style="width:16px;height:16px;"></span>
-                    {{ $guia->dependencia ?? '—' }}
-                </span>
-                <span class="d-flex align-items-center gap-1 text-white-50 small">
-                    <span class="rounded-circle bg-secondary d-inline-block" style="width:16px;height:16px;"></span>
-                    {{ $guia->categoria?->nombre ?? '—' }}
-                </span>
+    <style>
+        .guia-detalle {
+            --gd-navy-1: #33415c;
+            --gd-navy-2: #1c2433;
+            --gd-navy-bar: #131a27;
+            --gd-green: #43925c;
+            --gd-green-bg: #eaf4ec;
+            --gd-green-text: #2f7a4a;
+            --gd-red: #c05b52;
+            --gd-red-bg: #f9e9e9;
+            --gd-red-text: #a94a42;
+            --gd-amber: #c8a52d;
+            --gd-amber-bg: #faf3dc;
+            --gd-amber-text: #8a6c14;
+            --gd-blue: #4d82c4;
+            --gd-blue-bg: #e9f1fb;
+            --gd-blue-text: #3a67a0;
+            --gd-line: #e3e7eb;
+            --gd-muted: #8a929b;
+        }
+
+        .guia-detalle [x-cloak] {
+            display: none !important;
+        }
+
+        /* ---- Hero ---- */
+        .guia-detalle .gd-hero-media {
+            min-height: 170px;
+            background: linear-gradient(160deg, var(--gd-navy-1), var(--gd-navy-2));
+        }
+
+        .guia-detalle .gd-hero-bar {
+            background: var(--gd-navy-bar);
+        }
+
+        .guia-detalle .gd-title {
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: .02em;
+            font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+        }
+
+        .guia-detalle .gd-meta {
+            color: rgba(255, 255, 255, .72);
+            font-size: .85rem;
+            font-weight: 600;
+        }
+
+        .guia-detalle .gd-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .45);
+            display: inline-block;
+            flex: 0 0 auto;
+        }
+
+        /* ---- Progreso ---- */
+        .guia-detalle .gd-progress {
+            height: 8px;
+            border-radius: 99px;
+            background: #e9ecef;
+        }
+
+        .guia-detalle .gd-progress-bar {
+            background: var(--gd-green);
+            border-radius: 99px;
+            transition: width .35s ease;
+        }
+
+        /* ---- Timeline ---- */
+        .guia-detalle .gd-step-num {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            border: 2px solid #ced4da;
+            background: #fff;
+            color: var(--gd-muted);
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .guia-detalle .gd-connector {
+            width: 2px;
+            flex-grow: 1;
+            background: var(--gd-line);
+            margin: 6px 0;
+        }
+
+        .guia-detalle .gd-step-title {
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: #212529;
+        }
+
+        /* ---- Callouts ---- */
+        .guia-detalle .gd-callout {
+            display: flex;
+            align-items: flex-start;
+            gap: .65rem;
+            padding: .7rem .9rem;
+            border-radius: .5rem;
+            border-left: 4px solid transparent;
+            font-size: .875rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .guia-detalle .gd-callout i.bx {
+            font-size: 1.15rem;
+            line-height: 1.35;
+            flex: 0 0 auto;
+        }
+
+        .guia-detalle .gd-callout .gd-arrow {
+            margin-left: auto;
+            align-self: center;
+        }
+
+        .guia-detalle .gd-callout-link {
+            background: var(--gd-green-bg);
+            border-color: var(--gd-green);
+            color: var(--gd-green-text);
+        }
+
+        .guia-detalle .gd-callout-warning {
+            background: var(--gd-red-bg);
+            border-color: var(--gd-red);
+            color: var(--gd-red-text);
+        }
+
+        .guia-detalle .gd-callout-info {
+            background: var(--gd-amber-bg);
+            border-color: var(--gd-amber);
+            color: var(--gd-amber-text);
+        }
+
+        .guia-detalle .gd-callout-file {
+            background: var(--gd-blue-bg);
+            border-color: var(--gd-blue);
+            color: var(--gd-blue-text);
+        }
+
+        .guia-detalle a.gd-callout:hover {
+            filter: brightness(.96);
+        }
+
+        .guia-detalle a.gd-callout:hover .gd-arrow {
+            transform: translateX(3px);
+        }
+
+        .guia-detalle .gd-arrow {
+            transition: transform .2s ease;
+        }
+
+        /* ---- Captura ---- */
+        .guia-detalle .gd-shot {
+            display: block;
+            width: 100%;
+            padding: 0;
+            border: 1px solid var(--gd-line);
+            border-radius: .75rem;
+            overflow: hidden;
+            background: #fff;
+            cursor: zoom-in;
+        }
+
+        .guia-detalle .gd-shot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .guia-detalle .gd-shot-hint {
+            display: block;
+            padding: .35rem;
+            font-size: .75rem;
+            color: var(--gd-muted);
+            text-align: center;
+        }
+
+        .guia-detalle .gd-shot:focus-visible {
+            outline: 3px solid rgba(67, 146, 92, .4);
+            outline-offset: 2px;
+        }
+
+        /* ---- Lightbox ---- */
+        .guia-detalle .gd-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 1080;
+            background: rgba(15, 20, 30, .82);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            cursor: zoom-out;
+        }
+
+        .guia-detalle .gd-lightbox img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: .5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+
+        /* ---- Volver ---- */
+        .guia-detalle .gd-back {
+            background: #fff;
+            border: 1px solid var(--gd-line);
+            border-radius: .75rem;
+            font-weight: 700;
+            padding: .7rem 1.5rem;
+            color: #212529;
+        }
+
+        .guia-detalle .gd-back:hover {
+            background: #f8f9fa;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .guia-detalle * {
+                transition: none !important;
+            }
+        }
+    </style>
+
+    {{-- Hero --}}
+    <div class="rounded-4 overflow-hidden shadow-sm mb-4">
+        <div class="gd-hero-media position-relative">
+            @if ($guia->imagen_portada)
+                <img src="{{ $guia->portadaUrl() }}" alt="" class="w-100 h-100 position-absolute top-0 start-0"
+                    style="object-fit:cover;">
+            @endif
+        </div>
+        <div class="gd-hero-bar px-4 py-3">
+            <h2 class="gd-title text-uppercase mb-2">{{ $guia->titulo }}</h2>
+            <div class="d-flex flex-wrap column-gap-4 row-gap-1">
+                @if ($guia->dependencia)
+                    <span class="gd-meta d-flex align-items-center gap-2">
+                        <span class="gd-dot"></span> {{ $guia->dependencia }}
+                    </span>
+                @endif
+                @if ($guia->categoria)
+                    <span class="gd-meta d-flex align-items-center gap-2">
+                        <span class="gd-dot"></span> {{ $guia->categoria->nombre }}
+                    </span>
+                @endif
             </div>
         </div>
     </div>
 
     {{-- Descripción --}}
     @if ($guia->descripcion)
-        <div class="border rounded-3 p-3 mb-4 text-muted" style="border-style:dashed !important;">
+        <div class="bg-white rounded-4 shadow-sm p-4 mb-4 text-secondary">
             {{ $guia->descripcion }}
         </div>
     @endif
 
     @if ($total > 0)
-        {{-- Step tabs --}}
-        <div class="d-flex mb-0" style="gap:2px;">
+        {{-- Timeline de pasos --}}
+        <div class="bg-white rounded-4 shadow-sm p-4 p-lg-5 mb-4">
             @foreach ($guia->pasos as $i => $p)
-                <button type="button"
-                    wire:click="goToStep({{ $i }})"
-                    class="btn btn-sm flex-fill fw-semibold"
-                    style="border-radius:{{ $i === 0 ? '8px 0 0 0' : ($i === $total-1 ? '0 8px 0 0' : '0') }};
-                           background:{{ $currentStepIndex === $i ? '#b8d8f0' : '#e0e0e0' }};
-                           border:none; color:{{ $currentStepIndex === $i ? '#1a5276' : '#666' }};">
-                    {{ $i + 1 }}
-                </button>
+                <div class="d-flex gap-3 gap-lg-4">
+                    {{-- Riel: número + conector --}}
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="gd-step-num" aria-hidden="true">
+                            {{ $i + 1 }}
+                        </div>
+                        @unless ($loop->last)
+                            <span class="gd-connector" aria-hidden="true"></span>
+                        @endunless
+                    </div>
+
+                    {{-- Contenido del paso --}}
+                    <div class="flex-grow-1 {{ $loop->last ? '' : 'pb-4' }}">
+                        <div class="row g-4">
+                            <div class="{{ $p->imagen_apoyo ? 'col-lg-8' : 'col-12' }}">
+                                <h3 class="gd-step-title mb-1">{{ $p->titulo }}</h3>
+                                @if ($p->descripcion)
+                                    <p class="text-muted mb-3">{{ $p->descripcion }}</p>
+                                @endif
+
+                                <div class="d-flex flex-column gap-2">
+                                    {{-- Enlace --}}
+                                    @if ($p->enlace_url)
+                                        <a href="{{ $p->enlace_url }}" target="_blank" rel="noopener"
+                                            class="gd-callout gd-callout-link">
+                                            <i class="bx bx-link-external"></i>
+                                            <span>{{ $p->enlace_texto ?: $p->enlace_url }}</span>
+                                            <i class="bx bx-right-arrow-alt gd-arrow"></i>
+                                        </a>
+                                    @endif
+
+                                    {{-- Pregunta frecuente --}}
+                                    @if ($p->pregunta_frecuente)
+                                        <div class="gd-callout gd-callout-info">
+                                            <i class="bx bx-info-circle"></i>
+                                            <span>{{ $p->pregunta_frecuente }}</span>
+                                        </div>
+                                    @endif
+
+                                    {{-- Advertencia --}}
+                                    @if ($p->mensaje_advertencia)
+                                        <div class="gd-callout gd-callout-warning">
+                                            <i class="bx bx-error"></i>
+                                            <span>{{ $p->mensaje_advertencia }}</span>
+                                        </div>
+                                    @endif
+
+                                    {{-- Archivo adjunto --}}
+                                    @if ($p->archivo_adjunto)
+                                        <a href="{{ $p->archivoAdjuntoUrl() }}" target="_blank" rel="noopener"
+                                            class="gd-callout gd-callout-file">
+                                            <i class="bx bx-file"></i>
+                                            <span>Descargar archivo adjunto</span>
+                                            <i class="bx bx-download gd-arrow"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+
+                            {{-- Imagen de apoyo --}}
+                            @if ($p->imagen_apoyo)
+                                <div class="col-lg-4">
+                                    <button type="button" class="gd-shot"
+                                        @click="zoom = '{{ $p->imagenApoyoUrl() }}'; zoomAlt = 'Imagen de apoyo del paso {{ $i + 1 }}'"
+                                        aria-label="Ampliar imagen de apoyo del paso {{ $i + 1 }}">
+                                        <img src="{{ $p->imagenApoyoUrl() }}"
+                                            alt="Imagen de apoyo del paso {{ $i + 1 }}" loading="lazy">
+                                        <span class="gd-shot-hint">captura · clic para ampliar</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             @endforeach
         </div>
-
-        {{-- Step content --}}
-        @if ($paso)
-            <div class="border rounded-3 p-4 mb-4" style="border-color:#ccc;">
-                <div class="row g-4">
-                    <div class="col-md-8">
-                        {{-- Step number sidebar --}}
-                        <div class="d-flex gap-3">
-                            <div class="text-muted fw-bold" style="font-size:1.2rem; min-width:24px;">
-                                {{ $currentStepIndex + 1 }}
-                            </div>
-                            <div class="flex-grow-1">
-                                <p class="fw-semibold mb-1">{{ $paso->titulo }}</p>
-                                <p class="text-muted small mb-3">{{ $paso->descripcion }}</p>
-
-                                {{-- Enlace --}}
-                                @if ($paso->enlace_url)
-                                    <div class="rounded-3 p-2 mb-2 d-flex align-items-center gap-2"
-                                        style="background:#d4edda;">
-                                        <i class="bx bx-link text-success"></i>
-                                        <a href="{{ $paso->enlace_url }}" target="_blank"
-                                            class="text-success small fw-semibold text-decoration-none">
-                                            {{ $paso->enlace_texto ?: $paso->enlace_url }}
-                                        </a>
-                                    </div>
-                                @endif
-
-                                {{-- Pregunta frecuente --}}
-                                @if ($paso->pregunta_frecuente)
-                                    <div class="rounded-3 p-2 mb-2"
-                                        style="background:#fff3cd;">
-                                        <small class="d-block">{{ $paso->pregunta_frecuente }}</small>
-                                    </div>
-                                @endif
-
-                                {{-- Advertencia --}}
-                                @if ($paso->mensaje_advertencia)
-                                    <div class="rounded-3 p-2 mb-2"
-                                        style="background:#f8d7da;">
-                                        <small class="d-block">{{ $paso->mensaje_advertencia }}</small>
-                                    </div>
-                                @endif
-
-                                {{-- Archivo --}}
-                                @if ($paso->archivo_adjunto)
-                                    <div class="rounded-3 p-2 mb-2"
-                                        style="background:#cce5ff;">
-                                        <a href="{{ \Storage::disk('s3')->url($paso->archivo_adjunto) }}"
-                                            target="_blank" class="small text-primary text-decoration-none">
-                                            <i class="bx bx-file"></i> Descargar archivo adjunto
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Step image --}}
-                    @if ($paso->imagen_apoyo)
-                        <div class="col-md-4">
-                            <img src="{{ \Storage::disk('s3')->url($paso->imagen_apoyo) }}"
-                                class="img-fluid rounded-3" alt="Imagen de apoyo">
-                        </div>
-                    @else
-                        <div class="col-md-4">
-                            <div class="rounded-3 bg-light d-flex align-items-center justify-content-center"
-                                style="min-height:160px;">
-                                <span class="text-muted small">Imagen de apoyo</span>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            {{-- Navigation --}}
-            <div class="d-flex gap-2 mb-5">
-                @if ($currentStepIndex > 0)
-                    <button type="button" wire:click="prevStep"
-                        class="btn btn-sm btn-outline-secondary">
-                        <i class="bx bx-chevron-left"></i> Anterior
-                    </button>
-                @endif
-                @if ($currentStepIndex < $total - 1)
-                    <button type="button" wire:click="nextStep"
-                        class="btn fw-semibold flex-grow-1"
-                        style="background:#4caf50; color:#fff; border:none; border-radius:8px; padding:12px;">
-                        VER SIGUIENTE
-                    </button>
-                    <div class="btn btn-secondary" style="min-width:60px; text-align:center;">
-                        {{ $currentStepIndex + 2 }}
-                    </div>
-                @else
-                    <div class="btn btn-success flex-grow-1 disabled">Última etapa completada ✓</div>
-                @endif
-            </div>
-        @endif
     @else
-        <div class="text-center py-4 text-muted">Esta guía no tiene pasos aún.</div>
+        <div class="bg-white rounded-4 shadow-sm text-center py-5 text-muted mb-4">
+            Esta guía no tiene pasos aún.
+        </div>
     @endif
 
     <div class="mb-3">
-        <a href="{{ route($indexRoute) }}" class="btn btn-outline-secondary btn-sm">
-            <i class="bx bx-arrow-back"></i> Volver al listado
+        <a href="{{ route($indexRoute) }}" class="btn gd-back shadow-sm">
+            Volver al listado
         </a>
+    </div>
+
+    {{-- Lightbox --}}
+    <div x-show="zoom" x-cloak x-transition.opacity class="gd-lightbox" @click="zoom = null" role="dialog"
+        aria-modal="true" aria-label="Imagen ampliada">
+        <img :src="zoom" :alt="zoomAlt">
     </div>
 </div>

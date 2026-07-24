@@ -90,6 +90,274 @@
                     </div>
                 </div>
 
+                <!-- Formato Único de Solicitud -->
+                @if (in_array($urbanDevRequest->request_type, ['uso-de-suelo', 'licencia-de-construccion']))
+                    @php
+                        $format = $urbanDevRequest->format;
+                        $fmt = $format?->data ?? [];
+                        $fval = fn($k) => trim((string) ($fmt[$k] ?? ''));
+
+                        $personaLabel = ['fisica' => 'Persona Física', 'moral' => 'Persona Moral'];
+                        $condicionLabel = ['solicitante' => 'Solicitante', 'tercero' => 'Tercero interesado'];
+                        $tramiteLabel = [
+                            'uso-suelo' => 'Permiso de Uso de Suelo',
+                            'num-oficial' => 'Certificación de Número Oficial',
+                            'alineamiento' => 'Constancia de Alineamiento',
+                        ];
+
+                        // Secciones: título => [ [label, value], ... ] (solo se muestran valores no vacíos)
+                        $fmtSections = [];
+
+                        if ($urbanDevRequest->request_type === 'uso-de-suelo') {
+                            $fmtSections['Tipo de trámite'] = [
+                                ['Tipo de trámite', $tramiteLabel[$fval('tipo_tramite')] ?? $fval('tipo_tramite')],
+                            ];
+                        }
+
+                        $fmtSections['1. Datos generales del solicitante'] = [
+                            ['Tipo de Persona', $personaLabel[$fval('tipo_persona')] ?? ''],
+                            ['En su condición de', $condicionLabel[$fval('condicion')] ?? ''],
+                            ['Primer Apellido (P. Física)', $fval('pf_primer_apellido')],
+                            ['Segundo Apellido (P. Física)', $fval('pf_segundo_apellido')],
+                            ['Nombres (P. Física)', $fval('pf_nombres')],
+                            ['CURP', $fval('pf_curp')],
+                            ['Correo (P. Física)', $fval('pf_correo')],
+                            ['Teléfono (P. Física)', $fval('pf_telefono')],
+                            ['Razón Social (P. Moral)', $fval('pm_razon_social')],
+                            ['RFC (P. Moral)', $fval('pm_rfc')],
+                            ['Rep. Legal - Primer Apellido', $fval('rl_primer_apellido')],
+                            ['Rep. Legal - Segundo Apellido', $fval('rl_segundo_apellido')],
+                            ['Rep. Legal - Nombres', $fval('rl_nombres')],
+                            ['Rep. Legal - RFC', $fval('rl_rfc')],
+                            ['Rep. Legal - Correo', $fval('rl_correo')],
+                            ['Rep. Legal - Teléfono', $fval('rl_telefono')],
+                        ];
+
+                        $fmtSections['2. Domicilio para recibir notificaciones'] = [
+                            ['Calle', $fval('dom_calle')],
+                            ['Número Ext', $fval('dom_num_ext')],
+                            ['Número Int', $fval('dom_num_int')],
+                            ['Colonia', $fval('dom_colonia')],
+                            ['CP', $fval('dom_cp')],
+                            ['Ciudad', $fval('dom_ciudad')],
+                            ['Estado', $fval('dom_estado')],
+                        ];
+
+                        $fmtSections['3. Datos del propietario del predio'] = [
+                            ['Tipo de propietario', $personaLabel[$fval('prop_tipo')] ?? ''],
+                            ['Primer Apellido', $fval('prop_pf_primer_apellido')],
+                            ['Segundo Apellido', $fval('prop_pf_segundo_apellido')],
+                            ['Nombres', $fval('prop_pf_nombres')],
+                            ['Razón Social', $fval('prop_pm_razon_social')],
+                        ];
+
+                        $fmtSections['4. Datos del predio'] = [
+                            ['Número de cuenta predial', $fval('predio_cuenta_predial')],
+                            ['Calle', $fval('predio_calle')],
+                            ['Número Ext', $fval('predio_num_ext')],
+                            ['Número Int', $fval('predio_num_int')],
+                            ['Colonia', $fval('predio_colonia')],
+                            ['CP', $fval('predio_cp')],
+                            ['Superficie del predio', $fval('predio_superficie')],
+                        ];
+
+                        if ($urbanDevRequest->request_type === 'uso-de-suelo') {
+                            $fmtSections['5. Datos del giro solicitado'] = [
+                                ['Giro Solicitado', $fval('giro_solicitado')],
+                                ['Superficie a ocupar del predio', $fval('giro_superficie_ocupar')],
+                                ['Denominación Comercial', $fval('giro_denominacion_comercial')],
+                            ];
+                        } else {
+                            $fmtSections['5. Datos de la construcción'] = [
+                                ['Tipo de construcción a realizar', $fval('construccion_tipo')],
+                                ['Metros cuadrados de construcción', $fval('construccion_m2')],
+                                ['Metros lineales de construcción', $fval('construccion_ml')],
+                                ['Perito - Primer Apellido', $fval('perito_primer_apellido')],
+                                ['Perito - Segundo Apellido', $fval('perito_segundo_apellido')],
+                                ['Perito - Nombres', $fval('perito_nombres')],
+                                ['Perito - No. Registro Padrón Municipal', $fval('perito_registro_padron')],
+                                ['Perito - Correo', $fval('perito_correo')],
+                                ['Perito - Teléfono', $fval('perito_telefono')],
+                            ];
+                        }
+                    @endphp
+
+                    <div class="card mb-4">
+                        <div class="card-header text-white" style="background-color: #4d8f8b;">
+                            <h6 class="text-white mb-0">
+                                <i class="fas fa-file-signature"></i>
+                                Formato Único de Solicitud
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            @if (!$format)
+                                {{-- Empty state: el ciudadano aún no ha llenado el formato --}}
+                                <div class="text-center text-muted py-4">
+                                    <i class="far fa-file-alt" style="font-size: 48px;"></i>
+                                    <h6 class="mt-3 mb-1">El formato aún no ha sido llenado</h6>
+                                    <p class="mb-0">El ciudadano todavía no ha completado el Formato Único de Solicitud
+                                        de este trámite.</p>
+                                </div>
+                            @else
+                                <div class="accordion formato-accordion" id="formatoAccordion">
+                                    @foreach ($fmtSections as $secTitle => $rows)
+                                        @php
+                                            $visibleRows = array_filter($rows, fn($r) => $r[1] !== '');
+                                        @endphp
+                                        @if (count($visibleRows) > 0)
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#fmt-sec-{{ $loop->index }}"
+                                                        aria-expanded="false"
+                                                        aria-controls="fmt-sec-{{ $loop->index }}">
+                                                        {{ $secTitle }}
+                                                    </button>
+                                                </h2>
+                                                <div id="fmt-sec-{{ $loop->index }}"
+                                                    class="accordion-collapse collapse"
+                                                    data-bs-parent="#formatoAccordion">
+                                                    <div class="accordion-body">
+                                                        <dl class="row mb-0">
+                                                            @foreach ($visibleRows as $r)
+                                                                <dt class="col-sm-5 text-muted fw-normal">{{ $r[0] }}
+                                                                </dt>
+                                                                <dd class="col-sm-7 fw-bold">{{ $r[1] }}</dd>
+                                                            @endforeach
+                                                        </dl>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+
+                                    {{-- Croquis y firmas --}}
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#fmt-sec-files"
+                                                aria-expanded="false" aria-controls="fmt-sec-files">
+                                                Croquis y firmas
+                                            </button>
+                                        </h2>
+                                        <div id="fmt-sec-files" class="accordion-collapse collapse"
+                                            data-bs-parent="#formatoAccordion">
+                                            <div class="accordion-body">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4">
+                                                        <small class="text-muted d-block mb-1">Croquis</small>
+                                                        @if ($format->croquis_url)
+                                                            <a href="{{ $format->croquis_url }}" target="_blank"
+                                                                class="btn btn-sm btn-outline-primary">
+                                                                <i class="fas fa-eye"></i> Ver croquis
+                                                            </a>
+                                                        @else
+                                                            <span class="text-muted">—</span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <small class="text-muted d-block mb-1">Firma del
+                                                            solicitante</small>
+                                                        @if ($format->signature_applicant_url)
+                                                            <img src="{{ $format->signature_applicant_url }}"
+                                                                alt="Firma solicitante"
+                                                                style="max-height: 70px; border: 1px solid #dee2e6; border-radius: 6px; background: #fff;">
+                                                        @else
+                                                            <span class="text-muted">—</span>
+                                                        @endif
+                                                    </div>
+                                                    @if ($urbanDevRequest->request_type === 'licencia-de-construccion')
+                                                        <div class="col-md-4">
+                                                            <small class="text-muted d-block mb-1">Firma del
+                                                                perito</small>
+                                                            @if ($format->signature_perito_url)
+                                                                <img src="{{ $format->signature_perito_url }}"
+                                                                    alt="Firma perito"
+                                                                    style="max-height: 70px; border: 1px solid #dee2e6; border-radius: 6px; background: #fff;">
+                                                            @else
+                                                                <span class="text-muted">—</span>
+                                                            @endif
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Información del Predio (Catastro) -->
+                @if (in_array($urbanDevRequest->request_type, \App\Models\UrbanDevRequest::CASTRO_REQUEST_TYPES))
+                    @php $castro = $urbanDevRequest->castro; @endphp
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h6 class="text-white mb-0">
+                                <i class="fas fa-map-marked-alt"></i>
+                                Información del Predio
+                            </h6>
+                            @if ($castro)
+                                <span class="badge bg-{{ $castro->status_color }}">{{ $castro->status_label }}</span>
+                            @endif
+                        </div>
+                        <div class="card-body">
+                            @if (!$castro || $castro->status !== 'completado')
+                                <div class="text-center text-muted py-4">
+                                    <i class="far fa-clock" style="font-size: 48px;"></i>
+                                    <h6 class="mt-3 mb-1">Catastro aún no ha capturado la información</h6>
+                                    <p class="mb-0">Esta sección se completará cuando Catastro registre los datos del
+                                        predio.</p>
+                                </div>
+                            @else
+                                <h6 class="text-uppercase text-muted border-bottom pb-2 mb-3">Fechas y cuenta predial</h6>
+                                <dl class="row mb-2">
+                                    <dt class="col-sm-4 text-muted fw-normal">Fecha de solicitud</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ optional($castro->fecha_solicitud)->format('d/m/Y') ?? '—' }}</dd>
+                                    <dt class="col-sm-4 text-muted fw-normal">Fecha de entrega de documentos</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ optional($castro->fecha_entrega_documentos)->format('d/m/Y') ?? '—' }}</dd>
+                                    <dt class="col-sm-4 text-muted fw-normal">Cuenta predial</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ $castro->cuenta_predial ?: '—' }}</dd>
+                                </dl>
+
+                                <h6 class="text-uppercase text-muted border-bottom pb-2 mb-3 mt-3">Contribuyente y predio</h6>
+                                <dl class="row mb-2">
+                                    <dt class="col-sm-4 text-muted fw-normal">Nombre del contribuyente</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ $castro->nombre_contribuyente ?: '—' }}</dd>
+                                    <dt class="col-sm-4 text-muted fw-normal">Tipo de predio</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ $castro->tipo_predio ?: '—' }}</dd>
+                                    <dt class="col-sm-4 text-muted fw-normal">Domicilio del predio</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ $castro->domicilio_predio ?: '—' }}</dd>
+                                </dl>
+
+                                <h6 class="text-uppercase text-muted border-bottom pb-2 mb-3 mt-3">Ubicación y detalles</h6>
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-4 text-muted fw-normal">Localidad / Colonia / Ejido</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ $castro->localidad_colonia_ejido ?: '—' }}</dd>
+                                    <dt class="col-sm-4 text-muted fw-normal">Manzana / Lote</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ $castro->manzana_lote ?: '—' }}</dd>
+                                    <dt class="col-sm-4 text-muted fw-normal">Superficie (m²)</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ $castro->superficie !== null ? number_format($castro->superficie, 2) : '—' }}</dd>
+                                    <dt class="col-sm-4 text-muted fw-normal">Uso / trámite (Desarrollo Urbano)</dt>
+                                    <dd class="col-sm-8 fw-bold">{{ $castro->uso_tramite ?: '—' }}</dd>
+                                    <dt class="col-sm-4 text-muted fw-normal">URL de expediente</dt>
+                                    <dd class="col-sm-8 fw-bold">
+                                        @if ($castro->url_expediente && preg_match('#^https?://#i', $castro->url_expediente))
+                                            <a href="{{ $castro->url_expediente }}" target="_blank" rel="noopener noreferrer">
+                                                <i class="fas fa-external-link-alt"></i> Ver expediente
+                                            </a>
+                                        @else
+                                            —
+                                        @endif
+                                    </dd>
+                                </dl>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+
                 <!-- Lista de Verificación de Documentos -->
                 <div class="card">
                     <div class="card-header bg-success text-white">
@@ -104,15 +372,37 @@
                         </div>
                         
                         @php
-                            $documentsConfig = [
-                                'uso-de-suelo' => [
-                                    'Formato de solicitud para licencia de Uso de Suelo (FDDUEM-01)',
-                                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
-                                    'Contrato de arrendamiento simple.',
-                                    'Copia del último pago del predial.',
-                                    'Copia de identificación de la persona que acredita la propiedad asi como la del arrendatario o representante legal según sea el caso',
-                                    'Croquis de ubicación del inmueble'
+                            // El "Formato único de solicitud" y el "Número de cuenta predial" ya
+                            // no son documentos a subir en uso-de-suelo / licencia-de-construccion:
+                            // se capturan en el formato y en los detalles de la solicitud.
+                            // Uso de Suelo tiene dos modalidades (mode) con documentos distintos.
+                            $usoSueloByMode = [
+                                'bajo-impacto' => [
+                                    'Identificación oficial.',
+                                    'Documento que acredite de la Propiedad.',
+                                    'Carta Poder, si actúa a nombre y representación del propietario.',
+                                    'Croquis ubicación del inmueble.',
+                                    'Fotografías del predio.',
+                                    'En caso de arrendar el inmueble, anexar contrato de arrendamiento simple y escritura pública o documento que acredite la propiedad, si el contrato es notariado se omite la escritura pública.',
+                                    'Personas Morales. Presentar Acta Constitutiva, e instrumento notariado que acredite la personalidad de los representantes (poder legal).',
+                                    'Copia de identificación oficial del arrendador o representante legal según sea el caso.',
                                 ],
+                                'mediano-alto-impacto' => [
+                                    'Identificación oficial.',
+                                    'Carta Poder, si actúa a nombre y representación del propietario.',
+                                    'Documento que acredite de la Propiedad.',
+                                    'Croquis ubicación del inmueble.',
+                                    'Fotografías del predio.',
+                                    'En caso de arrendar el inmueble, anexar contrato de arrendamiento simple y escritura pública o documento que acredite la propiedad, si el contrato es notariado se omite la escritura pública.',
+                                    'Personas Morales. Presentar Acta Constitutiva, e instrumento notariado que acredite la personalidad de los representantes (poder legal).',
+                                    'Copia de identificación oficial del arrendador o representante legal según sea el caso.',
+                                    'Constancia de Medio Ambiente, (será solicitado por la Autoridad Administrativa responsable del trámite cuando este así lo quiera).',
+                                    'Constancia de Impacto Vial, (será solicitado por la Autoridad Administrativa responsable del trámite cuando este así lo quiera).',
+                                    'Vo.Bo. de Protección Civil, (será solicitado por la Autoridad Administrativa responsable del trámite cuando este así lo quiera).',
+                                ],
+                            ];
+
+                            $documentsConfig = [
                                 'constancia-de-factibilidad' => [
                                     'Formato de solicitud para licencia de Uso de Suelo (FDDUEM-01)',
                                     'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
@@ -154,12 +444,20 @@
                                     'Croquis de ubicación del inmueble'
                                 ],
                                 'licencia-de-construccion' => [
-                                    'Formato de solicitud para Licencia de Uso Suelo (FDDUEM-01)',
-                                    'Copia de la escritura de la propiedad o documento notariado que compruebe la posesión del predio',
-                                    'Copia del último pago del predial',
-                                    'Copia de identificación de la persona que acredita la propiedad',
-                                    'Croquis de ubicación del inmueble',
-                                    'Proyecto arquitectonico, en dos tantos físicos. Con escala 1:100 O 1:50 elaborados, avaldaos y firmados por DRO'
+                                    'Identificación oficial.',
+                                    'Carta Poder, si actúa a nombre y representación del propietario.',
+                                    'Documento que acredite de la Propiedad.',
+                                    'Croquis ubicación del inmueble.',
+                                    'Fotografías del predio.',
+                                    'En caso de arrendar el inmueble, anexar contrato de arrendamiento simple y escritura pública o documento que acredite la propiedad, si el contrato es notariado se omite la escritura pública.',
+                                    'Personas Morales. Presentar Acta Constitutiva, e instrumento notariado que acredite la personalidad de los representantes (poder legal).',
+                                    'Copia de identificación oficial del arrendador o representante legal según sea el caso.',
+                                    'Planos del Proyecto Ejecutivo. Proyecto Arquitectónico (2 tantos), escala de 1:100 ó 1:50 elaborados, avalados y firmados por el Director Responsable de Obra (DRO).',
+                                    'Planos de Diseño Estructural. Formato 90 × 60 (2 tantos), firmado y sellado por el Director Responsable de Obra (DRO).',
+                                    'Memoria de cálculo del Proyecto.',
+                                    'Constancia de Medio Ambiente, (será solicitado por la Autoridad Administrativa responsable del trámite cuando este así lo quiera).',
+                                    'Constancia de Impacto Vial, (será solicitado por la Autoridad Administrativa responsable del trámite cuando este así lo quiera).',
+                                    'Vo.Bo. de Protección Civil, (será solicitado por la Autoridad Administrativa responsable del trámite cuando este así lo quiera).'
                                 ],
                                 'permiso-construccion-panteones' => [
                                     'Formato de solicitud para Licencia de Uso Suelo',
@@ -168,7 +466,11 @@
                                 ]
                             ];
                             
-                            $requiredDocuments = $documentsConfig[$urbanDevRequest->request_type] ?? [];
+                            if ($urbanDevRequest->request_type === 'uso-de-suelo') {
+                                $requiredDocuments = $usoSueloByMode[$urbanDevRequest->mode] ?? $usoSueloByMode['bajo-impacto'];
+                            } else {
+                                $requiredDocuments = $documentsConfig[$urbanDevRequest->request_type] ?? [];
+                            }
                             $uploadedFiles = $urbanDevRequest->files;
                             $uploadedFileTypes = $uploadedFiles->pluck('slug')->toArray();
                         @endphp
@@ -363,8 +665,8 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-2">
-                            <small class="text-muted">ID de Solicitud:</small>
-                            <p class="mb-1 fw-bold">#{{ $urbanDevRequest->id }}</p>
+                            <small class="text-muted">Folio de Solicitud:</small>
+                            <p class="mb-1 fw-bold">{{ $urbanDevRequest->folio ?? '#' . $urbanDevRequest->id }}</p>
                         </div>
                         <div class="mb-2">
                             <small class="text-muted">Tipo de Trámite:</small>
@@ -894,6 +1196,33 @@
 /* Mejoras para badges en Bootstrap 5 */
 .badge {
     --bs-badge-font-size: 0.75em;
+}
+
+/* Acordeón del Formato Único de Solicitud (estilo teal) */
+.formato-accordion .accordion-button {
+    background-color: #4d8f8b;
+    color: #fff;
+    font-weight: 600;
+}
+
+.formato-accordion .accordion-button:not(.collapsed) {
+    background-color: #3f7773;
+    color: #fff;
+    box-shadow: none;
+}
+
+.formato-accordion .accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.formato-accordion .accordion-button::after {
+    filter: brightness(0) invert(1);
+}
+
+.formato-accordion .accordion-item {
+    border: none;
+    margin-bottom: 8px;
 }
 </style>
 

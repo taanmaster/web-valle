@@ -16,9 +16,7 @@
         @endslot
     @endcomponent
 
-    <div class="content">
-        <div class="row">
-            <livewire:service-requests.table :mode="$mode" />
-        </div>
+    <div class="container-fluid py-4">
+        <livewire:service-requests.table :mode="$mode" />
     </div>
 @endsection
