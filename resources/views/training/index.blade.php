@@ -41,6 +41,7 @@
                                         class="btn px-5 py-2 fw-bold"
                                         style="background: #f5c842; color: #1a1a1a; border-radius: 50px; letter-spacing: 1px; font-size: .85rem;">
                                         CONOCE LAS CAPACITACIONES
+                                        <ion-icon name="download-outline"></ion-icon>
                                     </a>
                                 @endif
                             </div>
