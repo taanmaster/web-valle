@@ -46,8 +46,7 @@
     {{-- Filtros y búsqueda --}}
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
         <div class="btn-group" role="group">
-            <button type="button"
-                class="btn btn-sm {{ $filter === 'all' ? 'btn-primary' : 'btn-outline-primary' }}"
+            <button type="button" class="btn btn-sm {{ $filter === 'all' ? 'btn-primary' : 'btn-outline-primary' }}"
                 wire:click="setFilter('all')">Todas</button>
             <button type="button"
                 class="btn btn-sm {{ $filter === 'pendiente' ? 'btn-primary' : 'btn-outline-primary' }}"
@@ -131,6 +130,6 @@
     </div>
 
     <div class="mt-3">
-        {{ $castros->links() }}
+        {{ $castros->links('pagination::bootstrap-5') }}
     </div>
 </div>
