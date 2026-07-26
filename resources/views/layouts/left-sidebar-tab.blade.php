@@ -1067,7 +1067,7 @@
 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('health_direction.blog.admin.index') }}">Blog</a>
+                        <a class="nav-link" href="{{ route('health_direction.blog.admin.index') }}">Servicios</a>
                     </li>
                 </ul>
             </div>

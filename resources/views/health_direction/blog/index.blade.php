@@ -8,10 +8,10 @@
             Dirección de Salud
         @endslot
         @slot('li_2')
-            Blog
+            Servicios
         @endslot
         @slot('title')
-            Blog
+            Servicios
         @endslot
     @endcomponent
 
