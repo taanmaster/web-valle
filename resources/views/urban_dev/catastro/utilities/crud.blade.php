@@ -16,7 +16,8 @@
                     <h6 class="text-uppercase text-muted mb-0">Fechas y cuenta predial</h6>
                     <div>
                         <small class="text-muted me-2">Folio de solicitud</small>
-                        <span class="fw-bold">{{ $castro->urbanDevRequest?->folio ?? '#' . $castro->urban_dev_request_id }}</span>
+                        <span
+                            class="fw-bold">{{ $castro->urbanDevRequest?->folio ?? '#' . $castro->urban_dev_request_id }}</span>
                     </div>
                 </div>
 
@@ -26,19 +27,27 @@
                         <input type="date" class="form-control @error('fecha_solicitud') is-invalid @enderror"
                             wire:model="fecha_solicitud">
                         <small class="text-muted">Se llena con la fecha en que el ciudadano envió la solicitud.</small>
-                        @error('fecha_solicitud') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        @error('fecha_solicitud')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Fecha de entrega de documentos <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control @error('fecha_entrega_documentos') is-invalid @enderror"
-                            wire:model="fecha_entrega_documentos">
-                        @error('fecha_entrega_documentos') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        <label class="form-label">Fecha de entrega de documentos <span
+                                class="text-danger">*</span></label>
+                        <input type="date"
+                            class="form-control @error('fecha_entrega_documentos') is-invalid @enderror"
+                            wire:model="fecha_entrega_documentos" required>
+                        @error('fecha_entrega_documentos')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Cuenta predial <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('cuenta_predial') is-invalid @enderror"
-                            placeholder="Ej. 001-0234-005" wire:model="cuenta_predial">
-                        @error('cuenta_predial') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            placeholder="Ej. 001-0234-005" wire:model="cuenta_predial" required>
+                        @error('cuenta_predial')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -48,20 +57,26 @@
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Nombre del contribuyente <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('nombre_contribuyente') is-invalid @enderror"
-                            placeholder="Nombre completo o razón social" wire:model="nombre_contribuyente">
-                        @error('nombre_contribuyente') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            placeholder="Nombre completo o razón social" wire:model="nombre_contribuyente" required>
+                        @error('nombre_contribuyente')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Tipo de predio <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('tipo_predio') is-invalid @enderror"
-                            placeholder="Ej. Urbano / Rústico / Ejidal" wire:model="tipo_predio">
-                        @error('tipo_predio') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            placeholder="Ej. Urbano / Rústico / Ejidal" wire:model="tipo_predio" required>
+                        @error('tipo_predio')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Domicilio del predio <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('domicilio_predio') is-invalid @enderror"
-                            placeholder="Calle y número" wire:model="domicilio_predio">
-                        @error('domicilio_predio') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            placeholder="Calle y número" wire:model="domicilio_predio" required>
+                        @error('domicilio_predio')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -71,35 +86,47 @@
                 </h6>
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Localidad / Colonia / Ejido</label>
-                        <input type="text" class="form-control @error('localidad_colonia_ejido') is-invalid @enderror"
-                            wire:model="localidad_colonia_ejido">
-                        @error('localidad_colonia_ejido') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        <label class="form-label">Localidad / Colonia / Ejido <span class="text-danger">*</span></label>
+                        <input type="text"
+                            class="form-control @error('localidad_colonia_ejido') is-invalid @enderror"
+                            wire:model="localidad_colonia_ejido" required>
+                        @error('localidad_colonia_ejido')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Manzana / Lote</label>
+                        <label class="form-label">Manzana / Lote <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('manzana_lote') is-invalid @enderror"
-                            wire:model="manzana_lote">
-                        @error('manzana_lote') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            wire:model="manzana_lote" required>
+                        @error('manzana_lote')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Superficie (m²)</label>
+                        <label class="form-label">Superficie (m²) <span class="text-danger">*</span></label>
                         <input type="number" step="0.01" min="0"
-                            class="form-control @error('superficie') is-invalid @enderror"
-                            placeholder="0.00" wire:model="superficie">
-                        @error('superficie') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            class="form-control @error('superficie') is-invalid @enderror" placeholder="0.00"
+                            wire:model="superficie" required>
+                        @error('superficie')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-8 mb-3">
-                        <label class="form-label">Uso / trámite (Desarrollo Urbano)</label>
+                        <label class="form-label">Uso / trámite (Desarrollo Urbano) <span
+                                class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('uso_tramite') is-invalid @enderror"
-                            placeholder="Ej. Habitacional, subdivisión, licencia..." wire:model="uso_tramite">
-                        @error('uso_tramite') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            placeholder="Ej. Habitacional, subdivisión, licencia..." wire:model="uso_tramite" required>
+                        @error('uso_tramite')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">URL de expediente</label>
+                        <label class="form-label">URL de expediente <span class="text-danger">*</span></label>
                         <input type="url" class="form-control @error('url_expediente') is-invalid @enderror"
-                            placeholder="https://" wire:model="url_expediente">
-                        @error('url_expediente') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            placeholder="https://" wire:model="url_expediente" required>
+                        @error('url_expediente')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 

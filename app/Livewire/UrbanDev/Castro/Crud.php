@@ -34,16 +34,16 @@ class Crud extends Component
     public $domicilio_predio = '';
 
     // Ubicación y detalles (opcionales)
-    #[Validate('nullable|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $localidad_colonia_ejido = '';
 
-    #[Validate('nullable|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $manzana_lote = '';
 
-    #[Validate('nullable|numeric|min:0')]
+    #[Validate('required|numeric|min:0')]
     public $superficie = '';
 
-    #[Validate('nullable|string|max:255')]
+    #[Validate('required|string|max:255')]
     public $uso_tramite = '';
 
     #[Validate(['nullable', 'url', 'max:255', 'regex:/^https?:\/\//i'])]
