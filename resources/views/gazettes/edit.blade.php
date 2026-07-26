@@ -49,7 +49,7 @@
                                     </div>
 
                                     <div class="col-md-12 mb-3">
-                                        <label for="type">Tipo de Sesión <span
+                                        <label for="type">Tipo de sesión y/o Documentos publicados <span
                                                 class="text-danger tx-12">*</span></label>
                                         <select class="form-control" name="type" required>
                                             <option value="solemn">Sesiones Solemnes</option>
@@ -65,7 +65,7 @@
                                         <textarea name="description" class="form-control" cols="30" rows="5">{{ $gazette->description }}</textarea>
                                     </div>
 
-                                    {{--  
+                                    {{--
                                 <div class="col-md-12 mb-3">
                                     <label for="document">Documento <span class="text-danger tx-12">*</span></label>
                                     <input type="file" name="document" class="form-control" required="" autocomplete="off" >

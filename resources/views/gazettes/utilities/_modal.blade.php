@@ -30,7 +30,8 @@
                         </div>
 
                         <div class="col-md-12 mb-3">
-                            <label for="type">Tipo de Sesión <span class="text-danger tx-12">*</span></label>
+                            <label for="type">Tipo de sesión y/o Documentos publicados <span
+                                    class="text-danger tx-12">*</span></label>
                             <select class="form-control" name="type" required>
                                 <option value="solemn">Sesiones Solemnes</option>
                                 <option value="ordinary">Sesiones Ordinarias</option>
