@@ -2,7 +2,7 @@
 
 namespace App\Livewire\ServiceRequests;
 
-use App\Models\RegulatoryAgendaDependency;
+use App\Models\BackofficeDependency;
 use App\Models\ServiceRequest;
 use App\Models\ServiceRequestCost;
 use App\Models\ServiceRequestRelatedProcedure;
@@ -272,7 +272,7 @@ class Crud extends Component
 
     public function fetchDependencies()
     {
-        $this->dependencies = RegulatoryAgendaDependency::orderBy('name')->get();
+        $this->dependencies = BackofficeDependency::orderBy('name')->get();
     }
 
     public function loadRequestData()
