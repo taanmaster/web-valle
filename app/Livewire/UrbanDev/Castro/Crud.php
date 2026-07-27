@@ -5,6 +5,7 @@ namespace App\Livewire\UrbanDev\Castro;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 use App\Models\UrbanDevCastroRequest;
+use Illuminate\Support\Facades\Mail;
 
 class Crud extends Component
 {
@@ -163,7 +164,20 @@ class Crud extends Component
     {
         $this->validate();
 
+        $wasCompleted = $this->castro->status === 'completado';
+
         $this->persist();
+
+        // Correo a Desarrollo Urbano: predio capturado (7.3) — solo al completar por primera vez
+        if (!$wasCompleted && $this->castro->urbanDevRequest) {
+            $folio = $this->castro->urbanDevRequest->folio;
+            Mail::send('_mail_notifications.admin.urban_dev_predio_captured', [
+                'folio' => $folio,
+            ], function ($m) use ($folio) {
+                $m->to('desarrollourbano@valledesantiago.gob.mx')
+                  ->subject('Información del predio capturada — Folio ' . $folio);
+            });
+        }
 
         session()->flash('success', 'Información del predio guardada correctamente.');
 
