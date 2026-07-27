@@ -148,7 +148,7 @@
                     @foreach (\App\Models\ServiceRequest::STATUS_LABELS as $value => $label)
                         <li class="nav-item">
                             <button type="button" class="nav-link {{ $filterStatus === $value ? 'active' : '' }}"
-                                wire:click="setTab('{{ $value }}')">{{ $label }}s</button>
+                                wire:click="setTab('{{ $value }}')">{{ $label }}</button>
                         </li>
                     @endforeach
                 </ul>
