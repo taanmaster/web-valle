@@ -304,11 +304,10 @@
                                     style="--bs-nav-pills-link-active-bg: {{ $variantActiveBg }};">
                                     @foreach ($tramite_actual['variants'] as $vIndex => $variant)
                                         <li class="nav-item me-2 mb-2" role="presentation">
-                                            <button
-                                                class="nav-link {{ $vIndex === 0 ? 'active' : '' }}"
+                                            <button class="nav-link {{ $vIndex === 0 ? 'active' : '' }}"
                                                 id="variant-tab-{{ $vIndex }}" data-bs-toggle="pill"
-                                                data-bs-target="#variant-pane-{{ $vIndex }}" type="button" role="tab"
-                                                aria-controls="variant-pane-{{ $vIndex }}"
+                                                data-bs-target="#variant-pane-{{ $vIndex }}" type="button"
+                                                role="tab" aria-controls="variant-pane-{{ $vIndex }}"
                                                 aria-selected="{{ $vIndex === 0 ? 'true' : 'false' }}">
                                                 {{ $variant['title'] }}
                                             </button>
@@ -451,7 +450,9 @@
                                         <h6>Documentos</h6>
                                         @php
                                             $stepsCount = !empty($tramite_actual['variants'])
-                                                ? collect($tramite_actual['variants'])->max(fn($v) => count($v['steps']))
+                                                ? collect($tramite_actual['variants'])->max(
+                                                    fn($v) => count($v['steps']),
+                                                )
                                                 : count($tramite_actual['steps'] ?? []);
                                         @endphp
                                         <p class="text-muted">{{ $stepsCount }} requisitos</p>
@@ -532,6 +533,10 @@
 
         .variant-pills .nav-link:not(.active):hover {
             background-color: #e2e6ea;
+        }
+
+        .light-mode .nav-pills .nav-link.active:hover {
+            color: #000;
         }
 
         .process-timeline {
