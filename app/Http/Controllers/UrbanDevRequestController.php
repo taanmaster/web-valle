@@ -13,6 +13,8 @@ use App\Models\UrbanDevRequest;
 use App\Models\UrbanDevRequestFile;
 use App\Models\User;
 
+use Illuminate\Support\Facades\Mail;
+
 // Exports
 use App\Exports\UrbanDevRequestsExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -103,6 +105,22 @@ class UrbanDevRequestController extends Controller
 
         // Mensaje de session
         Session::flash('success', 'Solicitud de Desarrollo Urbano guardada correctamente.');
+
+        // Correo a Catastro: nueva solicitud pendiente de captura del predio (7.1)
+        Mail::send('_mail_notifications.admin.urban_dev_new_request_catastro', [
+            'folio' => $urban_dev_request->folio,
+        ], function ($m) use ($urban_dev_request) {
+            $m->to('catastro@valledesantiago.gob.mx')
+              ->subject('Nueva solicitud de trámite recibida — Folio ' . $urban_dev_request->folio);
+        });
+
+        // Correo a Desarrollo Urbano: nueva solicitud en espera de info del predio (7.2)
+        Mail::send('_mail_notifications.admin.urban_dev_new_request_urbano', [
+            'folio' => $urban_dev_request->folio,
+        ], function ($m) use ($urban_dev_request) {
+            $m->to('desarrollourbano@valledesantiago.gob.mx')
+              ->subject('Nueva solicitud de trámite recibida — Folio ' . $urban_dev_request->folio);
+        });
 
         // Enviar a vista
         return redirect()->route('citizen.profile.requests');
