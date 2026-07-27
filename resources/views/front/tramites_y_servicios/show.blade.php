@@ -92,6 +92,13 @@
                         </div>
                     @endif
 
+                    @if ($request->responsible_subject)
+                        <div class="mb-4">
+                            <h3 class="fw-bold">¿Quién puede solicitarlo?</h3>
+                            <p>{{ $request->responsible_subject }}</p>
+                        </div>
+                    @endif
+
                     {{-- Requisitos --}}
                     @if ($request->requirementItems->count() > 0)
                         <div class="mb-4">
