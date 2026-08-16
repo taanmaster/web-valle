@@ -6,6 +6,10 @@
 
     $currentRoute = request()->route()->getName();
 
+    $unreadMessagesCount = $userRole === 'citizen'
+        ? \App\Models\CitizenMessage::where('user_id', auth()->id())->unread()->count()
+        : 0;
+
     // Active group detection — citizen role
     $iniGroupActive =
         in_array($currentRoute, [
@@ -15,7 +19,8 @@
             'citizen.profile.settings',
         ]) ||
         str_starts_with($currentRoute, 'citizen.appointments') ||
-        str_starts_with($currentRoute, 'citizen.orders');
+        str_starts_with($currentRoute, 'citizen.orders') ||
+        str_starts_with($currentRoute, 'citizen.messages');
 
     $group2Active =
         request()->segment(4) === 'secretaria-de-ayuntamiento' ||
@@ -79,6 +84,13 @@
                             <a href="{{ route('citizen.orders.index') }}"
                                 class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.orders') ? 'active' : '' }}">
                                 <ion-icon name="receipt-outline"></ion-icon> Mis Órdenes / Pagos
+                            </a>
+                            <a href="{{ route('citizen.messages.index') }}"
+                                class="list-group-item list-group-item-action d-flex align-items-center justify-content-between {{ str_starts_with($currentRoute, 'citizen.messages') ? 'active' : '' }}">
+                                <span><ion-icon name="mail-outline"></ion-icon> Mis Mensajes</span>
+                                @if ($unreadMessagesCount > 0)
+                                    <span class="badge bg-danger rounded-pill">{{ $unreadMessagesCount }}</span>
+                                @endif
                             </a>
                             <a href="{{ route('citizen.profile.edit') }}"
                                 class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.profile.edit' ? 'active' : '' }}">

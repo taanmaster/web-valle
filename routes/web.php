@@ -55,6 +55,7 @@ use App\Http\Controllers\HRVacancyController;
 // Tesorería
 use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Http\Controllers\BillableServiceController;
+use App\Http\Controllers\CitizenMessageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TsrBillingAccountController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
@@ -1532,6 +1533,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::patch('ordenes/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.update_status');
                 Route::patch('ordenes/{order}/nota', [OrderController::class, 'updateNote'])->name('admin.orders.update_note');
             });
+
+            // Bandeja de mensajes al ciudadano — genérica, la usa cualquier
+            // módulo con un botón "Contactar al Solicitante".
+            Route::post('mensajes-ciudadano', [CitizenMessageController::class, 'store'])
+                ->name('admin.citizen_messages.store');
         });
 
         /* ------------------- */
@@ -2155,6 +2161,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         // Rutas para archivos de Medio Ambiente (adjuntos de Donación)
         Route::post('/medio-ambiente/archivo/subir', 'CitizenProfileController@uploadEnvironmentFile')->name('citizen.environment.file.upload');
         Route::delete('/medio-ambiente/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteEnvironmentFile')->name('citizen.environment.file.delete');
+
+        // Rutas para la bandeja de mensajes del ciudadano
+        Route::get('/perfil/mensajes', 'CitizenProfileController@messages')->name('citizen.messages.index');
+        Route::get('/perfil/mensajes/{message}', 'CitizenProfileController@showMessage')->name('citizen.messages.show');
 
         //Rutas para citatorios
         Route::get('/citatorios', 'CitizenProfileController@summons')->name('citizen.summons.index');

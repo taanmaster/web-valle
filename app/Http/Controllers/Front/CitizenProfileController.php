@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\AppointmentBooking;
 use App\Models\Citizen;
+use App\Models\CitizenMessage;
 use App\Models\EnvironmentRequest;
 use App\Models\EnvironmentRequestFile;
 use App\Models\HRApplication;
@@ -1664,5 +1665,29 @@ class CitizenProfileController extends Controller
         $file->delete();
 
         return response()->json(['success' => true]);
+    }
+
+    // =============== BANDEJA DE MENSAJES ===============
+
+    public function messages()
+    {
+        $messages = CitizenMessage::where('user_id', Auth::id())
+            ->latest()
+            ->paginate(10);
+
+        return view('front.user_profiles.citizen.messages.index', compact('messages'));
+    }
+
+    public function showMessage($id)
+    {
+        $message = CitizenMessage::findOrFail($id);
+
+        if ($message->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a este mensaje.');
+        }
+
+        $message->markAsRead();
+
+        return view('front.user_profiles.citizen.messages.show', compact('message'));
     }
 }
