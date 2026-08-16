@@ -56,6 +56,7 @@ use App\Http\Controllers\HRVacancyController;
 use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Http\Controllers\BillableServiceController;
 use App\Http\Controllers\CitizenMessageController;
+use App\Http\Controllers\EnvironmentRequestController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TsrBillingAccountController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
@@ -655,6 +656,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             // Ruta para KPIs de desarrollo urbano
             Route::get('kpis', [UrbanDevKPIsController::class, 'index'])->name('urban_dev.kpis.index');
+        });
+
+        /* Dirección de Medio Ambiente */
+        Route::group(['prefix' => 'environment'], function () {
+            Route::resource('requests', EnvironmentRequestController::class)
+                ->only(['index', 'show'])
+                ->parameters(['requests' => 'environmentRequest'])
+                ->names([
+                    'index' => 'environment.requests.index',
+                    'show' => 'environment.requests.show',
+                ]);
         });
 
         /* DIF */

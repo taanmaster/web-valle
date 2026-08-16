@@ -173,6 +173,15 @@
                         </a>
                     </li>
 
+                    @if (auth()->user()->hasRole('environment') || auth()->user()->hasRole('all'))
+                        <li class="nav-item">
+                            <a href="#valleEnvironment" id="environment-tab" class="nav-link">
+                                <i class="ti ti-leaf menu-icon"></i>
+                                <span class="menu-label">Medio Ambiente</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @hasanyrole(['human_resources', 'all'])
                         <li class="nav-item">
                             <a href="#valleHR" id="hr-tab" class="nav-link">
@@ -845,6 +854,28 @@
                         <div class="mt-3 px-3">
                             <small class="text-muted d-block mb-1">Roles con acceso:</small>
                             <span class="badge bg-primary me-1 mb-1">urban_dev</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if (auth()->user()->hasRole('environment') || auth()->user()->hasRole('all'))
+                <div id="valleEnvironment" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="environment-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Trámites</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('environment.requests.index') }}">Solicitudes</a>
+                        </li>
+                    </ul>
+
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">environment</span>
                             <span class="badge bg-primary me-1 mb-1">all</span>
                         </div>
                     @endif
