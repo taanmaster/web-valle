@@ -55,7 +55,10 @@ use App\Http\Controllers\HRVacancyController;
 // Tesorería
 use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Http\Controllers\BillableServiceController;
+use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\CitizenMessageController;
+use App\Http\Controllers\EnvironmentBlogController;
+use App\Http\Controllers\EnvironmentEventController;
 use App\Http\Controllers\EnvironmentRequestController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TsrBillingAccountController;
@@ -666,6 +669,29 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 ->names([
                     'index' => 'environment.requests.index',
                     'show' => 'environment.requests.show',
+                ]);
+
+            Route::resource('blog', EnvironmentBlogController::class)->names([
+                'index' => 'medio_ambiente_blog.admin.index',
+                'create' => 'medio_ambiente_blog.admin.create',
+                'store' => 'medio_ambiente_blog.admin.store',
+                'show' => 'medio_ambiente_blog.admin.show',
+                'edit' => 'medio_ambiente_blog.admin.edit',
+                'update' => 'medio_ambiente_blog.admin.update',
+                'destroy' => 'medio_ambiente_blog.admin.destroy',
+            ]);
+            Route::get('blog/detail/{id}', [EnvironmentBlogController::class, 'adminDetail'])
+                ->name('medio_ambiente_blog.admin.detail');
+
+            // store/update/destroy los resuelve el propio componente Livewire
+            // (Crud::save() y Table::deleteEntry()), no rutas dedicadas.
+            Route::resource('events', EnvironmentEventController::class)
+                ->only(['index', 'create', 'show', 'edit'])
+                ->names([
+                    'index' => 'environment_events.admin.index',
+                    'create' => 'environment_events.admin.create',
+                    'show' => 'environment_events.admin.show',
+                    'edit' => 'environment_events.admin.edit',
                 ]);
         });
 
@@ -1837,6 +1863,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         ]);
         Route::get('events-blog/detail/{id}', [EventsBlogController::class, 'adminDetail'])
             ->name('events_blog.admin.detail');
+
+        // Categorías de blog — compartidas por welfare/training/events/medio_ambiente
+        Route::get('blog-categorias', [BlogCategoryController::class, 'index'])
+            ->name('blog_categories.admin.index');
 
         // Cumpleaños de Administración
         Route::get('/birthday', [BirthdayController::class, 'index'])

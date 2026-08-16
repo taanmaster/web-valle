@@ -872,6 +872,18 @@
                         </li>
                     </ul>
 
+                    <div class="title-box">
+                        <h6 class="menu-title">Contenido</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('medio_ambiente_blog.admin.index') }}">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('environment_events.admin.index') }}">Calendario</a>
+                        </li>
+                    </ul>
+
                     @if (auth()->user()->hasRole('all'))
                         <div class="mt-3 px-3">
                             <small class="text-muted d-block mb-1">Roles con acceso:</small>
@@ -1279,6 +1291,12 @@
                         @if (auth()->user()->hasRole('all'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('roles.index') }}">Roles y Permisos</a>
+                            </li>
+                        @endif
+
+                        @if (auth()->user()->hasRole('all'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('blog_categories.admin.index') }}">Categorías de Blog</a>
                             </li>
                         @endif
                     </ul>
