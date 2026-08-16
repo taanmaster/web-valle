@@ -41,6 +41,15 @@ class EnvironmentEvent extends Model
         return $options;
     }
 
+    /**
+     * El partial front.utilities._events_calendar lee `name`, igual que en
+     * App\Models\Event. Aquí la columna se llama `title`.
+     */
+    public function getNameAttribute(): string
+    {
+        return (string) $this->title;
+    }
+
     public function getFormattedStartDateAttribute()
     {
         return $this->date_start?->format('d/m/Y H:i');
