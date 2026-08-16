@@ -9,6 +9,18 @@ class GeneralBlog extends Model
 {
     use HasFactory;
 
+    /**
+     * Valores de `type`. Cada uno es un blog independiente que comparte
+     * tabla y componentes Livewire.
+     */
+    public const TYPE_WELFARE = 'welfare';
+
+    public const TYPE_TRAINING = 'training';
+
+    public const TYPE_EVENTS = 'events';
+
+    public const TYPE_MEDIO_AMBIENTE = 'medio_ambiente';
+
     protected $table = 'general_blogs';
 
     protected $fillable = [

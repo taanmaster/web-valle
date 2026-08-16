@@ -291,6 +291,32 @@ Route::namespace('App\Http\Controllers')->group(function () {
         'as' => 'health_direction.detail'
     ])->where('slug', '[\w\d\-\_]+');
 
+    // Dirección de Medio Ambiente — Front público (sin sesión)
+    Route::get('/direccion_de_medio_ambiente', [
+        'uses' => 'FrontController@environment',
+        'as' => 'environment.index',
+    ]);
+
+    Route::get('/direccion_de_medio_ambiente/listado-floristico', [
+        'uses' => 'FrontController@environmentFloristicList',
+        'as' => 'environment.floristic_list',
+    ]);
+
+    Route::get('/direccion_de_medio_ambiente/articulos', [
+        'uses' => 'FrontController@environmentList',
+        'as' => 'environment.list',
+    ]);
+
+    Route::get('/direccion_de_medio_ambiente/entrada/{slug}', [
+        'uses' => 'FrontController@environmentDetail',
+        'as' => 'environment.detail',
+    ])->where('slug', '[\w\d\-\_]+');
+
+    Route::get('/direccion_de_medio_ambiente/tramite/{slug}', [
+        'uses' => 'FrontController@environmentProcedure',
+        'as' => 'environment.procedure',
+    ])->where('slug', '[\w\d\-\_]+');
+
     // Módulo de Ayuda — Front
     Route::get('/ayuda', [AyudaFrontController::class, 'index'])->name('ayuda.front.index');
     Route::get('/ayuda/{slug}', [AyudaFrontController::class, 'show'])->name('ayuda.front.show')

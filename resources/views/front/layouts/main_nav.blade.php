@@ -68,6 +68,13 @@
             </li>
 
             <li>
+                <a href="{{ route('environment.index') }}">
+                    <ion-icon name="leaf-outline"></ion-icon>
+                    <span>Dirección de Medio Ambiente</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('secretary_of_assistance.index') }}">
                     <ion-icon name="people-circle-outline"></ion-icon>
                     <span>Secretaría de Ayuntamiento</span>
