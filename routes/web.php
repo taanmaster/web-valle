@@ -2146,6 +2146,16 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/desarrollo-urbano/archivo/subir', 'CitizenProfileController@uploadUrbanDevFile')->name('citizen.urban_dev.file.upload');
         Route::delete('/desarrollo-urbano/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteUrbanDevFile')->name('citizen.urban_dev.file.delete');
 
+        // Rutas Medio Ambiente para ciudadanos
+        Route::get('/medio-ambiente/{requestType}/crear', 'CitizenProfileController@createEnvironmentRequest')->name('citizen.environment.create');
+        Route::post('/medio-ambiente/guardar', 'CitizenProfileController@storeEnvironmentRequest')->name('citizen.environment.store');
+        Route::get('/medio-ambiente/mis-solicitudes/{requestType}', 'CitizenProfileController@environmentRequests')->name('citizen.environment.requests');
+        Route::get('/medio-ambiente/{environmentRequest}', 'CitizenProfileController@showEnvironmentRequest')->name('citizen.environment.show');
+
+        // Rutas para archivos de Medio Ambiente (adjuntos de Donación)
+        Route::post('/medio-ambiente/archivo/subir', 'CitizenProfileController@uploadEnvironmentFile')->name('citizen.environment.file.upload');
+        Route::delete('/medio-ambiente/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteEnvironmentFile')->name('citizen.environment.file.delete');
+
         //Rutas para citatorios
         Route::get('/citatorios', 'CitizenProfileController@summons')->name('citizen.summons.index');
         Route::get('/citatorios/{id}', 'CitizenProfileController@showSummon')->name('citizen.summons.show');

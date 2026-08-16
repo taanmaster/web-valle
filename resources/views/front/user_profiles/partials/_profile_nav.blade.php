@@ -21,10 +21,12 @@
         request()->segment(4) === 'secretaria-de-ayuntamiento' ||
         request()->segment(4) === 'economia' ||
         request()->segment(4) === 'tramites' ||
+        request()->segment(4) === 'medio-ambiente' ||
         $currentRoute === 'citizen.profile.urban_dev_requests' ||
         str_starts_with($currentRoute, 'citizen.profile.applications') ||
         str_starts_with($currentRoute, 'citizen.sare') ||
         str_starts_with($currentRoute, 'citizen.third_party') ||
+        str_starts_with($currentRoute, 'citizen.environment') ||
         str_starts_with($currentRoute, 'citizen.profile.identification_certificates');
 
     $group3Active = $currentRoute === 'citizen.services.index';
@@ -126,6 +128,10 @@
                                 <a href="{{ route('citizen.profile.applications') }}"
                                     class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.profile.applications') ? 'active' : '' }}">
                                     <ion-icon name="briefcase-outline"></ion-icon> Solicitudes Vacantes
+                                </a>
+                                <a href="{{ route('citizen.my_requests', 'medio-ambiente') }}"
+                                    class="list-group-item list-group-item-action {{ request()->segment(4) === 'medio-ambiente' || str_starts_with($currentRoute, 'citizen.environment') ? 'active' : '' }}">
+                                    <ion-icon name="leaf-outline"></ion-icon> Medio Ambiente
                                 </a>
                             </div>
                         </div>
