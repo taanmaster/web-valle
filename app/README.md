@@ -13,6 +13,7 @@
 8. **CTO** = Catastro 
 9. **SCR** = Secretaria de Ayuntamiento
 10. **DINS** = Desarrollo Institucional (Institutional Development)
+11. **Environment** = Dirección de Medio Ambiente
 
 ### Modelos sin prefijo (Generales del Sistema)
 - **Banner** = Banners generales del sistema
@@ -79,3 +80,8 @@
 
 #### URBAN_DEV (Desarrollo Urbano)
 - UrbanDevRequest, UrbanDevRequestFile, UrbanDevRequestNote
+
+#### Environment (Dirección de Medio Ambiente)
+- EnvironmentRequest, EnvironmentRequestFile, EnvironmentRequestNote
+- EnvironmentEvent
+- EnvironmentDeliveryVoucher, EnvironmentDeliveryVoucherItem
