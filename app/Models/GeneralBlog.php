@@ -25,6 +25,7 @@ class GeneralBlog extends Model
 
     protected $fillable = [
         'type',
+        'blog_category_id',
         'title',
         'slug',
         'description',
@@ -38,5 +39,10 @@ class GeneralBlog extends Model
     public function images()
     {
         return $this->hasMany(GeneralBlogImage::class, 'general_blog_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class, 'blog_category_id');
     }
 }

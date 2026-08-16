@@ -92,6 +92,15 @@
                     <input type="date" class="form-control" wire:model="published_at"
                         @if ($mode == 1) disabled @endif>
                 </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Categoría</label>
+                    <select class="form-select" wire:model="blog_category_id" @if ($mode == 1) disabled @endif>
+                        <option value="">Sin categoría</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             @if ($mode != 1)
