@@ -51,7 +51,8 @@
         <div class="row mb-4">
             <div class="col-md-6 mb-3">
                 <div class="card card-normal wow fadeInUp h-100">
-                    <div class="card-content d-flex flex-column justify-content-center h-100 text-center">
+                    <div
+                        class="card-content d-flex flex-column justify-content-center align-items-center w-100 h-100 text-center">
                         <h3 class="mb-3">Misión</h3>
                         <p class="text-muted mb-0">Dejar apartado para misión</p>
                     </div>
@@ -75,7 +76,8 @@
             </div>
             <div class="col-md-6 mb-3 order-md-2 order-1">
                 <div class="card card-normal wow fadeInUp h-100">
-                    <div class="card-content d-flex flex-column justify-content-center h-100 text-center">
+                    <div
+                        class="card-content d-flex flex-column justify-content-center align-items-center w-100 h-100 text-center">
                         <h3 class="mb-3">Visión</h3>
                         <p class="text-muted mb-0">Dejar apartado para visión</p>
                     </div>
@@ -104,12 +106,8 @@
             @foreach ($procedures as $slug => $procedure)
                 <div class="col-md-4 mb-3">
                     <div class="card card-normal wow fadeInUp h-100">
-                        <div class="card-content text-center d-flex flex-column h-100">
-                            <div class="d-flex justify-content-center mb-3">
-                                <div class="icon bg-primary">
-                                    <ion-icon name="{{ $procedure['icon'] }}"></ion-icon>
-                                </div>
-                            </div>
+                        <div
+                            class="card-content text-center d-flex w-100 justify-content-center align-items-center flex-column h-100">
                             <h4 class="mb-3">{{ $procedure['short_title'] }}</h4>
                             <a href="{{ route('environment.procedure', $slug) }}"
                                 class="btn btn-primary mt-auto mx-auto">Consulta aquí</a>

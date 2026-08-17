@@ -44,7 +44,7 @@ return [
             'type' => EnvironmentRequest::TYPE_TALA,
             'title' => 'Proceso para solicitud de tala',
             'short_title' => 'Tala',
-            'icon' => 'git-branch-outline',
+            'icon' => 'hammer-outline',
             'form_title' => 'Nueva Solicitud de Permiso de Tala',
             'steps' => [
                 ['title' => 'Registra tu solicitud', 'text' => 'Completa el formulario en línea con la información requerida.'],

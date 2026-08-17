@@ -94,21 +94,49 @@
                                                     @endif
                                                 </label>
 
+                                                {{-- Archivo ya subido --}}
                                                 <div class="existing-file mb-2 {{ $existing ? '' : 'd-none' }}">
-                                                    <div class="d-flex align-items-center justify-content-between border rounded p-2">
-                                                        <a href="{{ $existing?->url }}" target="_blank" class="text-truncate small file-name">
-                                                            <ion-icon name="document-outline"></ion-icon>
-                                                            {{ $existing?->filename }}
+                                                    <div class="d-flex align-items-center justify-content-between border rounded p-2 bg-light">
+                                                        <a href="{{ $existing?->url }}" target="_blank"
+                                                            class="text-truncate small file-name d-flex align-items-center gap-1">
+                                                            <ion-icon name="document-text-outline"></ion-icon>
+                                                            <span>{{ $existing?->filename }}</span>
                                                         </a>
                                                         <button type="button" class="btn btn-sm btn-outline-danger delete-file"
-                                                            data-file-id="{{ $existing?->id }}">
+                                                            data-file-id="{{ $existing?->id }}" title="Eliminar archivo"
+                                                            aria-label="Eliminar archivo">
                                                             <ion-icon name="trash-outline"></ion-icon>
                                                         </button>
                                                     </div>
                                                 </div>
 
-                                                <div id="dropzone-{{ $docType }}" class="dropzone-area border rounded p-3 text-center text-muted small {{ $existing ? 'd-none' : '' }}">
-                                                </div>
+                                                {{-- Dropzone: sólo se dibuja mientras no haya archivo subido --}}
+                                                @unless ($existing)
+                                                    <div class="environment-dropzone" tabindex="0" role="button"
+                                                        aria-label="Subir {{ $docLabel }}">
+                                                        <input type="file" class="environment-dropzone-input d-none"
+                                                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+
+                                                        <div class="environment-dropzone-idle text-center py-4 px-2">
+                                                            <ion-icon name="cloud-upload-outline"
+                                                                class="text-muted fs-3"></ion-icon>
+                                                            <p class="mb-0 mt-2 small">
+                                                                Arrastra tu archivo aquí o haz clic para seleccionar
+                                                            </p>
+                                                            <p class="mb-0 small text-muted">PDF, DOC, DOCX, JPG, PNG
+                                                                (máx. 10MB)</p>
+                                                        </div>
+
+                                                        <div class="environment-dropzone-uploading text-center py-4 px-2 d-none">
+                                                            <div class="spinner-border spinner-border-sm text-primary"
+                                                                role="status"></div>
+                                                            <p class="mb-0 mt-2 small">Subiendo…</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="environment-dropzone-error text-danger small mt-2 d-none">
+                                                    </div>
+                                                @endunless
                                             </div>
                                         @endforeach
                                     </div>
@@ -129,53 +157,152 @@
 @endsection
 
 @if ($isDonacion)
+    @push('styles')
+        <style>
+            .environment-dropzone {
+                border: 2px dashed #ced4da;
+                border-radius: .5rem;
+                cursor: pointer;
+                transition: border-color .15s ease, background-color .15s ease;
+            }
+
+            .environment-dropzone:hover,
+            .environment-dropzone:focus-visible,
+            .environment-dropzone.is-dragover {
+                border-color: var(--bs-primary);
+                background-color: rgba(var(--bs-primary-rgb), .06);
+                outline: none;
+            }
+        </style>
+    @endpush
+
     @push('scripts')
-        <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-        <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css">
-
         <script>
-            Dropzone.autoDiscover = false;
-
             document.addEventListener('DOMContentLoaded', function () {
-                var environmentRequestId = {{ $environmentRequest->id }};
                 var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+                var uploadUrl = '{{ route('citizen.environment.file.upload') }}';
+                var environmentRequestId = {{ $environmentRequest->id }};
+                var allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
+                var maxSizeBytes = 10 * 1024 * 1024;
 
                 document.querySelectorAll('#documentsCard [data-doc-type]').forEach(function (container) {
                     var docType = container.dataset.docType;
-                    var dropzoneEl = container.querySelector('.dropzone-area');
+                    var dropzone = container.querySelector('.environment-dropzone');
 
-                    if (dropzoneEl.classList.contains('d-none')) {
+                    // Ya hay un archivo subido: no se dibuja dropzone para este documento.
+                    if (!dropzone) {
                         return;
                     }
 
-                    new Dropzone(dropzoneEl, {
-                        url: '{{ route('citizen.environment.file.upload') }}',
-                        maxFilesize: 10,
-                        acceptedFiles: '.pdf,.doc,.docx,.jpg,.jpeg,.png',
-                        addRemoveLinks: false,
-                        maxFiles: 1,
-                        uploadMultiple: false,
-                        parallelUploads: 1,
-                        headers: { 'X-CSRF-TOKEN': csrfToken },
-                        dictDefaultMessage: 'Arrastra archivos aquí o haz clic para seleccionar<br><small>PDF, DOC, DOCX, JPG, PNG (máx. 10MB)</small>',
-                        dictFileTooBig: 'El archivo es muy grande (máx. 10MB)',
-                        dictInvalidFileType: 'Tipo de archivo no permitido',
-                        sending: function (file, xhr, formData) {
-                            formData.append('environment_request_id', environmentRequestId);
-                            formData.append('document_type', docType);
-                        },
-                        success: function (file, response) {
-                            if (response.success) {
-                                window.location.reload();
-                            } else {
-                                alert('Error al subir el archivo: ' + (response.message || 'Error desconocido'));
-                                this.removeFile(file);
-                            }
-                        },
-                        error: function (file, message) {
-                            alert('Error al subir el archivo: ' + message);
-                            this.removeFile(file);
-                        },
+                    var input = dropzone.querySelector('.environment-dropzone-input');
+                    var idleState = dropzone.querySelector('.environment-dropzone-idle');
+                    var uploadingState = dropzone.querySelector('.environment-dropzone-uploading');
+                    var errorBox = container.querySelector('.environment-dropzone-error');
+
+                    function showError(message) {
+                        errorBox.textContent = message;
+                        errorBox.classList.remove('d-none');
+                    }
+
+                    function clearError() {
+                        errorBox.classList.add('d-none');
+                        errorBox.textContent = '';
+                    }
+
+                    function isValidFile(file) {
+                        var extension = file.name.split('.').pop().toLowerCase();
+
+                        if (allowedExtensions.indexOf(extension) === -1) {
+                            showError('Tipo de archivo no permitido.');
+                            return false;
+                        }
+
+                        if (file.size > maxSizeBytes) {
+                            showError('El archivo es muy grande (máx. 10MB).');
+                            return false;
+                        }
+
+                        return true;
+                    }
+
+                    function resetToIdle() {
+                        uploadingState.classList.add('d-none');
+                        idleState.classList.remove('d-none');
+                    }
+
+                    function uploadFile(file) {
+                        clearError();
+
+                        if (!isValidFile(file)) {
+                            return;
+                        }
+
+                        idleState.classList.add('d-none');
+                        uploadingState.classList.remove('d-none');
+
+                        var formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('environment_request_id', environmentRequestId);
+                        formData.append('document_type', docType);
+
+                        fetch(uploadUrl, {
+                            method: 'POST',
+                            headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
+                            body: formData,
+                        })
+                            .then(function (response) { return response.json(); })
+                            .then(function (data) {
+                                if (data.success) {
+                                    window.location.reload();
+                                } else {
+                                    resetToIdle();
+                                    showError(data.message || 'Error al subir el archivo.');
+                                }
+                            })
+                            .catch(function () {
+                                resetToIdle();
+                                showError('Error al subir el archivo. Inténtalo de nuevo.');
+                            });
+                    }
+
+                    dropzone.addEventListener('click', function () {
+                        input.click();
+                    });
+
+                    dropzone.addEventListener('keydown', function (event) {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            input.click();
+                        }
+                    });
+
+                    input.addEventListener('change', function () {
+                        if (input.files.length) {
+                            uploadFile(input.files[0]);
+                        }
+                    });
+
+                    ['dragenter', 'dragover'].forEach(function (eventName) {
+                        dropzone.addEventListener(eventName, function (event) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            dropzone.classList.add('is-dragover');
+                        });
+                    });
+
+                    ['dragleave', 'drop'].forEach(function (eventName) {
+                        dropzone.addEventListener(eventName, function (event) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            dropzone.classList.remove('is-dragover');
+                        });
+                    });
+
+                    dropzone.addEventListener('drop', function (event) {
+                        var files = event.dataTransfer.files;
+                        if (files.length) {
+                            uploadFile(files[0]);
+                        }
                     });
                 });
 
