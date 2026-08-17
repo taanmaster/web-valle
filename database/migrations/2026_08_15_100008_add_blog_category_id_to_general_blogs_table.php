@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Nullable y aditiva: no afecta a las entradas ya existentes de
+     * welfare | training | events.
+     */
+    public function up(): void
+    {
+        Schema::table('general_blogs', function (Blueprint $table) {
+            $table->foreignId('blog_category_id')->nullable()->after('type')
+                ->constrained('blog_categories')->nullOnDelete();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('general_blogs', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('blog_category_id');
+        });
+    }
+};

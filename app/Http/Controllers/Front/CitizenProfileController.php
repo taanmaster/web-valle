@@ -3,17 +3,19 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\AppointmentBooking;
 use App\Models\Citizen;
+use App\Models\CitizenMessage;
+use App\Models\EnvironmentRequest;
+use App\Models\EnvironmentRequestFile;
 use App\Models\HRApplication;
 use App\Models\HRVacancy;
-use App\Models\UserInfo;
+use App\Models\IdentificationCertificate;
 use App\Models\SareRequest;
 use App\Models\SareRequestFile;
 use App\Models\Summon;
-use App\Models\AppointmentBooking;
-use App\Models\IdentificationCertificate;
 use App\Models\TourismThirdPartyRequest;
+use App\Models\UserInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -58,7 +60,7 @@ class CitizenProfileController extends Controller
 
         // Validar contraseña actual si se quiere cambiar
         if ($request->filled('password')) {
-            if (!Hash::check($request->current_password, $user->password)) {
+            if (! Hash::check($request->current_password, $user->password)) {
                 return back()->withErrors(['current_password' => 'La contraseña actual no es correcta.']);
             }
         }
@@ -103,7 +105,7 @@ class CitizenProfileController extends Controller
                         'status_color' => $req->status_color,
                         'status_label' => $req->status_label,
                     ];
-                })
+                }),
             ]);
         }
 
@@ -126,7 +128,7 @@ class CitizenProfileController extends Controller
                         'status_color' => $req->status_color,
                         'status_label' => $req->status_label,
                     ];
-                })
+                }),
             ]);
         }
 
@@ -171,7 +173,7 @@ class CitizenProfileController extends Controller
     {
         $citizen = Citizen::where('email', $user->email)->first();
 
-        if (!$citizen) {
+        if (! $citizen) {
             $citizen = Citizen::create([
                 'name' => $user->name,
                 'first_name' => '', // Podrías separar el nombre si es necesario
@@ -192,7 +194,7 @@ class CitizenProfileController extends Controller
     {
         $userInfo = UserInfo::where('user_id', $user->id)->first();
 
-        if (!$userInfo) {
+        if (! $userInfo) {
             $citizen = $this->getOrCreateCitizenProfile($user);
 
             $userInfo = UserInfo::create([
@@ -238,7 +240,7 @@ class CitizenProfileController extends Controller
         return view('front.user_profiles.citizen.third_party_support.show', compact('thirdPartyRequest'));
     }
 
-// =============== MÉTODOS SARE PARA CIUDADANOS ===============
+    // =============== MÉTODOS SARE PARA CIUDADANOS ===============
 
     /**
      * Mostrar formulario para crear nueva solicitud SARE
@@ -289,6 +291,7 @@ class CitizenProfileController extends Controller
             if ($request->ajax()) {
                 return response()->json(['errors' => $validator->errors()], 422);
             }
+
             return back()->withErrors($validator)->withInput();
         }
 
@@ -341,22 +344,24 @@ class CitizenProfileController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Solicitud SARE enviada correctamente.',
-                    'redirect' => route('citizen.sare.show', $sareRequest)
+                    'redirect' => route('citizen.sare.show', $sareRequest),
                 ]);
             }
 
             Session::flash('success', 'Tu solicitud SARE se ha enviado correctamente.');
+
             return redirect()->route('citizen.sare.show', $sareRequest);
 
         } catch (\Exception $e) {
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al procesar la solicitud: ' . $e->getMessage()
+                    'message' => 'Error al procesar la solicitud: '.$e->getMessage(),
                 ], 500);
             }
 
             Session::flash('error', 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.');
+
             return back()->withInput();
         }
     }
@@ -408,11 +413,12 @@ class CitizenProfileController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Solo puedes editar solicitudes en estado "Nuevo".'
+                    'message' => 'Solo puedes editar solicitudes en estado "Nuevo".',
                 ], 403);
             }
 
             Session::flash('error', 'Solo puedes editar solicitudes en estado "Nuevo".');
+
             return redirect()->route('citizen.sare.show', $sareRequest);
         }
 
@@ -452,6 +458,7 @@ class CitizenProfileController extends Controller
             if ($request->ajax()) {
                 return response()->json(['errors' => $validator->errors()], 422);
             }
+
             return back()->withErrors($validator)->withInput();
         }
 
@@ -502,22 +509,24 @@ class CitizenProfileController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Solicitud SARE actualizada correctamente.',
-                    'redirect' => route('citizen.sare.show', $sareRequest)
+                    'redirect' => route('citizen.sare.show', $sareRequest),
                 ]);
             }
 
             Session::flash('success', 'Tu solicitud SARE se ha actualizado correctamente.');
+
             return redirect()->route('citizen.sare.show', $sareRequest);
 
         } catch (\Exception $e) {
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al actualizar la solicitud: ' . $e->getMessage()
+                    'message' => 'Error al actualizar la solicitud: '.$e->getMessage(),
                 ], 500);
             }
 
             Session::flash('error', 'Error al actualizar la solicitud. Por favor, inténtalo de nuevo.');
+
             return back()->withInput();
         }
     }
@@ -539,18 +548,19 @@ class CitizenProfileController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Solo puedes eliminar solicitudes pendientes.'
+                    'message' => 'Solo puedes eliminar solicitudes pendientes.',
                 ], 403);
             }
 
             Session::flash('error', 'Solo puedes eliminar solicitudes pendientes.');
+
             return redirect()->route('citizen.profile.requests');
         }
 
         try {
             // Eliminar archivos asociados de S3
             foreach ($sareRequest->files as $file) {
-                $filepath = 'sare/' . $file->filename;
+                $filepath = 'sare/'.$file->filename;
                 Storage::disk('s3')->delete($filepath);
                 $file->delete();
             }
@@ -562,22 +572,24 @@ class CitizenProfileController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Solicitud eliminada correctamente.',
-                    'redirect' => route('citizen.profile.requests')
+                    'redirect' => route('citizen.profile.requests'),
                 ]);
             }
 
             Session::flash('success', 'Tu solicitud SARE se ha eliminado correctamente.');
+
             return redirect()->route('citizen.profile.requests');
 
         } catch (\Exception $e) {
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al eliminar la solicitud: ' . $e->getMessage()
+                    'message' => 'Error al eliminar la solicitud: '.$e->getMessage(),
                 ], 500);
             }
 
             Session::flash('error', 'Error al eliminar la solicitud. Por favor, inténtalo de nuevo.');
+
             return back();
         }
     }
@@ -600,16 +612,17 @@ class CitizenProfileController extends Controller
         $validator = Validator::make($request->all(), [
             'request_type' => 'required|string',
             'description' => 'nullable|string|max:1000',
-            'request_modality' => 'nullable|string'
+            'request_modality' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
+
             return back()->withErrors($validator)->withInput();
         }
 
@@ -619,33 +632,35 @@ class CitizenProfileController extends Controller
                 'request_type' => $request->request_type,
                 'mode' => $request->request_modality,
                 'description' => $request->description,
-                'status' => 'new'
+                'status' => 'new',
             ]);
 
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Solicitud de Desarrollo Urbano creada exitosamente.',
-                    'redirect' => route('citizen.urban_dev.show', $urbanDevRequest)
+                    'redirect' => route('citizen.urban_dev.show', $urbanDevRequest),
                 ]);
             }
 
             Session::flash('success', 'Tu solicitud de Desarrollo Urbano se ha creado correctamente.');
+
             return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
 
         } catch (\Exception $e) {
             // Loguear la excepción para diagnóstico (temporal)
-            \Log::error('storeUrbanDevRequest exception: ' . $e->getMessage(), ['exception' => $e]);
+            \Log::error('storeUrbanDevRequest exception: '.$e->getMessage(), ['exception' => $e]);
 
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.',
-                    'debug_message' => config('app.debug') ? $e->getMessage() : null
+                    'debug_message' => config('app.debug') ? $e->getMessage() : null,
                 ], 500);
             }
 
             Session::flash('error', 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.');
+
             return back()->withInput();
         }
     }
@@ -680,6 +695,7 @@ class CitizenProfileController extends Controller
         // Solo permitir edición si está en estado nuevo
         if ($urbanDevRequest->status !== 'new') {
             Session::flash('error', 'Solo puedes editar solicitudes en estado "Nuevo".');
+
             return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
         }
 
@@ -703,11 +719,12 @@ class CitizenProfileController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Solo puedes editar solicitudes en estado "Nuevo".'
+                    'message' => 'Solo puedes editar solicitudes en estado "Nuevo".',
                 ], 403);
             }
 
             Session::flash('error', 'Solo puedes editar solicitudes en estado "Nuevo".');
+
             return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
         }
 
@@ -720,37 +737,40 @@ class CitizenProfileController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
+
             return back()->withErrors($validator)->withInput();
         }
 
         try {
             $urbanDevRequest->update([
                 'request_type' => $request->request_type,
-                'description' => $request->description
+                'description' => $request->description,
             ]);
 
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Solicitud actualizada exitosamente.'
+                    'message' => 'Solicitud actualizada exitosamente.',
                 ]);
             }
 
             Session::flash('success', 'Tu solicitud se actualizó correctamente.');
+
             return redirect()->route('citizen.urban_dev.show', $urbanDevRequest);
 
         } catch (\Exception $e) {
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al actualizar la solicitud.'
+                    'message' => 'Error al actualizar la solicitud.',
                 ], 500);
             }
 
             Session::flash('error', 'Error al actualizar la solicitud. Por favor, inténtalo de nuevo.');
+
             return back()->withInput();
         }
     }
@@ -775,7 +795,7 @@ class CitizenProfileController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ], 422);
         }
 
@@ -786,12 +806,12 @@ class CitizenProfileController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Detalles guardados.'
+                'message' => 'Detalles guardados.',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al guardar los detalles.'
+                'message' => 'Error al guardar los detalles.',
             ], 500);
         }
     }
@@ -808,7 +828,7 @@ class CitizenProfileController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No tienes acceso a esta solicitud.'
+                    'message' => 'No tienes acceso a esta solicitud.',
                 ], 403);
             }
             abort(403, 'No tienes acceso a esta solicitud.');
@@ -819,18 +839,19 @@ class CitizenProfileController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Solo puedes eliminar solicitudes en estado "Nuevo".'
+                    'message' => 'Solo puedes eliminar solicitudes en estado "Nuevo".',
                 ], 403);
             }
 
             Session::flash('error', 'Solo puedes eliminar solicitudes en estado "Nuevo".');
+
             return redirect()->route('citizen.profile.urban_dev_requests');
         }
 
         try {
             // Eliminar archivos asociados de S3
             foreach ($urbanDevRequest->files as $file) {
-                $filepath = 'desarrollo_urbano/' . $file->filename;
+                $filepath = 'desarrollo_urbano/'.$file->filename;
                 Storage::disk('s3')->delete($filepath);
                 $file->delete();
             }
@@ -840,22 +861,24 @@ class CitizenProfileController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Solicitud eliminada exitosamente.'
+                    'message' => 'Solicitud eliminada exitosamente.',
                 ]);
             }
 
             Session::flash('success', 'Tu solicitud se eliminó correctamente.');
+
             return redirect()->route('citizen.profile.urban_dev_requests');
 
         } catch (\Exception $e) {
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al eliminar la solicitud.'
+                    'message' => 'Error al eliminar la solicitud.',
                 ], 500);
             }
 
             Session::flash('error', 'Error al eliminar la solicitud. Por favor, inténtalo de nuevo.');
+
             return back();
         }
     }
@@ -869,7 +892,7 @@ class CitizenProfileController extends Controller
             $request->validate([
                 'file' => 'required|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png',
                 'urban_dev_request_id' => 'required|exists:urban_dev_requests,id',
-                'document_type' => 'required|string|max:255'
+                'document_type' => 'required|string|max:255',
             ]);
 
             $urbanDevRequest = \App\Models\UrbanDevRequest::findOrFail($request->urban_dev_request_id);
@@ -878,7 +901,7 @@ class CitizenProfileController extends Controller
             if ($urbanDevRequest->user_id !== Auth::id()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No tienes acceso a esta solicitud.'
+                    'message' => 'No tienes acceso a esta solicitud.',
                 ], 403);
             }
 
@@ -888,10 +911,10 @@ class CitizenProfileController extends Controller
             $file = $request->file('file');
             $originalName = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
-            $fileName = 'desarrollo_urbano_' . time() . '_' . Str::random(10) . '.' . $extension;
+            $fileName = 'desarrollo_urbano_'.time().'_'.Str::random(10).'.'.$extension;
 
             // Guardar archivo en S3
-            $filepath = 'desarrollo_urbano/' . $fileName;
+            $filepath = 'desarrollo_urbano/'.$fileName;
             Storage::disk('s3')->put($filepath, file_get_contents($file));
             $s3Url = Storage::disk('s3')->url($filepath);
 
@@ -904,7 +927,7 @@ class CitizenProfileController extends Controller
                 'filename' => $fileName,
                 'file_extension' => $extension,
                 'filesize' => $file->getSize(),
-                's3_asset_url' => $s3Url
+                's3_asset_url' => $s3Url,
             ]);
 
             return response()->json([
@@ -917,14 +940,14 @@ class CitizenProfileController extends Controller
                     'filename' => $urbanDevFile->filename,
                     'size' => $file->getSize(),
                     'url' => $s3Url,
-                    'created_at' => $urbanDevFile->created_at->toISOString() // Agregar created_at para evitar Invalid Date
-                ]
+                    'created_at' => $urbanDevFile->created_at->toISOString(), // Agregar created_at para evitar Invalid Date
+                ],
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al subir el archivo: ' . $e->getMessage()
+                'message' => 'Error al subir el archivo: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -957,21 +980,21 @@ class CitizenProfileController extends Controller
 
             // permiso-construccion-panteones
             'copia-de-identificacion-del-propietario' => 'Copia de identificación del propietario',
-            'copia-del-documento-de-perpetuidad' => 'Copia del documento de perpetuidad'
+            'copia-del-documento-de-perpetuidad' => 'Copia del documento de perpetuidad',
         ];
 
         // Verificar si el slug existe en el mapeo
         if (isset($documentMapping[$receivedSlug])) {
             return [
                 'name' => $documentMapping[$receivedSlug],
-                'slug' => $receivedSlug
+                'slug' => $receivedSlug,
             ];
         }
 
         // Si no existe en el mapeo, usar el slug recibido como nombre y generar un slug limpio
         return [
             'name' => $receivedSlug,
-            'slug' => Str::slug($receivedSlug)
+            'slug' => Str::slug($receivedSlug),
         ];
     }
 
@@ -988,12 +1011,12 @@ class CitizenProfileController extends Controller
             if ($sareRequest->user_id !== Auth::id()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No tienes acceso a este archivo.'
+                    'message' => 'No tienes acceso a este archivo.',
                 ], 403);
             }
 
             // Eliminar archivo de S3
-            $filepath = 'sare/' . $file->filename;
+            $filepath = 'sare/'.$file->filename;
             Storage::disk('s3')->delete($filepath);
 
             // Eliminar registro de la base de datos
@@ -1001,13 +1024,13 @@ class CitizenProfileController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Archivo eliminado exitosamente.'
+                'message' => 'Archivo eliminado exitosamente.',
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al eliminar el archivo.'
+                'message' => 'Error al eliminar el archivo.',
             ], 500);
         }
     }
@@ -1024,12 +1047,12 @@ class CitizenProfileController extends Controller
             if ($file->user_id !== Auth::id()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No tienes acceso a este archivo.'
+                    'message' => 'No tienes acceso a este archivo.',
                 ], 403);
             }
 
             // Eliminar archivo de S3
-            $filepath = 'desarrollo_urbano/' . $file->filename;
+            $filepath = 'desarrollo_urbano/'.$file->filename;
             Storage::disk('s3')->delete($filepath);
 
             // Eliminar registro de la base de datos
@@ -1037,13 +1060,13 @@ class CitizenProfileController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Archivo eliminado exitosamente.'
+                'message' => 'Archivo eliminado exitosamente.',
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al eliminar el archivo.'
+                'message' => 'Error al eliminar el archivo.',
             ], 500);
         }
     }
@@ -1059,14 +1082,14 @@ class CitizenProfileController extends Controller
             $request->validate([
                 'file' => 'required|file|max:10240', // 10MB max
                 'sare_request_id' => 'required|exists:sare_requests,id',
-                'document_type' => 'required|string|max:255'
+                'document_type' => 'required|string|max:255',
             ]);
 
             $file = $request->file('file');
             $sareRequestId = $request->get('sare_request_id');
             $documentType = $request->get('document_type');
 
-            if (!$file || !$file->isValid()) {
+            if (! $file || ! $file->isValid()) {
                 return response()->json(['error' => 'Archivo no válido'], 400);
             }
 
@@ -1074,15 +1097,15 @@ class CitizenProfileController extends Controller
             $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx'];
             $extension = strtolower($file->getClientOriginalExtension());
 
-            if (!in_array($extension, $allowedExtensions)) {
+            if (! in_array($extension, $allowedExtensions)) {
                 return response()->json(['error' => 'Tipo de archivo no permitido.'], 400);
             }
 
             // Generar nombre único con el tipo de documento
-            $fileName = 'sare_' . $documentType . '_' . time() . '_' . Str::random(10) . '.' . $extension;
+            $fileName = 'sare_'.$documentType.'_'.time().'_'.Str::random(10).'.'.$extension;
 
             // Guardar archivo en S3
-            $filepath = 'sare/' . $fileName;
+            $filepath = 'sare/'.$fileName;
             Storage::disk('s3')->put($filepath, file_get_contents($file));
             $s3Url = Storage::disk('s3')->url($filepath);
 
@@ -1096,7 +1119,7 @@ class CitizenProfileController extends Controller
                 'file_size' => $file->getSize(),
                 'file_type' => $file->getMimeType(),
                 'file_extension' => $extension,
-                's3_asset_url' => $s3Url
+                's3_asset_url' => $s3Url,
             ]);
 
             return response()->json([
@@ -1110,12 +1133,12 @@ class CitizenProfileController extends Controller
                     'formatted_size' => $sareFile->formatted_size,
                     'file_type' => $sareFile->file_type,
                     'document_type' => $documentType,
-                    'url' => $s3Url
-                ]
+                    'url' => $s3Url,
+                ],
             ]);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al subir archivo: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Error al subir archivo: '.$e->getMessage()], 500);
         }
     }
 
@@ -1132,14 +1155,14 @@ class CitizenProfileController extends Controller
         $uploadId = Str::random(32);
 
         // Crear directorio temporal para chunks
-        $tempDir = public_path('temp/chunks/' . $uploadId);
-        if (!file_exists($tempDir)) {
+        $tempDir = public_path('temp/chunks/'.$uploadId);
+        if (! file_exists($tempDir)) {
             mkdir($tempDir, 0755, true);
         }
 
         return response()->json([
             'upload_id' => $uploadId,
-            'total_chunks' => $totalChunks
+            'total_chunks' => $totalChunks,
         ]);
     }
 
@@ -1153,20 +1176,20 @@ class CitizenProfileController extends Controller
             $chunkIndex = $request->chunk_index;
             $chunk = $request->file('chunk');
 
-            if (!$chunk || !$chunk->isValid()) {
+            if (! $chunk || ! $chunk->isValid()) {
                 return response()->json(['error' => 'Chunk no válido'], 400);
             }
 
-            $tempDir = public_path('temp/chunks/' . $uploadId);
-            $chunkPath = $tempDir . '/chunk_' . $chunkIndex;
+            $tempDir = public_path('temp/chunks/'.$uploadId);
+            $chunkPath = $tempDir.'/chunk_'.$chunkIndex;
 
             // Guardar chunk
-            $chunk->move($tempDir, 'chunk_' . $chunkIndex);
+            $chunk->move($tempDir, 'chunk_'.$chunkIndex);
 
             return response()->json(['success' => true]);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al subir chunk: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Error al subir chunk: '.$e->getMessage()], 500);
         }
     }
 
@@ -1181,31 +1204,31 @@ class CitizenProfileController extends Controller
             $totalChunks = $request->total_chunks;
             $sareRequestId = $request->sare_request_id;
 
-            $tempDir = public_path('temp/chunks/' . $uploadId);
+            $tempDir = public_path('temp/chunks/'.$uploadId);
 
             // Validar que todos los chunks estén presentes
             for ($i = 0; $i < $totalChunks; $i++) {
-                $chunkPath = $tempDir . '/chunk_' . $i;
-                if (!file_exists($chunkPath)) {
-                    return response()->json(['error' => 'Chunk faltante: ' . $i], 400);
+                $chunkPath = $tempDir.'/chunk_'.$i;
+                if (! file_exists($chunkPath)) {
+                    return response()->json(['error' => 'Chunk faltante: '.$i], 400);
                 }
             }
 
             // Combinar chunks
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
-            $finalFileName = time() . '_' . Str::random(10) . '.' . $extension;
-            $finalPath = public_path('storage/sare_files/' . $finalFileName);
+            $finalFileName = time().'_'.Str::random(10).'.'.$extension;
+            $finalPath = public_path('storage/sare_files/'.$finalFileName);
 
             // Crear directorio si no existe
             $directory = dirname($finalPath);
-            if (!file_exists($directory)) {
+            if (! file_exists($directory)) {
                 mkdir($directory, 0755, true);
             }
 
             $finalFile = fopen($finalPath, 'wb');
 
             for ($i = 0; $i < $totalChunks; $i++) {
-                $chunkPath = $tempDir . '/chunk_' . $i;
+                $chunkPath = $tempDir.'/chunk_'.$i;
                 $chunkData = file_get_contents($chunkPath);
                 fwrite($finalFile, $chunkData);
                 unlink($chunkPath); // Eliminar chunk temporal
@@ -1220,7 +1243,7 @@ class CitizenProfileController extends Controller
                 $sareFile = SareRequestFile::create([
                     'sare_request_id' => $sareRequestId,
                     'file_name' => $filename,
-                    'file_path' => 'public/sare_files/' . $finalFileName,
+                    'file_path' => 'public/sare_files/'.$finalFileName,
                     'file_size' => filesize($finalPath),
                     'file_type' => mime_content_type($finalPath),
                 ]);
@@ -1230,16 +1253,16 @@ class CitizenProfileController extends Controller
                 'success' => true,
                 'file_id' => $sareFile ? $sareFile->id : null,
                 'file_name' => $filename,
-                'file_path' => 'sare_files/' . $finalFileName,
+                'file_path' => 'sare_files/'.$finalFileName,
                 'file_size' => filesize($finalPath),
             ]);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al finalizar upload: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Error al finalizar upload: '.$e->getMessage()], 500);
         }
     }
 
-    //Citatorios
+    // Citatorios
     public function summons()
     {
         $user = Auth::user();
@@ -1254,7 +1277,7 @@ class CitizenProfileController extends Controller
         return view('front.user_profiles.citizen.summons.index', [
             'summons' => $summons,
             'mode' => $mode,
-            'citizenId' => $citizenId
+            'citizenId' => $citizenId,
         ]);
     }
 
@@ -1277,7 +1300,7 @@ class CitizenProfileController extends Controller
 
         return view('front.user_profiles.citizen.identification_certificates', [
             'certificates' => $certificates,
-            'mode' => $mode
+            'mode' => $mode,
         ]);
     }
 
@@ -1335,7 +1358,7 @@ class CitizenProfileController extends Controller
             'applications' => $applications,
             'vacancies' => $vacancies,
             'appliedVacancyIds' => $appliedVacancyIds,
-            'mode' => $mode
+            'mode' => $mode,
         ]);
     }
 
@@ -1352,7 +1375,7 @@ class CitizenProfileController extends Controller
         return view('front.user_profiles.citizen.applications.show', [
             'vacancy' => $vacancy,
             'hasApplied' => $hasApplied,
-            'mode' => $mode
+            'mode' => $mode,
         ]);
     }
     // ──────────────────────────────────────────────
@@ -1439,5 +1462,232 @@ class CitizenProfileController extends Controller
 
         return redirect()->route('citizen.appointments.show', $booking->id)
             ->with('success', 'Tu cita ha sido cancelada.');
+    }
+
+    // =============== MEDIO AMBIENTE ===============
+
+    /**
+     * Formulario de nueva solicitud de Poda, Tala o Donación.
+     */
+    public function createEnvironmentRequest($requestType)
+    {
+        if (! array_key_exists($requestType, EnvironmentRequest::REQUEST_TYPES)) {
+            abort(404);
+        }
+
+        return view('front.user_profiles.citizen.environment_create', compact('requestType'));
+    }
+
+    public function storeEnvironmentRequest(Request $request)
+    {
+        $requestType = $request->input('request_type');
+
+        if (! array_key_exists($requestType, EnvironmentRequest::REQUEST_TYPES)) {
+            abort(404);
+        }
+
+        $rules = [
+            'request_type' => 'required|string',
+            'nombre' => 'required|string|max:255',
+            'domicilio' => 'required|string|max:255',
+        ];
+
+        if ($requestType === EnvironmentRequest::TYPE_DONACION) {
+            // Donación sólo captura nombre y domicilio: el resto vive en los
+            // documentos adjuntos, subidos por separado vía dropzone.
+        } else {
+            $rules['colonia'] = 'required|string|max:255';
+            $rules['motivo'] = 'required|string|max:1000';
+            $rules['telefono_celular'] = 'required|string|max:20';
+            $rules['telefono_fijo'] = 'required|string|max:20';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $environmentRequest = EnvironmentRequest::create([
+                'user_id' => Auth::id(),
+                'request_type' => $requestType,
+                'nombre' => $request->nombre,
+                'domicilio' => $request->domicilio,
+                'colonia' => $request->colonia,
+                'motivo' => $request->motivo,
+                'telefono_celular' => $request->telefono_celular,
+                'telefono_fijo' => $request->telefono_fijo,
+            ]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Solicitud enviada exitosamente.',
+                    'redirect' => route('citizen.environment.show', $environmentRequest),
+                ]);
+            }
+
+            Session::flash('success', 'Tu solicitud se ha creado correctamente.');
+
+            return redirect()->route('citizen.environment.show', $environmentRequest);
+        } catch (\Exception $e) {
+            \Log::error('storeEnvironmentRequest exception: '.$e->getMessage(), ['exception' => $e]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.',
+                    'debug_message' => config('app.debug') ? $e->getMessage() : null,
+                ], 500);
+            }
+
+            Session::flash('error', 'Error al procesar la solicitud. Por favor, inténtalo de nuevo.');
+
+            return back()->withInput();
+        }
+    }
+
+    public function showEnvironmentRequest($id)
+    {
+        $environmentRequest = EnvironmentRequest::with('files')->findOrFail($id);
+
+        if ($environmentRequest->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a esta solicitud.');
+        }
+
+        return view('front.user_profiles.citizen.environment_show', compact('environmentRequest'));
+    }
+
+    /**
+     * Listado de solicitudes de Medio Ambiente del ciudadano, filtrado por
+     * tipo de trámite (poda | tala | donacion).
+     */
+    public function environmentRequests($requestType)
+    {
+        if (! array_key_exists($requestType, EnvironmentRequest::REQUEST_TYPES)) {
+            abort(404);
+        }
+
+        $environmentRequests = EnvironmentRequest::where('user_id', Auth::id())
+            ->where('request_type', $requestType)
+            ->latest()
+            ->paginate(10);
+
+        return view('front.user_profiles.citizen.environment_requests', compact('environmentRequests', 'requestType'));
+    }
+
+    /**
+     * Subir uno de los tres documentos obligatorios de Donación
+     * (ine | carta_compromiso | solicitud_donacion) a S3.
+     */
+    public function uploadEnvironmentFile(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png',
+                'environment_request_id' => 'required|exists:environment_requests,id',
+                'document_type' => ['required', Rule::in(array_keys(EnvironmentRequestFile::DONACION_DOCUMENTS))],
+            ]);
+
+            $environmentRequest = EnvironmentRequest::findOrFail($request->environment_request_id);
+
+            if ($environmentRequest->user_id !== Auth::id()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes acceso a esta solicitud.',
+                ], 403);
+            }
+
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            $fileName = 'medio_ambiente_'.time().'_'.Str::random(10).'.'.$extension;
+
+            $filepath = 'medio_ambiente/'.$fileName;
+            Storage::disk('s3')->put($filepath, file_get_contents($file));
+            $s3Url = Storage::disk('s3')->url($filepath);
+
+            $environmentFile = EnvironmentRequestFile::create([
+                'user_id' => Auth::id(),
+                'environment_request_id' => $environmentRequest->id,
+                'document_type' => $request->document_type,
+                'name' => EnvironmentRequestFile::DONACION_DOCUMENTS[$request->document_type],
+                'filename' => $fileName,
+                'file_extension' => $extension,
+                'filesize' => $file->getSize(),
+                's3_asset_url' => $s3Url,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Archivo subido exitosamente.',
+                'file' => [
+                    'id' => $environmentFile->id,
+                    'name' => $environmentFile->name,
+                    'document_type' => $environmentFile->document_type,
+                    'filename' => $environmentFile->filename,
+                    'size' => $file->getSize(),
+                    'url' => $s3Url,
+                    'created_at' => $environmentFile->created_at->toISOString(),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al subir el archivo: '.$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function deleteEnvironmentFile($fileId)
+    {
+        $file = EnvironmentRequestFile::findOrFail($fileId);
+
+        if ($file->user_id !== Auth::id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tienes acceso a este archivo.',
+            ], 403);
+        }
+
+        if ($file->s3_asset_url) {
+            $key = ltrim(parse_url($file->s3_asset_url, PHP_URL_PATH), '/');
+            Storage::disk('s3')->delete($key);
+        }
+
+        $file->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    // =============== BANDEJA DE MENSAJES ===============
+
+    public function messages()
+    {
+        $messages = CitizenMessage::where('user_id', Auth::id())
+            ->latest()
+            ->paginate(10);
+
+        return view('front.user_profiles.citizen.messages.index', compact('messages'));
+    }
+
+    public function showMessage($id)
+    {
+        $message = CitizenMessage::findOrFail($id);
+
+        if ($message->user_id !== Auth::id()) {
+            abort(403, 'No tienes acceso a este mensaje.');
+        }
+
+        $message->markAsRead();
+
+        return view('front.user_profiles.citizen.messages.show', compact('message'));
     }
 }

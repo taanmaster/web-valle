@@ -9,10 +9,23 @@ class GeneralBlog extends Model
 {
     use HasFactory;
 
+    /**
+     * Valores de `type`. Cada uno es un blog independiente que comparte
+     * tabla y componentes Livewire.
+     */
+    public const TYPE_WELFARE = 'welfare';
+
+    public const TYPE_TRAINING = 'training';
+
+    public const TYPE_EVENTS = 'events';
+
+    public const TYPE_MEDIO_AMBIENTE = 'medio_ambiente';
+
     protected $table = 'general_blogs';
 
     protected $fillable = [
         'type',
+        'blog_category_id',
         'title',
         'slug',
         'description',
@@ -26,5 +39,10 @@ class GeneralBlog extends Model
     public function images()
     {
         return $this->hasMany(GeneralBlogImage::class, 'general_blog_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class, 'blog_category_id');
     }
 }

@@ -6,6 +6,10 @@
 
     $currentRoute = request()->route()->getName();
 
+    $unreadMessagesCount = $userRole === 'citizen'
+        ? \App\Models\CitizenMessage::where('user_id', auth()->id())->unread()->count()
+        : 0;
+
     // Active group detection — citizen role
     $iniGroupActive =
         in_array($currentRoute, [
@@ -15,16 +19,19 @@
             'citizen.profile.settings',
         ]) ||
         str_starts_with($currentRoute, 'citizen.appointments') ||
-        str_starts_with($currentRoute, 'citizen.orders');
+        str_starts_with($currentRoute, 'citizen.orders') ||
+        str_starts_with($currentRoute, 'citizen.messages');
 
     $group2Active =
         request()->segment(4) === 'secretaria-de-ayuntamiento' ||
         request()->segment(4) === 'economia' ||
         request()->segment(4) === 'tramites' ||
+        request()->segment(4) === 'medio-ambiente' ||
         $currentRoute === 'citizen.profile.urban_dev_requests' ||
         str_starts_with($currentRoute, 'citizen.profile.applications') ||
         str_starts_with($currentRoute, 'citizen.sare') ||
         str_starts_with($currentRoute, 'citizen.third_party') ||
+        str_starts_with($currentRoute, 'citizen.environment') ||
         str_starts_with($currentRoute, 'citizen.profile.identification_certificates');
 
     $group3Active = $currentRoute === 'citizen.services.index';
@@ -78,6 +85,13 @@
                                 class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.orders') ? 'active' : '' }}">
                                 <ion-icon name="receipt-outline"></ion-icon> Mis Órdenes / Pagos
                             </a>
+                            <a href="{{ route('citizen.messages.index') }}"
+                                class="list-group-item list-group-item-action d-flex align-items-center justify-content-between {{ str_starts_with($currentRoute, 'citizen.messages') ? 'active' : '' }}">
+                                <span><ion-icon name="mail-outline"></ion-icon> Mis Mensajes</span>
+                                @if ($unreadMessagesCount > 0)
+                                    <span class="badge bg-danger rounded-pill">{{ $unreadMessagesCount }}</span>
+                                @endif
+                            </a>
                             <a href="{{ route('citizen.profile.edit') }}"
                                 class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.profile.edit' ? 'active' : '' }}">
                                 <ion-icon name="create-outline"></ion-icon> Editar Perfil
@@ -126,6 +140,10 @@
                                 <a href="{{ route('citizen.profile.applications') }}"
                                     class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.profile.applications') ? 'active' : '' }}">
                                     <ion-icon name="briefcase-outline"></ion-icon> Solicitudes Vacantes
+                                </a>
+                                <a href="{{ route('citizen.my_requests', 'medio-ambiente') }}"
+                                    class="list-group-item list-group-item-action {{ request()->segment(4) === 'medio-ambiente' || str_starts_with($currentRoute, 'citizen.environment') ? 'active' : '' }}">
+                                    <ion-icon name="leaf-outline"></ion-icon> Medio Ambiente
                                 </a>
                             </div>
                         </div>

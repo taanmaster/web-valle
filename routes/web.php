@@ -55,6 +55,11 @@ use App\Http\Controllers\HRVacancyController;
 // Tesorería
 use App\Http\Controllers\TreasuryAccountPayableController;
 use App\Http\Controllers\BillableServiceController;
+use App\Http\Controllers\BlogCategoryController;
+use App\Http\Controllers\CitizenMessageController;
+use App\Http\Controllers\EnvironmentBlogController;
+use App\Http\Controllers\EnvironmentEventController;
+use App\Http\Controllers\EnvironmentRequestController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TsrBillingAccountController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
@@ -289,6 +294,32 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/direccion_de_salud/entrada/{slug}', [
         'uses' => 'FrontController@healthDirectionDetail',
         'as' => 'health_direction.detail'
+    ])->where('slug', '[\w\d\-\_]+');
+
+    // Dirección de Medio Ambiente — Front público (sin sesión)
+    Route::get('/direccion_de_medio_ambiente', [
+        'uses' => 'FrontController@environment',
+        'as' => 'environment.index',
+    ]);
+
+    Route::get('/direccion_de_medio_ambiente/listado-floristico', [
+        'uses' => 'FrontController@environmentFloristicList',
+        'as' => 'environment.floristic_list',
+    ]);
+
+    Route::get('/direccion_de_medio_ambiente/articulos', [
+        'uses' => 'FrontController@environmentList',
+        'as' => 'environment.list',
+    ]);
+
+    Route::get('/direccion_de_medio_ambiente/entrada/{slug}', [
+        'uses' => 'FrontController@environmentDetail',
+        'as' => 'environment.detail',
+    ])->where('slug', '[\w\d\-\_]+');
+
+    Route::get('/direccion_de_medio_ambiente/tramite/{slug}', [
+        'uses' => 'FrontController@environmentProcedure',
+        'as' => 'environment.procedure',
     ])->where('slug', '[\w\d\-\_]+');
 
     // Módulo de Ayuda — Front
@@ -628,6 +659,40 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             // Ruta para KPIs de desarrollo urbano
             Route::get('kpis', [UrbanDevKPIsController::class, 'index'])->name('urban_dev.kpis.index');
+        });
+
+        /* Dirección de Medio Ambiente */
+        Route::group(['prefix' => 'environment'], function () {
+            Route::resource('requests', EnvironmentRequestController::class)
+                ->only(['index', 'show'])
+                ->parameters(['requests' => 'environmentRequest'])
+                ->names([
+                    'index' => 'environment.requests.index',
+                    'show' => 'environment.requests.show',
+                ]);
+
+            Route::resource('blog', EnvironmentBlogController::class)->names([
+                'index' => 'medio_ambiente_blog.admin.index',
+                'create' => 'medio_ambiente_blog.admin.create',
+                'store' => 'medio_ambiente_blog.admin.store',
+                'show' => 'medio_ambiente_blog.admin.show',
+                'edit' => 'medio_ambiente_blog.admin.edit',
+                'update' => 'medio_ambiente_blog.admin.update',
+                'destroy' => 'medio_ambiente_blog.admin.destroy',
+            ]);
+            Route::get('blog/detail/{id}', [EnvironmentBlogController::class, 'adminDetail'])
+                ->name('medio_ambiente_blog.admin.detail');
+
+            // store/update/destroy los resuelve el propio componente Livewire
+            // (Crud::save() y Table::deleteEntry()), no rutas dedicadas.
+            Route::resource('events', EnvironmentEventController::class)
+                ->only(['index', 'create', 'show', 'edit'])
+                ->names([
+                    'index' => 'environment_events.admin.index',
+                    'create' => 'environment_events.admin.create',
+                    'show' => 'environment_events.admin.show',
+                    'edit' => 'environment_events.admin.edit',
+                ]);
         });
 
         /* DIF */
@@ -1506,6 +1571,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::patch('ordenes/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.update_status');
                 Route::patch('ordenes/{order}/nota', [OrderController::class, 'updateNote'])->name('admin.orders.update_note');
             });
+
+            // Bandeja de mensajes al ciudadano — genérica, la usa cualquier
+            // módulo con un botón "Contactar al Solicitante".
+            Route::post('mensajes-ciudadano', [CitizenMessageController::class, 'store'])
+                ->name('admin.citizen_messages.store');
         });
 
         /* ------------------- */
@@ -1793,6 +1863,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
         ]);
         Route::get('events-blog/detail/{id}', [EventsBlogController::class, 'adminDetail'])
             ->name('events_blog.admin.detail');
+
+        // Categorías de blog — compartidas por welfare/training/events/medio_ambiente
+        Route::get('blog-categorias', [BlogCategoryController::class, 'index'])
+            ->name('blog_categories.admin.index');
 
         // Cumpleaños de Administración
         Route::get('/birthday', [BirthdayController::class, 'index'])
@@ -2119,6 +2193,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
         // Rutas para archivos de desarrollo urbano
         Route::post('/desarrollo-urbano/archivo/subir', 'CitizenProfileController@uploadUrbanDevFile')->name('citizen.urban_dev.file.upload');
         Route::delete('/desarrollo-urbano/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteUrbanDevFile')->name('citizen.urban_dev.file.delete');
+
+        // Rutas Medio Ambiente para ciudadanos
+        Route::get('/medio-ambiente/{requestType}/crear', 'CitizenProfileController@createEnvironmentRequest')->name('citizen.environment.create');
+        Route::post('/medio-ambiente/guardar', 'CitizenProfileController@storeEnvironmentRequest')->name('citizen.environment.store');
+        Route::get('/medio-ambiente/mis-solicitudes/{requestType}', 'CitizenProfileController@environmentRequests')->name('citizen.environment.requests');
+        Route::get('/medio-ambiente/{environmentRequest}', 'CitizenProfileController@showEnvironmentRequest')->name('citizen.environment.show');
+
+        // Rutas para archivos de Medio Ambiente (adjuntos de Donación)
+        Route::post('/medio-ambiente/archivo/subir', 'CitizenProfileController@uploadEnvironmentFile')->name('citizen.environment.file.upload');
+        Route::delete('/medio-ambiente/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteEnvironmentFile')->name('citizen.environment.file.delete');
+
+        // Rutas para la bandeja de mensajes del ciudadano
+        Route::get('/perfil/mensajes', 'CitizenProfileController@messages')->name('citizen.messages.index');
+        Route::get('/perfil/mensajes/{message}', 'CitizenProfileController@showMessage')->name('citizen.messages.show');
 
         //Rutas para citatorios
         Route::get('/citatorios', 'CitizenProfileController@summons')->name('citizen.summons.index');

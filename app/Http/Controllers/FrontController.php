@@ -10,8 +10,10 @@ use App\Models\CTOProperty;
 use App\Models\CTOPropertyTax;
 use App\Models\DifBanner;
 // Modelos Gaceta Municipal
+use App\Models\EnvironmentEvent;
 use App\Models\Event;
 use App\Models\Gazette;
+use App\Models\GeneralBlog;
 // Modelos Transparencia
 use App\Models\Headerband;
 use App\Models\HealthDirectionBlog;
@@ -915,6 +917,75 @@ class FrontController extends Controller
         $platicas = HealthDirectionBlog::where('category', 'Platica')->latest()->take(2)->get();
 
         return view('front.health_direction.index', compact('talleres', 'campanas', 'eventos', 'platicas'));
+    }
+
+    // Dirección de Medio Ambiente
+    public function environment()
+    {
+        // El widget de calendario espera name, date_start, location y blog_url.
+        $events = EnvironmentEvent::where('is_active', true)
+            ->orderBy('date_start')
+            ->get();
+
+        $blogs = GeneralBlog::where('type', GeneralBlog::TYPE_MEDIO_AMBIENTE)
+            ->where('is_active', true)
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        return view('front.environment.index', [
+            'events' => $events,
+            'blogs' => $blogs,
+            'procedures' => config('medio_ambiente.procedures'),
+        ]);
+    }
+
+    public function environmentProcedure($slug)
+    {
+        $procedure = config('medio_ambiente.procedures.'.$slug);
+
+        if (! $procedure) {
+            abort(404);
+        }
+
+        return view('front.environment.procedure', [
+            'slug' => $slug,
+            'procedure' => $procedure,
+        ]);
+    }
+
+    public function environmentList()
+    {
+        $blogs = GeneralBlog::where('type', GeneralBlog::TYPE_MEDIO_AMBIENTE)
+            ->where('is_active', true)
+            ->latest('published_at')
+            ->paginate(9);
+
+        return view('front.environment.list', compact('blogs'));
+    }
+
+    public function environmentDetail($slug)
+    {
+        $blog = GeneralBlog::where('type', GeneralBlog::TYPE_MEDIO_AMBIENTE)
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        return view('front.environment.show', compact('blog'));
+    }
+
+    /**
+     * Descarga directa del listado florístico. El archivo lo proporciona la
+     * Dirección y vive como asset estático.
+     */
+    public function environmentFloristicList()
+    {
+        $path = public_path(config('medio_ambiente.floristic_list_file'));
+
+        if (! is_file($path)) {
+            abort(404);
+        }
+
+        return response()->download($path);
     }
 
     // Inicio de sesión administrativa
