@@ -84,22 +84,33 @@
                                     <label class="form-label">Persona que atendió</label>
                                     <input type="text" class="form-control" wire:model="persona_atendio">
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Especie</label>
-                                    <input type="text" class="form-control" wire:model="especie">
+
+                                <div class="col-md-{{ $this->isPoda() || $this->isTala() ? '8' : '6' }}">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Especie</label>
+                                            <input type="text" class="form-control" wire:model="especie">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Cantidad</label>
+                                            <input type="text" class="form-control" wire:model="cantidad">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Altura del árbol</label>
+                                            <input type="text" class="form-control" wire:model="altura_arbol">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Coordenadas</label>
+                                            <input type="text" class="form-control" wire:model="coordenadas">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Cantidad</label>
-                                    <input type="text" class="form-control" wire:model="cantidad">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Altura del árbol</label>
-                                    <input type="text" class="form-control" wire:model="altura_arbol">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Coordenadas</label>
-                                    <input type="text" class="form-control" wire:model="coordenadas">
-                                </div>
+
+                                @if ($this->isPoda() || $this->isTala())
+                                    <div class="col-md-4 d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('images/three.webp') }}" alt="Árbol" class="img-fluid">
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="d-flex justify-content-end mt-3">
