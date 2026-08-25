@@ -38,9 +38,12 @@ return [
     // Multipagos BanBajío — solicitud REST firmada con RSA/SHA512
     'bajio' => [
         'driver'           => env('BAJIO_DRIVER', 'rest'),
-        'servicio_id'      => env('BAJIO_SERVICIO_ID'),
-        'concepto'         => env('BAJIO_CONCEPTO', '1'),
-        'api_url'          => env('BAJIO_API_URL', 'https://multipagos.bb.com.mx/multipagos/api/pruebas/solicitar'),
+        // Valores proporcionados por BanBajío para Municipio Valle de Santiago.
+        'servicio_id'      => '607',
+        'concepto'         => '1',
+        'api_url'          => env('APP_ENV') === 'production'
+            ? 'https://multipagos.bb.com.mx/multipagos/api/solicitar'
+            : 'https://multipagos.bb.com.mx/multipagos/api/pruebas/solicitar',
         'private_key_path' => env('BAJIO_PRIVATE_KEY_PATH', 'keys/bajio/private_key.pem'),
         'public_key_path'  => env('BAJIO_PUBLIC_KEY_PATH',  'keys/bajio/public_key_bajio.pem'),
         'timeout'          => (int) env('BAJIO_TIMEOUT', 15),

@@ -12,8 +12,8 @@ final class BanBajioMultipagos
     public function solicitarPago(string $folio, string $referencia, string $monto): string
     {
         $data = [
-            'servicio' => (string) config('services.bajio.servicio_id'),
-            'concepto' => (string) config('services.bajio.concepto', '1'),
+            'servicio' => (string) (config('services.bajio.servicio_id') ?: env('BAJIO_SERVICIO_ID')),
+            'concepto' => (string) (config('services.bajio.concepto') ?: env('BAJIO_CONCEPTO', '1')),
             'folio' => $folio,
             'referencia' => $referencia,
             'monto' => $monto,
@@ -28,7 +28,7 @@ final class BanBajioMultipagos
         try {
             $response = Http::timeout((int) config('services.bajio.timeout', 15))
                 ->asJson()
-                ->post((string) config('services.bajio.api_url'), $data);
+                ->post((string) (config('services.bajio.api_url') ?: env('BAJIO_API_URL')), $data);
         } catch (ConnectionException $exception) {
             Log::channel((string) config('services.bajio.log_channel', 'banbajio'))->error('banbajio.request.connection_failed', [
                 'folio' => $folio,
