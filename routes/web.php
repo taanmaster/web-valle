@@ -466,6 +466,21 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::resource('gazettes', GazetteController::class);
         Route::resource('gazette_files', GazetteFileController::class);
 
+        Route::post('/gazette-files/init-chunk-upload', [
+            'uses' => 'GazetteFileController@initChunkUpload',
+            'as' => 'gazette_files.init-chunk-upload',
+        ]);
+
+        Route::post('/gazette-files/upload-chunk', [
+            'uses' => 'GazetteFileController@uploadChunk',
+            'as' => 'gazette_files.upload-chunk',
+        ]);
+
+        Route::post('/gazette-files/finalize-chunk-upload', [
+            'uses' => 'GazetteFileController@finalizeChunkUpload',
+            'as' => 'gazette_files.finalize-chunk-upload',
+        ]);
+
         // Rutas para subida por chunks
         Route::post('/gazettes/init-chunk-upload', [
             'uses' => 'GazetteController@initChunkUpload',

@@ -107,7 +107,7 @@
                                             </button>
                                         </div>
 
-                                        <form method="POST" action="{{ route('gazette_files.store') }}"
+                                        <form id="gazetteFileForm" method="POST" action="{{ route('gazette_files.store') }}"
                                             enctype="multipart/form-data">
                                             {{ csrf_field() }}
                                             <div class="modal-body">
@@ -125,8 +125,15 @@
 
                                                     <div class="form-group col-md-12">
                                                         <label class="form-label">Archivo</label>
-                                                        <input type="file" class="form-control" name="document"
+                                                        <input id="gazette_file_document" type="file" class="form-control" name="document"
                                                             required="">
+                                                    </div>
+
+                                                    <div id="gazette_file_upload_progress" class="col-md-12 mt-2" style="display: none;">
+                                                        <div class="progress">
+                                                            <div id="gazette_file_upload_progress_bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                                                        </div>
+                                                        <small id="gazette_file_upload_status" class="text-muted">Preparando subida...</small>
                                                     </div>
 
                                                     <input type="hidden" name="gazette_id" value="{{ $gazette->id }}"
@@ -136,7 +143,7 @@
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Cerrar</button>
-                                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                                <button id="gazette_file_submit" type="submit" class="btn btn-primary">Guardar Cambios</button>
                                             </div>
                                         </form>
                                     </div>
@@ -263,4 +270,97 @@
         </div>
     </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('gazetteFileForm');
+            const fileInput = document.getElementById('gazette_file_document');
+            const submitButton = document.getElementById('gazette_file_submit');
+            const progressContainer = document.getElementById('gazette_file_upload_progress');
+            const progressBar = document.getElementById('gazette_file_upload_progress_bar');
+            const status = document.getElementById('gazette_file_upload_status');
+            const chunkSize = 2 * 1024 * 1024;
+            const largeFileThreshold = 8 * 1024 * 1024;
+
+            form.addEventListener('submit', async function(event) {
+                const file = fileInput.files[0];
+                if (!file || file.size <= largeFileThreshold) {
+                    return;
+                }
+
+                event.preventDefault();
+                submitButton.disabled = true;
+                progressContainer.style.display = 'block';
+
+                try {
+                    setProgress(0, 'Inicializando subida...');
+                    const initResult = await postForm('{{ route('gazette_files.init-chunk-upload') }}', {
+                        gazette_id: form.querySelector('[name="gazette_id"]').value,
+                        name: form.querySelector('[name="name"]').value,
+                        description: form.querySelector('[name="description"]').value,
+                        filename: file.name,
+                        filesize: file.size,
+                        chunk_size: chunkSize,
+                    });
+
+                    for (let chunkNumber = 0; chunkNumber < initResult.total_chunks; chunkNumber++) {
+                        const start = chunkNumber * chunkSize;
+                        const chunk = file.slice(start, Math.min(start + chunkSize, file.size));
+                        const data = new FormData();
+                        data.append('_token', form.querySelector('[name="_token"]').value);
+                        data.append('upload_id', initResult.upload_id);
+                        data.append('chunk_number', chunkNumber);
+                        data.append('chunk', chunk, 'chunk_' + chunkNumber);
+                        await sendRequest('{{ route('gazette_files.upload-chunk') }}', data);
+                        setProgress(Math.round((chunkNumber + 1) / initResult.total_chunks * 90),
+                            'Subiendo fragmento ' + (chunkNumber + 1) + ' de ' + initResult.total_chunks + '...');
+                    }
+
+                    setProgress(95, 'Guardando archivo...');
+                    await postForm('{{ route('gazette_files.finalize-chunk-upload') }}', {
+                        upload_id: initResult.upload_id,
+                    });
+                    setProgress(100, 'Archivo subido correctamente.');
+                    window.location.reload();
+                } catch (error) {
+                    setProgress(0, error.message || 'No se pudo subir el archivo.');
+                    submitButton.disabled = false;
+                }
+            });
+
+            async function postForm(url, values) {
+                const data = new FormData();
+                data.append('_token', form.querySelector('[name="_token"]').value);
+                Object.keys(values).forEach(function(key) {
+                    data.append(key, values[key]);
+                });
+
+                return sendRequest(url, data);
+            }
+
+            async function sendRequest(url, data) {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    body: data,
+                });
+                const result = await response.json().catch(function() { return {}; });
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.error || result.message || 'No se pudo completar la subida.');
+                }
+
+                return result;
+            }
+
+            function setProgress(percent, message) {
+                progressBar.style.width = percent + '%';
+                progressBar.setAttribute('aria-valuenow', percent);
+                status.textContent = message;
+            }
+        });
+    </script>
 @endsection
