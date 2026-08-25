@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PaymentGatewayController extends Controller
 {
@@ -193,6 +194,11 @@ class PaymentGatewayController extends Controller
                     if (isset($dbOrder)) {
                         $dbOrder->update(['payment_status' => 'Fallido']);
                     }
+
+                    Log::channel((string) config('services.bajio.log_channel', 'banbajio'))->error('banbajio.payment.start_failed', [
+                        'order_id' => $dbOrder->id ?? null,
+                        'message' => $exception->getMessage(),
+                    ]);
 
                     return redirect()->back()->with('error', 'No fue posible iniciar el pago con BanBajío. Intenta de nuevo.');
                 }
