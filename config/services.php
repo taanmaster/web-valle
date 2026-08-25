@@ -42,7 +42,7 @@ return [
         'servicio_id'      => '607',
         'concepto'         => '1',
         'api_url'          => env('APP_ENV') === 'production'
-            ? 'https://multipagos.bb.com.mx/multipagos/api/solicitar'
+            ? 'https://multipagos.bb.com.mx/Estandar/solicitar'
             : 'https://multipagos.bb.com.mx/multipagos/api/pruebas/solicitar',
         'private_key_path' => env('BAJIO_PRIVATE_KEY_PATH', 'keys/bajio/private_key.pem'),
         'public_key_path'  => env('BAJIO_PUBLIC_KEY_PATH',  'keys/bajio/public_key_bajio.pem'),
