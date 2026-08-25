@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
@@ -37,5 +38,15 @@ class CheckoutController extends Controller
     public function failed()
     {
         return view('front.checkout.failed');
+    }
+
+    public function status(Request $request, Order $order)
+    {
+        abort_unless($order->user_id === $request->user()->id, 403);
+
+        return response()->json([
+            'payment_status' => $order->payment_status,
+            'paid_at' => $order->paid_at?->toIso8601String(),
+        ]);
     }
 }

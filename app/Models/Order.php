@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\BanBajioNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,6 +28,11 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function banBajioNotifications()
+    {
+        return $this->hasMany(BanBajioNotification::class);
     }
 
     public static function generateFolio(): string

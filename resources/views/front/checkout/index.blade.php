@@ -67,7 +67,7 @@
                                         <ion-icon name="card-outline" style="font-size:2rem;color:#0066cc"></ion-icon>
                                         <div>
                                             <div class="fw-semibold">Tarjeta Bancaria</div>
-                                            <small class="text-muted">Débito / Crédito — BanBajío</small>
+                                            <small class="text-muted">Serás llevado al portal seguro de BanBajío</small>
                                         </div>
                                     </div>
                                 </label>

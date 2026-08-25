@@ -35,16 +35,17 @@ return [
         'secret_key' => env('GOOGLE_RECAPTCHA2_SECRET'),
     ],
 
-    // Multipagos BanBajío — firma RSA/SHA512 + form POST a multipagos.bb.com.mx
+    // Multipagos BanBajío — solicitud REST firmada con RSA/SHA512
     'bajio' => [
-        // ID de servicio y concepto proporcionados por BanBajío al contratar Multipagos
-        'servicio_id'     => env('BAJIO_SERVICIO_ID'),
-        'concepto'        => env('BAJIO_CONCEPTO', '1'),
-        // Rutas relativas a storage_path() para las llaves PEM
+        'driver'           => env('BAJIO_DRIVER', 'rest'),
+        'servicio_id'      => env('BAJIO_SERVICIO_ID'),
+        'concepto'         => env('BAJIO_CONCEPTO', '1'),
+        'api_url'          => env('BAJIO_API_URL', 'https://multipagos.bb.com.mx/multipagos/api/pruebas/solicitar'),
         'private_key_path' => env('BAJIO_PRIVATE_KEY_PATH', 'keys/bajio/private_key.pem'),
         'public_key_path'  => env('BAJIO_PUBLIC_KEY_PATH',  'keys/bajio/public_key_bajio.pem'),
-        // URL del portal de Multipagos (puede cambiarse a QA para pruebas)
-        'multipagos_url'   => env('BAJIO_MULTIPAGOS_URL', 'https://multipagos.bb.com.mx/Estandar/index2.php'),
+        'timeout'          => (int) env('BAJIO_TIMEOUT', 15),
+        'log_channel'      => env('BAJIO_LOG_CHANNEL', 'banbajio'),
+        'hash_probe'       => (bool) env('BAJIO_HASH_PROBE', false),
     ],
 
 ];

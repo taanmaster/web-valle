@@ -58,11 +58,13 @@
                                 @php
                                     $pBadge = match($order->payment_status) {
                                         'Pagado'               => 'success',
+                                        'Fallido',
                                         'Referencia Expirada'  => 'danger',
                                         default                => 'warning',
                                     };
                                     $pIcon = match($order->payment_status) {
                                         'Pagado'               => 'fa-check-circle',
+                                        'Fallido',
                                         'Referencia Expirada'  => 'fa-exclamation-circle',
                                         default                => 'fa-clock',
                                     };
@@ -153,6 +155,36 @@
                             <i class="fas fa-sticky-note me-2 text-primary"></i> Notas
                         </h6>
                         <p>{{ $order->notes }}</p>
+                        @endif
+
+                        @if($order->payment_method === 'banbajio')
+                        <h6 class="border-bottom pb-2 mb-3 mt-4">
+                            <i class="fas fa-shield-alt me-2 text-primary"></i> Notificaciones BanBajío
+                        </h6>
+                        <div class="table-responsive mb-4">
+                            <table class="table table-sm align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Recibida</th>
+                                        <th>Forma de pago</th>
+                                        <th>Estatus</th>
+                                        <th>Firma</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($order->banBajioNotifications()->latest()->get() as $notification)
+                                    <tr>
+                                        <td>{{ $notification->created_at->format('d/m/Y H:i') }}</td>
+                                        <td>{{ ['01' => 'Tarjeta crédito', '02' => 'Cargo a cuenta BanBajío', '03' => 'CLABE otros bancos', '04' => 'Tarjeta débito', '05' => 'Tarjeta prepago', '06' => 'Tarjeta débito domiciliación'][$notification->nl_tipo_pago] ?? $notification->nl_tipo_pago }}</td>
+                                        <td>{{ ['01' => 'Cobrado', '02' => 'Rechazado', '03' => 'Procesado'][$notification->nl_status] ?? $notification->nl_status }}</td>
+                                        <td><span class="badge bg-{{ $notification->hash_valid ? 'success' : 'danger' }}">{{ $notification->hash_valid ? 'Válida' : 'Inválida' }}</span></td>
+                                    </tr>
+                                    @empty
+                                    <tr><td colspan="4" class="text-muted">Sin notificaciones recibidas.</td></tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                         @endif
 
                         {{-- Actualizar estado de entrega --}}

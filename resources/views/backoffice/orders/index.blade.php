@@ -68,7 +68,7 @@
                                     </label>
                                     <select name="payment_status" class="form-select">
                                         <option value="">Todos</option>
-                                        @foreach(['Pago Pendiente','Referencia Expirada','Pagado'] as $ps)
+                                        @foreach(['Pago Pendiente','Referencia Expirada','Pagado','Fallido'] as $ps)
                                             <option value="{{ $ps }}" {{ request('payment_status') === $ps ? 'selected' : '' }}>{{ $ps }}</option>
                                         @endforeach
                                     </select>
@@ -197,11 +197,13 @@
                                                 @php
                                                     $pBadge = match($order->payment_status) {
                                                         'Pagado'               => 'success',
+                                                        'Fallido',
                                                         'Referencia Expirada'  => 'danger',
                                                         default                => 'warning',
                                                     };
                                                     $pIcon = match($order->payment_status) {
                                                         'Pagado'               => 'fa-check-circle',
+                                                        'Fallido',
                                                         'Referencia Expirada'  => 'fa-exclamation-circle',
                                                         default                => 'fa-clock',
                                                     };

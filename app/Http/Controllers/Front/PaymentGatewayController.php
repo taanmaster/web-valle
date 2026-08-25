@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Front;
 
 use Carbon\Carbon;
-use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\Payments\BanBajioException;
+use App\Services\Payments\BanBajioMultipagos;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -149,13 +150,13 @@ class PaymentGatewayController extends Controller
 
             case 'banbajio':
                 try {
-                    // Crear Order en BD
                     $dbOrder = DB::transaction(function () use ($user, $cart, $total, $payment_method) {
                         $order = Order::create([
                             'user_id'        => $user->id,
                             'folio'          => Order::generateFolio(),
                             'total'          => $total,
                             'payment_method' => $payment_method,
+                            'payment_status' => 'Pago Pendiente',
                         ]);
 
                         foreach ($cart->items as $item) {
@@ -173,42 +174,27 @@ class PaymentGatewayController extends Controller
                             ]);
                         }
 
-                        $cart->items()->delete();
-
                         return $order;
                     });
 
+                    $dbOrder->update(['payment_reference' => $dbOrder->folio]);
+                    $paymentUrl = app(BanBajioMultipagos::class)->solicitarPago(
+                        (string) $dbOrder->id,
+                        $dbOrder->folio,
+                        number_format($dbOrder->total, 2, '.', '')
+                    );
+
+                    $dbOrder->update(['payment_url' => $paymentUrl]);
+                    $cart->items()->delete();
                     session(['checkout_order_id' => $dbOrder->id]);
 
-                    // --- Multipagos Bajío: form POST con firma RSA/SHA512 ---
-                    // El folio numérico es el ID de la orden (cl_folio debe ser numérico 1-20)
-                    $clFolio    = (string) $dbOrder->id;
-                    $clRef      = $dbOrder->folio;
-                    $dlMonto    = number_format($total, 2, '.', '');
-                    $servicio   = (string) config('services.bajio.servicio_id');
-                    $clConcepto = (string) config('services.bajio.concepto', '1');
-
-                    // Cadena a firmar: cl_folio|cl_referencia|dl_monto|cl_concepto|servicio|
-                    $cadena = "{$clFolio}|{$clRef}|{$dlMonto}|{$clConcepto}|{$servicio}|";
-
-                    $privateKeyPath = storage_path(config('services.bajio.private_key_path', 'keys/bajio/private_key.pem'));
-                    $privateKeyPem  = file_get_contents($privateKeyPath);
-                    $privateKey     = openssl_get_privatekey($privateKeyPem);
-
-                    if (!$privateKey) {
-                        throw new \RuntimeException('No se pudo cargar la llave privada de BanBajío.');
+                    return view('front.checkout.esperando-bajio', compact('dbOrder', 'paymentUrl'));
+                } catch (BanBajioException $exception) {
+                    if (isset($dbOrder)) {
+                        $dbOrder->update(['payment_status' => 'Fallido']);
                     }
 
-                    openssl_sign($cadena, $rawSignature, $privateKey, OPENSSL_ALGO_SHA512);
-                    $hash          = $this->base64UrlEncode($rawSignature);
-                    $multipagosUrl = config('services.bajio.multipagos_url', 'https://multipagos.bb.com.mx/Estandar/index2.php');
-
-                    // Devuelve una vista con un formulario oculto que se auto-envía al portal de BanBajío
-                    return view('front.checkout.bajio-redirect', compact(
-                        'clFolio', 'clRef', 'dlMonto', 'servicio', 'clConcepto', 'hash', 'multipagosUrl'
-                    ));
-                } catch (\Exception $e) {
-                    return redirect()->back()->with('error', $e->getMessage());
+                    return redirect()->back()->with('error', 'No fue posible iniciar el pago con BanBajío. Intenta de nuevo.');
                 }
 
             case 'test_payment':
@@ -262,13 +248,6 @@ class PaymentGatewayController extends Controller
         }
     }
 
-    /**
-     * Codificación base64 URL-safe usada por Multipagos Bajío (reemplaza +/= con -_,)
-     */
-    private function base64UrlEncode(string $data): string
-    {
-        return strtr(base64_encode($data), '+/=', '-_,');
-    }
 }
 
 

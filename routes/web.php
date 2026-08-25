@@ -2241,6 +2241,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         // Checkout
         Route::get('/checkout', 'CheckoutController@index')->name('citizen.checkout.index');
         Route::post('/checkout/pagar', 'PaymentGatewayController@paymentStore')->name('citizen.checkout.pay');
+        Route::get('/checkout/estado/{order}', 'CheckoutController@status')->name('citizen.checkout.status');
         Route::get('/checkout/completado', 'CheckoutController@success')->name('oxxopay.complete');
         Route::get('/checkout/completado-bajio', 'CheckoutController@success')->name('bajiopay.complete');
         Route::get('/checkout/fallido', 'CheckoutController@failed')->name('oxxopay.failed');

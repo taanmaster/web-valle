@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Front;
 
-// Ayudantes
-use DB;
-use Mail;
 use Carbon\Carbon;
 
-// Modelos
-use App\Models\User;
 use App\Models\Order;
+use App\Models\BanBajioNotification;
+use App\Services\Payments\BanBajioMultipagos;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
@@ -148,65 +146,91 @@ class WebhookController extends Controller
      */
     public function bajioNotification(Request $request)
     {
-        $clFolio   = $request->input('cl_folio', '');
-        $tConcepto = $request->input('t_concepto', '');
-        $clRef     = $request->input('cl_referencia', '');
-        $dlMonto   = $request->input('dl_monto', '');
-        $dtFecha   = $request->input('dt_fechaPago', '');
-        $tipoPago  = $request->input('nl_tipoPago', '');
-        $nlStatus  = $request->input('nl_status', '');
-        $hashRaw   = $request->input('hash', '');
+		$payload = $request->all();
+		$hash = (string) ($payload['hash'] ?? '');
+		$reference = (string) ($payload['cl_referencia'] ?? '');
+		$notificationAmount = $payload['dl_monto'] ?? null;
+		$service = app(BanBajioMultipagos::class);
+		$variant = $service->verificarNotificacion($payload, $hash);
+		$order = $reference === '' ? null : Order::where('payment_reference', $reference)->first();
 
-        // Cadena BAJÍO: cl_folio|t_concepto|cl_referencia|dl_monto|dt_fechaPago|nl_tipoPago|nl_status|
-        $originalString = "{$clFolio}|{$tConcepto}|{$clRef}|{$dlMonto}|{$dtFecha}|{$tipoPago}|{$nlStatus}|";
+		$notification = BanBajioNotification::create([
+			'order_id' => $order?->id,
+			'cl_folio' => $payload['cl_folio'] ?? null,
+			'cl_referencia' => $reference ?: null,
+			'cl_servicio' => $payload['cl_servicio'] ?? null,
+			't_concepto' => $payload['t_concepto'] ?? null,
+			'dl_monto' => is_numeric($notificationAmount) ? number_format((float) $notificationAmount, 2, '.', '') : null,
+			'dt_fecha_pago' => $payload['dt_fechaPago'] ?? null,
+			'nl_tipo_pago' => $payload['nl_tipoPago'] ?? null,
+			'nl_status' => $payload['nl_status'] ?? null,
+			'hash' => $hash,
+			'hash_valid' => $variant !== null,
+			'hash_variant' => $variant,
+			'raw_payload' => $payload,
+			'response_sent' => 'estatus_notificacion=1',
+		]);
 
-        // Decodificar la firma en base64 URL-safe (- → +, _ → /, , → =)
-        $signature = base64_decode(strtr($hashRaw, '-_,', '+/='));
+		if ($variant === null || !$order || $order->payment_method !== 'banbajio' || (string) $order->id !== (string) ($payload['cl_folio'] ?? '')) {
+			Log::channel((string) config('services.bajio.log_channel', 'banbajio'))->warning('banbajio.notification.rejected', [
+				'order_id' => $order?->id,
+				'hash_valid' => $variant !== null,
+			]);
 
-        // Verificar con la llave pública de BanBajío
-        $publicKeyPath = storage_path(config('services.bajio.public_key_path', 'keys/bajio/public_key_bajio.pem'));
-        $publicKeyPem  = @file_get_contents($publicKeyPath);
+			return $this->bajioResponse($notification, false);
+		}
 
-        if ($publicKeyPem) {
-            $publicKey = openssl_get_publickey($publicKeyPem);
-            $valid     = openssl_verify($originalString, $signature, $publicKey, OPENSSL_ALGO_SHA512) === 1;
-        } else {
-            // Si aún no se tiene la llave pública configurada, aceptar la notificación
-            // (solo durante desarrollo; en producción la llave debe estar presente)
-            $valid = app()->environment('local');
-        }
+		$status = (string) ($payload['nl_status'] ?? '');
+		$reportedAmount = (string) ($payload['dl_monto'] ?? '');
 
-        if ($valid) {
-            $order = Order::find((int) $clFolio);
+		if ($status === '01') {
+			if ($order->payment_status !== 'Pagado') {
+				if (!$this->bajioAmountMatches($order->total, $reportedAmount)) {
+					$order->update([
+						'payment_status' => 'Pago Pendiente',
+						'paid_amount' => is_numeric($reportedAmount) ? number_format((float) $reportedAmount, 2, '.', '') : null,
+						'admin_note' => 'Monto reportado por BanBajío distinto al total de la orden: ' . $reportedAmount,
+					]);
 
-            if ($order && $order->payment_method === 'banbajio') {
-                if ($nlStatus === '01') {
-                    // Cobrado → Pagado
-                    if ($order->payment_status !== 'Pagado') {
-                        $order->update([
-                            'payment_status'    => 'Pagado',
-                            'paid_at'           => Carbon::now(),
-                            'paid_amount'       => $order->total,
-                            'payment_reference' => $clRef,
-                        ]);
+					return $this->bajioResponse($notification, true);
+				}
 
-                        // Avanza los trámites vinculados (ej. alta de proveedor → padron_activo)
-                        $order->applyPaidSideEffects();
-                    }
-                } elseif ($nlStatus === '02') {
-                    // Rechazo
-                    $order->update(['payment_status' => 'Fallido']);
-                } elseif ($nlStatus === '03') {
-                    // Procesado (domiciliación, CLABE) — pendiente de acreditación
-                    if ($order->payment_status === 'Pendiente') {
-                        $order->update(['payment_status' => 'Pago Pendiente']);
-                    }
-                }
-            }
-        }
+				$order->update([
+					'payment_status' => 'Pagado',
+					'paid_at' => Carbon::now(),
+					'paid_amount' => $reportedAmount,
+				]);
+				$order->applyPaidSideEffects();
+			}
+		} elseif ($status === '02') {
+			if ($order->payment_status !== 'Pagado') {
+				$order->update(['payment_status' => 'Fallido']);
+			}
+		} elseif ($status === '03') {
+			if ($order->payment_status !== 'Pagado') {
+				$order->update(['payment_status' => 'Pago Pendiente']);
+			}
+		} else {
+			return $this->bajioResponse($notification, false);
+		}
 
-        // BanBajío requiere esta respuesta exacta en texto plano para considerar la notificación exitosa
-        return response('estatus_notificacion=0', 200)
-            ->header('Content-Type', 'text/plain');
+		return $this->bajioResponse($notification, true);
     }
+
+	private function bajioAmountMatches($expected, string $reported): bool
+	{
+		return preg_match('/^\d+(?:\.\d{1,2})?$/', $reported) === 1
+			&& number_format((float) $expected, 2, '.', '') === number_format((float) $reported, 2, '.', '');
+	}
+
+	private function bajioResponse(BanBajioNotification $notification, bool $accepted)
+	{
+		$response = 'estatus_notificacion=' . ($accepted ? '0' : '1');
+		$notification->update([
+			'response_sent' => $response,
+			'processed_at' => $accepted ? Carbon::now() : null,
+		]);
+
+		return response($response, 200)->header('Content-Type', 'text/plain');
+	}
 }

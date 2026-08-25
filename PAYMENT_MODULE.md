@@ -38,12 +38,12 @@ sequenceDiagram
     PGC->>ORD: Crea Order + OrderItems (copia related_* de CartItem → OrderItem)
     PGC->>GW: Llama API de la pasarela seleccionada
     GW-->>PGC: URL de pago / referencia
-    PGC-->>C: Redirect a pasarela (o vista bajio-redirect)
+    PGC-->>C: Muestra espera y abre el portal seguro de BanBajío
 
     GW->>WH: POST /webhooks/pagos (o /webhooks/bajio-notificacion)
     WH->>ORD: Actualiza Order: payment_status="Pagado", paid_amount, paid_at
 
-    C->>C: Regresa a /checkout/completado
+    C->>CHK: Polling de /checkout/estado/{order} hasta confirmación
 ```
 
 ---
@@ -86,11 +86,11 @@ sequenceDiagram
 | `folio`              | string   | Generado automáticamente (10 chars uppercase)     |
 | `total`              | decimal  |                                                   |
 | `payment_method`     | string   | `oxxopay` \| `banbajio`                          |
-| `payment_status`     | string   | `Pago Pendiente` \| `Referencia Expirada` \| `Pagado` |
+| `payment_status`     | string   | `Pago Pendiente` \| `Referencia Expirada` \| `Pagado` \| `Fallido` |
 | `delivery_status`    | string   | `Pendiente` \| `Entregado` \| `Cancelado`         |
 | `payment_id`         | string   | ID de la orden en la pasarela                     |
 | `payment_reference`  | string   | Referencia de pago (OXXO / BanBajío)             |
-| `payment_url`        | string   | URL de pago en pasarela (OXXO)                    |
+| `payment_url`        | string   | URL de pago en pasarela (OXXO o BanBajío)         |
 | `paid_at`            | datetime |                                                   |
 | `paid_amount`        | decimal  |                                                   |
 | `delivered_at`       | datetime |                                                   |
