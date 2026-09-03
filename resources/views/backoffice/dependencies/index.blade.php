@@ -29,13 +29,11 @@
                     </div>
                 </div>
 
-                @hasanyrole(['all', 'webmaster'])
                 <div class="col-lg-4 text-end">
                     <a href="{{ route('backoffice.dependencies.create') }}" class="btn btn-primary">
                         <i class="fas fa-plus me-2"></i> Nueva Dependencia
                     </a>
                 </div>
-                @endhasanyrole
             </div>
         </div>
     </div>
