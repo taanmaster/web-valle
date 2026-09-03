@@ -4,14 +4,8 @@ namespace App\Livewire\Implan\Blog;
 
 // Ayudantes
 use Str;
-use Auth;
-use Session;
 use Carbon\Carbon;
-use Livewire\Attributes\Validate;
-use Livewire\Attributes\On;
-use Intervention\Image\Facades\Image as Image;
 use Livewire\WithFileUploads;
-use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\ImplanBlog;
@@ -56,14 +50,7 @@ class Crud extends Component
 
     public function save()
     {
-        $this->validate([
-            'image' => ['nullable', 'file', 'max:51200', 'mimes:jpg,jpeg,png,gif,webp,tiff,pdf,doc,docx,xls,xlsx,zip'],
-        ], [
-            'image.file'   => 'El archivo seleccionado no es válido.',
-            'image.max'    => 'El archivo no debe superar los 50 MB.',
-
-            'image.mimes'  => 'El tipo de archivo no está permitido. Se aceptan: imágenes (JPG, PNG, GIF, WEBP, TIFF), PDF, Word, Excel y ZIP.',
-        ]);
+        $this->validate($this->imageRules(), $this->imageMessages());
 
         if ($this->post != null) {
             // --- Subida de archivos si hay nuevos ---
@@ -83,32 +70,7 @@ class Crud extends Component
             $record->save();
         } else {
 
-            $file_url = null;
-
-            if ($this->image) {
-                $document = $this->image;
-
-                $originalName = pathinfo($document->getClientOriginalName(), PATHINFO_FILENAME);
-                $extension = $document->getClientOriginalExtension();
-
-                // Reemplazar espacios y caracteres no válidos
-                $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
-                $filename = $cleanName . '.' . $extension;
-
-                // Crear ruta S3 bajo institutional_development
-                $filepath = 'institutional_development/regulations/' . $filename;
-
-                // Usar streaming para subir a S3
-                $stream = fopen($document->getRealPath(), 'r+');
-                Storage::disk('s3')->put($filepath, $stream);
-                if (is_resource($stream)) {
-                    fclose($stream);
-                }
-
-                $file_url = Storage::disk('s3')->url($filepath);
-            } else {
-                $file_url = $this->image;
-            }
+            $file_url = $this->image ? $this->handleUpload($this->image) : null;
 
             $slug = Str::slug($this->title);
 
@@ -143,15 +105,26 @@ class Crud extends Component
         $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
         $filename = $cleanName . '.' . $extension;
 
-        $filepath = 'institutional_development/regulations/' . $filename;
-
-        $stream = fopen($document->getRealPath(), 'r+');
-        Storage::disk('s3')->put($filepath, $stream);
-        if (is_resource($stream)) {
-            fclose($stream);
-        }
+        $filepath = $document->storeAs('institutional_development/regulations', $filename, 's3');
 
         return Storage::disk('s3')->url($filepath);
+    }
+
+    protected function imageRules()
+    {
+        return [
+            'image' => ['nullable', 'file', 'max:51200', 'mimes:jpg,jpeg,png,gif,webp,tiff,pdf,doc,docx,xls,xlsx,zip'],
+        ];
+    }
+
+    protected function imageMessages()
+    {
+        return [
+            'image.file' => 'El archivo seleccionado no es válido.',
+            'image.max' => 'El archivo no debe superar los 50 MB.',
+            'image.mimes' => 'El tipo de archivo no está permitido. Se aceptan: imágenes (JPG, PNG, GIF, WEBP, TIFF), PDF, Word, Excel y ZIP.',
+            'image.uploaded' => 'No se pudo cargar el archivo. Verifique su conexión e inténtelo de nuevo.',
+        ];
     }
 
     public function render()

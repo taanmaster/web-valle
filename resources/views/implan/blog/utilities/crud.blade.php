@@ -93,6 +93,7 @@
                                     isDragging: false,
                                     dragCount: 0,
                                     fileName: null,
+                                    selectedFileName: null,
                                     handleDrop(e) {
                                         this.isDragging = false;
                                         this.dragCount = 0;
@@ -101,7 +102,6 @@
                                             const dt = new DataTransfer();
                                             dt.items.add(files[0]);
                                             this.$refs.fileInput.files = dt.files;
-                                            this.fileName = files[0].name;
                                             this.$refs.fileInput.dispatchEvent(new Event('change'));
                                         }
                                     }
@@ -110,6 +110,8 @@
                                 @dragleave.prevent="dragCount--; if(dragCount === 0) isDragging = false"
                                 @dragover.prevent
                                 @drop.prevent="handleDrop($event)"
+                                x-on:livewire-upload-finish.window="if ($event.detail.property === 'image') { fileName = selectedFileName; }"
+                                x-on:livewire-upload-error.window="if ($event.detail.property === 'image') { fileName = null; selectedFileName = null; $refs.fileInput.value = ''; }"
                             >
                                 <div
                                     @click="$refs.fileInput.click()"
@@ -162,7 +164,7 @@
                                     x-ref="fileInput"
                                     wire:model="image"
                                     class="d-none"
-                                    x-on:change="fileName = $event.target.files[0]?.name ?? null"
+                                    x-on:change="selectedFileName = $event.target.files[0]?.name ?? null; fileName = null"
                                 >
                             </div>
 

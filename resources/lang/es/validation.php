@@ -114,7 +114,7 @@ return [
     'string'               => 'El campo :attribute debe ser una cadena de caracteres.',
     'timezone'             => 'El campo :attribute debe ser una zona horaria válida.',
     'unique'               => 'El valor del campo :attribute que está intentando registrar ya ha sido registrado previamente.',
-    'uploaded'             => 'El campo :attribute no se pudo subir.',
+    'uploaded'             => 'No se pudo cargar el archivo :attribute. El archivo no se guardó; verifique el límite permitido y su conexión, e inténtelo de nuevo.',
     'url'                  => 'El formato del campo :attribute es inválido.',
     'uuid'                 => 'El campo :attribute debe ser un UUID válido.',
     'captcha'              => 'El captcha introducido es incorrecto. Intenta nuevamente.',
