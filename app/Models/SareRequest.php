@@ -19,6 +19,7 @@ class SareRequest extends Model
         'catastral_num',
         'rfc_name',
         'rfc_num',
+        'person_type',
         'property_owner',
         'office_phone',
         'mobile_phone',
@@ -55,7 +56,7 @@ class SareRequest extends Model
         'vobo_favorable',
         'entry_date',
         'exit_date',
-        'document_type'
+        'document_type',
     ];
 
     protected $casts = [
@@ -98,7 +99,7 @@ class SareRequest extends Model
             // Estados legacy
             'in_progress' => 'En Progreso',
             'cancelled' => 'Cancelado',
-            'validation' => 'Validación'
+            'validation' => 'Validación',
         ];
 
         return $statuses[$this->status] ?? $this->status;
@@ -121,7 +122,7 @@ class SareRequest extends Model
             // Estados legacy
             'in_progress' => 'warning',
             'cancelled' => 'secondary',
-            'validation' => 'dark'
+            'validation' => 'dark',
         ];
 
         return $colors[$this->status] ?? 'primary';

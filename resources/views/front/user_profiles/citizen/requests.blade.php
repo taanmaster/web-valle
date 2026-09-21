@@ -364,6 +364,17 @@
 
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label for="person_type" class="form-label">Tipo de Persona *</label>
+                                    <select class="form-select" id="person_type" name="person_type" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="moral">Persona Moral</option>
+                                        <option value="fisica">Persona Física</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label for="property_owner" class="form-label">Propietario del Inmueble *</label>
                                     <input type="text" class="form-control" id="property_owner" name="property_owner"
                                         required>
@@ -752,6 +763,7 @@
                 // Datos del Solicitante
                 document.getElementById('rfc_name').value = 'COMERCIAL VALLE DEL BRAVO SA DE CV';
                 document.getElementById('rfc_num').value = 'CVB123456789';
+                document.getElementById('person_type').value = 'moral';
                 document.getElementById('property_owner').value = 'Juan Carlos Pérez García';
                 document.getElementById('email').value = 'jperez@ejemplo.com';
                 document.getElementById('office_phone').value = '(726) 262-1234';

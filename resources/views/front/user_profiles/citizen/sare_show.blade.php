@@ -95,6 +95,13 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Tipo de Persona:</label>
+                            <p class="mb-0">
+                                {{ $sareRequest->person_type == 'moral' ? 'Persona Moral' : ($sareRequest->person_type == 'fisica' ? 'Persona Física' : '—') }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Propietario del Inmueble:</label>
                             <p class="mb-0">{{ $sareRequest->property_owner }}</p>
                         </div>

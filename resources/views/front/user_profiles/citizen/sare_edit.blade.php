@@ -141,6 +141,16 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
+                                    <label for="person_type" class="form-label">Tipo de Persona <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" id="person_type" name="person_type" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="moral" @selected($sareRequest->person_type == 'moral')>Persona Moral</option>
+                                        <option value="fisica" @selected($sareRequest->person_type == 'fisica')>Persona Física</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
                                     <label for="property_owner" class="form-label">Propietario del Inmueble <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="property_owner" name="property_owner"
