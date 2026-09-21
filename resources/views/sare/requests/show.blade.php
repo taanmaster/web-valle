@@ -352,6 +352,85 @@
                         </div>
                         @endif
 
+                        <!-- Dictámenes de otras dependencias -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="border-bottom pb-2 mb-3">Dictámenes de otras dependencias</h5>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center border rounded p-3">
+                                    <div>
+                                        <strong>Desarrollo Urbano</strong> — Solicitud de Inspección
+                                        @if($review && $review->sent_at)
+                                            <br>
+                                            <small class="text-muted">
+                                                Enviado a Desarrollo Urbano el {{ $review->sent_at->format('d/m/Y H:i') }}
+                                                — <span class="badge bg-{{ $review->status_color }}">{{ $review->status_label }}</span>
+                                            </small>
+                                        @endif
+                                    </div>
+                                    <div>
+                                        @if(!$review)
+                                            <form method="POST" action="{{ route('sare.request.send_to_urban_dev', $sareRequest) }}">
+                                                @csrf
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fas fa-paper-plane"></i> Enviar solicitud a Desarrollo Urbano
+                                                </button>
+                                            </form>
+                                        @else
+                                            <a href="{{ route('urban_dev.sare_requests.show', $review) }}" class="btn btn-outline-primary">
+                                                <i class="fas fa-external-link-alt"></i> Ver en Desarrollo Urbano
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                @if($review && $review->inspection_date)
+                                    <div class="card border-0 shadow-sm mt-3">
+                                        <div class="card-header bg-inspection text-white">
+                                            <h5 class="text-white mb-0 fw-bold">Inspección</h5>
+                                        </div>
+                                        <div class="card-body p-4">
+                                            <div class="border rounded p-3 mb-3">
+                                                <strong>
+                                                    {{ $review->inspector ? $review->inspector->name . ' ' . $review->inspector->last_name : '—' }}
+                                                </strong>
+                                            </div>
+
+                                            @if($review->photos->count() > 0)
+                                                <small class="text-muted text-uppercase fw-semibold d-block mb-2">Reporte Fotográfico</small>
+                                                <div class="row mb-4">
+                                                    @foreach($review->photos as $photo)
+                                                        <div class="col-3 mb-2">
+                                                            <a href="javascript:void(0)" onclick="previewImage('{{ $photo->s3_asset_url }}')">
+                                                                <img src="{{ $photo->s3_asset_url }}" class="img-thumbnail w-100" style="aspect-ratio: 1 / 1; object-fit: cover;" alt="{{ $photo->filename }}">
+                                                            </a>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+
+                                            <small class="text-muted text-uppercase fw-semibold d-block mb-2">Capturado por el Inspector</small>
+                                            <div class="row g-2">
+                                                <div class="col-md-6">
+                                                    <div class="d-flex align-items-center border rounded overflow-hidden">
+                                                        <span class="bg-warning-subtle px-3 py-2 fw-medium">Superficie medida en sitio</span>
+                                                        <span class="px-3 py-2">{{ $review->measured_area ?: '—' }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="d-flex align-items-center border rounded overflow-hidden">
+                                                        <span class="bg-warning-subtle px-3 py-2 fw-medium">Observaciones</span>
+                                                        <span class="px-3 py-2">{{ $review->observations ?: '—' }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
                         <!-- Botones de Acción -->
                         <div class="row">
                             <div class="col-12">
@@ -663,13 +742,92 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Permiso y entero de pago Desarrollo Urbano -->
+                @if($review && ($review->permit_document_s3_url || $review->payment_document_s3_url))
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-file-contract"></i>
+                            Permiso y entero de pago Desarrollo
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        @if($review->permit_document_s3_url)
+                        <div class="d-flex align-items-center justify-content-between border rounded p-2 mb-2">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-file-pdf text-danger me-2"></i>
+                                <div>
+                                    <div class="fw-medium">{{ $review->permit_document_name }}</div>
+                                    <small class="text-muted">Permiso sellado y firmado · {{ $review->permit_formatted_size }}</small>
+                                </div>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <a href="{{ $review->permit_document_s3_url }}" target="_blank" class="btn btn-sm btn-outline-primary" title="Ver archivo">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ $review->permit_document_s3_url }}" download="{{ $review->permit_document_name }}" class="btn btn-sm btn-outline-success" title="Descargar archivo">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                            </div>
+                        </div>
+                        @endif
+
+                        @if($review->payment_document_s3_url)
+                        <div class="d-flex align-items-center justify-content-between border rounded p-2">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-file-invoice-dollar text-success me-2"></i>
+                                <div>
+                                    <div class="fw-medium">Entero de pago - ${{ number_format($review->payment_amount, 2) }} MXN</div>
+                                    <small class="text-muted">Línea de captura {{ $review->payment_reference }}</small>
+                                </div>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <a href="{{ $review->payment_document_s3_url }}" target="_blank" class="btn btn-sm btn-outline-primary" title="Ver archivo">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ $review->payment_document_s3_url }}" download="{{ $review->payment_document_name }}" class="btn btn-sm btn-outline-success" title="Descargar archivo">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal de vista previa de imagen -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body text-center p-0 pb-3">
+                <img id="imagePreviewModalImg" src="" class="img-fluid rounded" alt="Vista previa">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-inspection {
+        background-color: #6d1b2b;
+    }
+</style>
+
 @section('scripts')
 <script>
+// Función para abrir la imagen en un modal más grande
+function previewImage(url) {
+    document.getElementById('imagePreviewModalImg').src = url;
+    new bootstrap.Modal(document.getElementById('imagePreviewModal')).show();
+}
+
 // Función para obtener el icono del archivo según su extensión
 function getFileIcon(extension) {
     const iconMap = {

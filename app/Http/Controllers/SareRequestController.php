@@ -11,6 +11,7 @@ use Intervention\Image\Facades\Image as Image;
 // Modelos
 use App\Models\SareRequest;
 use App\Models\SareRequestFile;
+use App\Models\SareRequestReview;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -125,7 +126,27 @@ class SareRequestController extends Controller
         // Cargar archivos relacionados
         $sareRequest->load(['files', 'user']);
 
-        return view('sare.requests.show', compact('sareRequest'));
+        // Revisión de Desarrollo Urbano (inspección, permiso, pago), si ya fue enviada
+        $review = $sareRequest->reviews()->where('dependency', 'urban_dev')->with(['inspector', 'photos'])->first();
+
+        return view('sare.requests.show', compact('sareRequest', 'review'));
+    }
+
+    /**
+     * Envía la solicitud a Desarrollo Urbano para su revisión (inspección,
+     * emisión de permiso y entero de pago). Idempotente: si ya fue enviada,
+     * no crea un registro duplicado.
+     */
+    public function sendToUrbanDev(SareRequest $sareRequest)
+    {
+        SareRequestReview::firstOrCreate(
+            ['sare_request_id' => $sareRequest->id, 'dependency' => 'urban_dev'],
+            ['status' => 'nuevo', 'sent_at' => now(), 'sent_by' => Auth::id()]
+        );
+
+        Session::flash('success', 'Solicitud enviada a Desarrollo Urbano correctamente.');
+
+        return redirect()->route('sare.request.show', $sareRequest);
     }
 
     public function edit($id)

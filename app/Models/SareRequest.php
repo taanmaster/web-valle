@@ -83,6 +83,14 @@ class SareRequest extends Model
     }
 
     /**
+     * Relación con las revisiones de otras dependencias (p. ej. Desarrollo Urbano)
+     */
+    public function reviews()
+    {
+        return $this->hasMany(\App\Models\SareRequestReview::class);
+    }
+
+    /**
      * Obtener el estado en formato legible
      */
     public function getStatusLabelAttribute()

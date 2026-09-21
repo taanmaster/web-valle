@@ -73,6 +73,10 @@ use App\Http\Controllers\UrbanDevRequestFileController;
 use App\Http\Controllers\UrbanDevWorkerController;
 use App\Http\Controllers\UrbanDevKPIsController;
 use App\Http\Controllers\UrbanDevCostController;
+use App\Http\Controllers\UrbanDevSareRequestController;
+
+// SARE
+use App\Http\Controllers\SareRequestController;
 
 // Adquisiciones
 use App\Http\Controllers\AcquisitionEndorsementController;
@@ -582,6 +586,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 'update' => 'sare.request_files.update',
                 'destroy' => 'sare.request_files.destroy',
             ]);
+
+            // Envío de la solicitud a Desarrollo Urbano para dictamen (inspección, permiso, pago)
+            Route::post('requests/{sareRequest}/send-to-urban-dev', [SareRequestController::class, 'sendToUrbanDev'])->name('sare.request.send_to_urban_dev');
         });
 
         /* Desarrollo Urbano */
@@ -590,6 +597,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('costos', [UrbanDevCostController::class, 'index'])->name('urban_dev.costs.index');
             Route::get('costos/{slug}/editar', [UrbanDevCostController::class, 'edit'])->name('urban_dev.costs.edit');
             Route::put('costos/{slug}', [UrbanDevCostController::class, 'update'])->name('urban_dev.costs.update');
+
+            // Solicitudes SARE enviadas para dictamen (inspección, emisión de permiso, entero de pago)
+            Route::get('sare_requests', [UrbanDevSareRequestController::class, 'index'])->name('urban_dev.sare_requests.index');
+            Route::get('sare_requests/{review}', [UrbanDevSareRequestController::class, 'show'])->name('urban_dev.sare_requests.show');
 
             Route::resource('catastro', UrbanDevCastroRequestController::class)
                 ->only(['index', 'show', 'destroy'])

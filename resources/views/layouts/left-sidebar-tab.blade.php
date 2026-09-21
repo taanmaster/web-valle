@@ -789,6 +789,9 @@
                             <a class="nav-link" href="{{ route('urban_dev.catastro.index') }}">Catastro</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('urban_dev.sare_requests.index') }}">Solicitudes SARE</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('urban_dev.inspectors.requests') }}">Vista
                                 Inspector</a>
                         </li>
