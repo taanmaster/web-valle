@@ -114,7 +114,14 @@
                                 <small class="text-muted">RFC:</small>
                                 <p class="mb-0">{{ $sareRequest->rfc_num }}</p>
                             </div>
-                            
+
+                            <div class="col-md-6 mb-3">
+                                <small class="text-muted">Tipo de Persona:</small>
+                                <p class="mb-0">
+                                    {{ $sareRequest->person_type == 'moral' ? 'Persona Moral' : ($sareRequest->person_type == 'fisica' ? 'Persona Física' : '—') }}
+                                </p>
+                            </div>
+
                             <div class="col-md-6 mb-3">
                                 <small class="text-muted">Propietario:</small>
                                 <p class="mb-0">{{ $sareRequest->property_owner }}</p>
