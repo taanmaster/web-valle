@@ -29,7 +29,11 @@
             <div class="col-md-12">
                 <div class="card card-normal bg-light wow fadeInUp">
                     <div class="card-content text-center py-5">
-                        <p class="text-muted mb-0">Dejar apartado para próxima información</p>
+                        <p class="text-muted mb-0">La Dirección de Medio Ambiente de Valle de Santiago opera bajo los
+                            lineamientos del desarrollo sostenible del municipio, enfocándose de manera integral dentro de
+                            la administración pública local. Aunque la dependencia forma parte de las políticas ecológicas
+                            del Gobierno Municipal de Valle de Santiago, los ejes rectores específicos de su misión, visión
+                            y valores, alineados al ámbito ambiental y de ordenamiento territorial.</p>
                     </div>
                 </div>
             </div>
@@ -54,7 +58,9 @@
                     <div
                         class="card-content d-flex flex-column justify-content-center align-items-center w-100 h-100 text-center">
                         <h3 class="mb-3">Misión</h3>
-                        <p class="text-muted mb-0">Dejar apartado para misión</p>
+                        <p class="text-muted mb-0">Proteger el medio ambiente y los recursos naturales del municipio,
+                            fomentando el desarrollo sostenible, la educación ambiental y la gestión eficiente de los
+                            ecosistemas para mejorar la calidad de vida de los habitantes.</p>
                     </div>
                 </div>
             </div>
@@ -79,7 +85,9 @@
                     <div
                         class="card-content d-flex flex-column justify-content-center align-items-center w-100 h-100 text-center">
                         <h3 class="mb-3">Visión</h3>
-                        <p class="text-muted mb-0">Dejar apartado para visión</p>
+                        <p class="text-muted mb-0">Consolidar a Valle de Santiago como un municipio ordenado, sustentable y
+                            comprometido con la conservación de sus áreas naturales protegidas y recursos hídricos,
+                            impulsando una cultura de corresponsabilidad entre gobierno y sociedad.</p>
                     </div>
                 </div>
             </div>
@@ -90,14 +98,64 @@
             <div class="col-md-12 text-center">
                 <h4 class="mb-4 wow fadeInUp">Nuestros Valores</h4>
 
-                <div class="d-flex flex-wrap justify-content-center gap-3 wow fadeInUp">
-                    <span class="badge rounded-pill bg-danger px-4 py-3">Sostenibilidad</span>
-                    <span class="badge rounded-pill bg-warning text-dark px-4 py-3">Identidad y pertenencia</span>
-                    <span class="badge rounded-pill bg-success px-4 py-3">Colaboración</span>
-                    <span class="badge rounded-pill bg-primary px-4 py-3">Responsabilidad social</span>
+                <div class="row row-cols-2 row-cols-md-4 g-3 wow fadeInUp">
+                    @foreach ([
+                        ['label' => 'Sustentabilidad', 'color' => 'danger', 'text' => 'text-white', 'description' => 'Uso responsable de los recursos naturales.'],
+                        ['label' => 'Responsabilidad', 'color' => 'warning', 'text' => 'text-dark', 'description' => 'Compromiso con el entorno ecológico y las futuras generaciones.'],
+                        ['label' => 'Participación', 'color' => 'success', 'text' => 'text-white', 'description' => 'Trabajo conjunto entre sociedad y autoridades.'],
+                        ['label' => 'Respeto', 'color' => 'primary', 'text' => 'text-white', 'description' => 'Cuidado de la biodiversidad y áreas naturales del municipio.'],
+                    ] as $value)
+                        <div class="col">
+                            <div class="value-card">
+                                <span class="badge rounded-pill bg-{{ $value['color'] }} {{ $value['text'] }} px-4 py-3 w-100">{{ $value['label'] }}</span>
+                                <div class="value-card-description">
+                                    <p class="text-muted mb-0">{{ $value['description'] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
+
+        @push('styles')
+            <style>
+                .value-card {
+                    cursor: pointer;
+                }
+
+                .value-card .badge {
+                    transition: transform .3s ease, box-shadow .3s ease;
+                }
+
+                .value-card-description {
+                    max-height: 0;
+                    opacity: 0;
+                    overflow: hidden;
+                    transition: max-height .35s ease, opacity .3s ease, margin-top .35s ease;
+                }
+
+                .value-card:hover .badge,
+                .value-card:focus-within .badge {
+                    transform: translateY(-3px) scale(1.04);
+                    box-shadow: 0 8px 16px rgba(0, 0, 0, .15);
+                }
+
+                .value-card:hover .value-card-description,
+                .value-card:focus-within .value-card-description {
+                    max-height: 150px;
+                    opacity: 1;
+                    margin-top: .75rem;
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    .value-card .badge,
+                    .value-card-description {
+                        transition: none;
+                    }
+                }
+            </style>
+        @endpush
 
         <hr class="border-primary border-3 opacity-100 mb-4">
 
