@@ -35,6 +35,8 @@
         str_starts_with($currentRoute, 'citizen.profile.identification_certificates');
 
     $group3Active = $currentRoute === 'citizen.services.index';
+
+    $group4Active = str_starts_with($currentRoute, 'citizen.fiscalizacion') || str_starts_with($currentRoute, 'citizen.fisc.');
 @endphp
 
 @switch($userRole)
@@ -181,6 +183,31 @@
                                 <a href="{{ route('citizen.services.index') }}"
                                     class="list-group-item list-group-item-action {{ $currentRoute === 'citizen.services.index' ? 'active' : '' }}">
                                     <ion-icon name="storefront-outline"></ion-icon> Catálogo de Trámites
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- ── GROUP 4: TRÁMITES CON PAGO EN CAJA ─────────────── --}}
+                    <div>
+                        <div class="d-flex mb-1">
+                            <a href="{{ route('citizen.fiscalizacion.hub') }}"
+                                class="btn btn-dark fw-bold text-uppercase text-start flex-grow-1 rounded-end-0 pnav-header-link {{ $group4Active ? 'shadow-sm' : 'opacity-75' }}"
+                                style="font-size:.78rem; line-height:1.3;">
+                                Trámites Digitales con<br>Pago en Caja
+                            </a>
+                            <button type="button"
+                                class="btn btn-dark rounded-start-0 px-3 pnav-toggle {{ $group4Active ? '' : 'collapsed' }}"
+                                data-bs-toggle="collapse" data-bs-target="#navGroup4"
+                                aria-expanded="{{ $group4Active ? 'true' : 'false' }}">
+                                <ion-icon name="chevron-down-outline" class="pnav-chevron"></ion-icon>
+                            </button>
+                        </div>
+                        <div class="collapse {{ $group4Active ? 'show' : '' }}" id="navGroup4">
+                            <div class="list-group list-group-flush rounded overflow-hidden">
+                                <a href="{{ route('citizen.fiscalizacion.hub') }}"
+                                    class="list-group-item list-group-item-action {{ $group4Active ? 'active' : '' }}">
+                                    <ion-icon name="shield-checkmark-outline"></ion-icon> Fiscalización
                                 </a>
                             </div>
                         </div>

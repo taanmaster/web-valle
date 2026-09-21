@@ -141,6 +141,15 @@
                         </li>
                     @endif
 
+                    @if (auth()->user()->hasRole('fiscalizacion') || auth()->user()->hasRole('all'))
+                        <li class="nav-item">
+                            <a href="#valleFiscalizacion" id="fiscalizacion-tab" class="nav-link">
+                                <i class="ti ti-shield-check menu-icon"></i>
+                                <span class="menu-label">Fiscalización</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @if (auth()->user()->hasRole('acquisitions') || auth()->user()->hasRole('all'))
                         <li class="nav-item">
                             <a href="#valleAcquisitions" id="acquisitions-tab" class="nav-link">
@@ -857,6 +866,46 @@
                         <div class="mt-3 px-3">
                             <small class="text-muted d-block mb-1">Roles con acceso:</small>
                             <span class="badge bg-primary me-1 mb-1">urban_dev</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if (auth()->user()->hasRole('fiscalizacion') || auth()->user()->hasRole('all'))
+                <div id="valleFiscalizacion" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="fiscalizacion-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Trámites</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('fiscalizacion.street_vending_requests.index') }}">Venta en Vía Pública</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('fiscalizacion.public_event_requests.index') }}">Eventos en Vía Pública</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('fiscalizacion.private_event_requests.index') }}">Eventos Particulares</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('fiscalizacion.advertising_requests.index') }}">Publicidad en Vía Pública</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Usuarios</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('fiscalizacion.workers.index') }}">Personal</a>
+                        </li>
+                    </ul>
+
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">fiscalizacion</span>
                             <span class="badge bg-primary me-1 mb-1">all</span>
                         </div>
                     @endif

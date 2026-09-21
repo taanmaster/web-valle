@@ -487,6 +487,24 @@ class FrontController extends Controller
         ]);
     }
 
+    // Pantalla Fiscalización
+    public function fiscalizacion()
+    {
+        return view('front.fiscalizacion.index');
+    }
+
+    public function fiscalizacionDirectory()
+    {
+        $workers = \App\Models\FiscWorker::orderBy('name', 'asc')
+            ->orderBy('last_name', 'asc')
+            ->get();
+
+        return view('front.fiscalizacion.directory')->with([
+            'workers' => $workers,
+            'title' => 'Fiscalización',
+        ]);
+    }
+
     public function urbanDevDetail($tramite)
     {
         // Costos administrados desde el back; si no hay, el blade usa el config por defecto

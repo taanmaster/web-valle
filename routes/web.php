@@ -77,6 +77,11 @@ use App\Http\Controllers\UrbanDevSareRequestController;
 
 // SARE
 use App\Http\Controllers\SareRequestController;
+use App\Http\Controllers\FiscStreetVendingRequestController;
+use App\Http\Controllers\FiscPublicEventRequestController;
+use App\Http\Controllers\FiscPrivateEventRequestController;
+use App\Http\Controllers\FiscAdvertisingRequestController;
+use App\Http\Controllers\FiscWorkerController;
 
 // Adquisiciones
 use App\Http\Controllers\AcquisitionEndorsementController;
@@ -169,6 +174,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/desarrollo_urbano/directorio', 'FrontController@urbanDevDirectory')->name('urban_dev.directory');
     Route::get('/desarrollo_urbano/contactos/{type}', 'FrontController@urbanDevContacts')->name('urban_dev.contacts');
     Route::get('/desarrollo_urbano/tramites/{tramite}', 'FrontController@urbanDevDetail')->name('urban_dev.show');
+
+    // FISCALIZACIÓN
+    Route::get('/fiscalizacion', 'FrontController@fiscalizacion')->name('fiscalizacion.index');
+    Route::get('/fiscalizacion/directorio', 'FrontController@fiscalizacionDirectory')->name('fiscalizacion.directory');
 
     // CASA DE LA MUJER
     Route::get('/casa_de_la_mujer', 'FrontController@casaMujer')->name('casa_mujer.index');
@@ -589,6 +598,36 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             // Envío de la solicitud a Desarrollo Urbano para dictamen (inspección, permiso, pago)
             Route::post('requests/{sareRequest}/send-to-urban-dev', [SareRequestController::class, 'sendToUrbanDev'])->name('sare.request.send_to_urban_dev');
+        });
+
+        /* Fiscalización */
+        Route::group(['prefix' => 'fiscalizacion'], function () {
+            Route::get('street_vending_requests', [FiscStreetVendingRequestController::class, 'index'])->name('fiscalizacion.street_vending_requests.index');
+            Route::get('street_vending_requests/{fiscRequest}', [FiscStreetVendingRequestController::class, 'show'])->name('fiscalizacion.street_vending_requests.show');
+            Route::post('street_vending_requests/{fiscRequest}/status', [FiscStreetVendingRequestController::class, 'updateStatus'])->name('fiscalizacion.street_vending_requests.update_status');
+
+            Route::get('public_event_requests', [FiscPublicEventRequestController::class, 'index'])->name('fiscalizacion.public_event_requests.index');
+            Route::get('public_event_requests/{fiscRequest}', [FiscPublicEventRequestController::class, 'show'])->name('fiscalizacion.public_event_requests.show');
+            Route::post('public_event_requests/{fiscRequest}/status', [FiscPublicEventRequestController::class, 'updateStatus'])->name('fiscalizacion.public_event_requests.update_status');
+
+            Route::get('private_event_requests', [FiscPrivateEventRequestController::class, 'index'])->name('fiscalizacion.private_event_requests.index');
+            Route::get('private_event_requests/{fiscRequest}', [FiscPrivateEventRequestController::class, 'show'])->name('fiscalizacion.private_event_requests.show');
+            Route::post('private_event_requests/{fiscRequest}/status', [FiscPrivateEventRequestController::class, 'updateStatus'])->name('fiscalizacion.private_event_requests.update_status');
+
+            Route::get('advertising_requests', [FiscAdvertisingRequestController::class, 'index'])->name('fiscalizacion.advertising_requests.index');
+            Route::get('advertising_requests/crear', [FiscAdvertisingRequestController::class, 'create'])->name('fiscalizacion.advertising_requests.create');
+            Route::post('advertising_requests', [FiscAdvertisingRequestController::class, 'store'])->name('fiscalizacion.advertising_requests.store');
+            Route::get('advertising_requests/{fiscRequest}', [FiscAdvertisingRequestController::class, 'show'])->name('fiscalizacion.advertising_requests.show');
+            Route::post('advertising_requests/{fiscRequest}/status', [FiscAdvertisingRequestController::class, 'updateStatus'])->name('fiscalizacion.advertising_requests.update_status');
+
+            Route::resource('workers', FiscWorkerController::class)->names([
+                'index' => 'fiscalizacion.workers.index',
+                'create' => 'fiscalizacion.workers.create',
+                'store' => 'fiscalizacion.workers.store',
+                'edit' => 'fiscalizacion.workers.edit',
+                'update' => 'fiscalizacion.workers.update',
+                'destroy' => 'fiscalizacion.workers.destroy',
+            ]);
         });
 
         /* Desarrollo Urbano */
@@ -2205,6 +2244,22 @@ Route::namespace('App\Http\Controllers')->group(function () {
         // Rutas para archivos de SARE
         Route::post('/sare/archivo/subir', 'CitizenProfileController@uploadSareFile')->name('citizen.sare.file.upload');
         Route::delete('/sare/archivo/{fileId}/eliminar', 'CitizenProfileController@deleteSareFile')->name('citizen.sare.file.delete');
+
+        // Rutas Fiscalización para ciudadanos
+        Route::get('/fiscalizacion', 'FiscStreetVendingRequestController@hub')->name('citizen.fiscalizacion.hub');
+        Route::get('/fiscalizacion/venta-via-publica', 'FiscStreetVendingRequestController@index')->name('citizen.fisc.street_vending.index');
+        Route::get('/fiscalizacion/venta-via-publica/crear', 'FiscStreetVendingRequestController@create')->name('citizen.fisc.street_vending.create');
+        Route::post('/fiscalizacion/venta-via-publica', 'FiscStreetVendingRequestController@store')->name('citizen.fisc.street_vending.store');
+
+        Route::get('/fiscalizacion/eventos-via-publica', 'FiscPublicEventRequestController@index')->name('citizen.fisc.public_event.index');
+        Route::get('/fiscalizacion/eventos-via-publica/crear', 'FiscPublicEventRequestController@create')->name('citizen.fisc.public_event.create');
+        Route::post('/fiscalizacion/eventos-via-publica', 'FiscPublicEventRequestController@store')->name('citizen.fisc.public_event.store');
+
+        Route::get('/fiscalizacion/eventos-particulares', 'FiscPrivateEventRequestController@index')->name('citizen.fisc.private_event.index');
+        Route::get('/fiscalizacion/eventos-particulares/crear', 'FiscPrivateEventRequestController@create')->name('citizen.fisc.private_event.create');
+        Route::post('/fiscalizacion/eventos-particulares', 'FiscPrivateEventRequestController@store')->name('citizen.fisc.private_event.store');
+
+        Route::get('/fiscalizacion/publicidad-via-publica', 'FiscAdvertisingRequestController@index')->name('citizen.fisc.advertising.index');
 
         // Rutas Desarrollo Urbano para ciudadanos
         Route::get('/desarrollo-urbano/crear', 'CitizenProfileController@createUrbanDevRequest')->name('citizen.urban_dev.create');

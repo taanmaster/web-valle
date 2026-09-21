@@ -277,6 +277,22 @@
                 <h2 style="padding-top: 120px;">Instituto Municipal de Planeación</h2>
             </div>
         </a>
+
+        <!--Fiscalización-->
+        <a href="{{ route('fiscalizacion.index') }}"
+            class="card link-card card-image card-alignment-bottom wow fadeInUp h-100 mt-5">
+            <img src="{{ asset('front/img/placeholder-5.jpg') }}" class="card-img-top"
+                alt="Portada de Desarrollo Urbano">
+            <div class="overlay"></div>
+
+            <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+            </div>
+
+            <div class="card-content">
+                <h2 style="padding-top: 120px;">Fiscalización</h2>
+            </div>
+        </a>
     </div>
 
     @if (!empty($popup))

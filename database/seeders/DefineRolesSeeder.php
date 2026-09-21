@@ -22,6 +22,7 @@ class DefineRolesSeeder extends Seeder
             'gazette',
             'configuration',
             'environment',
+            'fiscalizacion',
             'all',
         ];
 

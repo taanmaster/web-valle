@@ -14,6 +14,7 @@
 9. **SCR** = Secretaria de Ayuntamiento
 10. **DINS** = Desarrollo Institucional (Institutional Development)
 11. **Environment** = Dirección de Medio Ambiente
+12. **FISC** = Fiscalización (Municipal Code Enforcement / Street Commerce Regulation)
 
 ### Modelos sin prefijo (Generales del Sistema)
 - **Banner** = Banners generales del sistema
@@ -85,3 +86,10 @@
 - EnvironmentRequest, EnvironmentRequestFile, EnvironmentRequestNote
 - EnvironmentEvent
 - EnvironmentDeliveryVoucher, EnvironmentDeliveryVoucherItem
+
+#### FISC (Fiscalización)
+- FiscStreetVendingRequest, FiscStreetVendingRequestFile
+- FiscPublicEventRequest, FiscPublicEventRequestFile
+- FiscPrivateEventRequest, FiscPrivateEventRequestFile
+- FiscAdvertisingRequest, FiscAdvertisingRequestFile
+- FiscWorker (directorio de personal, tabla `fisc_workers`)

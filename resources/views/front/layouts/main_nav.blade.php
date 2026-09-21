@@ -89,7 +89,7 @@
             </li>
 
             <li>
-                <a href="{{ route('urban_dev.contacts', 'auditors') }}">
+                <a href="{{ route('fiscalizacion.index') }}">
                     <ion-icon name="document-text-outline"></ion-icon>
                     <span>Fiscalización</span>
                 </a>
