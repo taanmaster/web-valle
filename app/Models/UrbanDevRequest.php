@@ -124,6 +124,14 @@ class UrbanDevRequest extends Model
     }
 
     /**
+     * Dictámenes enviados a otras dependencias (Protección Civil, Medio Ambiente)
+     */
+    public function reviews()
+    {
+        return $this->hasMany(\App\Models\UrbanDevRequestReview::class);
+    }
+
+    /**
      * Concepto de costo asignado (define el monto a pagar en línea).
      */
     public function cost()
