@@ -2,20 +2,20 @@
 
 namespace App\Livewire\Front\UrbanDev;
 
-use Livewire\Component;
-use Livewire\WithFileUploads;
-use Illuminate\Support\Str;
+use App\Models\UrbanDevFormat;
+use App\Models\UrbanDevRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
-use App\Models\UrbanDevRequest;
-use App\Models\UrbanDevFormat;
+use Illuminate\Support\Str;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class FormatForm extends Component
 {
     use WithFileUploads;
 
     public UrbanDevRequest $request;
+
     public string $formatType = '';
 
     /** Todos los campos de texto del formato. */
@@ -24,11 +24,18 @@ class FormatForm extends Component
     /** Croquis (archivo temporal de Livewire). */
     public $croquis = null;
 
+    /** Documentación de Persona Moral (archivos temporales de Livewire). */
+    public $documentoPersonalidad = null;
+
+    public $ineRepresentante = null;
+
     /** Firmas como data URL (base64 PNG) generadas por el signature pad. */
     public string $signatureApplicant = '';
+
     public string $signaturePerito = '';
 
     public bool $saved = false;
+
     public bool $editing = false;
 
     public function mount(UrbanDevRequest $request): void
@@ -176,6 +183,16 @@ class FormatForm extends Component
             $rules['data.rl_rfc'] = 'required|string|max:13';
             $rules['data.rl_correo'] = 'required|email|max:255';
             $rules['data.rl_telefono'] = 'required|string|max:30';
+
+            // Documentación de la Persona Moral y del Representante Legal
+            $docRule = 'mimes:jpg,jpeg,png,webp,pdf|max:10240';
+            $existing = $this->request->format;
+            $rules['documentoPersonalidad'] = ($existing && $existing->documento_personalidad_path)
+                ? 'nullable|'.$docRule
+                : 'required|'.$docRule;
+            $rules['ineRepresentante'] = ($existing && $existing->ine_representante_path)
+                ? 'nullable|'.$docRule
+                : 'required|'.$docRule;
         }
 
         // Propietario del predio
@@ -208,10 +225,10 @@ class FormatForm extends Component
         // Croquis: obligatorio si aún no hay uno guardado.
         // Solo formatos seguros (se excluye SVG para evitar XSS almacenado).
         $croquisRule = 'mimes:jpg,jpeg,png,webp,pdf|max:10240';
-        if (!$this->request->format || !$this->request->format->croquis_path) {
-            $rules['croquis'] = 'required|' . $croquisRule;
+        if (! $this->request->format || ! $this->request->format->croquis_path) {
+            $rules['croquis'] = 'required|'.$croquisRule;
         } else {
-            $rules['croquis'] = 'nullable|' . $croquisRule;
+            $rules['croquis'] = 'nullable|'.$croquisRule;
         }
 
         return $rules;
@@ -226,6 +243,12 @@ class FormatForm extends Component
             'croquis.required' => 'Debes adjuntar el croquis de localización.',
             'croquis.mimes' => 'El croquis debe ser un archivo JPG, PNG, WEBP o PDF.',
             'croquis.max' => 'El croquis no puede pesar más de 10 MB.',
+            'documentoPersonalidad.required' => 'Debes adjuntar el documento que acredita la personalidad jurídica.',
+            'documentoPersonalidad.mimes' => 'El documento debe ser un archivo JPG, PNG, WEBP o PDF.',
+            'documentoPersonalidad.max' => 'El documento no puede pesar más de 10 MB.',
+            'ineRepresentante.required' => 'Debes adjuntar el INE del Representante Legal.',
+            'ineRepresentante.mimes' => 'El INE debe ser un archivo JPG, PNG, WEBP o PDF.',
+            'ineRepresentante.max' => 'El INE no puede pesar más de 10 MB.',
         ];
     }
 
@@ -242,8 +265,9 @@ class FormatForm extends Component
         if ($this->formatType === 'licencia-de-construccion') {
             $tieneMedida = trim((string) ($this->data['construccion_m2'] ?? '')) !== ''
                 || trim((string) ($this->data['construccion_ml'] ?? '')) !== '';
-            if (!$tieneMedida) {
+            if (! $tieneMedida) {
                 $this->addError('data.construccion_m2', 'Indica los metros cuadrados o lineales de construcción.');
+
                 return;
             }
         }
@@ -251,37 +275,38 @@ class FormatForm extends Component
         $existing = $this->request->format;
 
         // Firmas: obligatorias en el primer guardado
-        if ((!$existing || !$existing->signature_applicant_path) && !$this->signatureApplicant) {
+        if ((! $existing || ! $existing->signature_applicant_path) && ! $this->signatureApplicant) {
             $this->addError('signatureApplicant', 'La firma del solicitante es obligatoria.');
+
             return;
         }
         if ($this->formatType === 'licencia-de-construccion'
-            && (!$existing || !$existing->signature_perito_path)
-            && !$this->signaturePerito) {
+            && (! $existing || ! $existing->signature_perito_path)
+            && ! $this->signaturePerito) {
             $this->addError('signaturePerito', 'La firma del perito es obligatoria.');
+
             return;
         }
 
         // Rutas de archivos (conservar las existentes si no se reemplazan)
         $croquisPath = $existing->croquis_path ?? null;
+        $documentoPersonalidadPath = $existing->documento_personalidad_path ?? null;
+        $ineRepresentantePath = $existing->ine_representante_path ?? null;
         $sigApplicantPath = $existing->signature_applicant_path ?? null;
         $sigPeritoPath = $existing->signature_perito_path ?? null;
 
-        $baseDir = 'desarrollo_urbano/formatos/' . $this->request->id;
+        $baseDir = 'desarrollo_urbano/formatos/'.$this->request->id;
 
         if ($this->croquis) {
-            // Extensión y content-type derivados del mime validado, no del nombre del cliente
-            $ext = $this->croquis->extension() ?: 'png';
-            $mime = $this->croquis->getMimeType() ?: 'image/png';
-            $croquisPath = $baseDir . '/croquis_' . time() . '_' . Str::random(6) . '.' . $ext;
-            Storage::disk('s3')->put(
-                $croquisPath,
-                file_get_contents($this->croquis->getRealPath()),
-                [
-                    'ContentType' => $mime,
-                    'ContentDisposition' => 'attachment',
-                ]
-            );
+            $croquisPath = $this->storeUpload($this->croquis, $baseDir, 'croquis');
+        }
+
+        if ($this->documentoPersonalidad) {
+            $documentoPersonalidadPath = $this->storeUpload($this->documentoPersonalidad, $baseDir, 'documento_personalidad');
+        }
+
+        if ($this->ineRepresentante) {
+            $ineRepresentantePath = $this->storeUpload($this->ineRepresentante, $baseDir, 'ine_representante');
         }
 
         if ($this->signatureApplicant) {
@@ -298,6 +323,8 @@ class FormatForm extends Component
                 'format_type' => $this->formatType,
                 'data' => $this->data,
                 'croquis_path' => $croquisPath,
+                'documento_personalidad_path' => $documentoPersonalidadPath,
+                'ine_representante_path' => $ineRepresentantePath,
                 'signature_applicant_path' => $sigApplicantPath,
                 'signature_perito_path' => $sigPeritoPath,
             ]
@@ -305,6 +332,8 @@ class FormatForm extends Component
 
         $this->request->refresh();
         $this->croquis = null;
+        $this->documentoPersonalidad = null;
+        $this->ineRepresentante = null;
         $this->signatureApplicant = '';
         $this->signaturePerito = '';
         $this->saved = true;
@@ -314,17 +343,39 @@ class FormatForm extends Component
     }
 
     /**
+     * Sube un archivo temporal de Livewire a S3.
+     * Extensión y content-type derivados del mime validado, no del nombre del cliente.
+     */
+    private function storeUpload($file, string $dir, string $name): string
+    {
+        $ext = $file->extension() ?: 'png';
+        $mime = $file->getMimeType() ?: 'image/png';
+        $path = $dir.'/'.$name.'_'.time().'_'.Str::random(6).'.'.$ext;
+        Storage::disk('s3')->put(
+            $path,
+            file_get_contents($file->getRealPath()),
+            [
+                'ContentType' => $mime,
+                'ContentDisposition' => 'attachment',
+            ]
+        );
+
+        return $path;
+    }
+
+    /**
      * Decodifica una firma en data URL (base64 PNG) y la sube a S3.
      */
     private function storeSignature(string $dataUrl, string $dir, string $name): string
     {
         $encoded = preg_replace('#^data:image/\w+;base64,#i', '', $dataUrl);
         $binary = base64_decode($encoded);
-        $path = $dir . '/' . $name . '_' . time() . '_' . Str::random(6) . '.png';
+        $path = $dir.'/'.$name.'_'.time().'_'.Str::random(6).'.png';
         Storage::disk('s3')->put($path, $binary, [
             'ContentType' => 'image/png',
             'ContentDisposition' => 'attachment',
         ]);
+
         return $path;
     }
 

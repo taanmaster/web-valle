@@ -15,6 +15,8 @@ class UrbanDevFormat extends Model
         'format_type',
         'data',
         'croquis_path',
+        'documento_personalidad_path',
+        'ine_representante_path',
         'signature_applicant_path',
         'signature_perito_path',
     ];
@@ -37,6 +39,22 @@ class UrbanDevFormat extends Model
     public function getCroquisUrlAttribute(): ?string
     {
         return $this->croquis_path ? Storage::disk('s3')->url($this->croquis_path) : null;
+    }
+
+    /**
+     * URL pública (S3) del documento de personalidad jurídica, si existe.
+     */
+    public function getDocumentoPersonalidadUrlAttribute(): ?string
+    {
+        return $this->documento_personalidad_path ? Storage::disk('s3')->url($this->documento_personalidad_path) : null;
+    }
+
+    /**
+     * URL pública (S3) del INE del representante legal, si existe.
+     */
+    public function getIneRepresentanteUrlAttribute(): ?string
+    {
+        return $this->ine_representante_path ? Storage::disk('s3')->url($this->ine_representante_path) : null;
     }
 
     /**

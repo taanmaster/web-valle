@@ -120,8 +120,8 @@
                 </div>
 
                 {{-- Persona Física --}}
-                <div class="format-subheader">Datos para la Persona Física (llenar solo en caso de ser Persona Física)
-                </div>
+                @if (($data['tipo_persona'] ?? '') === 'fisica')
+                <div class="format-subheader">Datos para la Persona Física</div>
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label">Primer Apellido</label>
@@ -170,10 +170,11 @@
                         @enderror
                     </div>
                 </div>
+                @endif
 
                 {{-- Persona Moral --}}
-                <div class="format-subheader">Datos para la Persona Moral (llenar solo en caso de ser Persona Moral)
-                </div>
+                @if (($data['tipo_persona'] ?? '') === 'moral')
+                <div class="format-subheader">Datos para la Persona Moral</div>
                 <div class="row g-3">
                     <div class="col-md-8">
                         <label class="form-label">Razón Social</label>
@@ -241,6 +242,59 @@
                         @enderror
                     </div>
                 </div>
+
+                {{-- Documentación Persona Moral y Representante Legal --}}
+                <div class="format-subheader">Documentación de la Persona Moral y del Representante Legal</div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Documento que acredita la personalidad jurídica del interesado
+                            (Acta Constitutiva / Poder Notarial)</label>
+                        <input type="file" class="form-control @error('documentoPersonalidad') is-invalid @enderror"
+                            wire:model="documentoPersonalidad" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                        <small class="text-muted d-block mt-1">Formatos aceptados: JPG, PNG, WEBP o PDF (máx. 10 MB).</small>
+                        <div wire:loading wire:target="documentoPersonalidad" class="text-muted small mt-1">Cargando
+                            archivo...</div>
+                        @error('documentoPersonalidad')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+
+                        @if ($documentoPersonalidad)
+                            <div class="mt-2 text-muted">
+                                <ion-icon name="document-text-outline"></ion-icon>
+                                {{ $documentoPersonalidad->getClientOriginalName() }}
+                            </div>
+                        @elseif ($request->format && $request->format->documento_personalidad_url)
+                            <div class="mt-2">
+                                <a href="{{ $request->format->documento_personalidad_url }}"
+                                    target="_blank">Ver documento actual</a>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">INE del Representante Legal</label>
+                        <input type="file" class="form-control @error('ineRepresentante') is-invalid @enderror"
+                            wire:model="ineRepresentante" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                        <small class="text-muted d-block mt-1">Formatos aceptados: JPG, PNG, WEBP o PDF (máx. 10 MB).</small>
+                        <div wire:loading wire:target="ineRepresentante" class="text-muted small mt-1">Cargando
+                            archivo...</div>
+                        @error('ineRepresentante')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+
+                        @if ($ineRepresentante)
+                            <div class="mt-2 text-muted">
+                                <ion-icon name="document-text-outline"></ion-icon>
+                                {{ $ineRepresentante->getClientOriginalName() }}
+                            </div>
+                        @elseif ($request->format && $request->format->ine_representante_url)
+                            <div class="mt-2">
+                                <a href="{{ $request->format->ine_representante_url }}"
+                                    target="_blank">Ver documento actual</a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                @endif
             </div>
 
             {{-- 2. Domicilio para recibir notificaciones --}}
@@ -322,6 +376,7 @@
                     <div class="text-danger small mb-2">{{ $message }}</div>
                 @enderror
 
+                @if (($data['prop_tipo'] ?? '') === 'fisica')
                 <div class="format-subheader">Si el propietario es Persona Física favor de indicar</div>
                 <div class="row g-3">
                     <div class="col-md-4">
@@ -346,7 +401,9 @@
                         @enderror
                     </div>
                 </div>
+                @endif
 
+                @if (($data['prop_tipo'] ?? '') === 'moral')
                 <div class="format-subheader">Si el propietario es Persona Moral favor de indicar</div>
                 <div class="row g-3">
                     <div class="col-md-12">
@@ -358,6 +415,7 @@
                         @enderror
                     </div>
                 </div>
+                @endif
             </div>
 
             {{-- 4. Datos del predio --}}
