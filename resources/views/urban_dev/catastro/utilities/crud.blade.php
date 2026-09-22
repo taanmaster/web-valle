@@ -121,9 +121,9 @@
                         @enderror
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">URL de expediente <span class="text-danger">*</span></label>
+                        <label class="form-label">URL de expediente</label>
                         <input type="url" class="form-control @error('url_expediente') is-invalid @enderror"
-                            placeholder="https://" wire:model="url_expediente" required>
+                            placeholder="https://" wire:model="url_expediente">
                         @error('url_expediente')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
