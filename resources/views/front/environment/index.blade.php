@@ -204,7 +204,7 @@
                         <div class="overlay"></div>
 
                         <div class="card-content">
-                            <h2>{{ $blog->title }}</h2>
+                            <h4>{{ $blog->title }}</h4>
                             @if ($blog->description)
                                 <p class="mb-0">{{ $blog->description }}</p>
                             @endif
