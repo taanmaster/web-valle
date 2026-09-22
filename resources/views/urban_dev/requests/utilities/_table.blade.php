@@ -3,12 +3,12 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th style="width: 15%;">Trámite</th>
                     <th style="width: 10%;">Fecha</th>
                     <th style="width: 15%;">Solicitante</th>
                     <th style="width: 10%;">Entero</th>
                     <th style="width: 10%;">Licencia</th>
                     <th style="width: 10%;">Folio</th>
-                    <th style="width: 15%;">Concepto</th>
                     <th style="width: 15%;">Domicilio</th>
                     <th style="width: 10%;">Fecha Entrega Inspector</th>
                     <th style="width: 5%;">Acciones</th>
@@ -17,6 +17,11 @@
             <tbody>
                 @foreach ($urban_dev_requests as $request)
                     <tr>
+                        <td>
+                            <span class="fw-bold">{{ $request->request_type_label }}</span>
+                            <br><span
+                                class="badge bg-{{ $request->status_color }} mb-0">{{ $request->status_label }}</span>
+                        </td>
                         <td>
                             <small class="fw-bold">{{ $request->created_at->format('d/m/Y') }}</small>
                             <br><small class="text-muted">{{ $request->created_at->format('H:i') }}</small>
@@ -47,11 +52,6 @@
                             @else
                                 <span class="text-muted">-</span>
                             @endif
-                        </td>
-                        <td>
-                            <span class="fw-bold">{{ $request->request_type_label }}</span>
-                            <br><span
-                                class="badge bg-{{ $request->status_color }} mb-0">{{ $request->status_label }}</span>
                         </td>
                         <td>
                             <small>{{ Str::limit($request->user_address, 50) }}</small>
