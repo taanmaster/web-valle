@@ -129,7 +129,8 @@ class Table extends Component
             $query->where(function ($q) {
                 $q->where('name', 'like', '%'.$this->search.'%')
                     ->orWhere('homoclave', 'like', '%'.$this->search.'%')
-                    ->orWhere('dependency_name', 'like', '%'.$this->search.'%');
+                    ->orWhere('dependency_name', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
             });
         }
 

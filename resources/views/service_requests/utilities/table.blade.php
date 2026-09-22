@@ -254,7 +254,7 @@
         <div class="row g-3 mb-3 align-items-end">
             <div class="col-md-5">
                 <label class="form-label fw-semibold">Buscar un trámite o servicio</label>
-                <input type="text" class="form-control" placeholder="Nombre, homoclave o dependencia"
+                <input type="text" class="form-control" placeholder="Pon cualquier palabra relacionada a la búsqueda"
                     wire:model.live.debounce.300ms="search" />
             </div>
 
