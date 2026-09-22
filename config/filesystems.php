@@ -44,7 +44,11 @@ return [
             'throw' => false,
         ],
 
-        's3' => [
+        // En local, si no se configura AWS_BUCKET, el disco "s3" cae a almacenamiento
+        // local (storage/app/public/s3, servido via /storage/s3) para poder probar
+        // subidas de archivos sin credenciales reales de AWS. En producción siempre
+        // hay un bucket configurado, así que este fallback nunca aplica ahí.
+        's3' => env('AWS_BUCKET') ? [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
@@ -53,6 +57,12 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'throw' => false,
+        ] : [
+            'driver' => 'local',
+            'root' => storage_path('app/public/s3'),
+            'url' => env('APP_URL').'/storage/s3',
+            'visibility' => 'public',
             'throw' => false,
         ],
 
