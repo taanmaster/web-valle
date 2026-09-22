@@ -358,6 +358,11 @@
                     </div>
                 @endif
 
+                <!-- Dictámenes de otras dependencias -->
+                @if (in_array($urbanDevRequest->request_type, ['uso-de-suelo', 'licencia-de-construccion']))
+                    @livewire('urban-dev.requests.dependency-dictamenes', ['urbanDevRequest' => $urbanDevRequest])
+                @endif
+
                 <!-- Lista de Verificación de Documentos -->
                 <div class="card">
                     <div class="card-header bg-success text-white">

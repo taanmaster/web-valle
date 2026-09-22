@@ -81,11 +81,18 @@
 
 #### URBAN_DEV (Desarrollo Urbano)
 - UrbanDevRequest, UrbanDevRequestFile, UrbanDevRequestNote
+- UrbanDevWorker, UrbanDevCost, UrbanDevFormat, UrbanDevCastroRequest
+- UrbanDevRequestReview (dictámenes enviados a Protección Civil / Medio Ambiente, tabla `urban_dev_request_reviews`,
+  columna `dependency`; ver `SareRequestReview` para el mismo patrón aplicado a SARE → Desarrollo Urbano).
+  Protección Civil no es un módulo aparte: su bandeja (`proteccion_civil.requests.*`) vive bajo el sidebar de
+  Desarrollo Urbano (rol `urban_dev`), igual que "Solicitudes SARE".
 
 #### Environment (Dirección de Medio Ambiente)
 - EnvironmentRequest, EnvironmentRequestFile, EnvironmentRequestNote
 - EnvironmentEvent
 - EnvironmentDeliveryVoucher, EnvironmentDeliveryVoucherItem
+- Bandeja de solicitudes de Desarrollo Urbano (Visto Bueno Ambiental) usa el modelo `UrbanDevRequestReview` con
+  `dependency = 'medio_ambiente'`, no un modelo propio
 
 #### FISC (Fiscalización)
 - FiscStreetVendingRequest, FiscStreetVendingRequestFile

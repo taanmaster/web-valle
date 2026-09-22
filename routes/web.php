@@ -60,6 +60,7 @@ use App\Http\Controllers\CitizenMessageController;
 use App\Http\Controllers\EnvironmentBlogController;
 use App\Http\Controllers\EnvironmentEventController;
 use App\Http\Controllers\EnvironmentRequestController;
+use App\Http\Controllers\EnvironmentUrbanDevRequestController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TsrBillingAccountController;
 use App\Http\Controllers\TsrAdminRevenueColletionArticleController;
@@ -74,6 +75,9 @@ use App\Http\Controllers\UrbanDevWorkerController;
 use App\Http\Controllers\UrbanDevKPIsController;
 use App\Http\Controllers\UrbanDevCostController;
 use App\Http\Controllers\UrbanDevSareRequestController;
+
+// Protección Civil
+use App\Http\Controllers\ProteccionCivilRequestController;
 
 // SARE
 use App\Http\Controllers\SareRequestController;
@@ -726,6 +730,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::get('kpis', [UrbanDevKPIsController::class, 'index'])->name('urban_dev.kpis.index');
         });
 
+        /* Protección Civil */
+        Route::group(['prefix' => 'proteccion_civil'], function () {
+            // Solicitudes de Desarrollo Urbano enviadas para Opinión Técnica de Factibilidad
+            Route::get('requests', [ProteccionCivilRequestController::class, 'index'])->name('proteccion_civil.requests.index');
+            Route::get('requests/{review}', [ProteccionCivilRequestController::class, 'show'])->name('proteccion_civil.requests.show');
+        });
+
         /* Dirección de Medio Ambiente */
         Route::group(['prefix' => 'environment'], function () {
             Route::resource('requests', EnvironmentRequestController::class)
@@ -735,6 +746,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
                     'index' => 'environment.requests.index',
                     'show' => 'environment.requests.show',
                 ]);
+
+            // Solicitudes de Desarrollo Urbano enviadas para Visto Bueno Ambiental
+            Route::get('urban_dev_requests', [EnvironmentUrbanDevRequestController::class, 'index'])->name('environment.urban_dev_requests.index');
+            Route::get('urban_dev_requests/{review}', [EnvironmentUrbanDevRequestController::class, 'show'])->name('environment.urban_dev_requests.show');
 
             Route::resource('blog', EnvironmentBlogController::class)->names([
                 'index' => 'medio_ambiente_blog.admin.index',

@@ -150,6 +150,7 @@
                         </li>
                     @endif
 
+
                     @if (auth()->user()->hasRole('acquisitions') || auth()->user()->hasRole('all'))
                         <li class="nav-item">
                             <a href="#valleAcquisitions" id="acquisitions-tab" class="nav-link">
@@ -801,6 +802,9 @@
                             <a class="nav-link" href="{{ route('urban_dev.sare_requests.index') }}">Solicitudes SARE</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('proteccion_civil.requests.index') }}">Solicitudes de Factibilidad</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('urban_dev.inspectors.requests') }}">Vista
                                 Inspector</a>
                         </li>
@@ -921,6 +925,9 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('environment.requests.index') }}">Solicitudes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('environment.urban_dev_requests.index') }}">Visto Bueno Ambiental</a>
                         </li>
                     </ul>
 
