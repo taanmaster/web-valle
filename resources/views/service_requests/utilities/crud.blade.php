@@ -1105,7 +1105,8 @@
                     @if ($privacy_notice_applicable === '1')
                         <div class="col-md-6">
                             <label class="form-label d-block">Aviso de privacidad</label>
-                            <a href="{{ $privacy_notice_url }}" target="_blank" rel="noopener">{{ $privacy_notice_name }}</a>
+                            <a href="{{ $privacy_notice_url }}" target="_blank" rel="noopener"
+                                class="text-decoration-underline">{{ $privacy_notice_name }}</a>
                         </div>
                     @endif
                 @endif
