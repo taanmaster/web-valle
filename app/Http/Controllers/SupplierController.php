@@ -6,6 +6,7 @@ use App\Models\Supplier;
 use App\Models\SupplierFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -57,23 +58,41 @@ class SupplierController extends Controller
         ]);
 
         // Correo al proveedor: confirmación de recepción de solicitud (6.2)
+        // Se envuelve en try/catch porque un correo marcado como inactivo por el
+        // proveedor de correo (rebote, spam, supresión manual) no debe impedir
+        // que se registre la solicitud de alta.
         if ($supplier->email) {
-            Mail::send('_mail_notifications.citizen.supplier_request_received', [
-                'nombre_proveedor' => Auth::user()->name,
-                'folio'            => $supplier->registration_number,
-            ], function ($m) use ($supplier) {
-                $m->to($supplier->email)
-                  ->subject('Recibimos tu solicitud de alta como proveedor — Folio ' . $supplier->registration_number);
-            });
+            try {
+                Mail::send('_mail_notifications.citizen.supplier_request_received', [
+                    'nombre_proveedor' => Auth::user()->name,
+                    'folio'            => $supplier->registration_number,
+                ], function ($m) use ($supplier) {
+                    $m->to($supplier->email)
+                      ->subject('Recibimos tu solicitud de alta como proveedor — Folio ' . $supplier->registration_number);
+                });
+            } catch (\Throwable $e) {
+                Log::error('No se pudo enviar el correo de confirmación de alta de proveedor', [
+                    'supplier_id' => $supplier->id,
+                    'email' => $supplier->email,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         // Correo al administrativo: nueva solicitud de proveedor recibida (6.1)
-        Mail::send('_mail_notifications.admin.supplier_new_request', [
-            'folio' => $supplier->registration_number,
-        ], function ($m) use ($supplier) {
-            $m->to('adquisiciones@valledesantiago.gob.mx')
-              ->subject('Nueva solicitud de proveedor recibida — Folio ' . $supplier->registration_number);
-        });
+        try {
+            Mail::send('_mail_notifications.admin.supplier_new_request', [
+                'folio' => $supplier->registration_number,
+            ], function ($m) use ($supplier) {
+                $m->to('adquisiciones@valledesantiago.gob.mx')
+                  ->subject('Nueva solicitud de proveedor recibida — Folio ' . $supplier->registration_number);
+            });
+        } catch (\Throwable $e) {
+            Log::error('No se pudo enviar el correo de notificación de nueva alta de proveedor', [
+                'supplier_id' => $supplier->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         Session::flash('success', 'Se ha iniciado el proceso de alta con folio: ' . $supplier->registration_number);
 
