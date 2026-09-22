@@ -32,7 +32,7 @@ class Crud extends Component
         // C. Canal de atención y disponibilidad
         'can_start_online', 'can_finish_online', 'online_url',
         // E. Fundamento jurídico y regulación
-        'legal_basis', 'regulation_name', 'regulation_media',
+        'legal_basis', 'regulation_name',
         'regulation_publication_date', 'regulation_articles',
         // G. Presentación y formato de la solicitud
         'format_name', 'format_media', 'format_publication_date',
@@ -65,7 +65,7 @@ class Crud extends Component
         'allows_renewal', 'collects_personal_data',
     ];
 
-    private const ARRAY_FIELDS = ['channels', 'submission_forms', 'payment_options'];
+    private const ARRAY_FIELDS = ['channels', 'submission_forms', 'payment_options', 'regulation_media'];
 
     #[Locked]
     public $request;
@@ -133,7 +133,7 @@ class Crud extends Component
 
     public $regulation_name = '';
 
-    public $regulation_media = '';
+    public $regulation_media = [];
 
     public $regulation_publication_date = '';
 
@@ -261,12 +261,22 @@ class Crud extends Component
 
     public $privacy_notice_url = '';
 
+    // No se persiste directamente: solo controla si se precarga el aviso del Municipio
+    public $privacy_notice_applicable = '';
+
+    private const MUNICIPAL_PRIVACY_NOTICE_NAME = 'Aviso de Privacidad del H. Ayuntamiento de Valle de Santiago';
+
+    private const MUNICIPAL_PRIVACY_NOTICE_URL = 'https://www.valledesantiago.gob.mx/obligaciones/11/avisos-de-privacidad';
+
     public function mount()
     {
         $this->fetchDependencies();
 
         if ($this->request != null) {
             $this->loadRequestData();
+        } else {
+            // La regulación de todo trámite municipal la emite el H. Ayuntamiento
+            $this->issuing_authority = 'H. Ayuntamiento';
         }
     }
 
@@ -290,6 +300,8 @@ class Crud extends Component
         }
 
         $this->status = $this->request->status ?? ServiceRequest::STATUS_DRAFT;
+
+        $this->privacy_notice_applicable = (filled($this->privacy_notice_name) || filled($this->privacy_notice_url)) ? '1' : '';
 
         $this->requirementRows = $this->request->requirementItems()->get()->map(fn ($item) => [
             'id' => $item->id,
@@ -341,6 +353,29 @@ class Crud extends Component
 
         if (in_array($root, self::SCALAR_FIELDS)) {
             $this->request->update([$root => $this->castValue($root, $this->$root)]);
+            $this->markSaved();
+        }
+    }
+
+    /**
+     * Al marcar "Sí" precarga el aviso de privacidad del sitio del Municipio;
+     * al marcar "No" limpia lo que se haya precargado.
+     */
+    public function updatedPrivacyNoticeApplicable($value)
+    {
+        if ($value === '1') {
+            $this->privacy_notice_name = self::MUNICIPAL_PRIVACY_NOTICE_NAME;
+            $this->privacy_notice_url = self::MUNICIPAL_PRIVACY_NOTICE_URL;
+        } else {
+            $this->privacy_notice_name = '';
+            $this->privacy_notice_url = '';
+        }
+
+        if ($this->isAutosavable()) {
+            $this->request->update([
+                'privacy_notice_name' => $this->privacy_notice_name ?: null,
+                'privacy_notice_url' => $this->privacy_notice_url ?: null,
+            ]);
             $this->markSaved();
         }
     }

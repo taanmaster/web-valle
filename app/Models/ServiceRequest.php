@@ -27,6 +27,7 @@ class ServiceRequest extends Model
         'channels' => 'array',
         'submission_forms' => 'array',
         'payment_options' => 'array',
+        'regulation_media' => 'array',
         'can_start_online' => 'boolean',
         'can_finish_online' => 'boolean',
         'requires_inspection' => 'boolean',

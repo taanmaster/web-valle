@@ -118,8 +118,7 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Autoridad que emite la regulación</label>
-                    <input type="text" wire:model.blur="issuing_authority" class="form-control"
-                        placeholder="Ej. H. Ayuntamiento" @disabled($readonly)>
+                    <input type="text" wire:model="issuing_authority" class="form-control" readonly>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Autoridad que aplica el trámite</label>
@@ -406,9 +405,12 @@
                         placeholder="Nombre de la regulación" @disabled($readonly)>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Medio de Difusión Oficial</label>
-                    <input type="text" wire:model.blur="regulation_media" class="form-control"
-                        placeholder="Ej. Periódico Oficial del Estado" @disabled($readonly)>
+                    <label class="form-label d-block">Medio de Difusión Oficial</label>
+                    @include('service_requests.utilities.partials.chip-checks', [
+                        'field' => 'regulation_media',
+                        'options' => ['Periódico Oficial', 'Gaceta Municipal'],
+                        'mode' => $mode,
+                    ])
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Fecha de publicación</label>
@@ -1061,17 +1063,17 @@
                 <small class="text-muted fw-normal ms-1">(solo si existen en norma vigente)</small>
             </h6>
             <div class="row g-3 mb-4">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <label class="form-label">Conducta sancionable</label>
-                    <input type="text" wire:model.blur="sanction_conduct" class="form-control"
-                        placeholder="Ej. Operar sin licencia" @disabled($readonly)>
+                    <textarea wire:model.blur="sanction_conduct" class="form-control" rows="3"
+                        placeholder="Ej. Operar sin licencia" @disabled($readonly)></textarea>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Sanción aplicable</label>
                     <input type="text" wire:model.blur="sanction_applicable" class="form-control"
                         placeholder="Ej. Multa y clausura" @disabled($readonly)>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Fundamento jurídico</label>
                     <input type="text" wire:model.blur="sanction_legal_basis" class="form-control"
                         placeholder="Ordenamiento y art." @disabled($readonly)>
@@ -1094,15 +1096,18 @@
                             placeholder="Ej. Nombre, domicilio, RFC, teléfono" @disabled($readonly)>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Aviso de privacidad aplicable</label>
-                        <input type="text" wire:model.blur="privacy_notice_name" class="form-control"
-                            placeholder="Nombre del aviso" @disabled($readonly)>
+                        <label class="form-label d-block">¿Aviso de privacidad aplicable?</label>
+                        @include('service_requests.utilities.partials.bool-group', [
+                            'field' => 'privacy_notice_applicable',
+                            'mode' => $mode,
+                        ])
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Liga del aviso de privacidad</label>
-                        <input type="url" wire:model.blur="privacy_notice_url" class="form-control"
-                            placeholder="https://" @disabled($readonly)>
-                    </div>
+                    @if ($privacy_notice_applicable === '1')
+                        <div class="col-md-6">
+                            <label class="form-label d-block">Aviso de privacidad</label>
+                            <a href="{{ $privacy_notice_url }}" target="_blank" rel="noopener">{{ $privacy_notice_name }}</a>
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>

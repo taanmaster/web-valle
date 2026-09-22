@@ -447,10 +447,10 @@
                                         {{ $request->regulation_name }}@if ($request->regulation_articles)
                                             , {{ $request->regulation_articles }}
                                         @endif.
-                                        @if ($request->regulation_media || $request->regulation_publication_date)
+                                        @if (! empty($request->regulation_media) || $request->regulation_publication_date)
                                             <div class="small text-muted mt-2">
-                                                @if ($request->regulation_media)
-                                                    Publicada en {{ $request->regulation_media }}
+                                                @if (! empty($request->regulation_media))
+                                                    Publicada en {{ implode(', ', $request->regulation_media) }}
                                                 @endif
                                                 @if ($request->regulation_publication_date)
                                                     el
