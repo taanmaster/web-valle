@@ -59,11 +59,11 @@
                                 <div class="d-flex justify-content-center align-items-center gap-3">
                                     <a href="{{ route('panteones.admin.show', $registro->id) }}"
                                         class="text-dark" title="Ver">
-                                        <i class="bx bx-show fs-5"></i>
+                                        <i class="ti ti-eye fs-5"></i>
                                     </a>
                                     <a href="{{ route('panteones.admin.edit', $registro->id) }}"
                                         class="text-dark" title="Editar">
-                                        <i class="bx bx-pencil fs-5"></i>
+                                        <i class="ti ti-pencil fs-5"></i>
                                     </a>
                                     <form method="POST"
                                         action="{{ route('panteones.admin.destroy', $registro->id) }}"
