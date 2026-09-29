@@ -1,4 +1,30 @@
 <div>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    @endif
+
+    @if (session('panteon_import_row_errors'))
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>La importación terminó con observaciones.</strong>
+            <ul class="mb-0 mt-2">
+                @foreach (session('panteon_import_row_errors') as $row => $errors)
+                    <li>Fila {{ $row }}: {{ implode(' ', $errors) }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    @endif
+
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold text-uppercase mb-0">Registro Panteones</h4>
@@ -6,9 +32,62 @@
             <a href="{{ route('panteones.admin.create') }}" class="btn btn-primary fw-semibold px-4">
                 Crear Nuevo
             </a>
+            <button type="button" class="btn btn-outline-success fw-semibold px-4" data-bs-toggle="modal"
+                data-bs-target="#importPanteones">
+                <i class="ti ti-file-import me-1"></i> Importar
+            </button>
             <button wire:click="toggleFilters" class="btn btn-secondary fw-semibold px-4">
                 Filtros
             </button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="importPanteones" tabindex="-1" aria-labelledby="importPanteonesLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importPanteonesLabel">Importar registros de panteones</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form method="POST" action="{{ route('panteones.admin.import') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <p class="text-muted small mb-3">
+                            Se aceptan archivos CSV, XLS y XLSX. El sistema identifica la fila de encabezados y
+                            reconoce: fecha, entero, folio, nombre, concepto, finado, panteón, sección, manzana o
+                            bloque, terreno, cantidad y observaciones o estatus.
+                        </p>
+
+                        <div class="alert alert-warning d-flex gap-2" role="alert">
+                            <i class="ti ti-alert-triangle fs-5"></i>
+                            <div>
+                                La importación conserva todas las filas y no elimina ni combina registros. Si el
+                                archivo ya se importó, sus datos se cargarán nuevamente y se duplicarán.
+                            </div>
+                        </div>
+
+                        <label for="panteones-import-file" class="form-label fw-semibold">Archivo</label>
+                        <input id="panteones-import-file" class="form-control" type="file" name="import_file"
+                            accept=".csv,.xls,.xlsx" required>
+
+                        <div class="form-check mt-3">
+                            <input class="form-check-input" type="checkbox" value="1" id="confirm-duplicates"
+                                name="confirm_duplicates" required>
+                            <label class="form-check-label" for="confirm-duplicates">
+                                Confirmo que revisé el archivo y entiendo que una importación repetida duplica la
+                                información.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="ti ti-upload me-1"></i> Importar archivo
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -92,7 +171,7 @@
     </div>
 
     {{-- Paginación --}}
-    <div class="mt-3">
-        {{ $panteones->links() }}
+    <div class="d-flex justify-content-center mt-4">
+        {{ $panteones->links('pagination::bootstrap-5') }}
     </div>
 </div>

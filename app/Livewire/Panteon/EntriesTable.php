@@ -11,6 +11,8 @@ class EntriesTable extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
     public $filter_folio = '';
     public $filter_fecha = '';
     public $show_filters = false;

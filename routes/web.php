@@ -1847,6 +1847,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/guias/{slug}', [AyudaController::class, 'guiaDetalle'])->name('ayuda.admin.guia.show');
 
         // Panteones
+        Route::post('panteones/importar', [PanteonController::class, 'import'])
+            ->name('panteones.admin.import');
+
         Route::resource('panteones', PanteonController::class)->names([
             'index'   => 'panteones.admin.index',
             'create'  => 'panteones.admin.create',
