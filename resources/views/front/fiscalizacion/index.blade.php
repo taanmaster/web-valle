@@ -375,7 +375,7 @@
                                     ['II', 'Plaza por día, vendedores de temporada, ferias y eventos especiales (área de 6 m²)', '$5.00 a $50.00'],
                                     ['III', 'Evento (bailes y espectáculos)', '$500.00 a $8,000.00'],
                                     ['IV', 'Evento particular (por evento, horario no máximo a las 2:00 a.m. del siguiente día)', '$300.00 a $1,000.00'],
-                                    ['V', 'Estacionamientos — 1ra categoría / 2da categoría / 3ra categoría', '$500.00 / $450.00 / $500.00'],
+                                    ['V', 'Estacionamientos — 1ra categoría / 2da categoría / 3ra categoría', '$500.00 / $450.00 / $400.00'],
                                     ['VI', 'Mantas (mensual, por m²)', '$150.00'],
                                     ['VII', 'Volanteo (mensual)', '$200.00 a $500.00'],
                                     ['VIII', 'Maquinitas por pieza (mensual)', '$50.00'],
