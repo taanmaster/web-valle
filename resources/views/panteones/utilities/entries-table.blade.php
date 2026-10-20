@@ -172,6 +172,6 @@
 
     {{-- Paginación --}}
     <div class="d-flex justify-content-center mt-4">
-        {{ $panteones->links('pagination::bootstrap-5') }}
+        {{ $panteones->links() }}
     </div>
 </div>
