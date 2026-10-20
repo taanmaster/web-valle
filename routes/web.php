@@ -183,6 +183,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/fiscalizacion', 'FrontController@fiscalizacion')->name('fiscalizacion.index');
     Route::get('/fiscalizacion/directorio', 'FrontController@fiscalizacionDirectory')->name('fiscalizacion.directory');
 
+    // ALUMBRADO PÚBLICO
+    Route::get('/alumbrado-publico', 'FrontController@publicLighting')->name('public_lighting.index');
+
     // CASA DE LA MUJER
     Route::get('/casa_de_la_mujer', 'FrontController@casaMujer')->name('casa_mujer.index');
 

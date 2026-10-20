@@ -278,21 +278,41 @@
             </div>
         </a>
 
-        <!--Fiscalización-->
-        <a href="{{ route('fiscalizacion.index') }}"
-            class="card link-card card-image card-alignment-bottom wow fadeInUp h-100 mt-5">
-            <img src="{{ asset('front/img/placeholder-5.jpg') }}" class="card-img-top"
-                alt="Portada de Desarrollo Urbano">
-            <div class="overlay"></div>
+        <div class="row g-4 mt-5">
+            <!--Fiscalización-->
+            <div class="col-md-6">
+                <a href="{{ route('fiscalizacion.index') }}"
+                    class="card link-card card-image card-alignment-bottom wow fadeInUp h-100">
+                    <img src="{{ asset('front/img/placeholder-5.jpg') }}" class="card-img-top" alt="Portada de Fiscalización">
+                    <div class="overlay"></div>
 
-            <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
-                <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 style="padding-top: 120px;">Fiscalización</h2>
+                    </div>
+                </a>
             </div>
 
-            <div class="card-content">
-                <h2 style="padding-top: 120px;">Fiscalización</h2>
+            <!--Alumbrado Público-->
+            <div class="col-md-6">
+                <a href="{{ route('public_lighting.index') }}"
+                    class="card link-card card-image card-alignment-bottom wow fadeInUp h-100" data-wow-delay="0.1s">
+                    <img src="{{ asset('front/img/placeholder-3.jpg') }}" class="card-img-top" alt="Portada de Alumbrado Público">
+                    <div class="overlay"></div>
+
+                    <div class="card-icon bg-white text-dark d-flex align-items-center justify-content-center">
+                        <ion-icon name="arrow-forward-outline" class="md hydrated"></ion-icon>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 style="padding-top: 120px;">Alumbrado Público</h2>
+                    </div>
+                </a>
             </div>
-        </a>
+        </div>
     </div>
 
     @if (!empty($popup))
