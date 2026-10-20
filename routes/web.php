@@ -86,6 +86,7 @@ use App\Http\Controllers\FiscPublicEventRequestController;
 use App\Http\Controllers\FiscPrivateEventRequestController;
 use App\Http\Controllers\FiscAdvertisingRequestController;
 use App\Http\Controllers\FiscWorkerController;
+use App\Http\Controllers\PublicLightingRequestController;
 
 // Adquisiciones
 use App\Http\Controllers\AcquisitionEndorsementController;
@@ -605,6 +606,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             // Envío de la solicitud a Desarrollo Urbano para dictamen (inspección, permiso, pago)
             Route::post('requests/{sareRequest}/send-to-urban-dev', [SareRequestController::class, 'sendToUrbanDev'])->name('sare.request.send_to_urban_dev');
+        });
+
+        /* Alumbrado Público */
+        Route::group(['prefix' => 'public_lighting'], function () {
+            Route::get('requests', [PublicLightingRequestController::class, 'index'])->name('public_lighting.requests.index');
+            Route::get('requests/{lightingRequest}', [PublicLightingRequestController::class, 'show'])->name('public_lighting.requests.show');
+            Route::post('requests/{lightingRequest}/status', [PublicLightingRequestController::class, 'updateStatus'])->name('public_lighting.requests.update_status');
+            Route::post('requests/{lightingRequest}/evidence', [PublicLightingRequestController::class, 'uploadEvidence'])->name('public_lighting.requests.upload_evidence');
         });
 
         /* Fiscalización */

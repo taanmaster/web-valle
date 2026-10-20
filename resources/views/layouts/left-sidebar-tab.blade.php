@@ -150,6 +150,15 @@
                         </li>
                     @endif
 
+                    @if (auth()->user()->hasRole('public_lighting') || auth()->user()->hasRole('all'))
+                        <li class="nav-item">
+                            <a href="#valleAlumbrado" id="alumbrado-tab" class="nav-link">
+                                <i class="ti ti-bulb menu-icon"></i>
+                                <span class="menu-label">Alumbrado Público</span>
+                            </a>
+                        </li>
+                    @endif
+
 
                     @if (auth()->user()->hasRole('acquisitions') || auth()->user()->hasRole('all'))
                         <li class="nav-item">
@@ -870,6 +879,28 @@
                         <div class="mt-3 px-3">
                             <small class="text-muted d-block mb-1">Roles con acceso:</small>
                             <span class="badge bg-primary me-1 mb-1">urban_dev</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if (auth()->user()->hasRole('public_lighting') || auth()->user()->hasRole('all'))
+                <div id="valleAlumbrado" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="alumbrado-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Solicitudes</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('public_lighting.requests.index') }}">Peticiones de Servicio</a>
+                        </li>
+                    </ul>
+
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">public_lighting</span>
                             <span class="badge bg-primary me-1 mb-1">all</span>
                         </div>
                     @endif
