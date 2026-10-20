@@ -119,7 +119,7 @@
                         realizada.</li>
                 </ol>
 
-                <a href="{{ route('citizen.profile.index') }}" class="btn btn-primary">Iniciar Petición</a>
+                <a href="{{ route('citizen.public_lighting.create') }}" class="btn btn-primary">Iniciar Petición</a>
             </div>
         </div>
 

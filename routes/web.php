@@ -2282,6 +2282,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
         Route::get('/fiscalizacion/publicidad-via-publica', 'FiscAdvertisingRequestController@index')->name('citizen.fisc.advertising.index');
 
+        // Rutas Alumbrado Público para ciudadanos
+        Route::get('/alumbrado-publico', 'PublicLightingRequestController@hub')->name('citizen.public_lighting.hub');
+        Route::get('/alumbrado-publico/peticiones', 'PublicLightingRequestController@index')->name('citizen.public_lighting.index');
+        Route::get('/alumbrado-publico/peticiones/crear', 'PublicLightingRequestController@create')->name('citizen.public_lighting.create');
+        Route::post('/alumbrado-publico/peticiones', 'PublicLightingRequestController@store')->name('citizen.public_lighting.store');
+        Route::get('/alumbrado-publico/peticiones/{lightingRequest}', 'PublicLightingRequestController@show')->name('citizen.public_lighting.show');
+
         // Rutas Desarrollo Urbano para ciudadanos
         Route::get('/desarrollo-urbano/crear', 'CitizenProfileController@createUrbanDevRequest')->name('citizen.urban_dev.create');
         Route::post('/desarrollo-urbano/guardar', 'CitizenProfileController@storeUrbanDevRequest')->name('citizen.urban_dev.store');

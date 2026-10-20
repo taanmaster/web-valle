@@ -32,6 +32,7 @@
         str_starts_with($currentRoute, 'citizen.sare') ||
         str_starts_with($currentRoute, 'citizen.third_party') ||
         str_starts_with($currentRoute, 'citizen.environment') ||
+        str_starts_with($currentRoute, 'citizen.public_lighting') ||
         str_starts_with($currentRoute, 'citizen.profile.identification_certificates');
 
     $group3Active = $currentRoute === 'citizen.services.index';
@@ -146,6 +147,10 @@
                                 <a href="{{ route('citizen.my_requests', 'medio-ambiente') }}"
                                     class="list-group-item list-group-item-action {{ request()->segment(4) === 'medio-ambiente' || str_starts_with($currentRoute, 'citizen.environment') ? 'active' : '' }}">
                                     <ion-icon name="leaf-outline"></ion-icon> Medio Ambiente
+                                </a>
+                                <a href="{{ route('citizen.public_lighting.hub') }}"
+                                    class="list-group-item list-group-item-action {{ str_starts_with($currentRoute, 'citizen.public_lighting') ? 'active' : '' }}">
+                                    <ion-icon name="bulb-outline"></ion-icon> Alumbrado Público
                                 </a>
                             </div>
                         </div>
