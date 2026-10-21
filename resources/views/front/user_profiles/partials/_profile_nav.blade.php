@@ -37,7 +37,9 @@
 
     $group3Active = $currentRoute === 'citizen.services.index';
 
-    $group4Active = str_starts_with($currentRoute, 'citizen.fiscalizacion') || str_starts_with($currentRoute, 'citizen.fisc.');
+    $fiscActive = str_starts_with($currentRoute, 'citizen.fiscalizacion') || str_starts_with($currentRoute, 'citizen.fisc.');
+    $civilProtectionActive = str_starts_with($currentRoute, 'citizen.civil_protection');
+    $group4Active = $fiscActive || $civilProtectionActive;
 @endphp
 
 @switch($userRole)
@@ -211,8 +213,12 @@
                         <div class="collapse {{ $group4Active ? 'show' : '' }}" id="navGroup4">
                             <div class="list-group list-group-flush rounded overflow-hidden">
                                 <a href="{{ route('citizen.fiscalizacion.hub') }}"
-                                    class="list-group-item list-group-item-action {{ $group4Active ? 'active' : '' }}">
+                                    class="list-group-item list-group-item-action {{ $fiscActive ? 'active' : '' }}">
                                     <ion-icon name="shield-checkmark-outline"></ion-icon> Fiscalización
+                                </a>
+                                <a href="{{ route('citizen.civil_protection.hub') }}"
+                                    class="list-group-item list-group-item-action {{ $civilProtectionActive ? 'active' : '' }}">
+                                    <ion-icon name="radio-outline"></ion-icon> Protección Civil
                                 </a>
                             </div>
                         </div>
