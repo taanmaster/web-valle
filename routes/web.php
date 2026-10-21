@@ -78,6 +78,8 @@ use App\Http\Controllers\UrbanDevSareRequestController;
 
 // Protección Civil
 use App\Http\Controllers\ProteccionCivilRequestController;
+use App\Http\Controllers\CivilProtectionProcedureController;
+use App\Http\Controllers\CivilProtectionCaseController;
 
 // SARE
 use App\Http\Controllers\SareRequestController;
@@ -747,6 +749,25 @@ Route::namespace('App\Http\Controllers')->group(function () {
             // Solicitudes de Desarrollo Urbano enviadas para Opinión Técnica de Factibilidad
             Route::get('requests', [ProteccionCivilRequestController::class, 'index'])->name('proteccion_civil.requests.index');
             Route::get('requests/{review}', [ProteccionCivilRequestController::class, 'show'])->name('proteccion_civil.requests.show');
+
+            // Consultor: catálogo de trámites y bandeja de expedientes
+            Route::group(['middleware' => 'role:proteccion_civil|all'], function () {
+                Route::get('procedures', [CivilProtectionProcedureController::class, 'index'])->name('proteccion_civil.procedures.index');
+                Route::get('procedures/create', [CivilProtectionProcedureController::class, 'create'])->name('proteccion_civil.procedures.create');
+                Route::get('procedures/{procedure}/edit', [CivilProtectionProcedureController::class, 'edit'])->name('proteccion_civil.procedures.edit');
+
+                Route::get('cases', [CivilProtectionCaseController::class, 'index'])->name('proteccion_civil.cases.index');
+                Route::get('cases/create', [CivilProtectionCaseController::class, 'create'])->name('proteccion_civil.cases.create');
+
+                Route::get('validity', [CivilProtectionCaseController::class, 'validity'])->name('proteccion_civil.validity.index');
+                Route::get('validity/export', [CivilProtectionCaseController::class, 'exportValidity'])->name('proteccion_civil.validity.export');
+            });
+
+            // Consultor o inspector asignado (el detalle valida la asignación)
+            Route::group(['middleware' => 'role:proteccion_civil|inspector_proteccion_civil|all'], function () {
+                Route::get('cases/{case}', [CivilProtectionCaseController::class, 'show'])->name('proteccion_civil.cases.show');
+                Route::get('inspections', [CivilProtectionCaseController::class, 'inspections'])->name('proteccion_civil.inspections.index');
+            });
         });
 
         /* Dirección de Medio Ambiente */
@@ -2290,6 +2311,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/fiscalizacion/eventos-particulares', 'FiscPrivateEventRequestController@store')->name('citizen.fisc.private_event.store');
 
         Route::get('/fiscalizacion/publicidad-via-publica', 'FiscAdvertisingRequestController@index')->name('citizen.fisc.advertising.index');
+
+        // Rutas Protección Civil para ciudadanos
+        Route::get('/proteccion-civil', 'CivilProtectionController@hub')->name('citizen.civil_protection.hub');
+        Route::get('/proteccion-civil/mis-tramites', 'CivilProtectionController@index')->name('citizen.civil_protection.index');
+        Route::get('/proteccion-civil/tramite/{procedure}/iniciar', 'CivilProtectionController@start')->name('citizen.civil_protection.start');
+        Route::get('/proteccion-civil/solicitud/{case}', 'CivilProtectionController@edit')->name('citizen.civil_protection.edit');
+        Route::get('/proteccion-civil/expediente/{case}', 'CivilProtectionController@show')->name('citizen.civil_protection.show');
 
         // Rutas Alumbrado Público para ciudadanos
         Route::get('/alumbrado-publico', 'PublicLightingRequestController@hub')->name('citizen.public_lighting.hub');
