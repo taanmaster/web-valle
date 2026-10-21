@@ -87,6 +87,13 @@
   Protección Civil no es un módulo aparte: su bandeja (`proteccion_civil.requests.*`) vive bajo el sidebar de
   Desarrollo Urbano (rol `urban_dev`), igual que "Solicitudes SARE".
 
+#### CivilProtection (Protección Civil) — modelos `CivilProtection*`, rutas/vistas `proteccion_civil.*`, rol `proteccion_civil`
+- CivilProtectionProcedure, CivilProtectionProcedureRequirement (catálogo de trámites y sus requisitos documentales;
+  el primer requisito "Oficio de petición" es fijo, `is_fixed = true`)
+- CivilProtectionCase (expediente, folio `PC-AAAA-NNNN`), CivilProtectionCaseDocument (copia del requisito al iniciar),
+  CivilProtectionCaseDocumentVersion, CivilProtectionCaseLog (línea de tiempo), CivilProtectionInspection
+- Rol `inspector_proteccion_civil`: sólo ve "Mis inspecciones" y el detalle de los expedientes que tiene asignados
+
 #### Environment (Dirección de Medio Ambiente)
 - EnvironmentRequest, EnvironmentRequestFile, EnvironmentRequestNote
 - EnvironmentEvent
