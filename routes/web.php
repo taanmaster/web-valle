@@ -89,6 +89,7 @@ use App\Http\Controllers\FiscPrivateEventRequestController;
 use App\Http\Controllers\FiscAdvertisingRequestController;
 use App\Http\Controllers\FiscWorkerController;
 use App\Http\Controllers\PublicLightingRequestController;
+use App\Http\Controllers\MarketController;
 
 // Adquisiciones
 use App\Http\Controllers\AcquisitionEndorsementController;
@@ -608,6 +609,26 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
             // Envío de la solicitud a Desarrollo Urbano para dictamen (inspección, permiso, pago)
             Route::post('requests/{sareRequest}/send-to-urban-dev', [SareRequestController::class, 'sendToUrbanDev'])->name('sare.request.send_to_urban_dev');
+        });
+
+        /* Mercado Municipal */
+        Route::group(['prefix' => 'market', 'middleware' => 'role:mercado|all'], function () {
+            Route::get('stalls', [MarketController::class, 'stalls'])->name('market.stalls.index');
+            Route::get('stalls/create', [MarketController::class, 'createStall'])->name('market.stalls.create');
+            Route::get('stalls/{stall}', [MarketController::class, 'showStall'])->name('market.stalls.show');
+            Route::get('stalls/{stall}/edit', [MarketController::class, 'editStall'])->name('market.stalls.edit');
+
+            Route::get('collect', [MarketController::class, 'collect'])->name('market.tickets.collect');
+            Route::get('tickets', [MarketController::class, 'tickets'])->name('market.tickets.index');
+            Route::get('tickets/{ticket}', [MarketController::class, 'showTicket'])->name('market.tickets.show');
+
+            Route::get('cuts', [MarketController::class, 'cuts'])->name('market.cuts.index');
+            Route::get('cuts/create', [MarketController::class, 'createCut'])->name('market.cuts.create');
+            Route::get('cuts/{cut}', [MarketController::class, 'showCut'])->name('market.cuts.show');
+
+            Route::get('rates', [MarketController::class, 'rates'])->name('market.rates.index');
+            Route::get('rates/create', [MarketController::class, 'createRate'])->name('market.rates.create');
+            Route::get('rates/{rate}/edit', [MarketController::class, 'editRate'])->name('market.rates.edit');
         });
 
         /* Alumbrado Público */
