@@ -150,6 +150,33 @@
                         </li>
                     @endif
 
+                    @if (auth()->user()->hasAnyRole(['proteccion_civil', 'inspector_proteccion_civil', 'all']))
+                        <li class="nav-item">
+                            <a href="#valleProteccionCivil" id="proteccion-civil-tab" class="nav-link">
+                                <i class="ti ti-urgent menu-icon"></i>
+                                <span class="menu-label">Protección Civil</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (auth()->user()->hasAnyRole(['mercado', 'all']))
+                        <li class="nav-item">
+                            <a href="#valleMercado" id="mercado-tab" class="nav-link">
+                                <i class="ti ti-building-store menu-icon"></i>
+                                <span class="menu-label">Mercado Municipal</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (auth()->user()->hasRole('public_lighting') || auth()->user()->hasRole('all'))
+                        <li class="nav-item">
+                            <a href="#valleAlumbrado" id="alumbrado-tab" class="nav-link">
+                                <i class="ti ti-bulb menu-icon"></i>
+                                <span class="menu-label">Alumbrado Público</span>
+                            </a>
+                        </li>
+                    @endif
+
 
                     @if (auth()->user()->hasRole('acquisitions') || auth()->user()->hasRole('all'))
                         <li class="nav-item">
@@ -870,6 +897,117 @@
                         <div class="mt-3 px-3">
                             <small class="text-muted d-block mb-1">Roles con acceso:</small>
                             <span class="badge bg-primary me-1 mb-1">urban_dev</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if (auth()->user()->hasAnyRole(['proteccion_civil', 'inspector_proteccion_civil', 'all']))
+                <div id="valleProteccionCivil" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="proteccion-civil-tab">
+                    @if (auth()->user()->hasAnyRole(['proteccion_civil', 'all']))
+                        <div class="title-box">
+                            <h6 class="menu-title">Trámites</h6>
+                        </div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('proteccion_civil.procedures.index') }}">Catálogo de trámites</a>
+                            </li>
+                        </ul>
+                    @endif
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Expedientes</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        @if (auth()->user()->hasAnyRole(['proteccion_civil', 'all']))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('proteccion_civil.cases.index') }}">Bandeja de seguimiento</a>
+                            </li>
+                        @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('proteccion_civil.inspections.index') }}">Mis inspecciones</a>
+                        </li>
+                    </ul>
+
+                    @if (auth()->user()->hasAnyRole(['proteccion_civil', 'all']))
+                        <div class="title-box">
+                            <h6 class="menu-title">Documentos emitidos</h6>
+                        </div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('proteccion_civil.validity.index') }}">Seguimiento de vigencias</a>
+                            </li>
+                        </ul>
+                    @endif
+
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">proteccion_civil</span>
+                            <span class="badge bg-primary me-1 mb-1">inspector_proteccion_civil</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if (auth()->user()->hasAnyRole(['mercado', 'all']))
+                <div id="valleMercado" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="mercado-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Mercado Municipal</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('market.stalls.index') }}">Padrón y cartera</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('market.tickets.collect') }}">Cobrar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('market.tickets.index') }}">Boletas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('market.cuts.index') }}">Corte del día</a>
+                        </li>
+                    </ul>
+
+                    <div class="title-box">
+                        <h6 class="menu-title">Configuración</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('market.rates.index') }}">Tarifas</a>
+                        </li>
+                    </ul>
+
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">mercado</span>
+                            <span class="badge bg-primary me-1 mb-1">all</span>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if (auth()->user()->hasRole('public_lighting') || auth()->user()->hasRole('all'))
+                <div id="valleAlumbrado" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                    aria-labelledby="alumbrado-tab">
+                    <div class="title-box">
+                        <h6 class="menu-title">Solicitudes</h6>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('public_lighting.requests.index') }}">Peticiones de Servicio</a>
+                        </li>
+                    </ul>
+
+                    @if (auth()->user()->hasRole('all'))
+                        <div class="mt-3 px-3">
+                            <small class="text-muted d-block mb-1">Roles con acceso:</small>
+                            <span class="badge bg-primary me-1 mb-1">public_lighting</span>
                             <span class="badge bg-primary me-1 mb-1">all</span>
                         </div>
                     @endif

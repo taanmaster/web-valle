@@ -78,6 +78,8 @@ use App\Http\Controllers\UrbanDevSareRequestController;
 
 // Protección Civil
 use App\Http\Controllers\ProteccionCivilRequestController;
+use App\Http\Controllers\CivilProtectionProcedureController;
+use App\Http\Controllers\CivilProtectionCaseController;
 
 // SARE
 use App\Http\Controllers\SareRequestController;
@@ -86,6 +88,8 @@ use App\Http\Controllers\FiscPublicEventRequestController;
 use App\Http\Controllers\FiscPrivateEventRequestController;
 use App\Http\Controllers\FiscAdvertisingRequestController;
 use App\Http\Controllers\FiscWorkerController;
+use App\Http\Controllers\PublicLightingRequestController;
+use App\Http\Controllers\MarketController;
 
 // Adquisiciones
 use App\Http\Controllers\AcquisitionEndorsementController;
@@ -182,6 +186,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
     // FISCALIZACIÓN
     Route::get('/fiscalizacion', 'FrontController@fiscalizacion')->name('fiscalizacion.index');
     Route::get('/fiscalizacion/directorio', 'FrontController@fiscalizacionDirectory')->name('fiscalizacion.directory');
+
+    // ALUMBRADO PÚBLICO
+    Route::get('/alumbrado-publico', 'FrontController@publicLighting')->name('public_lighting.index');
 
     // CASA DE LA MUJER
     Route::get('/casa_de_la_mujer', 'FrontController@casaMujer')->name('casa_mujer.index');
@@ -604,6 +611,34 @@ Route::namespace('App\Http\Controllers')->group(function () {
             Route::post('requests/{sareRequest}/send-to-urban-dev', [SareRequestController::class, 'sendToUrbanDev'])->name('sare.request.send_to_urban_dev');
         });
 
+        /* Mercado Municipal */
+        Route::group(['prefix' => 'market', 'middleware' => 'role:mercado|all'], function () {
+            Route::get('stalls', [MarketController::class, 'stalls'])->name('market.stalls.index');
+            Route::get('stalls/create', [MarketController::class, 'createStall'])->name('market.stalls.create');
+            Route::get('stalls/{stall}', [MarketController::class, 'showStall'])->name('market.stalls.show');
+            Route::get('stalls/{stall}/edit', [MarketController::class, 'editStall'])->name('market.stalls.edit');
+
+            Route::get('collect', [MarketController::class, 'collect'])->name('market.tickets.collect');
+            Route::get('tickets', [MarketController::class, 'tickets'])->name('market.tickets.index');
+            Route::get('tickets/{ticket}', [MarketController::class, 'showTicket'])->name('market.tickets.show');
+
+            Route::get('cuts', [MarketController::class, 'cuts'])->name('market.cuts.index');
+            Route::get('cuts/create', [MarketController::class, 'createCut'])->name('market.cuts.create');
+            Route::get('cuts/{cut}', [MarketController::class, 'showCut'])->name('market.cuts.show');
+
+            Route::get('rates', [MarketController::class, 'rates'])->name('market.rates.index');
+            Route::get('rates/create', [MarketController::class, 'createRate'])->name('market.rates.create');
+            Route::get('rates/{rate}/edit', [MarketController::class, 'editRate'])->name('market.rates.edit');
+        });
+
+        /* Alumbrado Público */
+        Route::group(['prefix' => 'public_lighting'], function () {
+            Route::get('requests', [PublicLightingRequestController::class, 'index'])->name('public_lighting.requests.index');
+            Route::get('requests/{lightingRequest}', [PublicLightingRequestController::class, 'show'])->name('public_lighting.requests.show');
+            Route::post('requests/{lightingRequest}/status', [PublicLightingRequestController::class, 'updateStatus'])->name('public_lighting.requests.update_status');
+            Route::post('requests/{lightingRequest}/evidence', [PublicLightingRequestController::class, 'uploadEvidence'])->name('public_lighting.requests.upload_evidence');
+        });
+
         /* Fiscalización */
         Route::group(['prefix' => 'fiscalizacion'], function () {
             Route::get('street_vending_requests', [FiscStreetVendingRequestController::class, 'index'])->name('fiscalizacion.street_vending_requests.index');
@@ -735,6 +770,25 @@ Route::namespace('App\Http\Controllers')->group(function () {
             // Solicitudes de Desarrollo Urbano enviadas para Opinión Técnica de Factibilidad
             Route::get('requests', [ProteccionCivilRequestController::class, 'index'])->name('proteccion_civil.requests.index');
             Route::get('requests/{review}', [ProteccionCivilRequestController::class, 'show'])->name('proteccion_civil.requests.show');
+
+            // Consultor: catálogo de trámites y bandeja de expedientes
+            Route::group(['middleware' => 'role:proteccion_civil|all'], function () {
+                Route::get('procedures', [CivilProtectionProcedureController::class, 'index'])->name('proteccion_civil.procedures.index');
+                Route::get('procedures/create', [CivilProtectionProcedureController::class, 'create'])->name('proteccion_civil.procedures.create');
+                Route::get('procedures/{procedure}/edit', [CivilProtectionProcedureController::class, 'edit'])->name('proteccion_civil.procedures.edit');
+
+                Route::get('cases', [CivilProtectionCaseController::class, 'index'])->name('proteccion_civil.cases.index');
+                Route::get('cases/create', [CivilProtectionCaseController::class, 'create'])->name('proteccion_civil.cases.create');
+
+                Route::get('validity', [CivilProtectionCaseController::class, 'validity'])->name('proteccion_civil.validity.index');
+                Route::get('validity/export', [CivilProtectionCaseController::class, 'exportValidity'])->name('proteccion_civil.validity.export');
+            });
+
+            // Consultor o inspector asignado (el detalle valida la asignación)
+            Route::group(['middleware' => 'role:proteccion_civil|inspector_proteccion_civil|all'], function () {
+                Route::get('cases/{case}', [CivilProtectionCaseController::class, 'show'])->name('proteccion_civil.cases.show');
+                Route::get('inspections', [CivilProtectionCaseController::class, 'inspections'])->name('proteccion_civil.inspections.index');
+            });
         });
 
         /* Dirección de Medio Ambiente */
@@ -2278,6 +2332,20 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::post('/fiscalizacion/eventos-particulares', 'FiscPrivateEventRequestController@store')->name('citizen.fisc.private_event.store');
 
         Route::get('/fiscalizacion/publicidad-via-publica', 'FiscAdvertisingRequestController@index')->name('citizen.fisc.advertising.index');
+
+        // Rutas Protección Civil para ciudadanos
+        Route::get('/proteccion-civil', 'CivilProtectionController@hub')->name('citizen.civil_protection.hub');
+        Route::get('/proteccion-civil/mis-tramites', 'CivilProtectionController@index')->name('citizen.civil_protection.index');
+        Route::get('/proteccion-civil/tramite/{procedure}/iniciar', 'CivilProtectionController@start')->name('citizen.civil_protection.start');
+        Route::get('/proteccion-civil/solicitud/{case}', 'CivilProtectionController@edit')->name('citizen.civil_protection.edit');
+        Route::get('/proteccion-civil/expediente/{case}', 'CivilProtectionController@show')->name('citizen.civil_protection.show');
+
+        // Rutas Alumbrado Público para ciudadanos
+        Route::get('/alumbrado-publico', 'PublicLightingRequestController@hub')->name('citizen.public_lighting.hub');
+        Route::get('/alumbrado-publico/peticiones', 'PublicLightingRequestController@index')->name('citizen.public_lighting.index');
+        Route::get('/alumbrado-publico/peticiones/crear', 'PublicLightingRequestController@create')->name('citizen.public_lighting.create');
+        Route::post('/alumbrado-publico/peticiones', 'PublicLightingRequestController@store')->name('citizen.public_lighting.store');
+        Route::get('/alumbrado-publico/peticiones/{lightingRequest}', 'PublicLightingRequestController@show')->name('citizen.public_lighting.show');
 
         // Rutas Desarrollo Urbano para ciudadanos
         Route::get('/desarrollo-urbano/crear', 'CitizenProfileController@createUrbanDevRequest')->name('citizen.urban_dev.create');

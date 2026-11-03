@@ -23,6 +23,10 @@ class DefineRolesSeeder extends Seeder
             'configuration',
             'environment',
             'fiscalizacion',
+            'public_lighting',
+            'proteccion_civil',
+            'inspector_proteccion_civil',
+            'mercado',
             'all',
         ];
 

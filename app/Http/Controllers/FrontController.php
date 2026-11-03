@@ -493,6 +493,11 @@ class FrontController extends Controller
         return view('front.fiscalizacion.index');
     }
 
+    public function publicLighting()
+    {
+        return view('front.public_lighting.index');
+    }
+
     public function fiscalizacionDirectory()
     {
         $workers = \App\Models\FiscWorker::orderBy('name', 'asc')

@@ -96,6 +96,13 @@
             </li>
 
             <li>
+                <a href="{{ route('public_lighting.index') }}">
+                    <ion-icon name="bulb-outline"></ion-icon>
+                    <span>Alumbrado Público</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('urban_dev.contacts', 'civil_defense') }}">
                     <ion-icon name="radio-outline"></ion-icon>
                     <span>Protección Civil</span>

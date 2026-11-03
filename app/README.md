@@ -87,6 +87,19 @@
   Protección Civil no es un módulo aparte: su bandeja (`proteccion_civil.requests.*`) vive bajo el sidebar de
   Desarrollo Urbano (rol `urban_dev`), igual que "Solicitudes SARE".
 
+#### CivilProtection (Protección Civil) — modelos `CivilProtection*`, rutas/vistas `proteccion_civil.*`, rol `proteccion_civil`
+- CivilProtectionProcedure, CivilProtectionProcedureRequirement (catálogo de trámites y sus requisitos documentales;
+  el primer requisito "Oficio de petición" es fijo, `is_fixed = true`)
+- CivilProtectionCase (expediente, folio `PC-AAAA-NNNN`), CivilProtectionCaseDocument (copia del requisito al iniciar),
+  CivilProtectionCaseDocumentVersion, CivilProtectionCaseLog (línea de tiempo), CivilProtectionInspection
+- Rol `inspector_proteccion_civil`: sólo ve "Mis inspecciones" y el detalle de los expedientes que tiene asignados
+
+#### Market (Mercado Municipal) — modelos `Market*`, rutas/vistas `market.*`, rol `mercado`
+- MarketRate (tarifas por ejercicio), MarketStall (padrón: un registro por espacio), MarketCollectionNote (gestiones de cobro)
+- MarketTicket (boleta = un mes pagado en ventanilla; su etapa se deriva: por cortar → en Tesorería → recibo listo → entregado)
+- MarketCut (corte del día: se cierra y entrega a Tesorería en un paso; los recibos de Tesorería se adjuntan en bloque)
+- El adeudo y la cartera vencida no se guardan: se calculan con los meses sin boleta desde `billing_start`
+
 #### Environment (Dirección de Medio Ambiente)
 - EnvironmentRequest, EnvironmentRequestFile, EnvironmentRequestNote
 - EnvironmentEvent
